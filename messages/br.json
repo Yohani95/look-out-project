@@ -130,6 +130,7 @@
     }
   },
   "Account": {
+    "saveButton":"Salvar",
     "title": "Criar uma nova conta",
     "name": "Nome da Conta",
     "country": "País",
@@ -177,7 +178,8 @@
     "account": {
       "title": "Conta",
       "file": "Arquivo de conta",
-      "create": "Criar conta"
+      "create": "Criar conta",
+      "accountRelationship":"Relacionamentos de conta"
     },
     "contacts": {
       "title": "Contatos",

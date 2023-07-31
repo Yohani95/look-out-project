@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import From from '@/app/[locale]/components/account/Form';
+import Form from '@/app/[locale]/components/account/Form';
 import Table from '@/app/[locale]/components/account/Table'
 function page() {
   const t = useTranslations('Ficha');
@@ -29,11 +29,11 @@ function page() {
   ];
   return (
     <div className="d-flex justify-content-center align-items-center m-4">
-      <div className="card col-lg-8">
+      <div className="card col-lg-10">
         <div className="card-header  text-center">
           <h3>{t('title')}</h3>
         </div>
-        <From t={t} />
+        <Form t={t} />
         <div className='container'>
         <Table columns={columns} data={data} title={t('table.contacts.title')} search={t('table.search')}/>
         </div>

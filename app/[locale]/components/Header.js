@@ -1,5 +1,5 @@
 import Link from "next-intl/link";
-import Nav from "./Nav";
+import Nav from "./header/Nav";
 import { useTranslations } from 'next-intl';
 // _app.js (or _app.tsx)
 const Header = () => {
@@ -12,7 +12,8 @@ const Header = () => {
       account: {
         title: t("Nav.account.title"),
         file: t("Nav.account.file"),
-        create: t("Nav.account.create")
+        create: t("Nav.account.create"),
+        accountRelationship: t("Nav.account.accountRelationship")
       },
       contacts: {
         title: t("Nav.contacts.title"),
@@ -28,9 +29,7 @@ const Header = () => {
   };
   
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <Nav t={languages} />
-    </nav>
   );
 };
 export default Header;

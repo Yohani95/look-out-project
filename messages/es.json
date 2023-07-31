@@ -92,7 +92,7 @@
     "title": "Ficha Cuenta",
     "name": "Nombre de Cuenta",
     "country": "País",
-    "select": "Selectcionar",
+    "select": "Seleccionar",
     "status": "Estado",
     "phone": "Teléfono",
     "add": "Agregar",
@@ -133,6 +133,7 @@
     }
   },
   "Account": {
+    "saveButton":"Guardar",
     "title": "Crear Cuenta",
     "name": "Nombre de Cuenta",
     "country": "País",
@@ -180,7 +181,8 @@
     "account": {
       "title": "Cuenta",
       "file": "Ficha de cuenta",
-      "create": "Crear cuenta"
+      "create": "Crear cuenta",
+      "accountRelationship":"Relaciones de Cuentas"
     },
     "contacts": {
       "title": "Contactos",

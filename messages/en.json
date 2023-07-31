@@ -133,6 +133,7 @@
     }
   },
   "Account": {
+    "saveButton":"Save",
     "title": "Create Account",
     "name": "Account Name",
     "country": "Country",
@@ -180,7 +181,8 @@
     "account": {
       "title": "Account",
       "file": "account file",
-      "create": "Create Account"
+      "create": "Create Account",
+      "accountRelationship":"Account Relationship"
     },
     "contacts": {
       "title": "Contacts",
