@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import Table from "@/app/[locale]/components/account/Table";
 function page() {
-  const t = useTranslations();
+  const t = useTranslations("Account");
   const data = [
     { id: 1, name: "John Doe", position: "Manager", email: "john@example.com" },
     {
@@ -40,26 +41,31 @@ function page() {
   ];
 
   const columns = [
-    { Header: t("Ficha.name"), accessor: "id" },
-    { Header: t("Ficha.place"), accessor: "name" },
-    { Header: t("Ficha.country"), accessor: "position" },
-    { Header: t("Ficha.KAM"), accessor: "email" },
+    { Header: t("name"), accessor: "id" },
+    { Header: t("place"), accessor: "name" },
+    { Header: t("country"), accessor: "position" },
+    { Header: t("KAM"), accessor: "email" },
   ];
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="col-lg-10">
-          <h1>{t("Nav.account.accountRelationship")}</h1>
+          <MyTitle title={t("findAccount")} />
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center">
         <div className="card col-lg-10 shadow">
           <div className="container mt-4 mb-4">
+            <div className="d-flex justify-content-end mb-3">
+              <button type="button" className="btn btn-primary me-2">
+               + {t("new")} {t("account")}
+              </button>
+            </div>
             <Table
-              title={t("Nav.account.accountRelationship")}
+              title=""
               data={data}
               columns={columns}
-              search={t("Ficha.table.search")}
+              search={t("table.search")}
             />
           </div>
         </div>

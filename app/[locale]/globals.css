@@ -1,1 +1,9 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
+
+  input.form-control {
+    border-color: #6c757d; /* Cambia el color del borde aquí (gris oscuro en este caso) */
+  }
+  select.form-control {
+    border-color: #6c757d; /* Borde gris oscuro para los selects */
+    /* Otros estilos para los selects si lo deseas */
+  }

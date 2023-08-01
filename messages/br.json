@@ -131,6 +131,10 @@
   },
   "Account": {
     "saveButton":"Salvar",
+    "new":"Nova",
+    "account":"Conta",
+    "findAccount":"Encontrar Conta",
+    "action":"ações",
     "title": "Criar uma nova conta",
     "name": "Nome da Conta",
     "country": "País",
@@ -172,7 +176,8 @@
   "Languages": {
     "portuguese": "Português",
     "spanish": "Espanhol",
-    "english": "Inglês"
+    "english": "Inglês",
+    "title":"linguagem"
   },
   "Nav": {
     "account": {

@@ -2,7 +2,8 @@ import React from 'react'
 import { useTranslations } from 'next-intl';
 import From from '@/app/[locale]/components/account/Form';
 import Table from '@/app/[locale]/components/account/Table'
-import SelectField from '../../components/SelectField';
+import SelectField from '../../components/common/SelectField';
+import MyTitle from '@/app/[locale]/components/common/MyTitle'
 function page() {
   const t = useTranslations('Account');
   const data = [
@@ -30,34 +31,39 @@ function page() {
     // Agrega más opciones según sea necesario
   ];
   return (
-    <div className="d-flex justify-content-center align-items-center m-4">
-      <div className="card col-lg-10">
-        <div className="card-header  text-center">
-          <h3>{t('title')}</h3>
-        </div>
-        <div className='container'>
-          <From t={t} />
-          <div className="mb-3 row align-items-center">
-            <SelectField
-              options={countryOptions}
-              preOption={t('select')}
-              divClassName="col-sm-4 mb-2"
-            />
-            <div className="col-sm-3">
-              <button type="button" className="btn btn-primary mb-2">
-                {t('select')}
-              </button>
-            </div>
-          </div>
-          <Table columns={columns} data={data} title={t('table.contacts.title')} search={t('table.search')} />
-          <div className="d-flex justify-content-end mb-3">
-            <button type="button" className="btn btn-primary me-2">
-              {t('saveButton')}
-            </button>
-          </div>
+    <>
+<div className="d-flex justify-content-center align-items-center m-4">
+  <div className="col-lg-10">
+    {/* <h1>{t("title")}</h1> */}
+    <MyTitle title={t('title')}/>
+  </div>
+</div>
+<div className="d-flex justify-content-center">
+  <div className="card col-lg-10 shadow">
+    <div className='container'>
+      <From t={t} />
+      <div className="mb-3 row align-items-center">
+        <SelectField
+          options={countryOptions}
+          preOption={t('select')}
+          divClassName="col-sm-4 mb-2"
+        />
+        <div className="col-sm-3">
+          <button type="button" className="btn btn-primary mb-2">
+            {t('select')}
+          </button>
         </div>
       </div>
+      <Table columns={columns} data={data} title={t('table.contacts.title')} search={t('table.search')} />
+      <div className="d-flex justify-content-end mb-3">
+        <button type="button" className="btn btn-primary me-2">
+          {t('saveButton')}
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+</>
   )
 }
 

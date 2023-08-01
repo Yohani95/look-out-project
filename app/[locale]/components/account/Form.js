@@ -1,5 +1,5 @@
 import React from 'react'
-import SelectField from '@/app/[locale]/components/SelectField';
+import SelectField from '@/app/[locale]/components/common/SelectField';
 function Form({ t }) {
     const countryOptions = [
         { value: 'option1', label:'option1'},

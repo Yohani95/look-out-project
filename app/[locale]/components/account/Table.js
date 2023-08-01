@@ -24,6 +24,7 @@ const TableResponsive = ({ data, columns, title,search }) => {
   const { globalFilter } = state;
 
   return (
+    
     <Card className='mb-3'>
       <Card.Header>
         {/* Contenedor para el título y el campo de búsqueda */}

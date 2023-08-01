@@ -134,6 +134,11 @@
   },
   "Account": {
     "saveButton":"Guardar",
+    "findAccount":"Buscar Cuenta",
+    "find":"buscar",
+    "new":"Nueva",
+    "account":"Cuenta",
+    "action" : "Acciones",
     "title": "Crear Cuenta",
     "name": "Nombre de Cuenta",
     "country": "País",
@@ -175,7 +180,8 @@
   "Languages": {
     "portuguese": "Portugués",
     "spanish": "Español",
-    "english": "Inglés"
+    "english": "Inglés",
+    "title" :"Idioma"
   },
   "Nav": {
     "account": {
@@ -193,6 +199,15 @@
       "insertProject": "Insertar cierre de negocio (proyecto)",
       "insertSuport": "Insertar cierre de negocio (soporte)",
       "insertServices": "Insertar cierre de negocio (servicios)"
+    }
+  },
+  "Contacts":{
+    "search":"Buscar ...",
+    "create":{
+
+    },
+    "file":{
+
     }
   }
 }
