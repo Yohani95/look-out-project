@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import Table from "@/app/[locale]/components/account/Table";
+import TableTableCommon from "@/app/[locale]/components/common/TableCommon";
+import MyTitle from "../../components/common/MyTitle";
 function page() {
   const t = useTranslations();
   const data = [
@@ -40,26 +41,27 @@ function page() {
   ];
 
   const columns = [
-    { Header: t("Ficha.name"), accessor: "id" },
-    { Header: t("Ficha.place"), accessor: "name" },
-    { Header: t("Ficha.country"), accessor: "position" },
-    { Header: t("Ficha.KAM"), accessor: "email" },
+    { title: t("Ficha.name"), key: "id" },
+    { title: t("Ficha.place"), key: "name" },
+    { title: t("Ficha.country"), key: "position" },
+    { title: t("Ficha.Email"), key: "email" },
   ];
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="col-lg-10">
-          <h1>{t("Nav.account.accountRelationship")}</h1>
+        <MyTitle title={t("Nav.account.accountRelationship")} />
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center">
         <div className="card col-lg-10 shadow">
           <div className="container mt-4 mb-4">
-            <Table
+            <TableTableCommon
               title={t("Nav.account.accountRelationship")}
               data={data}
               columns={columns}
               search={t("Ficha.table.search")}
+              noResultsFound={t('Common.noResultsFound')}
             />
           </div>
         </div>

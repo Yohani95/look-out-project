@@ -83,7 +83,10 @@
     "uploadFile": "Subir archivo",
     "downloadFile": "Descargar archivo",
     "welcomeUser": "¡Bienvenido, {{name}}!",
-    "orderTotal": "Total: {{amount}}"
+    "orderTotal": "Total: {{amount}}",
+    "influencer":"Influenciador",
+    "other":"Otro",
+    "decisor":"Decisor"
   },
   "Index": {
     "title": "HOLA!"
@@ -193,7 +196,7 @@
     "contacts": {
       "title": "Contactos",
       "create": "Crear contactos",
-      "file": "Archivo de contacto"
+      "file": "Ficha de contacto"
     },
     "business": {
       "insertProject": "Insertar cierre de negocio (proyecto)",

@@ -1,13 +1,10 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import Form from "@/app/[locale]/components/account/Form";
-import Table from "@/app/[locale]/components/account/Table";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import TableCommon from "@/app/[locale]/components/common/TableCommon";
+import MyTitle from "@/app/[locale]/components/common/MyTitle";
 function page() {
-  const t = useTranslations("Ficha");
-  const translations = {
-    t, // Aquí agregas todas las traducciones que necesites
-  };
+  const t = useTranslations();
   // Aquí defines las opciones para cada select
   const data = [
     {
@@ -61,37 +58,39 @@ function page() {
 
     // Otros objetos
   ];
-
   const columns = [
-    { Header: t("table.id"), accessor: "id" },
-    { Header: t("table.contacts.name"), accessor: "name" },
-    { Header: t("position"), accessor: "position" },
-    { Header: t("Email"), accessor: "email" },
-    { Header: t("phone"), accessor: "phone" },
-    { Header: t("table.contacts.rol"), accessor: "rol" },
+    { key: 'id', title: t("Ficha.table.id") },
+    { key: 'name', title: t("Ficha.table.contacts.name") },
+    { key: 'position', title: t("Ficha.position") },
+    { key: 'email', title: t("Ficha.Email") },
+    { key: 'phone', title: t("Ficha.phone") },
+    { key: 'rol', title: t("Ficha.table.contacts.rol") },
   ];
+   
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="col-lg-10">
-          <h1>{t("title")}</h1>
+        <MyTitle title={t("Ficha.title")} />
         </div>
       </div>
       <div className="d-flex justify-content-center">
         <div className="card col-lg-10 shadow">
           <div className="container">
-            <Form t={t} />
-            <Table
+            <Form t={useTranslations('Account')} />
+            <TableCommon
               columns={columns}
               data={data}
-              title={t("table.contacts.title")}
-              search={t("table.search")}
+              title={t("Ficha.table.contacts.title")}
+              search={t("Ficha.table.search")}
+              noResultsFound={t('Common.noResultsFound')}
             />
-            <Table
+            <TableCommon
               columns={columns}
+              noResultsFound={t('Common.noResultsFound')}
               data={data}
-              title={t("table.business.title")}
-              search={t("table.search")}
+              title={t("Ficha.table.business.title")}
+              search={t("Ficha.table.search")}
             />
           </div>
         </div>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import LanguageDropdown from "./LanguageDropdown";
 import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
-import ContactDropDown from '@/app/[locale]/components/contact/ContactDropDown'
+import ContactDropDown from "@/app/[locale]/components/contact/ContactDropDown";
 const MyNav = ({ t }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -33,28 +33,20 @@ const MyNav = ({ t }) => {
                 title={t.namesMenu.account.title}
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item>
-                  <Link href={"/ficha"} className="dropdown-item">
-                    {t.namesMenu.account.file}
-                  </Link>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <Link href={"/account"} className="dropdown-item">
-                    {t.namesMenu.account.create}
-                  </Link>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <Link href={"/relations"} className="dropdown-item">
-                    {t.namesMenu.account.accountRelationship}
-                  </Link>
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <Link href={"/account/search"} className="dropdown-item">
-                    {t.namesMenu.account.findAccount}
-                  </Link>
-                </NavDropdown.Item>
+                <Link href="/ficha" className="dropdown-item">
+                  {t.namesMenu.account.file}
+                </Link>
+                <Link href="/account" className="dropdown-item">
+                  {t.namesMenu.account.create}
+                </Link>
+                <Link href="/relations" className="dropdown-item">
+                  {t.namesMenu.account.accountRelationship}
+                </Link>
+                <Link href="/account/search" className="dropdown-item">
+                  {t.namesMenu.account.findAccount}
+                </Link>
               </NavDropdown>
-              <ContactDropDown t={t.namesMenu.contacts}/>
+              <ContactDropDown t={t.namesMenu.contacts} />
               {/* End of Dropdown Component */}
               <LanguageDropdown t={t} />
             </Nav>

@@ -3,38 +3,17 @@ import Link from "next-intl/link";
 import { NavDropdown } from "react-bootstrap";
 function ContactDropDown({ t }) {
   return (
-    <NavDropdown title={t.title} id="basic-nav-dropdown">
-      <NavDropdown.Item>
-        <Link
-          href="/contact/search"
-          locale="en"
-          className="dropdown-item"
-          anchor
-        >
-          <span style={{ marginLeft: "8px" }}>{t.title}</span>
-        </Link>
-      </NavDropdown.Item>
-      <NavDropdown.Item>
-        <Link
-          href="/contact/ficha"
-          locale="en"
-          className="dropdown-item"
-          anchor
-        >
-          <span style={{ marginLeft: "8px" }}>{t.file}</span>
-        </Link>
-      </NavDropdown.Item>
-      <NavDropdown.Item>
-        <Link
-          href="/contact/create"
-          locale="en"
-          className="dropdown-item"
-          anchor
-        >
-          <span style={{ marginLeft: "8px" }}>{t.create}</span>
-        </Link>
-      </NavDropdown.Item>
-    </NavDropdown>
+   <NavDropdown title={t.title} id="basic-nav-dropdown">
+    <Link href="/contact/search" className="dropdown-item">
+      {t.search}
+    </Link>
+    <Link href="/contact/ficha"  className="dropdown-item">
+      {t.file}
+    </Link>
+    <Link href="/contact/create" className="dropdown-item">
+      {t.create}
+    </Link>
+</NavDropdown>
   );
 }
 

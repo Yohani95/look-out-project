@@ -7,11 +7,6 @@ import ES from "@/public/images/country/es.png";
 import BR from "@/public/images/country/br.png";
 import { usePathname } from "next/navigation";
 const LanguageDropdown = ({ t }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
   
   const pathname = usePathname();
   let lastPathSegment = pathname;
@@ -25,24 +20,18 @@ const LanguageDropdown = ({ t }) => {
   }
   return (
     <NavDropdown title={t.languages.title} id="basic-nav-dropdown" >
-      <NavDropdown.Item>
-        <Link href={`/${lastPathSegment}`} locale="en" anchor className="dropdown-item">
-          <Image src={UK} width={20} height={20} title={t.en} />
+        <Link href={`/${lastPathSegment}`} locale="en" className="dropdown-item">
+          <Image src={UK} width={20} height={20} title={t.en} alt=""/>
           <span style={{ marginLeft: "8px" }}>{t.en}</span>
         </Link>
-      </NavDropdown.Item>
-      <NavDropdown.Item>
-        <Link href={`/${lastPathSegment}`} locale="es" anchor className="dropdown-item">
-          <Image src={ES} width={20} height={20} title={t.es} />
+        <Link href={`/${lastPathSegment}`} locale="es" className="dropdown-item">
+          <Image src={ES} width={20} height={20} title={t.es} alt=""/>
           <span style={{ marginLeft: "8px" }}>{t.es}</span>
         </Link>
-      </NavDropdown.Item>
-      <NavDropdown.Item>
-        <Link href={`/${lastPathSegment}`} locale="br" anchor className="dropdown-item">
-          <Image src={BR} width={20} height={20} title={t.pt} />
+        <Link href={`/${lastPathSegment}`} locale="br" className="dropdown-item">
+          <Image src={BR} width={20} height={20} title={t.pt} alt=""/>
           <span style={{ marginLeft: "8px" }}>{t.pt}</span>
         </Link>
-      </NavDropdown.Item>
     </NavDropdown>
   );
 };

@@ -24,6 +24,7 @@ const Header = () => {
         title: t("Nav.contacts.title"),
         file: t("Nav.contacts.file"),
         create: t("Nav.contacts.create"),
+        search:`${t('Common.search')} ${t('Ficha.table.contacts.title')}`
       },
       business: {
         insertProject: t("Nav.business.insertProject"),

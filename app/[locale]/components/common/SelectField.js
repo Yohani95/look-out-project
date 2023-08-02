@@ -1,9 +1,6 @@
 import React from 'react';
-import { useTranslations } from 'next-intl';
 
 const SelectField = ({ label, options, labelClassName, divClassName,preOption }) => {
-  const t = useTranslations('Ficha');
-
   return (
     <>
       <label className={`${labelClassName}`}>

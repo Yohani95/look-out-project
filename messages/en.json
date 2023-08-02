@@ -83,7 +83,10 @@
     "uploadFile": "Upload File",
     "downloadFile": "Download File",
     "welcomeUser": "Welcome, {{name}}!",
-    "orderTotal": "Total: {{amount}}"
+    "orderTotal": "Total: {{amount}}",
+    "influencer":"Influencer",
+    "other":"Other",
+    "decisor":"Decisor"
   },
   "Index": {
     "title": "Hello world!"

@@ -83,7 +83,10 @@
     "uploadFile": "Enviar arquivo",
     "downloadFile": "Baixar arquivo",
     "welcomeUser": "Bem-vindo, {{name}}!",
-    "orderTotal": "Total: {{amount}}"
+    "orderTotal": "Total: {{amount}}",
+    "influencer":"Influenciador",
+    "other":"Outro",
+    "decisor":"Decisor"
   },
   "Ficha": {
     "title": "Conta",
