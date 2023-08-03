@@ -1,7 +1,6 @@
 import React from "react";
 import SelectField from "../common/SelectField";
 function FormContact({ t }) {
-  console.log(t("Common.search"));
   const kamOptions = [
     { value: "optionX", label: "option1" },
     { value: "optionY", label: "option2" },

@@ -1,7 +1,5 @@
-import Link from "next-intl/link";
 import Nav from "./Nav";
 import { useTranslations } from "next-intl";
-// _app.js (or _app.tsx)
 const Header = () => {
   const t = useTranslations();
   const languages = {
@@ -27,6 +25,8 @@ const Header = () => {
         search:`${t('Common.search')} ${t('Ficha.table.contacts.title')}`
       },
       business: {
+        title: t('Account.business'),
+        search: `${t('Common.search')} ${t('Account.business')}`,
         insertProject: t("Nav.business.insertProject"),
         insertSuport: t("Nav.business.insertSuport"),
         insertServices: t("Nav.business.insertServices"),

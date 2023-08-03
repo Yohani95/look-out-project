@@ -86,7 +86,8 @@
     "orderTotal": "Total: {{amount}}",
     "influencer":"Influencer",
     "other":"Other",
-    "decisor":"Decisor"
+    "decisor":"Decisor",
+    "create" :"Create"
   },
   "Index": {
     "title": "Hello world!"

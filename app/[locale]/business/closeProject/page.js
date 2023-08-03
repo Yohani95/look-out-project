@@ -1,32 +1,25 @@
 import React from "react";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import { useTranslations } from "next-intl";
-import FormContact from "@/app/[locale]/components/contact/FormContact";
+import FormBusiness from "../../components/business/FormBusiness";
 function page() {
   const t = useTranslations();
-
-  const form = {
-    name: t("Account.contact_name"),
-  };
-  console;
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="col-lg-10">
-          <MyTitle title={t("Nav.contacts.file")} />
+          <MyTitle title={`${t("Common.search")} ${t("Account.business")}`} />
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="card col-lg-10 shadow">
           <div className="d-flex justify-content-end mt-2">
-            <button type="button" className="badge rounded-pill btn btn-success me-2">
-              {t("Account.button.Modify")}
-            </button>
-            <button type="button" className="badge rounded-pill btn btn-danger me-2">
-               {t("Common.delete")}
-            </button>
+            <div class="col-sm-2">
+              <h6>ID</h6>
+            </div>
           </div>
-          <FormContact t={t} />
+
+          <FormBusiness t={t}/>
         </div>
       </div>
     </>

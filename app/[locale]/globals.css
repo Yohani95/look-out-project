@@ -7,3 +7,12 @@
     border-color: #6c757d; /* Borde gris oscuro para los selects */
     /* Otros estilos para los selects si lo deseas */
   }
+  button {
+    /* Agrega aquí los estilos que desees */
+    /* Por ejemplo: */
+    /* background-color: rgb(15, 210, 142);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 999px; */
+  }

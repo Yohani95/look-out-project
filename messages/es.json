@@ -1,6 +1,7 @@
 {
   "Common": {
     "KPAZ": "KPAZ",
+    "close":"Cierre",
     "welcomeMessage": "¡Bienvenido a mi aplicación de software!",
     "saveButton": "Guardar",
     "updateButton": "Actualizar",
@@ -26,6 +27,9 @@
     "products": "Productos",
     "orders": "Pedidos",
     "customers": "Clientes",
+    "client": "Cliente",
+    "proposal":"Propuesta",
+    "accepted":"Aceptad{sex}",
     "account": "Cuenta",
     "notifications": "Notificaciones",
     "privacyPolicy": "Política de privacidad",
@@ -86,7 +90,9 @@
     "orderTotal": "Total: {{amount}}",
     "influencer":"Influenciador",
     "other":"Otro",
-    "decisor":"Decisor"
+    "decisor":"Decisor",
+    "create" :"Crear",
+    "request": "Solicitar"
   },
   "Index": {
     "title": "HOLA!"
@@ -126,7 +132,7 @@
         "title": "Negocios",
         "name": "Nombre de negocio",
         "type":"Tipo",
-        "dateEnd":"Fecha cierre com."
+        "dateEnd":"Fecha cierre comercial"
       },
       "contacts": {
         "title": "Contactos",

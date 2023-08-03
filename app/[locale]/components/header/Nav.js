@@ -1,7 +1,9 @@
 "use client";
 import Link from "next-intl/link";
 import { useState } from "react";
-import { Dropdown } from "react-bootstrap";
+import Image from "next/image";
+import LOGO from "@/public/images/logo.png";
+import BusinessDropDown from "../business/BusinessDropDown";
 import LanguageDropdown from "./LanguageDropdown";
 import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
 import ContactDropDown from "@/app/[locale]/components/contact/ContactDropDown";
@@ -22,7 +24,7 @@ const MyNav = ({ t }) => {
           {/* Utilizamos el componente Container para centrar el contenido */}
           <Navbar.Brand>
             <Link href={"/"} className="navbar-brand">
-              KPAZ
+            <Image src={LOGO} width={80} height={40} title="logo" alt=""/>
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarSupportedContent" />
@@ -47,7 +49,7 @@ const MyNav = ({ t }) => {
                 </Link>
               </NavDropdown>
               <ContactDropDown t={t.namesMenu.contacts} />
-              {/* End of Dropdown Component */}
+              <BusinessDropDown t={t.namesMenu.business}/>
               <LanguageDropdown t={t} />
             </Nav>
           </Navbar.Collapse>

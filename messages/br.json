@@ -86,7 +86,8 @@
     "orderTotal": "Total: {{amount}}",
     "influencer":"Influenciador",
     "other":"Outro",
-    "decisor":"Decisor"
+    "decisor":"Decisor",
+    "create" :"Create"
   },
   "Ficha": {
     "title": "Conta",
