@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import FormBusiness from "../../components/business/FormBusiness";
 function page() {
   const t = useTranslations();
+  
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
@@ -15,10 +16,9 @@ function page() {
         <div className="card col-lg-10 shadow">
           <div className="d-flex justify-content-end mt-2">
             <div class="col-sm-2">
-              <h6>ID</h6>
+              <h6 className="text-end container">ID 12345678</h6>
             </div>
           </div>
-
           <FormBusiness t={t}/>
         </div>
       </div>

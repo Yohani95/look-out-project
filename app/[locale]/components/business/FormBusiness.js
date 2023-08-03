@@ -1,5 +1,6 @@
 import React from "react";
 import SelectField from "../common/SelectField";
+import MyDatePicker from "../common/MyDatePicker";
 function FormBusiness({ t }) {
   const kamOptions = [
     { value: "optionX", label: "option1" },
@@ -20,7 +21,7 @@ function FormBusiness({ t }) {
             {t("Ficha.table.business.dateEnd")}
           </label>
           <div className="col-sm-3">
-            <input type="text" className="form-control" id="accountName" />
+          <MyDatePicker/>
           </div>
           <SelectField
             label={t("Account.country")}
@@ -78,7 +79,7 @@ function FormBusiness({ t }) {
             <input type="text disable" className="form-control" id="accountName" disabled value="valor"/>
           </div>
           <div className="col-sm-2">
-            <button className="badge btn btn-primary">{t("Common.uploadFile")}</button>
+            <button className="badge btn btn-success">{t("Common.uploadFile")}</button>
           </div>
           <label htmlFor="accountName" className="col-sm-1 col-form-label">
             {t("Common.proposal")} {t('Common.accepted', { sex: "o" })}
@@ -87,7 +88,7 @@ function FormBusiness({ t }) {
             <input type="text" className="form-control" id="accountName" disabled value="valor"/>
           </div>
           <div className="col-sm-2">
-            <button className="badge btn btn-primary">{t("Common.uploadFile")}</button>
+            <button className="badge btn btn-success">{t("Common.uploadFile")}</button>
           </div>
         </div>
       </form>
