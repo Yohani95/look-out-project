@@ -17,6 +17,13 @@ export const Hero_content = () => {
           I enjoy building everything from small business sites to rich interactive web apps. 
           If you are a business seeking a web presence or an employer looking to hire, 
           you can get in touch with me here</h6>
+
+          <p>
+          I am a web developer from Cape Breton, Nova Scotia and currently living in Halifax.
+          I enjoy building everything from small business sites to rich interactive web apps. 
+          If you are a business seeking a web presence or an employer looking to hire, 
+          you can get in touch with me here
+          </p>
         
     </div>
       </div>
