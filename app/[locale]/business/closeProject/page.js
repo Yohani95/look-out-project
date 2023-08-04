@@ -51,69 +51,83 @@ function page() {
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center m-4">
-        <div className="card col-lg-10 shadow container">
-          <div className="d-flex justify-content-end mt-2">
-            <div class="col-sm-2">
-              <h6 className="text-end container">ID {t('business.title')} 12345678</h6>
+        <div className="card col-lg-10 shadow">
+          <div className="container">
+            <div className="d-flex justify-content-end mt-2">
+              <div class="col-sm-2">
+                <h6 className="text-end container">
+                  ID {t("business.title")} 12345678
+                </h6>
+              </div>
             </div>
-          </div>
-          <FormBusiness t={t} />
-          <div className="mb-3 row align-items-center container">
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("business.saleprice")}
-            </label>
-            <div className="col-sm-3">
-              <input type="text" className="form-control" id="" value="" />
+            <FormBusiness t={t} />
+            <div className="mb-3 row align-items-center ">
+              <label htmlFor="" className="col-sm-1 col-form-label">
+                {t("business.saleprice")}
+              </label>
+              <div className="col-sm-3">
+                <input type="text" className="form-control" id="" value="" />
+              </div>
+
+              <div className="col-sm-2">
+                <select className="form-control form-select">
+                  <option value="">{t("Account.select")}</option>
+                  {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <hr />
+
+            <div className="mb-3 row align-items-center ">
+              <label
+                htmlFor="milestoneName"
+                className="col-sm-1 col-form-label"
+              >
+                {t("business.milestoneName")}
+              </label>
+              <div className="col-sm-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="milestoneName"
+                  value=""
+                />
+              </div>
+              <label htmlFor="" className="col-sm-1 col-form-label">
+                {t("business.milestoneTerm")}
+              </label>
+              <div className="col-sm-1">
+                <input type="text" className="form-control" id="" value="" />
+              </div>
+              <div className="col-sm-2">
+                <select className="form-control form-select">
+                  <option value="">{t("Account.select")}</option>
+                  {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <label htmlFor="" className="col-sm-1 col-form-label">
+                {t("business.milestonePrice")}
+              </label>
+              <div className="col-sm-2">
+                <input type="text" className="form-control" id="" value="" />
+              </div>
+              <div className="col-sm-1">
+                <button className="badge btn btn-primary">
+                  {t("Common.include")} ...{" "}
+                </button>
+              </div>
             </div>
 
-            <div className="col-sm-2">
-              <select className="form-control form-select">
-                <option value="">{t("Account.select")}</option>
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <hr />
           </div>
-          <hr />
-          <div className="mb-3 row align-items-center container">
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("business.milestoneName")}
-            </label>
-            <div className="col-sm-3">
-              <input type="text" className="form-control" id="" value="" />
-            </div>
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("business.milestoneTerm")}
-            </label>
-            <div className="col-sm-1">
-              <input type="text" className="form-control" id="" value="" />
-            </div>
-            <div className="col-sm-2">
-              <select className="form-control form-select">
-                <option value="">{t("Account.select")}</option>
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("business.milestonePrice")}
-            </label>
-            <div className="col-sm-2">
-              <input type="text" className="form-control" id="" value="" />
-            </div>
-            <div className="col-sm-1">
-              <button className="badge btn btn-primary">
-                {t("Common.include")} ...{" "}
-              </button>
-            </div>
-          </div>
-          <hr />
           <TableCommon
             columns={columns}
             noResultsFound={t("Common.noResultsFound")}

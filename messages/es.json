@@ -97,7 +97,10 @@
     "price":"Precio",
     "saveDraf":"Guardar Borrador",
     "fee":"Tarifa",
-    "base":"Base"
+    "base":"Base",
+    "currency":"Moneda",
+    "status": "Estado",
+    "area":"Área"
   },
   "Index": {
     "title": "HOLA!"
@@ -230,6 +233,11 @@
   "milestoneStatus":"Estado Hito",
   "milestoneAmount":"Monto Hito",
   "saveClosing":"Grabar Cierre Negocio",
-  "agreedRate":"Tarifario Convenido"
+  "agreedRate":"Tarifario Convenido",
+  "assignedProfile":"Perfil Asignado",
+  "beginningValidity":"Inicio Vigencia",
+  "termValidity":"Término Vigencia",
+  "historyContractedSupports":"Historial Soportes Contratados",
+  "typeSupport":"Tipo Soporte"
   }
 }

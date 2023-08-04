@@ -6,7 +6,7 @@ function MyTitle({title}) {
   return (
     <Breadcrumb>
       <Link href={'/'} className='text-decoration-none'>Home</Link>
-      <Breadcrumb.Item active>/{title}</Breadcrumb.Item>
+      <Breadcrumb.Item active>&nbsp;/&nbsp;{title}</Breadcrumb.Item>
     </Breadcrumb>
   );
 }

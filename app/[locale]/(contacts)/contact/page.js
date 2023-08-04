@@ -26,7 +26,7 @@ function page() {
         </Form>
         {/* Aquí colocas el contenido principal de la tarjeta */}
         <p>Este es un ejemplo de contenido en la tarjeta.</p>
-        <button className="btn btn-primary">Botón</button>
+        <button type="button" className="btn btn-primary">Botón</button>
       </Card.Body>
     </Card>
   </div>

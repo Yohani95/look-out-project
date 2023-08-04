@@ -16,28 +16,28 @@ function page() {
       const randomAge = Math.floor(Math.random() * 30) + 20; // Edad aleatoria entre 20 y 49
       data.push({
         id: i,
-        name: `Person ${i}`,
-        closingDate: randomAge,
-        closingReal: randomAge,
-        price: randomAge,
-        amount: randomAge,
-        status: `person${i}@example.com`,
-        facture: `person${i}@example.com`,
-        comments: `person${i}@example.com`,
+        assignedProfile: `Person ${i}`,
+        fee: randomAge,
+        currency: randomAge,
+        base: randomAge,
+        status: randomAge,
+        beginningValidity: `person${i}@example.com`,
+        termValidity: `person${i}@example.com`,
+        generalComments: `person${i}@example.com`,
       });
     }
     return data;
   };
   const columns = [
     { key: "id", title: "ID" },
-    { key: "name", title: t("business.milestoneName") },
-    { key: "closingDate", title: t("business.estimatedClosingDate") },
-    { key: "closingReal", title: t("business.estimatedClosingDateReal") },
-    { key: "price", title: `% ${t("Common.price")}` },
-    { key: "amount", title: t("business.milestoneAmount") },
-    { key: "status", title: t("business.milestoneStatus") },
-    { key: "facture", title: t("business.milestoneFacture") },
-    { key: "comments", title: t("business.generalComments") },
+    { key: "assignedProfile", title: t("business.assignedProfile") },
+    { key: "fee", title: t("Common.fee") },
+    { key: "currency", title: t("Common.currency") },
+    { key: "base", title: `% ${t("Common.base")}` },
+    { key: "status", title: t("Common.status") },
+    { key: "beginningValidity", title: t("business.beginningValidity") },
+    { key: "termValidity", title: t("business.termValidity") },
+    { key: "generalComments", title: t("business.generalComments") },
     // ... más columnas ...
   ];
   const data = generateRandomData(40);
@@ -49,7 +49,9 @@ function page() {
         </div>
       </div>
       <div className="d-flex justify-content-center align-items-center m-4">
-        <div className="card col-lg-10 shadow container">
+        <div className="card col-lg-10 shadow ">
+        <form>
+        <div className="container">
           <div className="d-flex justify-content-end mt-2">
             <div className="col-sm-2">
               <h6 className="text-end container">
@@ -57,71 +59,79 @@ function page() {
               </h6>
             </div>
           </div>
-          <FormBusiness t={t} />
-          <hr />
-          <div className="mb-3 row align-items-center ">
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("Common.profile")}
-            </label>
-            <div className="col-sm-2">
-              <select className="form-control form-select">
-                <option value="">{t("Account.select")}</option>
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+          
+            <FormBusiness t={t} />
+            <hr />
+            <div className="mb-3 row align-items-center ">
+              <label htmlFor="profile" className="col-sm-1 col-form-label">
+                {t("Common.profile")}
+              </label>
+              <div className="col-sm-2">
+                <select className="form-control form-select">
+                  <option value="">{t("Account.select")}</option>
+                  {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <label htmlFor="fee" className="col-sm-1 col-form-label">
+                {t("Common.fee")}
+              </label>
+              <div className="col-sm-2">
+                <input type="number" className="form-control" id="fee" />
+              </div>
+              <div className="col-sm-2">
+                <select className="form-control form-select">
+                  <option>{t("Account.select")}</option>
+                  {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <label htmlFor="base" className="col-sm-1 col-form-label">
+                {t("Common.base")}
+              </label>
+              <div className="col-sm-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="base"
+                  name="base"
+                />
+              </div>
+              <div className="col-sm-1">
+                <button type="button" className="badge btn btn-primary">
+                  {t("Common.include")} ...{" "}
+                </button>
+              </div>
             </div>
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("Common.fee")}
-            </label>
-            <div className="col-sm-2">
-              <input type="text" className="form-control" id="" value="" />
+            <hr />
             </div>
-            <div className="col-sm-2">
-              <select className="form-control form-select">
-                <option value="">{t("Account.select")}</option>
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+            <TableCommon
+              columns={columns}
+              noResultsFound={t("Common.noResultsFound")}
+              data={data}
+              title={t("business.agreedRate")}
+              search={t("Ficha.table.search")}
+              idioma={t("Account.action")}
+            />
+            <div className="d-flex justify-content-end mt-2 mb-2 container">
+              <div className="col-sm-2">
+                <button type="button" className="btn btn-primary">
+                  {t("Common.saveDraf")}
+                </button>
+              </div>
+              <div className="col-sm-2">
+                <button type="button" className="btn btn-primary">
+                  {t("business.saveClosing")}
+                </button>
+              </div>
             </div>
-            <label htmlFor="" className="col-sm-1 col-form-label">
-              {t("Common.base")}
-            </label>
-            <div className="col-sm-2">
-              <input type="text" className="form-control" id="" value="" />
-            </div>
-            <div className="col-sm-1">
-              <button className="badge btn btn-primary">
-                {t("Common.include")} ...{" "}
-              </button>
-            </div>
-          </div>
-          <hr />
-          <TableCommon
-            columns={columns}
-            noResultsFound={t("Common.noResultsFound")}
-            data={data}
-            title={t("business.agreedRate")}
-            search={t("Ficha.table.search")}
-            idioma={t("Account.action")}
-          />
-           <div className="d-flex justify-content-end mt-2 mb-2 container">
-            <div className="col-sm-2">
-              <button className="btn btn-primary">
-                {t("Common.saveDraf")}
-              </button>
-            </div>
-            <div className="col-sm-2">
-              <button className="btn btn-primary">
-                {t("business.saveClosing")}
-              </button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </>
