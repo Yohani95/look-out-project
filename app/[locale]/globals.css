@@ -15,4 +15,26 @@
     border: none;
     padding: 5px 10px;
     border-radius: 999px; */
+    
   }
+  /* 
+  color pagina oficial de kpaz 
+
+  Navbar
+  #2F4BCE
+   */
+   /* h1, h2, h3, h4, h5, h6 {
+    color: #2F4BCE;
+  } */
+  h6 ,h5{
+    color: #2F4BCE;
+  }
+  .form-check-input {
+    border: 1px solid #2F4BCE;
+  cursor: pointer; 
+  }
+    
+    .form-check-label {
+      cursor: pointer; /* Change cursor to pointer when hovering over the label */
+      padding-left: 5px; /* Add left padding for better click area */
+    }

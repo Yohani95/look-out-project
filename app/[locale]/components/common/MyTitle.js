@@ -1,11 +1,12 @@
 'use client'
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Link from "next-intl/link"
 
 function MyTitle({title}) {
   return (
     <Breadcrumb>
-      <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-      <Breadcrumb.Item active>{title}</Breadcrumb.Item>
+      <Link href={'/'} className='text-decoration-none'>Home</Link>
+      <Breadcrumb.Item active>/{title}</Breadcrumb.Item>
     </Breadcrumb>
   );
 }

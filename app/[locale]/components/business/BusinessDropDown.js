@@ -11,7 +11,7 @@ function BusinessDropDown({ t }) {
       {t.insertProject}
     </Link>
     <Link href="/business/closeSupport"  className="dropdown-item">
-      {t.insertSuport}
+      {t.insertSupport}
     </Link>
     <Link href="/business/closeServices" className="dropdown-item">
       {t.insertServices}

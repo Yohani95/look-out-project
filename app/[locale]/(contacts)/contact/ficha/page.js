@@ -19,10 +19,10 @@ function page() {
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="card col-lg-10 shadow">
           <div className="d-flex justify-content-end mt-2">
-            <button type="button" className="badge rounded-pill btn btn-success me-2">
+            <button type="button" className="badge  btn btn-success me-2">
               {t("Account.button.Modify")}
             </button>
-            <button type="button" className="badge rounded-pill btn btn-danger me-2">
+            <button type="button" className="badge  btn btn-danger me-2">
                {t("Common.delete")}
             </button>
           </div>

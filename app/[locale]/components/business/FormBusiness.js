@@ -7,8 +7,9 @@ function FormBusiness({ t }) {
     { value: "optionY", label: "option2" },
     // Agrega más opciones según sea necesario
   ];
+  const options = kamOptions;
   return (
-    <div className="container mt-3">
+    <div className="mt-3">
       <form>
         <div className="mb-3 row align-items-center">
           <label htmlFor="accountName" className="col-sm-1 col-form-label">
@@ -21,7 +22,7 @@ function FormBusiness({ t }) {
             {t("Ficha.table.business.dateEnd")}
           </label>
           <div className="col-sm-3">
-          <MyDatePicker/>
+            <MyDatePicker />
           </div>
           <SelectField
             label={t("Account.country")}
@@ -33,7 +34,7 @@ function FormBusiness({ t }) {
         </div>
 
         <div className=" mb-3 row align-items-center">
-        <SelectField
+          <SelectField
             label={t("Account.name")}
             options={kamOptions}
             preOption={t("Account.select")}
@@ -41,10 +42,12 @@ function FormBusiness({ t }) {
             divClassName="col-sm-3"
           />
           <div className="col-sm-2">
-            <button className="badge btn btn-primary">{t("Common.request")} (+) </button>
+            <button className="badge btn btn-primary">
+              {t("Common.request")} (+){" "}
+            </button>
           </div>
           <label htmlFor="accountName" className="col-sm-1 col-form-label">
-            {t("Account.business_name")} 
+            {t("Account.business_name")}
           </label>
           <div className="col-sm-5">
             <input type="text" className="form-control" id="accountName" />
@@ -60,7 +63,9 @@ function FormBusiness({ t }) {
             divClassName="col-sm-3"
           />
           <div className="col-sm-2">
-            <button className="badge btn btn-primary">{t("Common.add")} (+)</button>
+            <button className="badge btn btn-primary">
+              {t("Common.add")} (+)
+            </button>
           </div>
           <SelectField
             label={`${t("Account.type")} ${t("Account.business")}`}
@@ -73,26 +78,73 @@ function FormBusiness({ t }) {
 
         <div className=" mb-3 row align-items-center">
           <label htmlFor="accountName" className="col-sm-1 col-form-label">
-            {t("Common.confirm")} {t('Common.client')}
+            {t("Common.confirm")} {t("Common.client")}
           </label>
           <div className="col-sm-3">
-            <input type="text disable" className="form-control" id="accountName" disabled value="valor"/>
+            <input
+              type="text disable"
+              className="form-control"
+              id="accountName"
+              disabled
+              value="valor"
+            />
           </div>
           <div className="col-sm-2">
-            <button className="badge btn btn-success">{t("Common.uploadFile")}</button>
+            <button className="badge btn btn-success">
+              {t("Common.uploadFile")}
+            </button>
           </div>
           <label htmlFor="accountName" className="col-sm-1 col-form-label">
-            {t("Common.proposal")} {t('Common.accepted', { sex: "o" })}
+            {t("Common.proposal")} {t("Common.accepted", { sex: "o" })}
           </label>
           <div className="col-sm-3">
-            <input type="text" className="form-control" id="accountName" disabled value="valor"/>
+            <input
+              type="text"
+              className="form-control"
+              id="accountName"
+              disabled
+              value="valor"
+            />
           </div>
           <div className="col-sm-2">
-            <button className="badge btn btn-success">{t("Common.uploadFile")}</button>
+            <button className="badge btn btn-success">
+              {t("Common.uploadFile")}
+            </button>
           </div>
         </div>
       </form>
       <hr />
+
+      <div className="mb-3 row align-items-center">
+        <label htmlFor="accountName" className="col-sm-1 col-form-label">
+          {t("business.estimatedStartDate")}
+        </label>
+        <div className="col-sm-2">
+          <MyDatePicker />
+        </div>
+        <label htmlFor="accountName" className="col-sm-2 col-form-label">
+          {t("business.estimatedTerm")}
+        </label>
+        <div className="col-sm-2">
+          <input type="text" className="form-control" id="" value="" />
+        </div>
+        <div className="col-sm-2">
+          <select className="form-control form-select">
+            <option value="">{t("Account.select")}</option>
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <label htmlFor="" className="col-sm-1 col-form-label">
+          {t("business.estimatedClosingDate")}
+        </label>
+        <div className="col-sm-2">
+          <input type="text" className="form-control" id="" disabled value="" />
+        </div>
+      </div>
     </div>
   );
 }

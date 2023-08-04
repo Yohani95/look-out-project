@@ -55,7 +55,7 @@ function page() {
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="card col-lg-10 shadow">
           <div className="d-flex justify-content-end container mt-2">
-            <button type="button" className="badge rounded-pill btn btn-primary ">
+            <button type="button" className="badge btn btn-primary ">
               + {t("Account.add")} {t("Account.table.contacts.title")}
             </button>
           </div>

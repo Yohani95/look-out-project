@@ -92,7 +92,12 @@
     "other":"Otro",
     "decisor":"Decisor",
     "create" :"Crear",
-    "request": "Solicitar"
+    "request": "Solicitar",
+    "include":"Incluir",
+    "price":"Precio",
+    "saveDraf":"Guardar Borrador",
+    "fee":"Tarifa",
+    "base":"Base"
   },
   "Index": {
     "title": "HOLA!"
@@ -205,18 +210,26 @@
       "file": "Ficha de contacto"
     },
     "business": {
-      "insertProject": "Insertar cierre de negocio (proyecto)",
-      "insertSuport": "Insertar cierre de negocio (soporte)",
-      "insertServices": "Insertar cierre de negocio (servicios)"
+      "insertProject": "Ingresar cierre de negocio (proyecto)",
+      "insertSupport": "Ingresar cierre de negocio (soporte)",
+      "insertServices": "Ingresar cierre de negocio (servicios)"
     }
   },
-  "Contacts":{
-    "search":"Buscar ...",
-    "create":{
-
-    },
-    "file":{
-
-    }
+ "business":{
+  "title":"Negocio",
+  "estimatedStartDate":"Fecha de inicio estimada",
+  "estimatedTerm":"Plazo Estimado",
+  "estimatedClosingDate":"Fecha de Cierre Estimada",
+  "saleprice":"Precio de Venta",
+  "milestoneName":"Nombre Hito",
+  "milestoneTerm":"Plazo Hito",
+  "milestonePrice":"Precio Hito",
+  "estimatedClosingDateReal":"Fecha Cierre Real",
+  "milestoneFacture":"Facturación Hito",
+  "generalComments":"Comentarios Generales",
+  "milestoneStatus":"Estado Hito",
+  "milestoneAmount":"Monto Hito",
+  "saveClosing":"Grabar Cierre Negocio",
+  "agreedRate":"Tarifario Convenido"
   }
 }

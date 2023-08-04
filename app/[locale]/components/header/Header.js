@@ -28,7 +28,7 @@ const Header = () => {
         title: t('Account.business'),
         search: `${t('Common.search')} ${t('Account.business')}`,
         insertProject: t("Nav.business.insertProject"),
-        insertSuport: t("Nav.business.insertSuport"),
+        insertSupport: t("Nav.business.insertSupport"),
         insertServices: t("Nav.business.insertServices"),
       },
     },

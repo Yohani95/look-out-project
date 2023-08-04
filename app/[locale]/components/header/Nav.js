@@ -16,7 +16,7 @@ const MyNav = ({ t }) => {
 
   return (
     <>
-      <Navbar className="navbar-dark bg-primary" expand="lg">
+      <Navbar style={{ backgroundColor: "#2F4BCE" }} className="navbar-custom navbar-dark " expand="lg">
         {" "}
         {/* Agrega las clases "navbar-dark bg-primary" */}
         <Container className="d-flex justify-content-center align-items-center">
