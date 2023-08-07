@@ -35,13 +35,13 @@ const MyNav = ({ t }) => {
                 title={t.namesMenu.account.title}
                 id="basic-nav-dropdown"
               >
-                <Link href="/ficha" className="dropdown-item">
+                <Link href="/account/ficha" className="dropdown-item">
                   {t.namesMenu.account.file}
                 </Link>
-                <Link href="/account" className="dropdown-item">
+                <Link href="/account/create" className="dropdown-item">
                   {t.namesMenu.account.create}
                 </Link>
-                <Link href="/relations" className="dropdown-item">
+                <Link href="/account/relations" className="dropdown-item">
                   {t.namesMenu.account.accountRelationship}
                 </Link>
                 <Link href="/account/search" className="dropdown-item">

@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import TableTableCommon from "@/app/[locale]/components/common/TableCommon";
-import MyTitle from "../../components/common/MyTitle";
+import MyTitle from "../../../components/common/MyTitle";
 function page() {
   const t = useTranslations();
   const data = [

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import From from "@/app/[locale]/components/account/Form";
 import Table from "@/app/[locale]/components/account/Table";
-import SelectField from "../../components/common/SelectField";
+import SelectField from "../../../components/common/SelectField";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import TableCommon from "@/app/[locale]/components/common/TableCommon"
 function page() {

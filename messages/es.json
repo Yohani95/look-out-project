@@ -100,7 +100,9 @@
     "base":"Base",
     "currency":"Moneda",
     "status": "Estado",
-    "area":"Área"
+    "area":"Área",
+    "project":"Proyectos",
+    "boss":"Jefe"
   },
   "Index": {
     "title": "HOLA!"
@@ -216,6 +218,10 @@
       "insertProject": "Ingresar cierre de negocio (proyecto)",
       "insertSupport": "Ingresar cierre de negocio (soporte)",
       "insertServices": "Ingresar cierre de negocio (servicios)"
+    },
+    "projects":{
+      "addProject":"Registrar seguimiento de Proyecto",
+      "addKickOff":"Registrar Kick Off de Proyecto"
     }
   },
  "business":{
@@ -239,5 +245,10 @@
   "termValidity":"Término Vigencia",
   "historyContractedSupports":"Historial Soportes Contratados",
   "typeSupport":"Tipo Soporte"
+  },
+  "project":{
+    "projectList":"Lista de Proyectos",
+    "dateStart":"Fecha Inicio",
+    "dateEnd":"Fecha Término"
   }
 }
