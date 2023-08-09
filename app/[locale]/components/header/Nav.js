@@ -7,13 +7,8 @@ import BusinessDropDown from "../business/BusinessDropDown";
 import LanguageDropdown from "./LanguageDropdown";
 import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
 import ContactDropDown from "@/app/[locale]/components/contact/ContactDropDown";
+import CommonDropDown from "@/app/[locale]/components/common/CommonDropDown"
 const MyNav = ({ t }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
   return (
     <>
       <Navbar style={{ backgroundColor: "#2F4BCE" }} className="navbar-custom navbar-dark " expand="lg">
@@ -50,6 +45,7 @@ const MyNav = ({ t }) => {
               </NavDropdown>
               <ContactDropDown t={t.namesMenu.contacts} />
               <BusinessDropDown t={t.namesMenu.business}/>
+              <CommonDropDown  t={t.namesMenu.project} title={t.namesMenu.project.title}/> 
               <LanguageDropdown t={t} />
             </Nav>
           </Navbar.Collapse>

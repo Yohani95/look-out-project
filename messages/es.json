@@ -1,7 +1,7 @@
 {
   "Common": {
     "KPAZ": "KPAZ",
-    "close":"Cierre",
+    "close": "Cierre",
     "welcomeMessage": "¡Bienvenido a mi aplicación de software!",
     "saveButton": "Guardar",
     "updateButton": "Actualizar",
@@ -28,8 +28,8 @@
     "orders": "Pedidos",
     "customers": "Clientes",
     "client": "Cliente",
-    "proposal":"Propuesta",
-    "accepted":"Aceptad{sex}",
+    "proposal": "Propuesta",
+    "accepted": "Aceptad{sex}",
     "account": "Cuenta",
     "notifications": "Notificaciones",
     "privacyPolicy": "Política de privacidad",
@@ -88,21 +88,28 @@
     "downloadFile": "Descargar archivo",
     "welcomeUser": "¡Bienvenido, {{name}}!",
     "orderTotal": "Total: {{amount}}",
-    "influencer":"Influenciador",
-    "other":"Otro",
-    "decisor":"Decisor",
-    "create" :"Crear",
+    "influencer": "Influenciador",
+    "other": "Otro",
+    "decisor": "Decisor",
+    "create": "Crear",
     "request": "Solicitar",
-    "include":"Incluir",
-    "price":"Precio",
-    "saveDraf":"Guardar Borrador",
-    "fee":"Tarifa",
-    "base":"Base",
-    "currency":"Moneda",
+    "include": "Incluir",
+    "price": "Precio",
+    "saveDraf": "Guardar Borrador",
+    "fee": "Tarifa",
+    "base": "Base",
+    "currency": "Moneda",
     "status": "Estado",
-    "area":"Área",
-    "project":"Proyectos",
-    "boss":"Jefe"
+    "area": "Área",
+    "project": "Proyectos",
+    "boss": "Jefe",
+    "up":"Subir",
+    "date":"Fecha",
+    "milestone":"Hito",
+    "reassign":"Reasignar",
+    "services":"Servicios",
+    "service":"Servicio",
+    "coordinator":"Coordinador"
   },
   "Index": {
     "title": "HOLA!"
@@ -141,8 +148,8 @@
       "business": {
         "title": "Negocios",
         "name": "Nombre de negocio",
-        "type":"Tipo",
-        "dateEnd":"Fecha cierre comercial"
+        "type": "Tipo",
+        "dateEnd": "Fecha cierre comercial"
       },
       "contacts": {
         "title": "Contactos",
@@ -152,12 +159,12 @@
     }
   },
   "Account": {
-    "saveButton":"Guardar",
-    "findAccount":"Buscar Cuenta",
-    "find":"buscar",
-    "new":"Nueva",
-    "account":"Cuenta",
-    "action" : "Acciones",
+    "saveButton": "Guardar",
+    "findAccount": "Buscar Cuenta",
+    "find": "buscar",
+    "new": "Nueva",
+    "account": "Cuenta",
+    "action": "Acciones",
     "title": "Crear Cuenta",
     "name": "Nombre de Cuenta",
     "country": "País",
@@ -192,7 +199,7 @@
         "title": "Contactos",
         "name": "Nombre de contacto",
         "rol": "rol",
-        "owner":"propietario"
+        "owner": "propietario"
       }
     }
   },
@@ -200,14 +207,14 @@
     "portuguese": "Portugués",
     "spanish": "Español",
     "english": "Inglés",
-    "title" :"Idioma"
+    "title": "Idioma"
   },
   "Nav": {
     "account": {
       "title": "Cuenta",
       "file": "Ficha de cuenta",
       "create": "Crear cuenta",
-      "accountRelationship":"Relaciones de Cuentas"
+      "accountRelationship": "Relaciones de Cuentas"
     },
     "contacts": {
       "title": "Contactos",
@@ -219,36 +226,48 @@
       "insertSupport": "Ingresar cierre de negocio (soporte)",
       "insertServices": "Ingresar cierre de negocio (servicios)"
     },
-    "projects":{
-      "addProject":"Registrar seguimiento de Proyecto",
-      "addKickOff":"Registrar Kick Off de Proyecto"
+    "projects": {
+      "addProject": "Registrar seguimiento de Proyecto",
+      "addKickOff": "Registrar Kick Off de Proyecto"
+    },
+    "services":{
+      "addKickOff":"Registrar Kick Off de Servicio"
     }
   },
- "business":{
-  "title":"Negocio",
-  "estimatedStartDate":"Fecha de inicio estimada",
-  "estimatedTerm":"Plazo Estimado",
-  "estimatedClosingDate":"Fecha de Cierre Estimada",
-  "saleprice":"Precio de Venta",
-  "milestoneName":"Nombre Hito",
-  "milestoneTerm":"Plazo Hito",
-  "milestonePrice":"Precio Hito",
-  "estimatedClosingDateReal":"Fecha Cierre Real",
-  "milestoneFacture":"Facturación Hito",
-  "generalComments":"Comentarios Generales",
-  "milestoneStatus":"Estado Hito",
-  "milestoneAmount":"Monto Hito",
-  "saveClosing":"Grabar Cierre Negocio",
-  "agreedRate":"Tarifario Convenido",
-  "assignedProfile":"Perfil Asignado",
-  "beginningValidity":"Inicio Vigencia",
-  "termValidity":"Término Vigencia",
-  "historyContractedSupports":"Historial Soportes Contratados",
-  "typeSupport":"Tipo Soporte"
+  "business": {
+    "title": "Negocio",
+    "estimatedStartDate": "Fecha de inicio estimada",
+    "estimatedTerm": "Plazo Estimado",
+    "estimatedClosingDate": "Fecha de Cierre Estimada",
+    "saleprice": "Precio de Venta",
+    "milestoneName": "Nombre Hito",
+    "milestoneTerm": "Plazo Hito",
+    "milestonePrice": "Precio Hito",
+    "estimatedClosingDateReal": "Fecha Cierre Real",
+    "milestoneFacture": "Facturación Hito",
+    "generalComments": "Comentarios Generales",
+    "milestoneStatus": "Estado Hito",
+    "milestoneAmount": "Monto Hito",
+    "saveClosing": "Grabar Cierre Negocio",
+    "agreedRate": "Tarifario Convenido",
+    "assignedProfile": "Perfil Asignado",
+    "beginningValidity": "Inicio Vigencia",
+    "termValidity": "Término Vigencia",
+    "historyContractedSupports": "Historial Soportes Contratados",
+    "typeSupport": "Tipo Soporte"
   },
-  "project":{
-    "projectList":"Lista de Proyectos",
-    "dateStart":"Fecha Inicio",
-    "dateEnd":"Fecha Término"
+  "project": {
+    "projectList": "Lista de Proyectos",
+    "dateStart": "Fecha Inicio",
+    "dateEnd": "Fecha Término",
+    "businessClosing": "Cierre Comercial",
+    "estimatedTerm": "Plazo Estimado",
+    "ClosingDate":"Fecha de Cierre",
+    "agreedClosingDate":"Fecha de Cierre Convenida",
+    "agreedTerm":"Plazo Convenido",
+    "progressMilestone":"Avance Hito",
+    "newMilestone":"Nuevo Hito",
+    "closeProject":"Cerrar Proyecto",
+    "kickOffProject":"Kick Off Proyecto"
   }
 }

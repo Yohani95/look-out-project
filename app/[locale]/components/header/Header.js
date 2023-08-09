@@ -22,14 +22,31 @@ const Header = () => {
         title: t("Nav.contacts.title"),
         file: t("Nav.contacts.file"),
         create: t("Nav.contacts.create"),
-        search:`${t('Common.search')} ${t('Ficha.table.contacts.title')}`
+        search: `${t("Common.search")} ${t("Ficha.table.contacts.title")}`,
       },
       business: {
-        title: t('Account.business'),
-        search: `${t('Common.search')} ${t('Account.business')}`,
+        title: t("Account.business"),
+        search: `${t("Common.search")} ${t("Account.business")}`,
         insertProject: t("Nav.business.insertProject"),
         insertSupport: t("Nav.business.insertSupport"),
         insertServices: t("Nav.business.insertServices"),
+      },
+      project: {
+        link: {
+          addProject: {
+            name: t("Nav.projects.addProject"),
+            link: "/project/create",
+          },
+          addKickOff: {
+            name: t("Nav.projects.addKickOff"),
+            link: "/project/kickOff",
+          },
+          search: {
+            name: t("Common.project"),
+            link: "/project/search",
+          },
+        },
+        title: t("Common.project"),
       },
     },
   };

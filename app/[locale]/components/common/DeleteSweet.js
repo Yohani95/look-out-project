@@ -12,7 +12,7 @@ export const handleDelete = (itemName, onDelete) => {
     cancelButtonText: 'Cancelar',
   }).then((result) => {
     if (result.isConfirmed) {
-      //onDelete(); // Llama a la función onDelete pasada como argumento
+      onDelete(); // Llama a la función onDelete pasada como argumento
       Swal.fire(
         'Eliminado',
         `${itemName} ha sido eliminado correctamente`,

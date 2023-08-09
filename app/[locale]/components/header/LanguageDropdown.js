@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import Link from "next-intl/link";
 import Image from "next/image";
 import { NavDropdown } from "react-bootstrap";

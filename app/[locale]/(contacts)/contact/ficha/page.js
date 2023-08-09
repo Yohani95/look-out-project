@@ -4,11 +4,6 @@ import { useTranslations } from "next-intl";
 import FormContact from "@/app/[locale]/components/contact/FormContact";
 function page() {
   const t = useTranslations();
-
-  const form = {
-    name: t("Account.contact_name"),
-  };
-  console;
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
