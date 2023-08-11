@@ -109,7 +109,15 @@
     "reassign":"Reasignar",
     "services":"Servicios",
     "service":"Servicio",
-    "coordinator":"Coordinador"
+    "coordinator":"Coordinador",
+    "name":"Nombre",
+    "rut":"RUT",
+    "period":"Período",
+    "amount":"Monto",
+    "professionals":"Profesionales",
+    "observations": "Observaciones",
+    "from":"Desde",
+    "until":"Hasta"
   },
   "Index": {
     "title": "HOLA!"
@@ -231,7 +239,12 @@
       "addKickOff": "Registrar Kick Off de Proyecto"
     },
     "services":{
-      "addKickOff":"Registrar Kick Off de Servicio"
+      "addKickOff":"Registrar Kick Off de Servicio",
+      "addService":"Registrar Novedades de Servicio",
+      "createNovelty":"Crear Novedad"
+    },
+    "facture":{
+
     }
   },
   "business": {
@@ -269,5 +282,19 @@
     "newMilestone":"Nuevo Hito",
     "closeProject":"Cerrar Proyecto",
     "kickOffProject":"Kick Off Proyecto"
+  },
+  "service":{
+    "docKickOff":"Doc. Kick Off",
+    "assignedProfile":"Perfil Asignado",
+    "assignedProfessionals":"Profesionales Asignados",
+    "assignmentDate":"Fecha Asignación",
+    "closedPeriods":"Periodos Cerrados",
+    "preClosingPeriods":"Pre-cierre Periodos",
+    "noveltyByProfessional":"Novedad por Profesional",
+    "noveltyType":"Tipo novedad",
+    "noveltyDate":"Fecha Novedad",
+    "newRol":"Nuevo Rol",
+    "dateTo":"Fecha Hasta",
+    "historyNovelty":"Historial de Novedades"
   }
 }

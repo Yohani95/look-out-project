@@ -46,6 +46,7 @@ const MyNav = ({ t }) => {
               <ContactDropDown t={t.namesMenu.contacts} />
               <BusinessDropDown t={t.namesMenu.business}/>
               <CommonDropDown  t={t.namesMenu.project} title={t.namesMenu.project.title}/> 
+              <CommonDropDown t={t.namesMenu.service} title={t.namesMenu.service.title}/>
               <LanguageDropdown t={t} />
             </Nav>
           </Navbar.Collapse>

@@ -48,7 +48,7 @@ const TableComponent = ({ data, columns, title, search, noResultsFound,actions,i
     <Container>
         {/* Renderizar el buscador */}
         <div className="row align-items-center mb-2 mt-2">
-          <h3 className="col-sm-4">{title}</h3>
+          <h4 className="col-sm-4">{title}</h4>
           <div className="col-sm-4">
             <input
               type="text"

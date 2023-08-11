@@ -7,6 +7,14 @@
     border-color: #6c757d; /* Borde gris oscuro para los selects */
     /* Otros estilos para los selects si lo deseas */
   }
+  textarea.form-control{
+    border-color: #6c757d;
+  }
+  /* hr{
+    color:  #2F4BCE;
+    background-color:  #2F4BCE;
+    border: 1px solid;
+  } */
   button {
     /* Agrega aquí los estilos que desees */
     /* Por ejemplo: */

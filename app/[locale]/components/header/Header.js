@@ -48,6 +48,27 @@ const Header = () => {
         },
         title: t("Common.project"),
       },
+      service: {
+        link: {
+          search: {
+            name: t("Common.services"),
+            link: "/service/search",
+          },
+          addProject: {
+            name: t("Nav.services.addService"),
+            link: "/service/create",
+          },
+          addKickOff: {
+            name: t("Nav.services.addKickOff"),
+            link: "/service/kickOff",
+          },
+          createNovelty: {
+            name: t("Nav.services.createNovelty"),
+            link: "/service/createNovelty",
+          },
+        },
+        title: t("Common.services"),
+      },
     },
   };
 
