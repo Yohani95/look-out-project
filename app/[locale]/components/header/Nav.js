@@ -2,7 +2,7 @@
 import Link from "next-intl/link";
 import { useState } from "react";
 import Image from "next/image";
-import LOGO from "@/public/images/logo.png";
+import LOGO from "@/public/images/logo.svg";
 import BusinessDropDown from "../business/BusinessDropDown";
 import LanguageDropdown from "./LanguageDropdown";
 import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
@@ -19,7 +19,7 @@ const MyNav = ({ t }) => {
           {/* Utilizamos el componente Container para centrar el contenido */}
           <Navbar.Brand>
             <Link href={"/"} className="navbar-brand">
-            <Image src={LOGO} width={80} height={40} title="logo" alt=""/>
+            <Image src={LOGO} width={120} height={40} title="logo" alt=""/>
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarSupportedContent" />
@@ -47,6 +47,7 @@ const MyNav = ({ t }) => {
               <BusinessDropDown t={t.namesMenu.business}/>
               <CommonDropDown  t={t.namesMenu.project} title={t.namesMenu.project.title}/> 
               <CommonDropDown t={t.namesMenu.service} title={t.namesMenu.service.title}/>
+              <CommonDropDown t={t.namesMenu.facture} title={t.namesMenu.facture.title}/>
               <LanguageDropdown t={t} />
             </Nav>
           </Navbar.Collapse>

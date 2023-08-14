@@ -46,3 +46,6 @@
       cursor: pointer; /* Change cursor to pointer when hovering over the label */
       padding-left: 5px; /* Add left padding for better click area */
     }
+    footer{
+      background-color: #151D37;
+    }

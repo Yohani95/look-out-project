@@ -117,7 +117,9 @@
     "professionals":"Profesionales",
     "observations": "Observaciones",
     "from":"Desde",
-    "until":"Hasta"
+    "until":"Hasta",
+    "expiration":"Vencimiento",
+    "attach":"Adjuntar"
   },
   "Index": {
     "title": "HOLA!"
@@ -244,7 +246,9 @@
       "createNovelty":"Crear Novedad"
     },
     "facture":{
-
+      "billing":"Facturación",
+      "requestBilling":"Solicitar Facturación",
+      "bills":"Facturas"
     }
   },
   "business": {
@@ -296,5 +300,14 @@
     "newRol":"Nuevo Rol",
     "dateTo":"Fecha Hasta",
     "historyNovelty":"Historial de Novedades"
+  },
+  "facture":{
+    "billingDetails":"Detalles facturación",
+    "project":"Proyecto",
+    "businessName":"Razón Social",
+    "purchaseOrder":"Orden/Pedido de Compra",
+    "requestedInvoices":"Facturas Solicitadas",
+    "reception":"Recepción /HES",
+    "applicationDate":"Fecha Solicitud"
   }
 }

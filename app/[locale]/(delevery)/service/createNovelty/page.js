@@ -52,7 +52,7 @@ function page() {
       <div className="d-flex justify-content-center align-items-center">
         <div className="card col-lg-10 shadow">
           <div className="container mt-4 mb-4">
-            <h4>{t("service.noveltyByProfessional")}</h4>
+            <h4>{t("service.noveltyByProfessional")}</h4>  <br/>
             <div className="mb-3 row align-items-center">
               <label
                 htmlFor="estimatedClosingDate"

@@ -69,6 +69,19 @@ const Header = () => {
         },
         title: t("Common.services"),
       },
+      facture:{
+        link:{
+          search: {
+            name: t("Nav.facture.billing"),
+            link: "/facture/search",
+          },
+          addProject: {
+            name: t("Nav.facture.requestBilling"),
+            link: "/facture/request",
+          },
+        },
+        title:t("Nav.facture.bills")
+      }
     },
   };
 
