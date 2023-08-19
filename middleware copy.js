@@ -1,9 +1,12 @@
+import { createIntlMiddleware } from 'next-intl/middleware';
 import { withAuth } from 'next-auth/middleware';
-import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest } from 'next/server';
 
-const locales = ['en', 'es','br'];
-const publicPages = ['/login']; // Solo la página de inicio de sesión está disponible para usuarios no autenticados
+const locales = ['en', 'de'];
+const publicPages = [
+  '/'
+  // (/secret requires auth)
+];
 
 const intlMiddleware = createIntlMiddleware({
   locales,
@@ -11,20 +14,21 @@ const intlMiddleware = createIntlMiddleware({
 });
 
 const authMiddleware = withAuth(
-  function onSuccess(req) {
-    return intlMiddleware(req);
-  },
+  // Note that this callback is only invoked if
+  // the `authorized` callback has returned `true`
+  // and not for pages listed in `pages`.
+  (req) => intlMiddleware(req),
   {
     callbacks: {
       authorized: ({ token }) => token != null
     },
     pages: {
-      signIn: '/login'
+      signIn: '/',
     }
   }
 );
 
-export default async function middleware(req, res, next) {
+export default function middleware(req) {
   const publicPathnameRegex = RegExp(
     `^(/(${locales.join('|')}))?(${publicPages.join('|')})?/?$`,
     'i'
@@ -32,13 +36,13 @@ export default async function middleware(req, res, next) {
   const isPublicPage = publicPathnameRegex.test(req.nextUrl.pathname);
 
   if (isPublicPage) {
-    return intlMiddleware(req, res, next);
+    return intlMiddleware(req);
   } else {
-    const authResult = await authMiddleware(req, res);
-    return authResult;
+    return authMiddleware(req);
   }
 }
 
 export const config = {
+  // Skip all paths that should not be internationalized
   matcher: ['/((?!api|_next|.*\\..*).*)']
 };

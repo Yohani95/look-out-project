@@ -1,4 +1,4 @@
-import { MdArrowCircleRight } from "react-icons/md";
+
 export const Hero_content = () => {
   return (
     <>

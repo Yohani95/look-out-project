@@ -2,13 +2,13 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="page-footer font-small pt-4 mt-4 text-white">
+    <footer className="font-small pt-4 mt-4 text-white">
       <div className="container-fluid text-center text-md-left">
         <div className="row">
             <div className="col-lg-">
             <img
             src="https://kpaz.la/wp-content/themes/kpaz/img/logo-footer.svg"
-            class="img-fluid mx-auto mr d-table "
+            className="img-fluid mx-auto mr d-table "
             width="240px"
           />
             </div>
@@ -35,7 +35,7 @@ function Footer() {
         </div>
       </div>
 
-      <div className="footer-copyright text-center py-3">
+      <div className="text-center py-3">
         © 2020 Copyright
         <a
           href="https://kpaz.la/"

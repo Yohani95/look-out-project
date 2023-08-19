@@ -90,9 +90,12 @@ const TableComponent = ({ data, columns, title, search, noResultsFound,actions,i
             {currentPageData.map((item, index) => (
               <tr key={index}>
                 {columns.map((column) => (
-                  <td key={`${item.id}-${column.key}`}>{item[column.key]}</td>
+                 <td key={`${item.id}-${column.key}`}>
+                 {column.key === "actions" ? column.render(item) : item[column.key]}
+               </td>
                 ) )}
-                 {actions && <td>{actions}</td>}
+                   {actions && <td>{actions}</td>} 
+                 {/* {buttons && <td>{buttons(item)}</td>}  */}
               </tr>
             ))}
           </tbody>

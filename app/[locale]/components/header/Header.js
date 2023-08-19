@@ -81,6 +81,19 @@ const Header = () => {
           },
         },
         title:t("Nav.facture.bills")
+      },
+      admin:{
+        link:{
+          create:{
+            name: t("Nav.administration.createUser"),
+            link: "/admin/user/create",
+          },
+          list:{
+            name: t("Nav.administration.user"),
+            link: "/admin/user/list",
+          }
+        },
+        title:t("Nav.administration.title")
       }
     },
   };

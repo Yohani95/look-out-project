@@ -6,7 +6,7 @@ export const handleDelete = (itemName, onDelete) => {
     text: `Una vez eliminado, no podrás recuperar los datos Eliminar ?`,
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#2F4BCE',
     cancelButtonColor: '#d33',
     confirmButtonText: 'Sí, eliminar',
     cancelButtonText: 'Cancelar',
