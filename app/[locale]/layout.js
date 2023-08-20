@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { useLocale } from "next-intl";
-import { IntlProvider } from "next-intl";
 import Header from "@/app/[locale]/components/header/Header";
 import Footer from "@/app/[locale]/components/Footer";
 import AuthContext from "@/app/[locale]/context/AuthContext";
@@ -17,9 +16,11 @@ export default function RootLayout({ children }) {
     <html lang={locale}>
       <body>
         <AuthContext>
-          <Header />
-          {children}
-          <Footer />
+          <div className="page-container">
+            <Header />
+            <div className="main-content">{children}</div>
+            <Footer />
+          </div>
         </AuthContext>
       </body>
     </html>

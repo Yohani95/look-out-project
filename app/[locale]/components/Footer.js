@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="font-small pt-4 mt-4 text-white">
+    <footer className="font-small pt-4 mt-4 text-white" >
       <div className="container-fluid text-center text-md-left">
         <div className="row">
             <div className="col-lg-">

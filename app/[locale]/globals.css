@@ -1,51 +1,74 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-  input.form-control {
-    border-color: #6c757d; /* Cambia el color del borde aquí (gris oscuro en este caso) */
-  }
-  select.form-control {
-    border-color: #6c757d; /* Borde gris oscuro para los selects */
-    /* Otros estilos para los selects si lo deseas */
-  }
-  textarea.form-control{
-    border-color: #6c757d;
-  }
-  /* hr{
+input.form-control {
+  border-color: #6c757d; /* Cambia el color del borde aquí (gris oscuro en este caso) */
+}
+select.form-control {
+  border-color: #6c757d; /* Borde gris oscuro para los selects */
+  /* Otros estilos para los selects si lo deseas */
+}
+textarea.form-control {
+  border-color: #6c757d;
+}
+/* hr{
     color:  #2F4BCE;
     background-color:  #2F4BCE;
     border: 1px solid;
   } */
-  button {
-    /* Agrega aquí los estilos que desees */
-    /* Por ejemplo: */
-    /* background-color: rgb(15, 210, 142);
+button {
+  /* Agrega aquí los estilos que desees */
+  /* Por ejemplo: */
+  /* background-color: rgb(15, 210, 142);
     color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 999px; */
-    
-  }
-  /* 
+}
+/* 
   color pagina oficial de kpaz 
 
   Navbar
   #2F4BCE
    */
-   /* h1, h2, h3, h4, h5, h6 {
+/* h1, h2, h3, h4, h5, h6 {
     color: #2F4BCE;
   } */
-  h4,h6 ,h5{
-    color: #2F4BCE;
-  }
-  .form-check-input {
-    border: 1px solid #2F4BCE;
-  cursor: pointer; 
-  }
-    
-    .form-check-label {
-      cursor: pointer; /* Change cursor to pointer when hovering over the label */
-      padding-left: 5px; /* Add left padding for better click area */
-    }
-    footer{
-      background-color: #151D37;
-    }
+h4,
+h6,
+h5 {
+  color: #2f4bce;
+}
+.form-check-input {
+  border: 1px solid #2f4bce;
+  cursor: pointer;
+}
+
+.form-check-label {
+  cursor: pointer; /* Change cursor to pointer when hovering over the label */
+  padding-left: 5px; /* Add left padding for better click area */
+}
+footer {
+  background-color: #151d37;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+.main-content {
+  flex: 1;
+}
+.page-container{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* html {
+  height: 100%;
+  
+}
+.main-content {
+  flex: 1;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+} */

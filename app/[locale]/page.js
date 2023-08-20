@@ -1,10 +1,11 @@
 
 import Hero from "./components/common/Hero";
-import { useSession } from "next-auth/react";
+import { useLocale } from "next-intl";
 export default async function Home() {
+  const locale = useLocale();
     return (
       <main>
-        <Hero/>
+        <Hero locale={locale}/>
       </main>
     )
 }

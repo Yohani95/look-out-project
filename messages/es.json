@@ -123,7 +123,8 @@
     "userName": "Nombre de Usuario",
     "loadingData": "Cangando Datos...",
     "notExist":"no existe el registro",
-    "noData":" No hay datos disponibles en la base de datos."
+    "noData":" No hay datos disponibles en la base de datos.",
+    "InvalidCredentials":"Credenciales no válidas"
   },
   "Index": {
     "title": "HOLA!"
