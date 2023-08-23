@@ -72,3 +72,21 @@ body {
   flex-direction: column;
   min-height: 100%;
 } */
+
+
+.placeholder {
+ /* Color de fondo del esqueleto */
+  display: block;
+  margin: 6px 0;
+  animation: loading 1s infinite;
+  display: inline-block;
+}
+
+@keyframes loading {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

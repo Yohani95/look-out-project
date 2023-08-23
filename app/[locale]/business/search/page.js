@@ -1,6 +1,5 @@
 import React from "react";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
-import Table from "@/app/[locale]/components/common/CommonTable";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import { useTranslations } from "next-intl";
 import ActionButtons from "@/app/[locale]/components/business/ActionButtons";
@@ -44,7 +43,7 @@ function page() {
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="card col-lg-10 shadow">
           <div className="d-flex justify-content-end container mt-2">
-            <button type="button" className="badge rounded-pill btn btn-primary ">
+            <button type="button" className="btn btn-primary ">
               + {t("Account.add")} {t("Account.business")}
             </button>
           </div>

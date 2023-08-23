@@ -2,15 +2,20 @@
 import Link from "next-intl/link";
 import Image from "next/image";
 import LOGO from "@/public/images/logo.svg";
-import BusinessDropDown from "../business/BusinessDropDown";
 import LanguageDropdown from "./LanguageDropdown";
 import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
-import ContactDropDown from "@/app/[locale]/components/contact/ContactDropDown";
 import CommonDropDown from "@/app/[locale]/components/common/CommonDropDown";
 import { useSession, signOut } from "next-auth/react";
 import { FaArrowRightToBracket } from "react-icons/fa6";
-const MyNav = ({ t }) => {
+import { FaUser,FaCog } from "react-icons/fa";
+const MyNav = ({ t,locale }) => {
   const { data: session, status } = useSession();
+  let translations;
+  translations = require(`@/messages/${locale}.json`);
+  console.log(session)
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
   return (
     <>
       <Navbar
@@ -31,29 +36,21 @@ const MyNav = ({ t }) => {
           {session && (
             <>
               <Navbar.Toggle aria-controls="navbarSupportedContent" />
-
               <Navbar.Collapse id="navbarSupportedContent">
                 <Nav className="me-auto">
                   {/* Dropdown Component */}
-                  <NavDropdown
+                  <CommonDropDown
+                    t={t.namesMenu.account}
                     title={t.namesMenu.account.title}
-                    id="basic-nav-dropdown"
-                  >
-                    <Link href="/account/ficha" className="dropdown-item">
-                      {t.namesMenu.account.file}
-                    </Link>
-                    <Link href="/account/create" className="dropdown-item">
-                      {t.namesMenu.account.create}
-                    </Link>
-                    <Link href="/account/relations" className="dropdown-item">
-                      {t.namesMenu.account.accountRelationship}
-                    </Link>
-                    <Link href="/account/search" className="dropdown-item">
-                      {t.namesMenu.account.findAccount}
-                    </Link>
-                  </NavDropdown>
-                  <ContactDropDown t={t.namesMenu.contacts} />
-                  <BusinessDropDown t={t.namesMenu.business} />
+                  />
+                  <CommonDropDown
+                    t={t.namesMenu.contacts}
+                    title={t.namesMenu.contacts.title}
+                  />
+                  <CommonDropDown
+                    t={t.namesMenu.business}
+                    title={t.namesMenu.business.title}
+                  />
                   <CommonDropDown
                     t={t.namesMenu.project}
                     title={t.namesMenu.project.title}
@@ -73,23 +70,46 @@ const MyNav = ({ t }) => {
                   <LanguageDropdown t={t} />
                 </Nav>
                 <Nav>
-                <NavDropdown
-                  title={session.user.name}
-                  id="basic-nav-dropdown"
-                  className=""
-                >
-                  {/* <Link href="/account/ficha" className="dropdown-item">
-                    {t.namesMenu.account.file}
-                  </Link> */}
-                  <button
-                    className="btn btn-outline-primary btn-sm dropdown-item"
-                    onClick={() => signOut({ callbackUrl: "/" })}
+                  <NavDropdown
+                    title={
+                      <>
+                        <FaUser
+                          style={{ marginRight: "8px", fontSize: "20px" }}
+                        />
+                        {session.user.name}
+                      </>
+                    }
+                    id=""
+                    className=""
                   >
-                    <FaArrowRightToBracket className="" />
-                    <span style={{ marginLeft: "8px" }}>Exit</span>
-                  </button>
-                </NavDropdown>
+                    <Link href={`/admin/user/edit/${session.user.id}`} className="dropdown-item">
+                    <FaCog className="text-secondary" />
+                    <span style={{ marginLeft: "8px" }}>{translations.Common.profile}</span>
+                    </Link>
+                    <button
+                      className="btn btn-outline-primary btn-sm dropdown-item"
+                      onClick={handleLogout}
+                    >
+                      <FaArrowRightToBracket className="text-secondary"  />
+                      <span style={{ marginLeft: "8px" }}>{translations.Common.logout}</span>
+                    </button>
+                  </NavDropdown>
                 </Nav>
+              </Navbar.Collapse>
+            </>
+          )}
+          {status === "loading" &&  (
+            <>
+              <Navbar.Toggle aria-controls="navbarSupportedContent" />
+              <Navbar.Collapse id="navbarSupportedContent">
+                {/* <span class="placeholder col-1 m-1"></span>
+                <span class="placeholder col-1 m-1"></span>
+                <span class="placeholder col-1 m-1"></span>
+                <span class="placeholder col-1 m-1"></span>
+                <span class="placeholder col-1 m-1"></span>
+                <span class="placeholder col-1 m-1"></span>
+                <span class="placeholder col-1 m-1"></span> */}
+                {/* Esqueleto o indicador de carga */}
               </Navbar.Collapse>
             </>
           )}

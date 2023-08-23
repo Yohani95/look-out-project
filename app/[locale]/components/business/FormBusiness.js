@@ -15,7 +15,7 @@ function FormBusiness({ t }) {
             {t("Account.KAM")}
           </label>
           <div className="col-sm-3">
-            <input type="text" className="form-control" id="accountName" />
+            <input type="text" className="form-control" id="accountName"/>
           </div>
           <label htmlFor="accountName" className="col-sm-2 col-form-label">
             {t("Ficha.table.business.dateEnd")}
@@ -85,7 +85,6 @@ function FormBusiness({ t }) {
               className="form-control"
               id="confirmclient"
               disabled
-              value="valor"
             />
           </div>
           <div className="col-sm-2">
@@ -102,7 +101,6 @@ function FormBusiness({ t }) {
               className="form-control"
               id="proposal"
               disabled
-              value="valor"
             />
           </div>
           <div className="col-sm-2">

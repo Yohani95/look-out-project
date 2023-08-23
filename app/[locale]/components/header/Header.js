@@ -1,5 +1,5 @@
 import Nav from "./Nav";
-import { useTranslations } from "next-intl";
+import { useTranslations,useLocale } from "next-intl";
 const Header = () => {
   const t = useTranslations();
   const languages = {
@@ -11,25 +11,65 @@ const Header = () => {
     pt: t("Languages.portuguese"),
 
     namesMenu: {
+      
       account: {
-        title: t("Nav.account.title"),
-        file: t("Nav.account.file"),
-        create: t("Nav.account.create"),
-        accountRelationship: t("Nav.account.accountRelationship"),
-        findAccount: t("Account.findAccount"),
+        link: {
+          file: {
+            name: t("Ficha.title"),
+            link: "/account/ficha",
+          },
+          create: {
+            name: t("Nav.account.create"),
+            link: "/account/create",
+          },
+          relation: {
+            name: t("Nav.account.accountRelationship"),
+            link: "/account/relations",
+          },
+          search: {
+            name: t("Account.findAccount"),
+            link: "/account/search",
+          },
+        },
+        title:t("Nav.account.title"),
       },
       contacts: {
         title: t("Nav.contacts.title"),
-        file: t("Nav.contacts.file"),
-        create: t("Nav.contacts.create"),
-        search: `${t("Common.search")} ${t("Ficha.table.contacts.title")}`,
+        link: {
+          file: {
+            name: t("Nav.contacts.file"),
+            link: "/contact/ficha",
+          },
+          create: {
+            name: t("Nav.contacts.create"),
+            link: "/contact/create",
+          },
+          search: {
+            name: `${t("Common.search")} ${t("Ficha.table.contacts.title")}`,
+            link: "/contact/search",
+          },
+        },
       },
       business: {
         title: t("Account.business"),
-        search: `${t("Common.search")} ${t("Account.business")}`,
-        insertProject: t("Nav.business.insertProject"),
-        insertSupport: t("Nav.business.insertSupport"),
-        insertServices: t("Nav.business.insertServices"),
+        link: {
+          insertProject: {
+            name: t("Nav.business.insertProject"),
+            link: "/business/closeProject",
+          },
+          insertSupport: {
+            name: t("Nav.business.insertSupport"),
+            link: "/business/closeSupport",
+          },
+          insertServices: {
+            name: t("Nav.business.insertServices"),
+            link: "/account/relations",
+          },
+          search: {
+            name: `${t("Common.search")} ${t("Account.business")}`,
+            link: "/business/closeServices",
+          },
+        },
       },
       project: {
         link: {
@@ -98,6 +138,6 @@ const Header = () => {
     },
   };
 
-  return <Nav t={languages} />;
+  return <Nav t={languages} locale={useLocale()} />;
 };
 export default Header;

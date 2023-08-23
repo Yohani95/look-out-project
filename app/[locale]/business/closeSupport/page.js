@@ -54,7 +54,7 @@ function page() {
         <div className="container">
           <div className="d-flex justify-content-end mt-2">
             <div className="col-sm-2">
-              <h6 className="text-end container">
+              <h6 className="text-end">
                 ID {t("business.title")} 12345678
               </h6>
             </div>
@@ -119,7 +119,7 @@ function page() {
               search={t("Ficha.table.search")}
               idioma={t("Account.action")}
             />
-            <div className="d-flex justify-content-end mt-2 mb-2 container">
+            <div className="d-flex justify-content-end mt-2 mb-2">
               <div className="col-sm-2">
                 <button type="button" className="btn btn-primary">
                   {t("Common.saveDraf")}

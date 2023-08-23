@@ -1,16 +1,34 @@
-
-import React from "react";
-import Link from "next-intl/link";
+import React, { useState } from "react";
 import { NavDropdown } from "react-bootstrap";
+import Link from "next-intl/link";
 
-function CommonDropDown({t,title}) {
+function CommonDropDown({ t, title }) {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleLinkClick = () => {
+    setShowDropdown(false);
+  };
   return (
-    <NavDropdown title={title} id="basic-nav-dropdown">
+    <NavDropdown
+      title={title}
+      show={showDropdown}
+      onToggle={handleDropdownToggle}
+      id="basic-nav-dropdown"
+    >
       {Object.keys(t.link).map((key) => (
-       <Link key={key} href={t.link[key].link} className="dropdown-item">
-        {t.link[key].name}
-      </Link>
-    ))}
+        <Link
+          key={key}
+          href={t.link[key].link}
+          className="dropdown-item"
+          onClick={handleLinkClick}
+        >
+          {t.link[key].name}
+        </Link>
+      ))}
     </NavDropdown>
   );
 }

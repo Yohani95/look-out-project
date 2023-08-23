@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { userApiUrl, apiHeaders } from "@/app/api/apiConfig";
-import https from "https";
+import { userApiUrl,apiHeaders } from "@/app/api/apiConfig";
+import https from "https"; 
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -9,6 +9,7 @@ export const authOptions = {
       name: "Credentials",
       credentials: {},
       async authorize(credentials, req) {
+        console.log(credentials)
         const requestData = {
           usu_nombre: credentials.usu_nombre,
           usu_contraseña: credentials.usu_contraseña,
@@ -26,8 +27,18 @@ export const authOptions = {
           if (!response.ok) {
             return null;
           }
-          const data = await response.json();
-          const user = { id: data.usu_id, name: data.usu_nombre };
+          const data = await response.json()
+          console.log(credentials)
+          console.log(data)
+          const user = {
+            id: data.usu_Id, // Convertir a cadena si es necesario
+            per_id: data.per_Id,
+            prf_id: data.prf_Id,
+            name: data.usu_Nombre,
+            password: data.usu_contraseña, // Ten en cuenta el nombre de la propiedad con caracteres especiales
+            vigente: data.usu_Vigente,
+            // ... Otros campos del usuario
+          };
           if (user) {
             // Any object returned will be saved in `user` property of the JWT
             return user;
@@ -36,7 +47,7 @@ export const authOptions = {
             return null;
             // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
           }
-
+        
           // Resto del código aquí...
         } catch (error) {
           console.error("Fetch error:", error);
@@ -50,7 +61,30 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/",
+     signIn: "/",
+  },
+  callbacks: {
+    async session({ session, token, user }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      session.accessToken = token.accessToken
+      session.user.id = token.id
+      session.user.person = token.person
+      session.user.profile = token.profile
+      session.user.vigente=token.vigente
+      return session
+    },
+    async jwt({ token, account, user }) {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token
+        token.id = user.id
+        token.person = user.per_id,
+        token.profile = user.prf_id
+        token.vigente=user.vigente
+      }
+      return token
+    }
+    // ...
   },
 };
 
