@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations,useLocale } from "next-intl";
 import From from "@/app/[locale]/components/account/Form";
 import Table from "@/app/[locale]/components/account/Table";
 import SelectField from "../../../components/common/SelectField";
@@ -7,6 +7,7 @@ import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import TableCommon from "@/app/[locale]/components/common/TableCommon"
 function page() {
   const t = useTranslations();
+  const locale=useLocale()
   const data = [
     {
       id: 1,
@@ -15,46 +16,6 @@ function page() {
       email: "john@example.com",
       phone: "1234567890",
       rol: "Admin",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      position: "Supervisor",
-      email: "jane@example.com",
-      phone: "9876543210",
-      rol: "User",
-    },
-    {
-      id: 3,
-      name: "Jane Smith",
-      position: "Supervisor",
-      email: "jane@example.com",
-      phone: "9876543210",
-      rol: "User",
-    },
-    {
-      id: 4,
-      name: "Jane Smith",
-      position: "Supervisor",
-      email: "jane@example.com",
-      phone: "9876543210",
-      rol: "User",
-    },
-    {
-      id: 5,
-      name: "Jane Smith",
-      position: "Supervisor",
-      email: "jane@example.com",
-      phone: "9876543210",
-      rol: "User",
-    },
-    {
-      id: 6,
-      name: "Jane Smith",
-      position: "Supervisor",
-      email: "jane@example.com",
-      phone: "9876543210",
-      rol: "User",
     },
 
     // Otros objetos
@@ -85,7 +46,7 @@ function page() {
       <div className="d-flex justify-content-center">
         <div className="card col-lg-10 shadow">
           <div className="container">
-            <From t={useTranslations('Account')} />
+            <From locale={locale} />
             <div className="mb-3 row align-items-center">
               <SelectField
                 options={countryOptions}

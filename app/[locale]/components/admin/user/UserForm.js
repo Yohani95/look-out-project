@@ -12,12 +12,12 @@ function UserForm({locale,isEdit,id}) {
   let translations;
   translations = require(`@/messages/${locale}.json`);
   const [formData, setFormData] = useState({
-    usu_nombre: "",
-    usu_contraseña: "",
-    usu_contraseña2: "",
-    per_id: 0, // Ejemplo de campo adicional
-    prf_id: 0, // Ejemplo de campo adicional
-    usu_vigente: 0, // Ejemplo de campo adicional
+    usuNombre: "",
+    usuContraseña: "",
+    usuContraseña2: "",
+    perId: 0, // Ejemplo de campo adicional
+    prfId: 0, // Ejemplo de campo adicional
+    usuVigente: 0, // Ejemplo de campo adicional
     // Otros campos del formulario
   });
   if (id != null && !isNaN(id)) {
@@ -32,8 +32,9 @@ function UserForm({locale,isEdit,id}) {
       const response = await fetch(`${userApiUrl}/${userId}`);
       if(response.ok){
         const userData = await response.json();
-        userData.usu_contraseña = "";
-        userData.usu_contraseña2 = "";
+        userData.usuContraseña = "";
+        userData.usuContraseña2 = "";
+        console.log(userData)
         setFormData(userData); // Actualiza el estado formData con los datos obtenidos
       }else if(response.status==404){
         NotificationSweet({
@@ -64,57 +65,57 @@ function UserForm({locale,isEdit,id}) {
       <h4>{isEdit ?  translations.user.editUser : translations.user.createUser}</h4>
       <form onSubmit={handleFormSubmit}>
         <div className="mb-3">
-          <label htmlFor="usu_nombre" className="form-label">
+          <label htmlFor="usuNombre" className="form-label">
             {translations.Common.userName}
           </label>
           <input
             type="text"
             className="form-control"
-            id="usu_nombre"
-            name="usu_nombre"
-            value={formData.usu_nombre}
+            id="usuNombre"
+            name="usuNombre"
+            value={formData.usuNombre}
             onChange={handleInputChange(formData, setFormData)}
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="usu_contraseña" className="form-label">
+          <label htmlFor="usuContraseña" className="form-label">
             {translations.Common.password}
           </label>
           <input
             type="password"
             className="form-control"
-            id="usu_contraseña"
-            name="usu_contraseña"
-            value={formData.usu_contraseña}
+            id="usuContraseña"
+            name="usuContraseña"
+            value={formData.usuContraseña}
             onChange={handleInputChange(formData, setFormData)}
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="usu_contraseña2" className="form-label">
+          <label htmlFor="usuContraseña2" className="form-label">
             {translations.Common.password}
           </label>
           <input
             type="password"
             className="form-control"
-            id="usu_contraseña2"
-            name="usu_contraseña2"
-            value={formData.usu_contraseña2}
+            id="usuContraseña2"
+            name="usuContraseña2"
+            value={formData.usuContraseña2}
             onChange={handleInputChange(formData, setFormData)}
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="per_id" className="form-label">
+          <label htmlFor="perId" className="form-label">
             {translations.user.idPerson}
           </label>
           <input
             type="number"
             className="form-control"
-            id="per_id"
-            name="per_id"
-            value={formData.per_id}
+            id="perId"
+            name="perId"
+            value={formData.perId}
             onChange={handleInputChange(formData, setFormData)}
             required
           />
@@ -126,22 +127,22 @@ function UserForm({locale,isEdit,id}) {
           <input
             type="number"
             className="form-control"
-            id="prf_id"
-            name="prf_id"
-            value={formData.prf_id}
+            id="prfId"
+            name="prfId"
+            value={formData.prfId}
             onChange={handleInputChange(formData, setFormData)}
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="usu_vigente" className="form-label">
+          <label htmlFor="usuVigente" className="form-label">
             {translations.user.active}
           </label>
           <select
             className="form-control"
-            id="usu_vigente"
-            name="usu_vigente"
-            value={formData.usu_vigente}
+            id="usuVigente"
+            name="usuVigente"
+            value={formData.usuVigente}
             onChange={handleInputChange(formData, setFormData)}
             required
           >

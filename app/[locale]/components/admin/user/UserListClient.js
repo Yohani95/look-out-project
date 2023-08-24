@@ -16,19 +16,19 @@ function UserListClient({ traslations,locale }) {
   let trans;
   trans = require(`@/messages/${locale}.json`);
   const columns = [
-    { title: "ID", key: "usu_id" },
-    { title: traslations.table.username, key: "usu_nombre" },
-    { title: traslations.table.idPerson, key: "per_id" },
-    { title: traslations.table.idProfile, key: "prf_id" },
-    { title: traslations.table.active, key: "usu_vigente" },
+    { title: "ID", key: "usuId" },
+    { title: traslations.table.username, key: "usuNombre" },
+    { title: traslations.table.idPerson, key: "perId" },
+    { title: traslations.table.idProfile, key: "prfId" },
+    { title: traslations.table.active, key: "usuVigente" },
     {
       title: "Acciones",
       key: "actions",
       render: (item) => (
         <ButtonsActions
           id={item.usu_id}
-          onDelete={() => handleDeleteUser(item.usu_id)}
-          onEdit={() => handleEditUser(item.usu_id)}
+          onDelete={() => handleDeleteUser(item.usuId)}
+          onEdit={() => handleEditUser(item.usuId)}
         />
       ),
     },

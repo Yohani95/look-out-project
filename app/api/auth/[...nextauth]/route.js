@@ -9,7 +9,6 @@ export const authOptions = {
       name: "Credentials",
       credentials: {},
       async authorize(credentials, req) {
-        console.log(credentials)
         const requestData = {
           usu_nombre: credentials.usu_nombre,
           usu_contraseña: credentials.usu_contraseña,
@@ -28,15 +27,13 @@ export const authOptions = {
             return null;
           }
           const data = await response.json()
-          console.log(credentials)
-          console.log(data)
           const user = {
-            id: data.usu_Id, // Convertir a cadena si es necesario
-            per_id: data.per_Id,
-            prf_id: data.prf_Id,
-            name: data.usu_Nombre,
-            password: data.usu_contraseña, // Ten en cuenta el nombre de la propiedad con caracteres especiales
-            vigente: data.usu_Vigente,
+            id: data.usuId, // Convertir a cadena si es necesario
+            per_id: data.perId,
+            prf_id: data.prfId,
+            name: data.usuNombre,
+            password: data.usuContraseña, // Ten en cuenta el nombre de la propiedad con caracteres especiales
+            vigente: data.usuVigente,
             // ... Otros campos del usuario
           };
           if (user) {

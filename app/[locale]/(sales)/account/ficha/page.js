@@ -1,10 +1,11 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations,useLocale } from "next-intl";
 import Form from "@/app/[locale]/components/account/Form";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 function page() {
   const t = useTranslations();
+  const locale=useLocale()
   // Aquí defines las opciones para cada select
   const data = [
     {
@@ -77,7 +78,7 @@ function page() {
       <div className="d-flex justify-content-center">
         <div className="card col-lg-10 shadow">
           <div className="container">
-            <Form t={useTranslations('Account')} />
+            <Form locale={locale} />
             <TableCommon
               columns={columns}
               data={data}
