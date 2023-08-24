@@ -49,8 +49,10 @@ function Form({ locale }) {
   ];
 
   const placeOptions = [
-    { value: "optionP", label: "option1" },
-    { value: "optionQ", label: "option1" },
+    { value: "optionP", label: "Carlos Sylva" },
+    { value: "optionQ", label: "Miguel Melendez" },
+    { value: "option1", label: "Cersar Rozas" },
+    { value: "option2", label: "Rodrigo Rohland" },
     // Agrega más opciones según sea necesario
   ];
   const handleSelectChange = (event, fieldName) => {

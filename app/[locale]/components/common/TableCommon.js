@@ -6,7 +6,7 @@ import { Table, Container } from "react-bootstrap";
 const TableComponent = ({ data, columns, title, search, noResultsFound,actions,idioma }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(5); // Valor inicial de filas por página
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Valor inicial de filas por página
 
   // Lógica para filtrar los datos en base al término de búsqueda.
   const filteredData = data.filter((item) =>

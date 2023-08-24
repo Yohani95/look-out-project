@@ -1,22 +1,10 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations,locale, useLocale } from "next-intl";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
-import TableCommon from "@/app/[locale]/components/common/TableCommon";
-import ActionButtons from '@/app/[locale]/components/contact/ActionButtons'
+import List from "@/app/[locale]/components/account/List";
 function page() {
   const t = useTranslations();
-  const data = [
-    { id: 1, name: "John Doe", position: "Manager", email: "john@example.com" }
-    // Otros objetos
-  ];
-const columns = [
-    { title: t("Ficha.name"), key: "id" },
-    { title: t("Ficha.place"), key: "name" },
-    { title: t("Ficha.country"), key: "position" },
-    { title: t("Ficha.Email"), key: "email" },
-  ];
-  
-  const actions = <ActionButtons/>;
+  const locale=useLocale();
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
@@ -32,14 +20,7 @@ const columns = [
                 + {t("Account.new")} {t("Account.account")}
               </button>
             </div>
-            <TableCommon
-              columns={columns}
-              noResultsFound={t("Common.noResultsFound")}
-              data={data}
-              title={t("Account.account")}
-              search={t("Account.table.search")}
-              actions={actions}
-            />
+              <List locale={locale} />
           </div>
         </div>
       </div>
