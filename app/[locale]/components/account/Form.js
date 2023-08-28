@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import SelectField from "@/app/[locale]/components/common/SelectField";
 import fetchCountriest from "../../utils/country/Countrylist";
 import fetchSectorComerciales from "../../utils/CommercialPlace/list";
+import { fetchPerson } from "@/app/[locale]/utils/person/UtilsPerson";
+import { fetchComuna } from "@/app/[locale]/utils/comuna/utilsComuna";
+import { fetchGiro } from "@/app/[locale]/utils/giro/UtilsGiro";
+import { fetchEstadoCliente } from "@/app/[locale]/utils/EstadoCliente/UtilsEstadoCliente";
 import {
   handleClientInputChange,
   handleClientFormSubmit,
@@ -12,6 +16,9 @@ function Form({ locale }) {
   t = require(`@/messages/${locale}.json`);
   const [countryOptions, setCountryOptions] = useState([]);
   const [sectorOptions, setSectorOptions] = useState([]);
+  const [KamOptions, setKamOptions] = useState([]);
+  const [giroOptions, setGiroOptions] = useState([]);
+  const [estadoOptions, setEstadoOptions] = useState([]);
   const [formData, setFormData] = useState({
     cliNombre: "",
     cliDescripcion: "",
@@ -20,52 +27,63 @@ function Form({ locale }) {
     secId: 0,
     girId: 0,
     cliSitioWeb: "",
+    cliNif: "",
   });
   useEffect(() => {
-    // Usa la función fetchCountries para obtener los datos de la API
     fetchCountriest().then((data) => {
       const options = data.map((country) => ({
         value: country.paiId,
         label: country.paiNombre,
       }));
-      setCountryOptions(options); // Actualiza las opciones de países
+      setCountryOptions(options);
     });
   }, []);
-
   useEffect(() => {
-    // Usa la función fetchSectorComerciales para obtener los datos de sectores comerciales
+    fetchPerson().then((data) => {
+      const options = data.map((kam) => ({
+        value: kam.id,
+        label: kam.perNombres + " " + kam.perApellidoPaterno,
+      }));
+      setKamOptions(options);
+    });
+  }, []);
+  useEffect(() => {
     fetchSectorComerciales().then((data) => {
+      console.log("Sector comercial"+data)
       const options = data.map((sector) => ({
         value: sector.secId,
         label: sector.secNombre,
       }));
-      setSectorOptions(options); // Actualiza las opciones de sectores comerciales
+      setSectorOptions(options);
     });
   }, []);
-  const nifOptions = [
-    { value: "optionA", label: "option1" },
-    { value: "optionB", label: "option2" },
-    // Agrega más opciones según sea necesario
-  ];
-
-  const placeOptions = [
-    { value: "optionP", label: "Carlos Sylva" },
-    { value: "optionQ", label: "Miguel Melendez" },
-    { value: "option1", label: "Cersar Rozas" },
-    { value: "option2", label: "Rodrigo Rohland" },
-    // Agrega más opciones según sea necesario
-  ];
+  useEffect(() => {
+    fetchGiro().then((data) => {
+      const options = data.map((sector) => ({
+        value: sector.girId,
+        label: sector.girNombre,
+      }));
+      setGiroOptions(options);
+    });
+  }, []);
+  
+  useEffect(() => {
+    fetchEstadoCliente().then((data) => {
+      const options = data.map((sector) => ({
+        value: sector.eclId,
+        label: sector.eclNombre,
+      }));
+      setEstadoOptions(options);
+    });
+  }, []);
   const handleSelectChange = (event, fieldName) => {
     const selectedValue = event.target.value;
     console.log(`Selected ${fieldName}:`, selectedValue);
     setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
-//   useEffect(() => {
-//     console.log(formData);
-//   }, [formData]);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData)
+    console.log(formData);
     // const success = await submitClient(formData);
     // if (success) {
     //   // Lógica adicional después de la creación exitosa
@@ -88,10 +106,10 @@ function Form({ locale }) {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-3 row align-items-center">
-          <label htmlFor="cliNombre" className="col-sm-2 col-form-label">
+          <label htmlFor="cliNombre" className="col-sm-1 col-form-label">
             {t.Account.name}
           </label>
-          <div className="col-sm-4">
+          <div className="col-sm-3">
             <input
               type="text"
               className="form-control"
@@ -101,33 +119,42 @@ function Form({ locale }) {
               onChange={handleClientInputChange(formData, setFormData)}
             />
           </div>
-          <SelectField
-            label={t.Account.country}
-            options={countryOptions}
-            preOption={t.Account.select}
-            labelClassName="col-sm-2 col-form-label"
-            divClassName="col-sm-4"
-            onChange={(e) => handleSelectChange(e, "paiId")}
-          />
-        </div>
-
-        <div className="mb-3 row align-items-center">
-          <SelectField
-            label={t.Account.main_account}
-            labelClassName="col-sm-2 col-form-label"
-            divClassName="col-sm-4"
-            preOption={t.Account.select}
-            options={nifOptions}
-          />
-        </div>
-
-        <div className="mb-3 row align-items-center">
-          <label htmlFor="nif" className="col-sm-1 col-form-label">
+          <label htmlFor="cliDescripcion" className="col-sm-1 col-form-label">
+            {t.Common.description}
+          </label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="cliDescripcion"
+              name="cliDescripcion"
+              value={formData.cliDescripcion}
+              onChange={handleClientInputChange(formData, setFormData)}
+            />
+          </div>
+          <label htmlFor="cliNif" className="col-sm-1 col-form-label">
             {t.Account.nif}
           </label>
           <div className="col-sm-3">
-            <input type="text" className="form-control" id="nif" />
+            <input
+              type="text"
+              className="form-control"
+              name="cliNif"
+              id="cliNif"
+              value={formData.cliNif}
+              onChange={handleClientInputChange(formData, setFormData)}
+            />
           </div>
+        </div>
+        <div className="mb-3 row align-items-center">
+        <SelectField
+            label={t.Common.giro}
+            options={giroOptions}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, "girId")}
+          />
           <SelectField
             label={t.Account.place}
             options={sectorOptions}
@@ -138,36 +165,31 @@ function Form({ locale }) {
           />
           <SelectField
             label={t.Account.KAM}
-            options={placeOptions}
+            options={KamOptions}
             preOption={t.Account.select}
             labelClassName="col-sm-1 col-form-label"
             divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, "perId")}
           />
         </div>
-
         <div className="mb-3 row align-items-center">
-          <label htmlFor="address" className="col-sm-2 col-form-label">
-            {t.Account.address}
-          </label>
-          <div className="col-sm-4">
-            <input type="text" className="form-control" id="address" />
-          </div>
-          <label htmlFor="status" className="col-sm-2 col-form-label">
-            {t.Account.status}
-          </label>
-          <div className="col-sm-4">
-            <input type="text" className="form-control" id="status" />
-          </div>
-        </div>
-
-        <div className="mb-3 row align-items-center">
-          <label htmlFor="city" className="col-sm-1 col-form-label">
-            {t.Account.city}
-          </label>
-          <div className="col-sm-3">
-            <input type="text" className="form-control" id="city" />
-          </div>
-          <label htmlFor="web" className="col-sm-1 col-form-label">
+          <SelectField
+            label={t.Account.status}
+            options={estadoOptions}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, "eclId")}
+          />
+                   <SelectField
+            label={t.Account.country}
+            options={countryOptions}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, "paiId")}
+          />
+          <label htmlFor="cliSitioWeb" className="col-sm-1 col-form-label">
             {t.Account.web}
           </label>
           <div className="col-sm-3">
@@ -180,16 +202,10 @@ function Form({ locale }) {
               onChange={handleClientInputChange(formData, setFormData)}
             />
           </div>
-          <label htmlFor="phone" className="col-sm-1 col-form-label">
-            {t.Account.phone}
-          </label>
-          <div className="col-sm-3">
-            <input type="text" className="form-control" id="phone" />
-          </div>
         </div>
         <button type="submit" className="btn btn-primary me-2">
-                submit
-              </button>
+          test submit
+        </button>
       </form>
       <hr />
     </div>

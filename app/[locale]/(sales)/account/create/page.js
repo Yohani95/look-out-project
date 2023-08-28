@@ -17,10 +17,8 @@ function page() {
       phone: "1234567890",
       rol: "Admin",
     },
-
     // Otros objetos
   ];
-
   const columns = [
     { key: 'id', title: "check" },
     { key: 'name', title: t("Account.table.contacts.name") },

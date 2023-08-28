@@ -10,8 +10,8 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials, req) {
         const requestData = {
-          usu_nombre: credentials.usu_nombre,
-          usu_contraseña: credentials.usu_contraseña,
+          usuNombre: credentials.usu_nombre,
+          usuContraseña: credentials.usu_contraseña,
         };
         try {
           process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -27,6 +27,7 @@ export const authOptions = {
             return null;
           }
           const data = await response.json()
+          console.log(data)
           const user = {
             id: data.usuId, // Convertir a cadena si es necesario
             per_id: data.perId,

@@ -125,7 +125,8 @@
     "loadingData": "Cangando Datos...",
     "notExist":"no existe el registro",
     "noData":" No hay datos disponibles en la base de datos.",
-    "InvalidCredentials":"Credenciales no válidas"
+    "InvalidCredentials":"Credenciales no válidas",
+    "giro":"Giro"
   },
   "Index": {
     "title": "HOLA!"
