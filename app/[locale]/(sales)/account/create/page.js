@@ -1,39 +1,14 @@
 import React from "react";
 import { useTranslations,useLocale } from "next-intl";
-import From from "@/app/[locale]/components/account/Form";
+import Form from "@/app/[locale]/components/account/Form";
 import Table from "@/app/[locale]/components/account/Table";
 import SelectField from "../../../components/common/SelectField";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import TableCommon from "@/app/[locale]/components/common/TableCommon"
+import ContactList from "@/app/[locale]/components/contact/ContactList"
 function page() {
   const t = useTranslations();
   const locale=useLocale()
-  const data = [
-    {
-      id: 1,
-      name: "John Doe",
-      position: "Manager",
-      email: "john@example.com",
-      phone: "1234567890",
-      rol: "Admin",
-    },
-    // Otros objetos
-  ];
-  const columns = [
-    { key: 'id', title: "check" },
-    { key: 'name', title: t("Account.table.contacts.name") },
-    { key: 'position', title: t("Account.position") },
-    { key: 'email', title: t("Account.Email") },
-    { key: 'phone', title: t("Account.phone") },
-    { key: 'rol', title: t("Account.table.contacts.owner") },
-  ];
-  
-
-  const countryOptions = [
-    { value: "option1", label: "option1" },
-    { value: "option2", label: "option2" },
-    // Agrega más opciones según sea necesario
-  ];
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
@@ -44,8 +19,8 @@ function page() {
       <div className="d-flex justify-content-center">
         <div className="card col-lg-10 shadow">
           <div className="container">
-            <From locale={locale} />
-            <div className="mb-3 row align-items-center">
+            <Form locale={locale} isEdit={false} />
+            {/* <div className="mb-3 row align-items-center">
               <SelectField
                 options={countryOptions}
                 preOption={t("Account.select")}
@@ -56,19 +31,13 @@ function page() {
                   {t("Account.select")}
                 </button>
               </div>
-            </div>
-            <TableCommon
-              columns={columns}
-              data={data}
-              title={t("Account.table.contacts.title")}
-              search={t("Account.table.search")}
-              noResultsFound={t('Common.noResultsFound')}
-            />
-            <div className="d-flex justify-content-end mb-3">
+            </div> */}
+           {/* <ContactList locale={locale}/> */}
+            {/* <div className="d-flex justify-content-end mb-3">
               <button type="button" className="btn btn-primary me-2">
                 {t("Account.saveButton")}
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

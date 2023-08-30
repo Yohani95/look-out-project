@@ -5,13 +5,15 @@ import LoadingData from "../common/LoadingData";
 import ErroData from "../common/ErroData";
 import axios from "axios";
 import ButtonsActions from "./ButtonsActions";
-import { apiHeaders, clientWithEntitiesApiUrl } from "@/app/api/apiConfig";
+import { apiHeaders, clientWithEntitiesApiUrl,clientDeleteApiUrl } from "@/app/api/apiConfig";
+import {handleClienteDelete,handleEdit} from "@/app/[locale]/utils/client/ClientFormLogic"
+import { useRouter } from "next/navigation";
 function List({ locale }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
   let translations = require(`@/messages/${locale}.json`);
-
+  const router=useRouter();
   const columns = [
     { title: "ID", key: "cliId" },
     { title: translations.Ficha.name, key: "cliNombre" },
@@ -24,8 +26,8 @@ function List({ locale }) {
       render: (item) => (
         <ButtonsActions
           id={item.usu_id}
-          onDelete={() => handleDelete(item.cliId)}
-          onEdit={() => handleEdit(item.cliId)}
+          onDelete={() => handleClienteDelete(item.cliId,translations,fechtClients)}
+          onEdit={() => handleEdit(item.cliId,translations,router.push)}
         />
       ),
     },
@@ -40,7 +42,6 @@ function List({ locale }) {
         pais: item.pais.paiNombre,
         email: "N/A",
       }));
-      console.log(modifiedData)
       setData(modifiedData);
       setIsLoading(false);
     } catch (error) {
@@ -52,49 +53,6 @@ function List({ locale }) {
   useEffect(() => {
     fechtClients();
   }, []);
-
-  const handleDelete = async (userId) => {
-    const confirmed = await ConfirmationDialog(
-      trans.notification.deleting.title,
-      trans.notification.deleting.text,
-      trans.notification.deleting.type,
-      trans.notification.deleting.buttonOk,
-      trans.notification.deleting.buttonCancel
-    );
-    if (confirmed) {
-      await NotificationSweet({
-        title: trans.notification.loading.title,
-        text: "",
-        type: trans.notification.loading.type,
-        showLoading: true,
-      });
-      try {
-        const response = await axios.delete(`${userApiUrl}/${userId}`); // Utiliza Axios para hacer la solicitud DELETE
-        console.log(response)
-        if (response.status==204) {
-          NotificationSweet({
-            title: trans.notification.success.title,
-            text: trans.notification.success.text,
-            type: trans.notification.success.type,
-          });
-          // Actualiza la lista de usuarios después de eliminar
-          fetchUsers();
-        } else {
-          NotificationSweet({
-            title: trans.notification.error.title,
-            text: trans.notification.error.text,
-            type: trans.notification.error.type,
-          });
-        }
-      } catch (error) {
-        NotificationSweet({
-          title: "Error!",
-          text: "An error occurred while deleting the user.",
-          type: "error",
-        });
-      }
-    }
-  };
 
   return (
     <>

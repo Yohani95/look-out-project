@@ -19,7 +19,7 @@ const ActionButtons = ({nameItem}) => {
       <Button size="sm" variant="link">
         <FaEdit size={16} />
       </Button>
-      <Button size="sm" variant="link" onClick={onDeleteItem}>
+      <Button size="sm" variant="link" >
         <FaTrash size={16} className="" />
       </Button>
     </>

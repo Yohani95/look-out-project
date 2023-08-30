@@ -183,6 +183,7 @@
     "account": "Cuenta",
     "action": "Acciones",
     "title": "Crear Cuenta",
+    "edit":"Editar Cuenta",
     "name": "Nombre de Cuenta",
     "country": "País",
     "select": "Seleccionar",
