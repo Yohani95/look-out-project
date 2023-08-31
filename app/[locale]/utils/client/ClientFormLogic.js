@@ -35,6 +35,7 @@ export const handleClientFormSubmit =
           cliNif: formData.cliNif,
         },
         idPerson: formData.idPerson,
+        kamIdPerson:formData.kamId
       };
       //console.log(clientUpdatepiUr)
       const url = isEditMode
@@ -159,4 +160,8 @@ export const fetchGetbyId= async (idClient)=>{
     console.error('Error fetching data:', error);
     return [];
   }
+};
+
+export const handleView=async(idClient,push)=>{
+  push(`/account/view/${idClient}`)
 };

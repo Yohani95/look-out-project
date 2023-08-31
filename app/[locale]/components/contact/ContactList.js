@@ -4,7 +4,7 @@ import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import ErroData from "@/app/[locale]/components/common/ErroData";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import { fetchPersonByContact } from "@/app/[locale]/utils/person/UtilsPerson";
-function ContactList({ locale, onRadioChange,idPersons }) {
+function ContactList({ locale, onRadioChange,idPersons, isView}) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
@@ -30,6 +30,8 @@ function ContactList({ locale, onRadioChange,idPersons }) {
           name="idPerson"
           checked={idPersons.includes(item.id)} // Marca el radio button si es el elemento seleccionado
           onChange={() => handleRadioChange(item.id)} // Maneja el cambio de selección
+          disabled={isView?true:false}
+          className={`custom-checkbox ${isView ? 'disabled' : ''} form-check-input`}
         />
       ),
     },
@@ -42,7 +44,7 @@ function ContactList({ locale, onRadioChange,idPersons }) {
             const fetchedData = await fetchPersonByContact();
     
             // Manipulación de datos para reemplazar valores nulos con "N/A"
-            const modifiedData = fetchedData.map((item) => ({
+             const modifiedData =await fetchedData.map((item) => ({
               ...item,
               perNombres: item.perNombres+' '+item.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
               email:"N/A",
@@ -52,7 +54,6 @@ function ContactList({ locale, onRadioChange,idPersons }) {
               telefono:"N/A"
               // Agregar otros campos y reemplazar si es necesario
             }));
-    
             setData(modifiedData); // Actualiza el estado con los datos manipulados
             setIsLoading(false);
         } catch (error) {
@@ -66,7 +67,16 @@ function ContactList({ locale, onRadioChange,idPersons }) {
       setIsLoading(false);
     }
   }, []);
-
+  useEffect(() => {
+    if (idPersons.length > 0 && data.length > 0) {
+      const sortedData = [...data].sort((a, b) => {
+        const aIndex = idPersons.indexOf(a.id);
+        const bIndex = idPersons.indexOf(b.id);
+        return bIndex - aIndex; // Cambiamos el orden aquí
+      });
+      setData(sortedData);
+    }
+  }, [idPersons]);
   const handleRadioChange = (itemId) => {
     setSelectedId(itemId)
     onRadioChange(itemId); // Llama a la función del componente Form para manejar el cambio de selección

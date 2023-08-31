@@ -11,8 +11,8 @@ export const clientWithEntitiesApiUrl = `${apiBaseUrl}/clientes/WithEntities`;
 export const clientCreateApiUrl = `${apiBaseUrl}/Clientes/CreateWithEntities`;
 export const clientDeleteApiUrl = `${apiBaseUrl}/Clientes/DeleteWithEntities`;
 export const clientUpdatepiUrl = `${apiBaseUrl}/Clientes/UpdateWithEntities`;
-export const clientWithContactApiUrl = `${apiBaseUrl}/Clientes/GetAllWithContactAndKam`;
-
+export const clientWithContactApiUrl = `${apiBaseUrl}/Clientes/GetAllIdWithContact`;
+export const clientGetByIdApiUrl = `${apiBaseUrl}/Clientes/GetByIdWithKamAndContact`;
 //person url
 const kam=2;
 const contacto=3

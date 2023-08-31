@@ -36,9 +36,9 @@ export const handleDelete = async (clitId) => {
       }
     } catch (error) {
       NotificationSweet({
-        title: "Error!",
-        text: "An error occurred while deleting.",
-        type: "error",
+        title: trans.notification.error.title,
+          text: trans.notification.error.text,
+          type: trans.notification.error.type,
       });
     }
   }

@@ -19,7 +19,7 @@ function page() {
       <div className="d-flex justify-content-center">
         <div className="card col-lg-10 shadow">
           <div className="container">
-            <Form locale={locale} isEdit={false} />
+            <Form locale={locale} isEdit={false} isCreate={true}/>
             {/* <div className="mb-3 row align-items-center">
               <SelectField
                 options={countryOptions}

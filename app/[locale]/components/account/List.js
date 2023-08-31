@@ -6,7 +6,7 @@ import ErroData from "../common/ErroData";
 import axios from "axios";
 import ButtonsActions from "./ButtonsActions";
 import { apiHeaders, clientWithEntitiesApiUrl,clientDeleteApiUrl } from "@/app/api/apiConfig";
-import {handleClienteDelete,handleEdit} from "@/app/[locale]/utils/client/ClientFormLogic"
+import {handleClienteDelete,handleEdit,handleView} from "@/app/[locale]/utils/client/ClientFormLogic"
 import { useRouter } from "next/navigation";
 function List({ locale }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +28,7 @@ function List({ locale }) {
           id={item.usu_id}
           onDelete={() => handleClienteDelete(item.cliId,translations,fechtClients)}
           onEdit={() => handleEdit(item.cliId,translations,router.push)}
+          onView={()=>handleView(item.cliId,router.push)}
         />
       ),
     },

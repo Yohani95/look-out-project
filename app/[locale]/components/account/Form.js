@@ -9,13 +9,14 @@ import { fetchGiro } from "@/app/[locale]/utils/giro/UtilsGiro";
 import { fetchEstadoCliente } from "@/app/[locale]/utils/EstadoCliente/UtilsEstadoCliente";
 import ContactList from "@/app/[locale]/components/contact/ContactList";
 import { useRouter } from "next/navigation";
-import {clientApiUrl,clientWithContactApiUrl} from "@/app/api/apiConfig"
+import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
+import { clientGetByIdApiUrl } from "@/app/api/apiConfig";
 import {
   handleClientInputChange,
   handleClientFormSubmit,
-  fetchGetbyId
+  fetchGetbyId,
 } from "../../utils/client/ClientFormLogic";
-function Form({ locale, isEdit, idPerson }) {
+function Form({ locale, isEdit, idPerson, isCreate }) {
   let t;
   t = require(`@/messages/${locale}.json`);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -24,7 +25,7 @@ function Form({ locale, isEdit, idPerson }) {
   const [giroOptions, setGiroOptions] = useState([]);
   const [estadoOptions, setEstadoOptions] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState([]); // Estado para el ID seleccionado
-  const [selectedIds, setSelectedIds] = useState([]); 
+  const [selectedIds, setSelectedIds] = useState([]);
   const [formData, setFormData] = useState({
     cliNombre: "",
     cliDescripcion: "",
@@ -35,6 +36,7 @@ function Form({ locale, isEdit, idPerson }) {
     cliSitioWeb: "",
     cliNif: "",
     idPerson: [],
+    kamId: 0,
   });
   const router = useRouter();
   useEffect(() => {
@@ -42,11 +44,11 @@ function Form({ locale, isEdit, idPerson }) {
       ...prevFormData,
       idPerson: selectedIds,
     }));
-  }, [selectedIds])
+  }, [selectedIds]);
   const handleCheckboxChange = (itemId) => {
     setSelectedIds((prevSelectedIds) => {
       if (prevSelectedIds.includes(itemId)) {
-        return prevSelectedIds.filter(id => id !== itemId);
+        return prevSelectedIds.filter((id) => id !== itemId);
       } else {
         return [...prevSelectedIds, itemId];
       }
@@ -109,42 +111,37 @@ function Form({ locale, isEdit, idPerson }) {
       fetchclientData(idPerson);
     }, [idPerson]);
   }
-  
+
   const fetchclientData = async (Id) => {
     try {
-      const response = await fetchGetbyId(Id)
+      const response = await fetch(`${clientGetByIdApiUrl}/${Id}`);
       if (response.ok) {
-        const data = await response.json();
-        setFormData(data); // Actualiza el estado formData con los datos obtenidos
-  
-        // Hacer la segunda llamada para obtener los datos adicionales
-        const response2 = await fetch(
-          `${clientWithContactApiUrl}/${Id}`
-        );
-        if (response2.ok) {
-          const data2 = await response2.json();
-          data.idPerson = data2.data; // Agrega los valores válidos
-          setSelectedIds(data.idPerson);
-        } else {
-          // Manejar el error de la segunda llamada si es necesario
-        }
+        const result = await response.json();
+        const { cliente, idPerson, kamIdPerson } = result.data;
+        console.log(result);
+        setFormData(cliente); // Suponiendo que los campos del formulario coinciden con los del cliente
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          kamId: kamIdPerson,
+        }));
+        setSelectedIds(idPerson);
       } else if (response.status == 404) {
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.Common.notExist,
           type: translations.notification.warning.type,
           push: router.push,
-          link: "/admin/user/list",
+          link: "/account/search",
         });
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching client data:", error);
       NotificationSweet({
         title: translations.notification.warning.title,
         text: translations.Common.notExist,
         type: translations.notification.warning.type,
         push: router.push,
-        link: "/admin/user/list",
+        link: "/account/search",
       });
     }
   };
@@ -153,7 +150,13 @@ function Form({ locale, isEdit, idPerson }) {
     console.log(`Selected ${fieldName}:`, selectedValue);
     setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
-  const handleSubmit = handleClientFormSubmit(formData, t, router.push, isEdit,setFormData);
+  const handleSubmit = handleClientFormSubmit(
+    formData,
+    t,
+    router.push,
+    isEdit,
+    setFormData
+  );
   const cancel = () => {
     router.push("/account/search");
   };
@@ -173,133 +176,148 @@ function Form({ locale, isEdit, idPerson }) {
             </button>
           </div>
         )} */}
-        <h4>{isEdit ? t.Account.edit : t.Account.title}</h4>
+        {isCreate || isEdit ? (
+          <h4>{isEdit ? t.Account.edit : t.Account.title}</h4>
+        ) : (
+          <h4>{t.Common.account}</h4>
+        )}
         <form onSubmit={handleSubmit}>
-          <div className="mb-3 row align-items-center">
-            <label htmlFor="cliNombre" className="col-sm-1 col-form-label">
-              {t.Account.name}
-            </label>
-            <div className="col-sm-3">
-              <input
-                type="text"
-                className="form-control"
-                id="cliNombre"
-                name="cliNombre"
-                value={formData.cliNombre}
-                onChange={handleClientInputChange(formData, setFormData)}
-                required
+          <fieldset disabled={!isCreate && !isEdit ? true : false}>
+            <div className="mb-3 row align-items-center">
+              <label htmlFor="cliNombre" className="col-sm-1 col-form-label">
+                {t.Account.name}
+              </label>
+              <div className="col-sm-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="cliNombre"
+                  name="cliNombre"
+                  value={formData.cliNombre}
+                  onChange={handleClientInputChange(formData, setFormData)}
+                  required
+                />
+              </div>
+              <label
+                htmlFor="cliDescripcion"
+                className="col-sm-1 col-form-label"
+              >
+                {t.Common.description}
+              </label>
+              <div className="col-sm-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="cliDescripcion"
+                  name="cliDescripcion"
+                  value={formData.cliDescripcion}
+                  onChange={handleClientInputChange(formData, setFormData)}
+                  required
+                />
+              </div>
+              <label htmlFor="cliNif" className="col-sm-1 col-form-label">
+                {t.Account.nif}
+              </label>
+              <div className="col-sm-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="cliNif"
+                  id="cliNif"
+                  value={formData.cliNif}
+                  onChange={handleClientInputChange(formData, setFormData)}
+                  required
+                />
+              </div>
+            </div>
+            <div className="mb-3 row align-items-center">
+              <SelectField
+                label={t.Common.giro}
+                options={giroOptions}
+                preOption={t.Account.select}
+                labelClassName="col-sm-1 col-form-label"
+                divClassName="col-sm-3"
+                onChange={(e) => handleSelectChange(e, "girId")}
+                selectedValue={formData.girId}
+              />
+              <SelectField
+                label={t.Account.place}
+                options={sectorOptions}
+                labelClassName="col-sm-1 col-form-label"
+                preOption={t.Account.select}
+                divClassName="col-sm-3"
+                onChange={(e) => handleSelectChange(e, "secId")}
+                selectedValue={formData.secId}
+              />
+              <SelectField
+                label={t.Account.KAM}
+                options={KamOptions}
+                preOption={t.Account.select}
+                labelClassName="col-sm-1 col-form-label"
+                divClassName="col-sm-3"
+                onChange={(e) => handleSelectChange(e, "kamId")}
+                selectedValue={formData.kamId}
               />
             </div>
-            <label htmlFor="cliDescripcion" className="col-sm-1 col-form-label">
-              {t.Common.description}
-            </label>
-            <div className="col-sm-3">
-              <input
-                type="text"
-                className="form-control"
-                id="cliDescripcion"
-                name="cliDescripcion"
-                value={formData.cliDescripcion}
-                onChange={handleClientInputChange(formData, setFormData)}
-                required
+            <div className="mb-3 row align-items-center">
+              <SelectField
+                label={t.Account.status}
+                options={estadoOptions}
+                preOption={t.Account.select}
+                labelClassName="col-sm-1 col-form-label"
+                divClassName="col-sm-3"
+                onChange={(e) => handleSelectChange(e, "eclId")}
+                selectedValue={formData.eclId}
               />
-            </div>
-            <label htmlFor="cliNif" className="col-sm-1 col-form-label">
-              {t.Account.nif}
-            </label>
-            <div className="col-sm-3">
-              <input
-                type="text"
-                className="form-control"
-                name="cliNif"
-                id="cliNif"
-                value={formData.cliNif}
-                onChange={handleClientInputChange(formData, setFormData)}
-                required
+              <SelectField
+                label={t.Account.country}
+                options={countryOptions}
+                preOption={t.Account.select}
+                labelClassName="col-sm-1 col-form-label"
+                divClassName="col-sm-3"
+                onChange={(e) => handleSelectChange(e, "paiId")}
+                selectedValue={formData.paiId}
               />
+              <label htmlFor="cliSitioWeb" className="col-sm-1 col-form-label">
+                {t.Account.web}
+              </label>
+              <div className="col-sm-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="cliSitioWeb"
+                  name="cliSitioWeb"
+                  value={formData.cliSitioWeb}
+                  onChange={handleClientInputChange(formData, setFormData)}
+                  required
+                />
+              </div>
             </div>
-          </div>
-          <div className="mb-3 row align-items-center">
-            <SelectField
-              label={t.Common.giro}
-              options={giroOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-3"
-              onChange={(e) => handleSelectChange(e, "girId")}
-              selectedValue={formData.girId}
-            />
-            <SelectField
-              label={t.Account.place}
-              options={sectorOptions}
-              labelClassName="col-sm-1 col-form-label"
-              preOption={t.Account.select}
-              divClassName="col-sm-3"
-              onChange={(e) => handleSelectChange(e, "secId")}
-              selectedValue={formData.secId}
-            />
-            <SelectField
-              label={t.Account.KAM}
-              options={KamOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-3"
-              onChange={(e) => handleSelectChange(e, "perId")}
-              //selectedValue={formData.idPerson}
-            />
-          </div>
-          <div className="mb-3 row align-items-center">
-            <SelectField
-              label={t.Account.status}
-              options={estadoOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-3"
-              onChange={(e) => handleSelectChange(e, "eclId")}
-              selectedValue={formData.eclId}
-            />
-            <SelectField
-              label={t.Account.country}
-              options={countryOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-3"
-              onChange={(e) => handleSelectChange(e, "paiId")}
-              selectedValue={formData.paiId}
-            />
-            <label htmlFor="cliSitioWeb" className="col-sm-1 col-form-label">
-              {t.Account.web}
-            </label>
-            <div className="col-sm-3">
-              <input
-                type="text"
-                className="form-control"
-                id="cliSitioWeb"
-                name="cliSitioWeb"
-                value={formData.cliSitioWeb}
-                onChange={handleClientInputChange(formData, setFormData)}
-                required
-              />
-            </div>
-          </div>
+          </fieldset>
           <hr className="mt-5" />
           <div className="mt-5">
             <ContactList
               locale={locale}
               onRadioChange={handleCheckboxChange}
               idPersons={selectedIds}
+              isCreate={isCreate}
+              isView={isCreate || isEdit ? false : true}
             />
           </div>
           <div className="d-flex justify-content-end mb-3">
-            <button type="submit" className="btn btn-primary m-2">
-              {isEdit ? t.Common.edit : t.Common.saveButton}
-            </button>
+            {isCreate || isEdit ? (
+              <button type="submit" className="btn btn-primary m-2">
+                {isEdit ? t.Common.edit : t.Common.saveButton}
+              </button>
+            ) : (
+              <></>
+            )}
             <button
               type="button"
               className="btn btn-danger m-2"
               onClick={cancel}
             >
-              {t.Common.cancel}
+              {isCreate ? t.Common.cancel : t.Common.goBack}
             </button>
           </div>
         </form>

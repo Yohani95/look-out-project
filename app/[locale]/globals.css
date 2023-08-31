@@ -60,18 +60,7 @@ footer {
   display: flex;
   flex-direction: column;
 }
-/* html {
-  height: 100%;
-  
-}
-.main-content {
-  flex: 1;
-}
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-} */
+
 
 
 .placeholder {
@@ -89,4 +78,23 @@ body {
   50% {
     opacity: 0.5;
   }
+}
+
+
+.custom-checkbox {
+  cursor: pointer;
+}
+
+.custom-checkbox:checked {
+  /* Añadir estilos para cuando el checkbox está marcado */
+}
+
+.custom-checkbox:hover:checked {
+  /* cursor: pointer; */
+  /* Añadir estilos para cuando el checkbox está marcado y el cursor está sobre él */
+}
+
+.custom-checkbox.disabled {
+   /* Ajusta la opacidad para cuando está deshabilitado */
+  pointer-events: none; /* Evita eventos de puntero cuando está deshabilitado */
 }
