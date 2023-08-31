@@ -25,6 +25,7 @@ export const handleClientFormSubmit =
       console.log(formData)
       const clienteWithIds = {
         cliente: {
+          cliId: formData.cliId,
           cliNombre: formData.cliNombre,
           cliDescripcion: formData.cliDescripcion,
           eclId: formData.eclId,
@@ -35,9 +36,11 @@ export const handleClientFormSubmit =
           cliNif: formData.cliNif,
         },
         idPerson: formData.idPerson,
-        kamIdPerson:formData.kamId
+        kamIdPerson:{
+          Id: formData.kamId
+        }
       };
-      //console.log(clientUpdatepiUr)
+     console.log(clienteWithIds)
       const url = isEditMode
         ? `${clientUpdatepiUrl}/${formData.cliId}`
         : `${clientCreateApiUrl}`;
@@ -80,7 +83,16 @@ export const handleClientFormSubmit =
             : "/account/create",
         });
       } else {
-        throw e;
+        console.log(response)
+        NotificationSweet({
+          title: translations.notification.warning.title,
+          text: translations.client.clientNameExist,
+          type: translations.notification.warning.type,
+          push: push,
+          link: isEditMode
+            ? `/account/edit/${formData.cliId}`
+            : "/account/create",
+        });
       }
     } catch (error) {
       NotificationSweet({

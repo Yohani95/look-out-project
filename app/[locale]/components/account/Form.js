@@ -122,14 +122,14 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
         setFormData(cliente); // Suponiendo que los campos del formulario coinciden con los del cliente
         setFormData((prevFormData) => ({
           ...prevFormData,
-          kamId: kamIdPerson,
+          kamId: kamIdPerson.id,
         }));
         setSelectedIds(idPerson);
       } else if (response.status == 404) {
         NotificationSweet({
-          title: translations.notification.warning.title,
-          text: translations.Common.notExist,
-          type: translations.notification.warning.type,
+          title: t.notification.warning.title,
+          text: t.Common.notExist,
+          type: t.notification.warning.type,
           push: router.push,
           link: "/account/search",
         });
@@ -137,9 +137,9 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
     } catch (error) {
       console.error("Error fetching client data:", error);
       NotificationSweet({
-        title: translations.notification.warning.title,
-        text: translations.Common.notExist,
-        type: translations.notification.warning.type,
+        title: t.notification.warning.title,
+        text: t.Common.notExist,
+        type: t.notification.warning.type,
         push: router.push,
         link: "/account/search",
       });
