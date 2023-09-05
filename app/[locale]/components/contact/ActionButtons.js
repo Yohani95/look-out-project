@@ -1,26 +1,22 @@
 "use client";
 import React from "react";
 import { FaTrash, FaBuilding, FaEdit, FaEye } from "react-icons/fa";
-import { handleDelete } from "../common/DeleteSweet";
 import { Button } from "react-bootstrap";
-const ActionButtons = ({nameItem}) => {
-  // const onDeleteItem = () => {
-  //   // Llama a la función handleDelete y pasa el nombre del item y la función onDelete como argumentos
-  //   handleDelete({nameItem}, "onDelete");
-  // };
+const ActionButtons = ({onDelete,onEdit,onView }) => {
+
   return (
     <>
       <Button variant="link">
-        <FaEye size={16} />
+        <FaEye size={16} onClick={onView}/>
       </Button>
-      <Button variant="link" size="sm">
+      {/* <Button variant="link" size="sm">
         <FaBuilding className="custom-icon" />
-      </Button>
+      </Button> */}
       <Button size="sm" variant="link">
-        <FaEdit size={16} />
+        <FaEdit size={16} onClick={onEdit}/>
       </Button>
       <Button size="sm" variant="link" >
-        <FaTrash size={16} className="" />
+        <FaTrash size={16} className="" onClick={onDelete}/>
       </Button>
     </>
   );

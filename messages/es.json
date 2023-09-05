@@ -126,7 +126,9 @@
     "notExist":"no existe el registro",
     "noData":" No hay datos disponibles en la base de datos.",
     "InvalidCredentials":"Credenciales no válidas",
-    "giro":"Giro"
+    "giro":"Giro",
+    "lastName":"Apellido Paterno",
+    "secondName":"Apellido Materno"
   },
   "Index": {
     "title": "HOLA!"

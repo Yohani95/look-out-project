@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslations,locale, useLocale } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import List from "@/app/[locale]/components/account/List";
 import Link from "next/link";

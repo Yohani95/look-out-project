@@ -6,7 +6,8 @@ import {
   clientCreateApiUrl,
   apiHeaders,
   clientDeleteApiUrl,
-  clientUpdatepiUrl
+  clientUpdatepiUrl,
+  clientWithEntitiesApiUrl
 } from "@/app/api/apiConfig";
 import axios from "axios";
 export const handleClientInputChange = (formData, setFormData) => (event) => {
@@ -177,3 +178,30 @@ export const fetchGetbyId= async (idClient)=>{
 export const handleView=async(idClient,push)=>{
   push(`/account/view/${idClient}`)
 };
+
+export const handleRelations=async()=>{
+  try {
+    const response = await fetch("");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+};
+
+export const fechtClients=async()=>{
+  try {
+    const response = await axios.get(clientWithEntitiesApiUrl, { headers: apiHeaders });
+    const modifiedData = response.data.map((item) => ({
+      ...item,
+      sectorComercial: item.sectorComercial.secNombre,
+      pais: item.pais.paiNombre,
+      email: "N/A",
+    }));
+    return modifiedData;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}

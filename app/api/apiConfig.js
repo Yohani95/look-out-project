@@ -14,8 +14,8 @@ export const clientUpdatepiUrl = `${apiBaseUrl}/Clientes/UpdateWithEntities`;
 export const clientWithContactApiUrl = `${apiBaseUrl}/Clientes/GetAllIdWithContact`;
 export const clientGetByIdApiUrl = `${apiBaseUrl}/Clientes/GetByIdWithKamAndContact`;
 //person url
-const kam=2;
-const contacto=3
+export const kam=2;
+export const contacto=3;
 export const personApiUrl = `${apiBaseUrl}/personas`;
 export const personKamApiUrl = `${apiBaseUrl}/personas/tipoPersona/${kam}`;
 export const personContactApiUrl = `${apiBaseUrl}/personas/tipoPersona/${contacto}`;

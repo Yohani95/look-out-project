@@ -1,9 +1,10 @@
 import React from "react";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
-import { useTranslations } from "next-intl";
+import { useTranslations,useLocale }  from "next-intl";
 import FormContact from "@/app/[locale]/components/contact/FormContact";
 function page() {
   const t = useTranslations();
+  const locale=useLocale();
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
@@ -21,7 +22,7 @@ function page() {
                {t("Common.delete")}
             </button>
           </div>
-          <FormContact t={t} />
+          <FormContact locale={locale} />
         </div>
       </div>
     </>

@@ -5,8 +5,8 @@ import LoadingData from "../common/LoadingData";
 import ErroData from "../common/ErroData";
 import axios from "axios";
 import ButtonsActions from "./ButtonsActions";
-import { apiHeaders, clientWithEntitiesApiUrl,clientDeleteApiUrl } from "@/app/api/apiConfig";
-import {handleClienteDelete,handleEdit,handleView} from "@/app/[locale]/utils/client/ClientFormLogic"
+import { apiHeaders, clientWithEntitiesApiUrl,clientDeleteApiUrl} from "@/app/api/apiConfig";
+import {handleClienteDelete,handleEdit,handleView,fechtClients } from "@/app/[locale]/utils/client/ClientFormLogic"
 import { useRouter } from "next/navigation";
 function List({ locale }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,17 +33,11 @@ function List({ locale }) {
       ),
     },
   ];
-  const fechtClients = async () => {
+  const fecht = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(clientWithEntitiesApiUrl, { headers: apiHeaders });
-      const modifiedData = response.data.map((item) => ({
-        ...item,
-        sectorComercial: item.sectorComercial.secNombre,
-        pais: item.pais.paiNombre,
-        email: "N/A",
-      }));
-      setData(modifiedData);
+      const data=await fechtClients()
+      setData(data);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -52,7 +46,7 @@ function List({ locale }) {
     }
   };
   useEffect(() => {
-    fechtClients();
+    fecht();
   }, []);
 
   return (

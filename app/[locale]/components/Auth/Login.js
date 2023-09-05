@@ -36,7 +36,7 @@ function Login({translations}) {
 
   return (
     <div className="d-flex mt-4 justify-content-center align-items-center">
-      <div className="card col-lg-10 shadow">
+      <div className="card col-lg-4 shadow">
         <div className="container mt-4 mb-4">
           <h4 className="text-center">{translations.Common.signIn}</h4>
           <form>
@@ -81,7 +81,7 @@ function Login({translations}) {
             >
               {isProcessing ? (
                 <>
-                  <div
+                  {/* <div
                     className="spinner-grow spinner-grow-sm"
                     role="status"
                   ></div>
@@ -92,7 +92,7 @@ function Login({translations}) {
                   <div
                     className="spinner-grow spinner-grow-sm"
                     role="status"
-                  ></div>
+                  ></div> */}
                   <span className=" m-2">{translations.Common.loading}</span>
                 </>
               ) : (
