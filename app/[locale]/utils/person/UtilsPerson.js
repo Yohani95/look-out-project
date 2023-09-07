@@ -1,4 +1,13 @@
-import { personKamApiUrl,personContactApiUrl,personApiUrl } from "@/app/api/apiConfig";
+import {
+  personKamApiUrl,
+  personContactApiUrl,
+  personApiUrl,
+  contacto,
+  personContactCreateApiUrl,
+  ClientePersonaEditApiUrl,
+  personContactEditApiUrl,
+  personContactDeleteApiUrl
+} from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
 
@@ -16,26 +25,22 @@ export const handleFormSubmit =
   async (event) => {
     event.preventDefault();
     try {
-      console.log(formData)
-      const personDTO = {
-        person: {
-            perNombres: formData.perNombres,
-            perApellidoPaterno: formData.perApellidoPaterno,
-            perApellidoMaterno: formData.perApellidoMaterno,
-            paiId: formData.paiId,
-            tpeId: 3,
+      const personaDTO = {
+        persona : {
+          id:formData.id,
+          perNombres: formData.perNombres,
+          perApellidoPaterno: formData.perApellidoPaterno,
+          perApellidoMaterno: formData.perApellidoMaterno,
+          paiId: formData.paiId,
+          perIdNacional: '1',
+          perFechaNacimiento: "2023-09-05T19:50:26.112Z",
+          tpeId: contacto
         },
-        telefono:{
-
-        },
-        emai:{
-
-        },
-        cliId: formData.cliId
+        idCliente: formData.idCliente,
       };
       const url = isEditMode
-        ? `${personApiUrl}/${formData.id}`
-        : `${personApiUrl}`;
+        ? `${personContactEditApiUrl}/${formData.id}`
+        : `${personContactCreateApiUrl}`;
       const method = isEditMode ? "PUT" : "POST";
       await NotificationSweet({
         title: isEditMode
@@ -54,9 +59,8 @@ export const handleFormSubmit =
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(personaDTO),
       });
-      console.log(response)
       if (response.ok) {
         NotificationSweet({
           title: translations.notification.success.title,
@@ -76,7 +80,7 @@ export const handleFormSubmit =
             : "/contact/create",
         });
       } else {
-        console.log(response)
+        console.log(response);
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,
@@ -100,96 +104,97 @@ export const handleFormSubmit =
     }
   };
 export const fetchPerson = async () => {
-    try {
-      const response = await fetch(personKamApiUrl);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return [];
-    }
-  };
-  export const fetchPersonById = async (Id,t,setFormData,push) => {
-    try {
-      const response = await fetch(`${personApiUrl}/${Id}`);
-      if (response.ok) {
-        const result = await response.json();
-        setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
-      } else if (response.status == 404) {
-        NotificationSweet({
-          title: t.notification.warning.title,
-          text: t.Common.notExist,
-          type: t.notification.warning.type,
-          push: push,
-          link: "/account/search",
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching client data:", error);
+  try {
+    const response = await fetch(personKamApiUrl);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+export const fetchPersonById = async (Id, t, setFormData, push) => {
+  try {
+    const response = await fetch(`${ClientePersonaEditApiUrl}/${Id}`);
+    if (response.ok) {
+      const result = await response.json();
+      result.data.persona.idCliente = result.data.idCliente;
+      setFormData(result.data.persona); // Suponiendo que los campos del formulario coinciden con los del cliente
+    } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "/account/search",
+        link: "/contact/search",
       });
     }
-  };
-  export const fetchPersonByContact = async () => {
+  } catch (error) {
+    console.error("Error fetching client data:", error);
+    NotificationSweet({
+      title: t.notification.warning.title,
+      text: t.Common.notExist,
+      type: t.notification.warning.type,
+      push: push,
+      link: "/contact/search",
+    });
+  }
+};
+export const fetchPersonByContact = async () => {
+  try {
+    const response = await fetch(personContactApiUrl);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+
+export const handleDelete = async (idClient, trans, fetchPerson) => {
+  const confirmed = await ConfirmationDialog(
+    trans.notification.deleting.title,
+    trans.notification.deleting.text,
+    trans.notification.deleting.type,
+    trans.notification.deleting.buttonOk,
+    trans.notification.deleting.buttonCancel
+  );
+  if (confirmed) {
+    await NotificationSweet({
+      title: trans.notification.loading.title,
+      text: "",
+      type: trans.notification.loading.type,
+      showLoading: true,
+    });
     try {
-      const response = await fetch(personContactApiUrl);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return [];
-    }
-  };
-  
-  export const handleDelete = async (idClient,trans,fetchPerson) => {
-    const confirmed = await ConfirmationDialog(
-      trans.notification.deleting.title,
-      trans.notification.deleting.text,
-      trans.notification.deleting.type,
-      trans.notification.deleting.buttonOk,
-      trans.notification.deleting.buttonCancel
-    );
-    if (confirmed) {
-      await NotificationSweet({
-        title: trans.notification.loading.title,
-        text: "",
-        type: trans.notification.loading.type,
-        showLoading: true,
-      });
-      try {
-        const response = await axios.delete(`${personApiUrl}/${idClient}`); // Utiliza Axios para hacer la solicitud DELETE
-        // if (response.data.isSuccess) {
-          if (response.ok) {
-          NotificationSweet({
-            title: trans.notification.success.title,
-            text: trans.notification.success.text,
-            type: trans.notification.success.type,
-          });
-          // Actualiza la lista de usuarios después de eliminar
-          fetchPerson();
-        } else {
-          NotificationSweet({
-            title: trans.notification.error.title,
-            text: trans.notification.error.text,
-            type: trans.notification.error.type,
-          });
-        }
-      } catch (error) {
-        console.log(error)
+      const response = await axios.delete(`${personContactDeleteApiUrl}/${idClient}`); // Utiliza Axios para hacer la solicitud DELETE
+      // if (response.data.isSuccess) {
+      if (response.data.isSuccess) {
+        NotificationSweet({
+          title: trans.notification.success.title,
+          text: trans.notification.success.text,
+          type: trans.notification.success.type,
+        });
+        // Actualiza la lista de usuarios después de eliminar
+        fetchPerson();
+      } else {
         NotificationSweet({
           title: trans.notification.error.title,
           text: trans.notification.error.text,
           type: trans.notification.error.type,
         });
       }
+    } catch (error) {
+      console.log(error);
+      NotificationSweet({
+        title: trans.notification.error.title,
+        text: trans.notification.error.text,
+        type: trans.notification.error.type,
+      });
     }
-  };
-export const handleEdit = async (idPerson,trans,push) => {
+  }
+};
+export const handleEdit = async (idPerson, trans, push) => {
   const confirmed = await ConfirmationDialog(
     trans.notification.edit.title,
     trans.notification.edit.text,
@@ -198,33 +203,31 @@ export const handleEdit = async (idPerson,trans,push) => {
     trans.notification.edit.buttonCancel
   );
   if (confirmed) {
-    push(`/contact/edit/${idPerson}`)
+    push(`/contact/edit/${idPerson}`);
   }
 };
 
-export const fetchGetbyId= async (idPerson)=>{
+export const fetchGetbyId = async (idPerson) => {
   try {
-    const response = await fetch(
-      `${""}/${idPerson}`
-    );
+    const response = await fetch(`${""}/${idPerson}`);
     return response;
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
     return [];
   }
 };
 
-export const handleView=async(idPerson,push)=>{
-  push(`/contact/view/${idPerson}`)
+export const handleView = async (idPerson, push) => {
+  push(`/contact/view/${idPerson}`);
 };
 
-export const handleRelations=async()=>{
+export const handleRelations = async () => {
   try {
     const response = await fetch("");
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
     return [];
   }
 };

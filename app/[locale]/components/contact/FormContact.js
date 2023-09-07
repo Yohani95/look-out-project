@@ -11,12 +11,13 @@ function FormContact({ locale, isEdit, isCreate,idPerson }) {
   const [countryOptions, setCountryOptions] = useState([]);
   const router = useRouter();
   const [formData, setFormData] = useState({
+    id:0,
     perNombres: "",
     perApellidoPaterno: "",
     perApellidoMaterno: "",
     paiId: 0,
     tpeId: 3,
-    cliId: 0,
+    idCliente: 0,
   });
   const FillClient = async () => {
     try {
@@ -47,32 +48,7 @@ function FormContact({ locale, isEdit, isCreate,idPerson }) {
       fetchPersonById(idPerson,t,setFormData,router.push);
     }, [idPerson]);
   }
-  const fetchData = async (Id) => {
-    try {
-      const response = await fetch(`${"https://localhost:7152/api/Personas"}/${Id}`);
-      if (response.ok) {
-        const result = await response.json();
-        setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
-      } else if (response.status == 404) {
-        NotificationSweet({
-          title: t.notification.warning.title,
-          text: t.Common.notExist,
-          type: t.notification.warning.type,
-          push: router.push,
-          link: "/account/search",
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching client data:", error);
-      NotificationSweet({
-        title: t.notification.warning.title,
-        text: t.Common.notExist,
-        type: t.notification.warning.type,
-        push: router.push,
-        link: "/account/search",
-      });
-    }
-  };
+
   const handleSubmit = handleFormSubmit(
     formData,
     t,
@@ -83,7 +59,7 @@ function FormContact({ locale, isEdit, isCreate,idPerson }) {
 
   const handleSelectChange = (event, fieldName) => {
     const selectedValue = event.target.value;
-    console.log(`Selected ${fieldName}:`, selectedValue);
+    // console.log(`Selected ${fieldName}:`, selectedValue);
     setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
   const cancel = () => {
@@ -170,8 +146,8 @@ function FormContact({ locale, isEdit, isCreate,idPerson }) {
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "cliId")}
-          selectedValue={formData.cliId}
+          onChange={(e) => handleSelectChange(e, "idCliente")}
+          selectedValue={formData.idCliente}
         />
       </div>
       {/* <div className=" mb-3 row align-items-center">

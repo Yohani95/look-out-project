@@ -19,7 +19,12 @@ export const contacto=3;
 export const personApiUrl = `${apiBaseUrl}/personas`;
 export const personKamApiUrl = `${apiBaseUrl}/personas/tipoPersona/${kam}`;
 export const personContactApiUrl = `${apiBaseUrl}/personas/tipoPersona/${contacto}`;
-
+export const personContactCreateApiUrl = `${apiBaseUrl}/personas/createWithEntities`;
+export const personContactEditApiUrl = `${apiBaseUrl}/personas/editWithEntities`;
+export const personContactDeleteApiUrl = `${apiBaseUrl}/personas/deleteWithEntities`;
+//ClientePersona
+export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersonaDTOById`;
+export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllClientRelations`;
 //comuna url
 export const comunaApiUrl = `${apiBaseUrl}/comunas`;
 

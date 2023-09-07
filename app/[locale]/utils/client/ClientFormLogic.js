@@ -7,7 +7,8 @@ import {
   apiHeaders,
   clientDeleteApiUrl,
   clientUpdatepiUrl,
-  clientWithEntitiesApiUrl
+  clientWithEntitiesApiUrl,
+  ClientePersonaGetAllApiUrl
 } from "@/app/api/apiConfig";
 import axios from "axios";
 export const handleClientInputChange = (formData, setFormData) => (event) => {
@@ -198,6 +199,24 @@ export const fechtClients=async()=>{
       sectorComercial: item.sectorComercial.secNombre,
       pais: item.pais.paiNombre,
       email: "N/A",
+    }));
+    return modifiedData;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+export const fetchClientsRelations=async()=>{
+  try {
+    const response = await axios.get(ClientePersonaGetAllApiUrl, { headers: apiHeaders });
+    const modifiedData = response.data.data.map((item) => ({
+      id: item.cliente.cliId,
+      kam: item.persona
+      ? `${item.persona.perNombres} ${item.persona.perApellidoPaterno}`
+      : 'N/A',  
+       paiNombre: item.cliente.pais.paiNombre,
+      cliNombre: item.cliente.cliNombre,
+      secNombre: item.cliente.sectorComercial.secNombre,
     }));
     return modifiedData;
   } catch (error) {
