@@ -6,6 +6,7 @@ import {
   emailCreateApiUrl,
   emailEditApiUrl,
   emailTypeApiUrl,
+  emailEntitiesApiUrl
 } from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
@@ -30,7 +31,7 @@ export const handleFormSubmit =
     event.preventDefault();
     try {
       const url = isEditMode
-        ? `${emailEditApiUrl}/${formData.id}`
+        ? `${emailEditApiUrl}/${formData.emaId}`
         : `${emailCreateApiUrl}`;
       const method = isEditMode ? "PUT" : "POST";
       await NotificationSweet({
@@ -60,15 +61,15 @@ export const handleFormSubmit =
           push: push,
           link: "/admin/email/search",
         });
-      } else if (response.status === 409) {
+      } else if (response.status === 422) {
         NotificationSweet({
           title: translations.notification.warning.title,
-          text: translations.client.clientNameExist,
+          text: translations.Common.emailExist,
           type: translations.notification.warning.type,
-          push: push,
-          link: isEditMode
-            ? `/admin/email/edit/${formData.cliId}`
-            : "/admin/email/create",
+          // push: push,
+          // link: isEditMode
+          //   ? `/admin/email/edit/${formData.emaId}`
+          //   : "/admin/email/create",
         });
       } else {
         console.log(response);
@@ -78,7 +79,7 @@ export const handleFormSubmit =
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
-            ? `/admin/email/edit/${formData.cliId}`
+            ? `/admin/email/edit/${formData.emaId}`
             : "/admin/email/create",
         });
       }
@@ -110,8 +111,9 @@ export const handleDelete = async (idemail, trans, fetchPerson) => {
       showLoading: true,
     });
     try {
-      const response = await axios.delete(`${emailApiUrl}/${idemail}`); // Utiliza Axios para hacer la solicitud DELETE
-      if (response.data.isSuccess) {
+      const response = await fetch(`${emailApiUrl}/${idemail}`,{
+        method: "DELETE"}); // Utiliza Axios para hacer la solicitud DELETE
+      if (response.ok) {
         NotificationSweet({
           title: trans.notification.success.title,
           text: trans.notification.success.text,
@@ -151,10 +153,9 @@ export const handleEdit = async (idemail, trans, push) => {
 export const fetchemailById = async (Id, t, setFormData, push) => {
   try {
     const response = await fetch(`${emailApiUrl}/${Id}`);
-    console.log(response)
     if (response.ok) {
       const result = await response.json();
-      setFormData(result.data); // Suponiendo que los campos del formulario coinciden con los del cliente
+      setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
@@ -180,9 +181,8 @@ export const handleView = async (idemail, push) => {
 };
 export const fetchemail = async () => {
   try {
-    const response = await fetch(emailApiUrl);
+    const response = await fetch(emailEntitiesApiUrl);
     const data = await response.json();
-    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);

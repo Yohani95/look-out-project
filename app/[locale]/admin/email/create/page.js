@@ -2,7 +2,7 @@ import React from "react";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import { useTranslations, useLocale } from "next-intl";
 import FormEmail from "@/app/[locale]/components/admin/email/FormEmail";
-function page() {
+function page({params}) {
   const t = useTranslations();
   const locale = useLocale();
   return (
@@ -16,7 +16,7 @@ function page() {
         <div className="card col-lg-10 shadow">
           <div className="container">
             <div className="card-cody mt-3"></div>
-            <FormEmail locale={locale} isCreate={true} isEdit={false} />
+            <FormEmail locale={locale} isCreate={true} isEdit={false}/>
           </div>
         </div>
       </div>

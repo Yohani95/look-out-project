@@ -6,6 +6,7 @@ import FormEmail from "@/app/[locale]/components/admin/email/FormEmail";
 function page({params}) {
   const t = useTranslations();
   const locale = useLocale();
+  console.log(params)
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">

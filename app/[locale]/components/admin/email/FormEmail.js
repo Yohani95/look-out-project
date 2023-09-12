@@ -10,26 +10,24 @@ import {
   fetchemailById,
 } from "@/app/[locale]/utils/email/UtilsEmail";
 function FormEmail({ locale, isEdit, isCreate, idEmail }) {
-  console.log(idEmail)
   const router = useRouter();
   const [emailOptions, setEmailOptions] = useState([]);
   const [personOptions, setpersonOptions] = useState([]);
   const t = require(`@/messages/${locale}.json`);
   const [formData, setFormData] = useState({
     emaId: 0,
-    CliId: "",
-    PerId: 0,
+    cliId: null,
+    perId: 0,
     emaEmail: "",
     temId: 0,
     emaVigente: 0,
   });
 
-
   useEffect(() => {
     fetchemailType().then((data) => {
       const options = data.map((item) => ({
-        value: item.TteId,
-        label: item.TteNombre,
+        value: item.temId,
+        label: item.temNombre,
       }));
       setEmailOptions(options);
     });
@@ -69,24 +67,24 @@ function FormEmail({ locale, isEdit, isCreate, idEmail }) {
       <fieldset disabled={!isCreate && !isEdit ? true : false}>
         {isCreate || isEdit ? (
           <h4>
-            {isEdit ? t.Common.edit : `${t.Common.create} ${t.Common.phone}`}
+            {isEdit ? t.Common.edit : `${t.Common.create} ${t.Common.email}`}
           </h4>
         ) : (
           <h4>{t.Account.phone}</h4>
         )}
         <div className="mb-3 row align-items-center">
           <label htmlFor="emaEmail" className="col-sm-2 col-form-label">
-            {t.Account.phone}
+            {t.Common.email}
           </label>
           <div className="col-sm-4">
             <input
               type="email"
               className="form-control"
               id="emaEmail"
-              name="emaEmailo"
+              name="emaEmail"
               value={formData.emaEmail}
               onChange={handleInputChange(formData, setFormData)}
-              title={t.Common.emaEmail}
+              //title={t.Common.emaEmail}
               required
             />
           </div>
@@ -96,14 +94,14 @@ function FormEmail({ locale, isEdit, isCreate, idEmail }) {
             preOption={t.Account.select}
             labelClassName="col-sm-2 col-form-label"
             divClassName="col-sm-4"
-            onChange={(e) => handleSelectChange(e, "PerId")}
-            selectedValue={formData.PerId}
+            onChange={(e) => handleSelectChange(e, "perId")}
+            selectedValue={formData.perId}
           />
         </div>
 
         <div className=" mb-3 row align-items-center">
           <SelectField
-            label={`${t.Account.type} ${t.Account.phone}`}
+            label={`${t.Account.type} ${t.Common.email}`}
             options={emailOptions}
             preOption={t.Account.select}
             labelClassName="col-sm-2 col-form-label"

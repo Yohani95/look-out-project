@@ -136,7 +136,7 @@ export const handleDelete = async (idaddress, trans, fetchPerson) => {
     }
   }
 };
-export const handleEdit = async (idaddress, trans, push) => {
+export const handleEdit = async (idAddress, trans, push) => {
   const confirmed = await ConfirmationDialog(
     trans.notification.edit.title,
     trans.notification.edit.text,
@@ -145,7 +145,7 @@ export const handleEdit = async (idaddress, trans, push) => {
     trans.notification.edit.buttonCancel
   );
   if (confirmed) {
-    push(`/admin/address/${idaddress}`);
+    push(`/admin/address/${idAddress}`);
   }
 };
 export const fetchaddressById = async (Id, t, setFormData, push) => {

@@ -37,8 +37,9 @@ export const phoneTypeApiUrl = `${apiBaseUrl}/tipoTelefonos`;
 //email url
 
 export const emailApiUrl = `${apiBaseUrl}/Email`;
-export const emailCreateApiUrl = `${apiBaseUrl}/email`;
-export const emailEditApiUrl = `${apiBaseUrl}/email`;
+export const emailEntitiesApiUrl = `${apiBaseUrl}/Email/getAllEmail`;
+export const emailCreateApiUrl = `${apiBaseUrl}/email/create`;
+export const emailEditApiUrl = `${apiBaseUrl}/email/edit`;
 
 export const emailTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
 

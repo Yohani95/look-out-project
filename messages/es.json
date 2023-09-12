@@ -129,7 +129,8 @@
     "giro":"Giro",
     "lastName":"Apellido Paterno",
     "secondName":"Apellido Materno",
-    "phones":"teléfonos"
+    "phones":"teléfonos",
+    "emailExist":"El email ya existe."
   },
   "Index": {
     "title": "HOLA!"
