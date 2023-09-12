@@ -128,7 +128,8 @@
     "InvalidCredentials":"Credenciales no válidas",
     "giro":"Giro",
     "lastName":"Apellido Paterno",
-    "secondName":"Apellido Materno"
+    "secondName":"Apellido Materno",
+    "phones":"teléfonos"
   },
   "Index": {
     "title": "HOLA!"
@@ -266,6 +267,12 @@
       "userList": "Usuarios",
       "createUser": "Crear Usuario de Sistema",
       "editUser":"Editar Usuario de Sistema"
+    },
+    "phone":{
+
+    },
+    "email":{
+
     }
   },
   "business": {

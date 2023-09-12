@@ -7,7 +7,6 @@ function Hero({locale}) {
   const { data: session, status } = useSession(); // Estado para controlar el estado de carga
   let translations;
   translations = require(`@/messages/${locale}.json`);
-  // Simula una demora en la carga
   if (status === "loading") {
     return (
       <div
@@ -19,7 +18,7 @@ function Hero({locale}) {
         </div>
       </div>
     );
-  } // Tiempo en milisegundos (2 segundos en este caso)
+  } 
 
   return <main>{session ? <Hero_content /> : <Login translations={translations}/>}</main>;
 }

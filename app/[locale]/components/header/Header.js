@@ -14,10 +14,10 @@ const Header = () => {
       
       account: {
         link: {
-          file: {
-            name: t("Ficha.title"),
-            link: "/account/ficha",
-          },
+          // file: {
+          //   name: t("Ficha.title"),
+          //   link: "/account/ficha",
+          // },
           create: {
             name: t("Nav.account.create"),
             link: "/account/create",
@@ -36,10 +36,10 @@ const Header = () => {
       contacts: {
         title: t("Nav.contacts.title"),
         link: {
-          file: {
-            name: t("Nav.contacts.file"),
-            link: "/contact/ficha",
-          },
+          // file: {
+          //   name: t("Nav.contacts.file"),
+          //   link: "/contact/ficha",
+          // },
           create: {
             name: t("Nav.contacts.create"),
             link: "/contact/create",
@@ -47,6 +47,14 @@ const Header = () => {
           search: {
             name: `${t("Common.search")} ${t("Ficha.table.contacts.title")}`,
             link: "/contact/search",
+          },
+          email: {
+            name: `${t("Common.phone")} `,
+            link: "/admin/email/search",
+          },
+          phone: {
+            name: `${t("Common.email")}`,
+            link: "/admin/phone/search",
           },
         },
       },

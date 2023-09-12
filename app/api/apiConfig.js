@@ -13,7 +13,7 @@ export const clientDeleteApiUrl = `${apiBaseUrl}/Clientes/DeleteWithEntities`;
 export const clientUpdatepiUrl = `${apiBaseUrl}/Clientes/UpdateWithEntities`;
 export const clientWithContactApiUrl = `${apiBaseUrl}/Clientes/GetAllIdWithContact`;
 export const clientGetByIdApiUrl = `${apiBaseUrl}/Clientes/GetByIdWithKamAndContact`;
-//person url
+//persona url
 export const kam=2;
 export const contacto=3;
 export const personApiUrl = `${apiBaseUrl}/personas`;
@@ -27,6 +27,28 @@ export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersona
 export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllClientRelations`;
 //comuna url
 export const comunaApiUrl = `${apiBaseUrl}/comunas`;
+
+//telefono url
+export const phoneApiUrl = `${apiBaseUrl}/telefonos`;
+export const phoneCreateApiUrl = `${apiBaseUrl}/telefonos`;
+export const phoneEditApiUrl = `${apiBaseUrl}/telefonos`;
+
+export const phoneTypeApiUrl = `${apiBaseUrl}/tipoTelefonos`;
+//email url
+
+export const emailApiUrl = `${apiBaseUrl}/Email`;
+export const emailCreateApiUrl = `${apiBaseUrl}/email`;
+export const emailEditApiUrl = `${apiBaseUrl}/email`;
+
+export const emailTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
+
+//address url
+export const addressApiUrl = `${apiBaseUrl}/direccion`;
+export const addressCreateApiUrl = `${apiBaseUrl}/email`;
+export const addressEditApiUrl = `${apiBaseUrl}/email`;
+
+export const addressTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
+
 
 //comuna giros
 export const girosApiUrl = `${apiBaseUrl}/giros`;
