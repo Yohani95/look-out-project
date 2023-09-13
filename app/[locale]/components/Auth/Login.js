@@ -29,7 +29,6 @@ function Login({translations}) {
     if (result.error) {
       setError(translations.Common.InvalidCredentials);
     } else {
-      console.log(result)
       router.push("/"); // Redirige a la página principal si la autenticación es exitosa
     }
   };

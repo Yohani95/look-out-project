@@ -6,28 +6,36 @@ import {
   handleInputChange,
   handleFormSubmit,
   fetchPhoneType,
+  fetchPhoneById
 } from "@/app/[locale]/utils/phone/UtilsPhone";
 import { fetchPersonByContact } from "@/app/[locale]/utils/person/UtilsPerson";
 function FormPhone({ locale, isEdit, isCreate, idPhone }) {
   const router = useRouter();
-  const [emaOptions, setEmaOptions] = useState([]);
+  const [phoneOptions, setPhoneOptions] = useState([]);
   const [personOptions, setpersonOptions] = useState([]);
   const [formData, setFormData] = useState({
     telId: 0,
-    CliId: "",
-    PerId: 0,
-    TelNumero: "",
-    TteId: 0,
-    TelVigente: 0,
+    cliId: null,
+    perId: 0,
+    telNumero: "",
+    tteId: 0,
+    telVigente: 0,
   });
   const t = require(`@/messages/${locale}.json`);
+
+  if (idPhone!= null && !isNaN(idPhone)) {
+    useEffect(() => {
+      fetchPhoneById(idPhone,t,setFormData,router.push);
+    }, [idPhone]);
+  }
+
   useEffect(() => {
     fetchPhoneType().then((data) => {
-      const options = data.data.map((item) => ({
-        value: item.temId,
-        label: item.temNombre,
+      const options = data.map((item) => ({
+        value: item.tteId,
+        label: item.tteNombre,
       }));
-      ssetEmaOptions(options);
+      setPhoneOptions(options);
     });
   }, []);
   useEffect(() => {
@@ -64,16 +72,16 @@ function FormPhone({ locale, isEdit, isCreate, idPhone }) {
           <h4>{t.Account.phone}</h4>
         )}{" "}
         <div className="mb-3 row align-items-center">
-          <label htmlFor="TelNumero" className="col-sm-2 col-form-label">
+          <label htmlFor="telNumero" className="col-sm-2 col-form-label">
             {t.Account.phone}
           </label>
           <div className="col-sm-4">
             <input
               type="number"
               className="form-control"
-              id="TelNumero"
-              name="TelNumero"
-              value={formData.TelNumero}
+              id="telNumero"
+              name="telNumero"
+              value={formData.telNumero}
               onChange={handleInputChange(formData, setFormData)}
               title={t.Common.invalidPhoneNumber}
               pattern="[0-9]{9}"
@@ -86,8 +94,8 @@ function FormPhone({ locale, isEdit, isCreate, idPhone }) {
             preOption={t.Account.select}
             labelClassName="col-sm-2 col-form-label"
             divClassName="col-sm-4"
-            onChange={(e) => handleSelectChange(e, "PerId")}
-            selectedValue={formData.PerId}
+            onChange={(e) => handleSelectChange(e, "perId")}
+            selectedValue={formData.perId}
           />
         </div>
         <div className=" mb-3 row align-items-center">
@@ -97,18 +105,18 @@ function FormPhone({ locale, isEdit, isCreate, idPhone }) {
             preOption={t.Account.select}
             labelClassName="col-sm-2 col-form-label"
             divClassName="col-sm-4"
-            onChange={(e) => handleSelectChange(e, "TteId")}
-            selectedValue={formData.TteId}
+            onChange={(e) => handleSelectChange(e, "tteId")}
+            selectedValue={formData.tteId}
           />
-          <label htmlFor="TelVigente" className="col-form-label col-sm-2">
+          <label htmlFor="telVigente" className="col-form-label col-sm-2">
             {t.user.active}
           </label>
           <div className="col-sm-4">
             <select
               className="form-control form-select"
-              id="TelVigente"
-              name="TelVigente"
-              value={formData.TelVigente}
+              id="telVigente"
+              name="telVigente"
+              value={formData.telVigente}
               onChange={handleInputChange(formData, setFormData)}
               required
             >

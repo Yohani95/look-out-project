@@ -12,7 +12,6 @@ const MyNav = ({ t,locale }) => {
   const { data: session, status } = useSession();
   let translations;
   translations = require(`@/messages/${locale}.json`);
-  console.log(session)
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };

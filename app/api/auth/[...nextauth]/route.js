@@ -27,7 +27,6 @@ export const authOptions = {
             return null;
           }
           const data = await response.json()
-          console.log(data)
           const user = {
             id: data.usuId, // Convertir a cadena si es necesario
             per_id: data.perId,

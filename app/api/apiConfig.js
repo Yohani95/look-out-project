@@ -1,5 +1,11 @@
-
-const apiBaseUrl = "https://localhost:7152/api";
+let apiBaseUrl="";
+if (process.env.NODE_ENV === 'development') {
+  // Código específico para el entorno de desarrollo
+  apiBaseUrl = "https://localhost:7152/api";
+} else {
+  // Código específico para el entorno de producción
+  apiBaseUrl = "https://kpazserv0005.azurewebsites.net/api/";
+}
 
 export const userApiUrl = `${apiBaseUrl}/usuarios`;
 export const paisApiUrl = `${apiBaseUrl}/pais`;
@@ -29,11 +35,11 @@ export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllCl
 export const comunaApiUrl = `${apiBaseUrl}/comunas`;
 
 //telefono url
-export const phoneApiUrl = `${apiBaseUrl}/telefonos`;
-export const phoneCreateApiUrl = `${apiBaseUrl}/telefonos`;
-export const phoneEditApiUrl = `${apiBaseUrl}/telefonos`;
-
-export const phoneTypeApiUrl = `${apiBaseUrl}/tipoTelefonos`;
+export const phoneApiUrl = `${apiBaseUrl}/telefono`;
+export const phoneCreateApiUrl = `${apiBaseUrl}/telefono`;
+export const phoneEditApiUrl = `${apiBaseUrl}/telefono`;
+export const phoneEntitiesApiUrl = `${apiBaseUrl}/telefono/getAllTelefonos`;
+export const phoneTypeApiUrl = `${apiBaseUrl}/tipoTelefono`;
 //email url
 
 export const emailApiUrl = `${apiBaseUrl}/Email`;

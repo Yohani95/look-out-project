@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useSession } from "next-auth/react";
 import { Hero_content } from "../Hero_content";
 import Login from "../Auth/Login";

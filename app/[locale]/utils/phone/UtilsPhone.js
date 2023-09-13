@@ -6,6 +6,7 @@ import {
   phoneCreateApiUrl,
   phoneEditApiUrl,
   phoneTypeApiUrl,
+  phoneEntitiesApiUrl ,
 } from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
@@ -30,7 +31,7 @@ export const handleFormSubmit =
     event.preventDefault();
     try {
       const url = isEditMode
-        ? `${phoneEditApiUrl}/${formData.id}`
+        ? `${phoneEditApiUrl}/${formData.telId}`
         : `${phoneCreateApiUrl}`;
       const method = isEditMode ? "PUT" : "POST";
       await NotificationSweet({
@@ -110,8 +111,9 @@ export const handleDelete = async (idPhone, trans, fetchPerson) => {
       showLoading: true,
     });
     try {
-      const response = await axios.delete(`${phoneApiUrl}/${idPhone}`); // Utiliza Axios para hacer la solicitud DELETE
-      if (response.data.isSuccess) {
+      const response = await fetch(`${phoneApiUrl}/${idPhone}`,{
+        method: "DELETE"}); // Utiliza Axios para hacer la solicitud DELETE
+      if (response.ok) {
         NotificationSweet({
           title: trans.notification.success.title,
           text: trans.notification.success.text,
@@ -145,7 +147,7 @@ export const handleEdit = async (idPhone, trans, push) => {
     trans.notification.edit.buttonCancel
   );
   if (confirmed) {
-    push(`/admin/phone/${idPhone}`);
+    push(`/admin/phone/edit/${idPhone}`);
   }
 };
 export const fetchPhoneById = async (Id, t, setFormData, push) => {
@@ -153,7 +155,7 @@ export const fetchPhoneById = async (Id, t, setFormData, push) => {
     const response = await fetch(`${phoneApiUrl}/${Id}`);
     if (response.ok) {
       const result = await response.json();
-      setFormData(result.data); // Suponiendo que los campos del formulario coinciden con los del cliente
+      setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
@@ -179,7 +181,7 @@ export const handleView = async (idPhone, push) => {
 };
 export const fetchPhone = async () => {
   try {
-    const response = await fetch(phoneApiUrl);
+    const response = await fetch(phoneEntitiesApiUrl);
     const data = await response.json();
     return data;
   } catch (error) {

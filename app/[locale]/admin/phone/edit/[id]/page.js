@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslations, useLocale } from "next-intl";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import FormPhone from "@/app/[locale]/components/admin/phone/PhoneForm";
-function page(params) {
+function page({params}) {
   const t = useTranslations();
   const locale = useLocale();
   return (
