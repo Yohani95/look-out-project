@@ -49,11 +49,11 @@ const Header = () => {
             link: "/contact/search",
           },
           email: {
-            name: `${t("Common.phone")} `,
+            name: `${t("Common.email")} `,
             link: "/admin/email/search",
           },
           phone: {
-            name: `${t("Common.email")}`,
+            name: `${t("Common.phone")}`,
             link: "/admin/phone/search",
           },
         },

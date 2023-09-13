@@ -1,4 +1,7 @@
-import "./globals.css";
+import "@/app/globals.css";
+// En tu layout o componente
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { Inter } from "next/font/google";
 import { useLocale } from "next-intl";
 import Header from "@/app/[locale]/components/header/Header";
