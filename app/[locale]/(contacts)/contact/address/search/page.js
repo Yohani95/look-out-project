@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslations, useLocale } from "next-intl";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
-import ListPhone from "@/app/[locale]/components/admin/phone/ListPhone";
+import ListAddress from "@/app/[locale]/components/world/address/ListAddress";
 import Link from "next/link";
 function page() {
   const t = useTranslations();
@@ -19,11 +19,11 @@ function page() {
             <div className="d-flex justify-content-end container mb-3">
               <Link href={"/admin/phone/create"}>
                 <button type="button" className=" btn btn-primary ">
-                  + {t("Account.add")} {t("Common.phone")}
+                  + {t("Account.add")} {t("Common.address")}
                 </button>
               </Link>
             </div>
-            <ListPhone locale={locale}/>
+            <ListAddress locale={locale}/>
           </div>
         </div>
       </div>

@@ -67,7 +67,7 @@ function FormEmail({ locale, isEdit, isCreate, idEmail }) {
       <fieldset disabled={!isCreate && !isEdit ? true : false}>
         {isCreate || isEdit ? (
           <h4>
-            {isEdit ? t.Common.edit : `${t.Common.create} ${t.Common.email}`}
+            {isEdit ? `${t.Common.edit} ${t.Common.email}` : `${t.Common.create} ${t.Common.email}`}
           </h4>
         ) : (
           <h4>{t.Account.phone}</h4>

@@ -24,7 +24,6 @@ function ContactSearch({ locale }) {
     { key: "telefono", title: t.Account.phone },
     //{ key: "rol", title: t.Account.table.contacts.owner },
     { key: "account", title: t.Common.account },
-    { key: "kam", title: t.Account.KAM },
       {
         title:t.Account.action,
         key: "actions",
@@ -45,17 +44,16 @@ function ContactSearch({ locale }) {
     try {
       setIsLoading(true);
       const fetchedData = await fetchPersonByContact();
-      const modifiedData = await fetchedData.map((item) => ({
+      console.log(fetchedData.data)
+      const modifiedData = await fetchedData.data.map((item) => ({
         ...item,
+        id:item.persona.id,
         perNombres:
-          item.perNombres + " " + item.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
-        email: "N/A",
-        rol: "N/A",
+          item.persona.perNombres + " " + item.persona.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
         position: "N/A",
-        email: "N/A",
-        telefono: "N/A",
-        kam:"N/A",
-        account:"N/A"
+        email: item.email||"N/A",
+        telefono: item.telefono||"N/A",
+        account: item.cuenta||"N/A"
         // Agregar otros campos y reemplazar si es necesario
       }));
       setData(modifiedData); // Actualiza el estado con los datos manipulados

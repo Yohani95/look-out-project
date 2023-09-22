@@ -8,6 +8,7 @@ import {
   clientDeleteApiUrl,
   clientUpdatepiUrl,
   clientWithEntitiesApiUrl,
+  clientWithDTOApiUrl,
   ClientePersonaGetAllApiUrl
 } from "@/app/api/apiConfig";
 import axios from "axios";
@@ -193,12 +194,14 @@ export const handleRelations=async()=>{
 
 export const fechtClients=async()=>{
   try {
-    const response = await axios.get(clientWithEntitiesApiUrl, { headers: apiHeaders });
+    const response = await axios.get(clientWithDTOApiUrl, { headers: apiHeaders });
     const modifiedData = response.data.map((item) => ({
       ...item,
-      sectorComercial: item.sectorComercial.secNombre,
-      pais: item.pais.paiNombre,
-      email: "N/A",
+      cliId:item.cliente.cliId,
+      cliNombre: item.cliente.cliNombre,
+      sectorComercial: item.cliente.sectorComercial.secNombre,
+      pais: item.cliente.pais.paiNombre,
+      email: item.email || "N/A",
     }));
     return modifiedData;
   } catch (error) {

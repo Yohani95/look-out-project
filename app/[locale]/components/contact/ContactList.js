@@ -17,10 +17,10 @@ function ContactList({ locale, onRadioChange,idPersons, isView}) {
       title: "ID",
     },
     { key: "perNombres", title: t.Account.table.contacts.name, },
-    { key: "position", title: t.Account.position },
+    // { key: "position", title: t.Account.position },
     { key: "email", title: t.Account.Email },
     { key: "telefono", title: t.Account.phone },
-    { key: "rol", title: t.Account.table.contacts.owner },
+    // { key: "rol", title: t.Account.table.contacts.owner },
     {
       title: t.Account.select,
       key: "actions",
@@ -42,21 +42,21 @@ function ContactList({ locale, onRadioChange,idPersons, isView}) {
         try {
             setIsLoading(true);
             const fetchedData = await fetchPersonByContact();
-    
             // Manipulación de datos para reemplazar valores nulos con "N/A"
-             const modifiedData =await fetchedData.map((item) => ({
+             const modifiedData =await fetchedData.data.map((item) => ({
               ...item,
-              perNombres: item.perNombres+' '+item.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
-              email:"N/A",
+              id:item.persona.id,
+              perNombres: item.persona.perNombres+' '+item.persona.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
+              email:item.email||"N/A",
               rol: "N/A",
               position:"N/A",
-              email:"N/A",
-              telefono:"N/A"
+              telefono:item.telefono||"N/A"
               // Agregar otros campos y reemplazar si es necesario
             }));
             setData(modifiedData); // Actualiza el estado con los datos manipulados
             setIsLoading(false);
         } catch (error) {
+          console.log(error)
           setError(true);
           setIsLoading(false);
         }

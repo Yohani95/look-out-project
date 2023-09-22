@@ -14,20 +14,8 @@ const Header = () => {
       
       account: {
         link: {
-          // file: {
-          //   name: t("Ficha.title"),
-          //   link: "/account/ficha",
-          // },
-          create: {
-            name: t("Nav.account.create"),
-            link: "/account/create",
-          },
-          relation: {
-            name: t("Nav.account.accountRelationship"),
-            link: "/account/relations",
-          },
           search: {
-            name: t("Account.findAccount"),
+            name: t("Common.accounts"),
             link: "/account/search",
           },
         },
@@ -36,16 +24,8 @@ const Header = () => {
       contacts: {
         title: t("Nav.contacts.title"),
         link: {
-          // file: {
-          //   name: t("Nav.contacts.file"),
-          //   link: "/contact/ficha",
-          // },
-          create: {
-            name: t("Nav.contacts.create"),
-            link: "/contact/create",
-          },
           search: {
-            name: `${t("Common.search")} ${t("Ficha.table.contacts.title")}`,
+            name: ` ${t("Ficha.table.contacts.title")}`,
             link: "/contact/search",
           },
           email: {
@@ -55,6 +35,10 @@ const Header = () => {
           phone: {
             name: `${t("Common.phone")}`,
             link: "/admin/phone/search",
+          },
+          addres: {
+            name: `${t("Common.address")}`,
+            link: "/contact/address/search",
           },
         },
       },

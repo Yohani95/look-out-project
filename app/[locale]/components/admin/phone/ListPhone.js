@@ -47,7 +47,7 @@ function ListPhone({ locale }) {
         perId:
           item.persona.perNombres + " " + item.persona.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
           cliId:
-          item.cliente.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo
+          item.cliente ? item.cliente.cliNombre : "N/A"    , // Reemplazar con "N/A" si es nulo
           tteId: item.tipoTelefono.tteNombre,
           telVigente: item.telVigente ? <FaCheck style={{ color: 'green' }} /> : <FaTimes style={{ color: 'red' }} />
       }));

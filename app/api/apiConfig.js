@@ -14,6 +14,7 @@ export const placeApiUrl = `${apiBaseUrl}/SectorComercial`;
 //clientes
 export const clientApiUrl = `${apiBaseUrl}/clientes`;
 export const clientWithEntitiesApiUrl = `${apiBaseUrl}/clientes/WithEntities`;
+export const clientWithDTOApiUrl = `${apiBaseUrl}/clientes/GetDTOClient`;
 export const clientCreateApiUrl = `${apiBaseUrl}/Clientes/CreateWithEntities`;
 export const clientDeleteApiUrl = `${apiBaseUrl}/Clientes/DeleteWithEntities`;
 export const clientUpdatepiUrl = `${apiBaseUrl}/Clientes/UpdateWithEntities`;
@@ -23,6 +24,7 @@ export const clientGetByIdApiUrl = `${apiBaseUrl}/Clientes/GetByIdWithKamAndCont
 export const kam=2;
 export const contacto=3;
 export const personApiUrl = `${apiBaseUrl}/personas`;
+export const personContactGetAllApiUrl=`${apiBaseUrl}/personas/GetAllContactEnteties`;
 export const personKamApiUrl = `${apiBaseUrl}/personas/tipoPersona/${kam}`;
 export const personContactApiUrl = `${apiBaseUrl}/personas/tipoPersona/${contacto}`;
 export const personContactCreateApiUrl = `${apiBaseUrl}/personas/createWithEntities`;

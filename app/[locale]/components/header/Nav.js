@@ -7,8 +7,8 @@ import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
 import CommonDropDown from "@/app/[locale]/components/common/CommonDropDown";
 import { useSession, signOut } from "next-auth/react";
 import { FaArrowRightToBracket } from "react-icons/fa6";
-import { FaUser,FaCog } from "react-icons/fa";
-const MyNav = ({ t,locale }) => {
+import { FaUser, FaCog } from "react-icons/fa";
+const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
   let translations;
   translations = require(`@/messages/${locale}.json`);
@@ -37,11 +37,13 @@ const MyNav = ({ t,locale }) => {
               <Navbar.Toggle aria-controls="navbarSupportedContent" />
               <Navbar.Collapse id="navbarSupportedContent">
                 <Nav className="me-auto">
-                  {/* Dropdown Component */}
-                  <CommonDropDown
+                  <Nav.Item>
+                    <Link className="nav-link" href={"/account/search"}>{translations.Common.accounts}</Link>
+                  </Nav.Item>
+                  {/* <CommonDropDown
                     t={t.namesMenu.account}
                     title={t.namesMenu.account.title}
-                  />
+                  /> */}
                   <CommonDropDown
                     t={t.namesMenu.contacts}
                     title={t.namesMenu.contacts.title}
@@ -81,23 +83,30 @@ const MyNav = ({ t,locale }) => {
                     id=""
                     className=""
                   >
-                    <Link href={`/admin/user/edit/${session.user.id}`} className="dropdown-item">
-                    <FaCog className="text-secondary" />
-                    <span style={{ marginLeft: "8px" }}>{translations.Common.profile}</span>
+                    <Link
+                      href={`/admin/user/edit/${session.user.id}`}
+                      className="dropdown-item"
+                    >
+                      <FaCog className="text-secondary" />
+                      <span style={{ marginLeft: "8px" }}>
+                        {translations.Common.profile}
+                      </span>
                     </Link>
                     <button
                       className="btn btn-outline-primary btn-sm dropdown-item"
                       onClick={handleLogout}
                     >
-                      <FaArrowRightToBracket className="text-secondary"  />
-                      <span style={{ marginLeft: "8px" }}>{translations.Common.logout}</span>
+                      <FaArrowRightToBracket className="text-secondary" />
+                      <span style={{ marginLeft: "8px" }}>
+                        {translations.Common.logout}
+                      </span>
                     </button>
                   </NavDropdown>
                 </Nav>
               </Navbar.Collapse>
             </>
           )}
-          {status === "loading" &&  (
+          {status === "loading" && (
             <>
               <Navbar.Toggle aria-controls="navbarSupportedContent" />
               <Navbar.Collapse id="navbarSupportedContent">

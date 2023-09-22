@@ -6,7 +6,8 @@ import {
   personContactCreateApiUrl,
   ClientePersonaEditApiUrl,
   personContactEditApiUrl,
-  personContactDeleteApiUrl
+  personContactDeleteApiUrl,
+  personContactGetAllApiUrl
 } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
@@ -142,7 +143,7 @@ export const fetchPersonById = async (Id, t, setFormData, push) => {
 };
 export const fetchPersonByContact = async () => {
   try {
-    const response = await fetch(personContactApiUrl);
+    const response = await fetch(personContactGetAllApiUrl);
     const data = await response.json();
     return data;
   } catch (error) {

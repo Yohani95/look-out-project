@@ -58,7 +58,7 @@ export const handleFormSubmit =
           text: translations.notification.success.text,
           type: translations.notification.success.type,
           push: push,
-          link: "/admin/address/search",
+          link: "/contact/address/search",
         });
       } else if (response.status === 409) {
         NotificationSweet({
@@ -67,8 +67,8 @@ export const handleFormSubmit =
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
-            ? `/admin/address/edit/${formData.cliId}`
-            : "/admin/address/create",
+            ? `/contact/address/edit/${formData.cliId}`
+            : "/contact/address/create",
         });
       } else {
         console.log(response);
@@ -78,8 +78,8 @@ export const handleFormSubmit =
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
-            ? `/admin/address/edit/${formData.cliId}`
-            : "/admin/address/create",
+            ? `/contact/address/edit/${formData.cliId}`
+            : "/contact/address/create",
         });
       }
     } catch (error) {
@@ -88,7 +88,7 @@ export const handleFormSubmit =
         text: translations.notification.error.text,
         type: translations.notification.error.type,
         push: push,
-        link: "/admin/address/search",
+        link: "/contact/address/search",
       });
       console.error("Error sending data:", error);
       // router.push('');
@@ -110,8 +110,9 @@ export const handleDelete = async (idaddress, trans, fetchPerson) => {
       showLoading: true,
     });
     try {
-      const response = await axios.delete(`${addressApiUrl}/${idaddress}`); // Utiliza Axios para hacer la solicitud DELETE
-      if (response.data.isSuccess) {
+     const response = await fetch(`${addressApiUrl}/${idaddress}`,{
+        method: "DELETE"}); // Utiliza Axios para hacer la solicitud DELETE
+      if (response.ok) {
         NotificationSweet({
           title: trans.notification.success.title,
           text: trans.notification.success.text,
@@ -145,7 +146,7 @@ export const handleEdit = async (idAddress, trans, push) => {
     trans.notification.edit.buttonCancel
   );
   if (confirmed) {
-    push(`/admin/address/${idAddress}`);
+    push(`/contact/address/${idAddress}`);
   }
 };
 export const fetchaddressById = async (Id, t, setFormData, push) => {
@@ -160,7 +161,7 @@ export const fetchaddressById = async (Id, t, setFormData, push) => {
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "/admin/address/search",
+        link: "/contact/address/search",
       });
     }
   } catch (error) {
@@ -170,17 +171,18 @@ export const fetchaddressById = async (Id, t, setFormData, push) => {
       text: t.Common.notExist,
       type: t.notification.warning.type,
       push: push,
-      link: "/admin/address/search",
+      link: "/contact/address/search",
     });
   }
 };
 export const handleView = async (idaddress, push) => {
-  push(`/admin/address/view/${idaddress}`);
+  push(`/contact/address/view/${idaddress}`);
 };
 export const fetchaddress = async () => {
   try {
     const response = await fetch(addressApiUrl);
     const data = await response.json();
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);

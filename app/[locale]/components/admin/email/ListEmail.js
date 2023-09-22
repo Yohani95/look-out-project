@@ -72,7 +72,7 @@ function ListEmail({locale}) {
       <ErroData message={t.Common.errorMsg} />
     ) : data.length === 0 ? ( // Verifica si no hay datos
       <div className="text-center justify-content-center align-items-center">
-        <h4>{t.Common.email}</h4> {t.Common.noData}s
+        <h4>{t.Common.email}</h4> {t.Common.noData}
       </div>
     ) : (
       <TableCommon
