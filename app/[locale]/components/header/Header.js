@@ -49,17 +49,17 @@ const Header = () => {
             name: t("Nav.business.insertProject"),
             link: "/business/closeProject",
           },
+          insertServices: {
+            name: t("Nav.business.insertServices"),
+            link: "/business/closeServices/create",
+          },
           insertSupport: {
             name: t("Nav.business.insertSupport"),
             link: "/business/closeSupport",
           },
-          insertServices: {
-            name: t("Nav.business.insertServices"),
-            link: "/account/relations",
-          },
           search: {
             name: `${t("Common.search")} ${t("Account.business")}`,
-            link: "/business/closeServices",
+            link: "/",
           },
         },
       },

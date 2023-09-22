@@ -7,7 +7,8 @@ import {
   ClientePersonaEditApiUrl,
   personContactEditApiUrl,
   personContactDeleteApiUrl,
-  personContactGetAllApiUrl
+  personContactGetAllApiUrl,
+  personContactByIdClientApiUrl
 } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
@@ -212,6 +213,16 @@ export const fetchGetbyId = async (idPerson) => {
   try {
     const response = await fetch(`${""}/${idPerson}`);
     return response;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+export const fetchPersonGetbyIdClient = async (idClient) => {
+  try {
+    const response = await fetch(`${personContactByIdClientApiUrl}/${idClient}`);
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];

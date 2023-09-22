@@ -34,6 +34,7 @@ export const authOptions = {
             name: data.usuNombre,
             password: data.usuContraseña, // Ten en cuenta el nombre de la propiedad con caracteres especiales
             vigente: data.usuVigente,
+            persona:data.persona
             // ... Otros campos del usuario
           };
           if (user) {
@@ -68,6 +69,7 @@ export const authOptions = {
       session.user.person = token.person
       session.user.profile = token.profile
       session.user.vigente=token.vigente
+      session.user.persona=token.persona
       return session
     },
     async jwt({ token, account, user }) {
@@ -78,6 +80,7 @@ export const authOptions = {
         token.person = user.per_id,
         token.profile = user.prf_id
         token.vigente=user.vigente
+        token.persona=user.persona
       }
       return token
     }

@@ -1,11 +1,17 @@
 let apiBaseUrl="";
 if (process.env.NODE_ENV === 'development') {
   // Código específico para el entorno de desarrollo
-  apiBaseUrl = "https://localhost:7152/api";
+  apiBaseUrl = "https://localhost:44318/api";
 } else {
   // Código específico para el entorno de producción
-  apiBaseUrl = "https://kpazserv0005.azurewebsites.net/api/";
+  apiBaseUrl = "https://kpazserv0005.azurewebsites.net/api";
 }
+
+export const apiHeaders = {
+  "Content-Type": "application/json",
+  // Agrega cualquier otro encabezado 
+  //que se necesite para todas las solicitudes
+};
 
 export const userApiUrl = `${apiBaseUrl}/usuarios`;
 export const paisApiUrl = `${apiBaseUrl}/pais`;
@@ -20,6 +26,8 @@ export const clientDeleteApiUrl = `${apiBaseUrl}/Clientes/DeleteWithEntities`;
 export const clientUpdatepiUrl = `${apiBaseUrl}/Clientes/UpdateWithEntities`;
 export const clientWithContactApiUrl = `${apiBaseUrl}/Clientes/GetAllIdWithContact`;
 export const clientGetByIdApiUrl = `${apiBaseUrl}/Clientes/GetByIdWithKamAndContact`;
+
+
 //persona url
 export const kam=2;
 export const contacto=3;
@@ -30,9 +38,12 @@ export const personContactApiUrl = `${apiBaseUrl}/personas/tipoPersona/${contact
 export const personContactCreateApiUrl = `${apiBaseUrl}/personas/createWithEntities`;
 export const personContactEditApiUrl = `${apiBaseUrl}/personas/editWithEntities`;
 export const personContactDeleteApiUrl = `${apiBaseUrl}/personas/deleteWithEntities`;
+export const personContactByIdClientApiUrl = `${apiBaseUrl}/Personas/GetAllContactByIdClient`;
 //ClientePersona
 export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersonaDTOById`;
 export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllClientRelations`;
+
+
 //comuna url
 export const comunaApiUrl = `${apiBaseUrl}/comunas`;
 
@@ -64,10 +75,7 @@ export const girosApiUrl = `${apiBaseUrl}/giros`;
 
 //comuna estados clientes
 export const estadoClienteApiUrl = `${apiBaseUrl}/estadoClientes`;
-// Puedes agregar más constantes de URL aquí 
 
-export const apiHeaders = {
-  "Content-Type": "application/json",
-  // Agrega cualquier otro encabezado 
-  //que necesites para todas las solicitudes
-};
+//Tipo Servicio o Proyecto
+export const TipoServicioApiUrl=`${apiBaseUrl}/TipoServicio`;
+
