@@ -182,7 +182,6 @@ export const fetchaddress = async () => {
   try {
     const response = await fetch(addressApiUrl);
     const data = await response.json();
-    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);

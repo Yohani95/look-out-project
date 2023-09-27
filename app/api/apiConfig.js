@@ -78,4 +78,5 @@ export const estadoClienteApiUrl = `${apiBaseUrl}/estadoClientes`;
 
 //Tipo Servicio o Proyecto
 export const TipoServicioApiUrl=`${apiBaseUrl}/TipoServicio`;
-
+//perfil
+export const perfilApiUrl=`${apiBaseUrl}/perfil`;

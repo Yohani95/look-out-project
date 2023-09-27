@@ -1,18 +1,19 @@
-"use client"
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+"use client";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-function MyDatePicker() {
-  const [selectedDate, setSelectedDate] = useState(null);
-
+function MyDatePicker({ onChange, selectedDate,isRead=false }) {
   return (
     <div>
       <DatePicker
-      className="form-control form-select"
+        className="form-control form-select"
         selected={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
-        placeholderText='date'
+        onChange={onChange}
+        placeholderText="date"
+        dateFormat="dd/MM/yyyy"
+        required
+        readOnly={isRead}
       />
     </div>
   );
