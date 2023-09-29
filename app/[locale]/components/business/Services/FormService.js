@@ -285,7 +285,7 @@ function FormService({ locale, isEdit, isCreate }) {
                   type="text"
                   className="form-control"
                   id="confirmclient"
-                  value={formData.archivo1 ? formData.archivo1.name : "N/A"}
+                  value={formData.file1 ? formData.file1.name : "N/A"}
                   readOnly
                   onClick={() => openFileDialog(0)} // Abre el cuadro de diálogo del primer archivo
                   accept=".pdf, .jpg, .jpeg, .png"
@@ -294,8 +294,8 @@ function FormService({ locale, isEdit, isCreate }) {
                 <input
                   type="file"
                   ref={fileInputRefs[0]}
-                  id="archivo1"
-                  name="archivo1"
+                  id="file1"
+                  name="file1"
                   onChange={(event) => handleFileChange(event, 0)} // Maneja el primer archivo
                   style={{ display: "none" }}
                 />
@@ -317,7 +317,7 @@ function FormService({ locale, isEdit, isCreate }) {
                   type="text"
                   className="form-control"
                   id="proposal"
-                  value={formData.archivo2 ? formData.archivo2.name : "N/A"}
+                  value={formData.file2 ? formData.file2.name : "N/A"}
                   readOnly
                   onClick={() => openFileDialog(1)} // Abre el cuadro de diálogo del segundo archivo
                   accept=".pdf, .jpg, .jpeg, .png"
@@ -326,8 +326,8 @@ function FormService({ locale, isEdit, isCreate }) {
                 <input
                   type="file"
                   ref={fileInputRefs[1]}
-                  id="archivo2"
-                  name="archivo2"
+                  id="file2"
+                  name="file2"
                   onChange={(event) => handleFileChange(event, 1)} // Maneja el segundo archivo
                   style={{ display: "none" }}
                 />
