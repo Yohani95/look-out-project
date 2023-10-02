@@ -1,6 +1,6 @@
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import {proyectoCreateAsyncApiUrl} from "@/app/api/apiConfig";
+import {proyectoCreateAsyncApiUrl,proyectoLastIdApiUrl} from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -14,9 +14,8 @@ export const handleFormSubmit =
     event.preventDefault();
     try {
       const data = new FormData();
-
       // Agrega los campos de formulario
-      data.append('proyecto', JSON.stringify({
+      const proyectoData = {
         pryNombre: "P1",
         prpId: 1,
         epyId: 1,
@@ -29,10 +28,12 @@ export const handleFormSubmit =
         pryFechaCierre: "2023-09-26T00:00:00",
         pryIdContacto: 1,
         pryIdContactoClave: 1,
-      }));
+      };
+      // Corrige los nombres de los campos
+      data.append('proyecto', JSON.stringify(proyectoData));
   
       // Agrega los archivos
-      data.append('file1', formData.file1);
+      data.append('fil-e1', formData.file1);
       data.append('file2', formData.file2);
 
       const url = isEditMode
@@ -181,6 +182,34 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
     });
   }
 };
+
+export const fetchServiceLastId = async (Id, t, setFormData, push) => {
+  try {
+    const response = await fetch(`${proyectoLastIdApiUrl}`);
+    if (response.ok) {
+      const result = await response.json();
+      setFormData(result.data); // Suponiendo que los campos del formulario coinciden con los del cliente
+    } else if (response.status == 404) {
+      NotificationSweet({
+        title: t.notification.warning.title,
+        text: t.Common.notExist,
+        type: t.notification.warning.type,
+        push: push,
+        link: "//search",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching client data:", error);
+    NotificationSweet({
+      title: t.notification.warning.title,
+      text: t.Common.notExist,
+      type: t.notification.warning.type,
+      push: push,
+      link: "//search",
+    });
+  }
+};
+
 export const handleView = async (idService, push) => {
   push(`//view/${idService}`);
 };
