@@ -78,7 +78,11 @@ export const estadoClienteApiUrl = `${apiBaseUrl}/estadoClientes`;
 
 //Tipo Servicio o Proyecto
 export const TipoServicioApiUrl=`${apiBaseUrl}/TipoServicio`;
-export const proyectoApiUrl=`${apiBaseUrl}/TipoServicio`;
 export const proyectoCreateAsyncApiUrl=`${apiBaseUrl}/proyecto/createAsync`;
+export const proyectoUpdateAsyncApiUrl=`${apiBaseUrl}/proyecto/updateAsync`;
+export const proyectoDeleteAsyncApiUrl=`${apiBaseUrl}/proyecto/deleteAsync`;
+export const proyectoApiUrl=`${apiBaseUrl}/proyecto`;
+export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
+export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;

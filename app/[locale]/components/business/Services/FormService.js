@@ -12,7 +12,7 @@ import {
   handleInputChange,
   handleFormSubmit,
   GetLastIdProjecService,
-  fetchServiceById
+  fetchServiceLastId,
 } from "@/app/[locale]/utils/business/UtilsService";
 function FormService({ locale, isEdit, isCreate }) {
   const { data: session, status } = useSession();
@@ -21,10 +21,11 @@ function FormService({ locale, isEdit, isCreate }) {
   const [contactOptions, setContactOptions] = useState([]);
   const [accountOptions, setAccountOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [correlativo, setCorrelativo] = useState([]);
   const [formData, setFormData] = useState({
     pryId: 0,
     cliId: 0,
-    pryNombre:"",
+    pryNombre: "",
     perId: 0,
     tseId: 0,
     paiId: 0,
@@ -38,10 +39,12 @@ function FormService({ locale, isEdit, isCreate }) {
   });
   let t = require(`@/messages/${locale}.json`);
   const router = useRouter();
+
   useEffect(() => {
-    var data=fetchServiceById();
-    console.log(data);
-    formData.pryId=data;
+    fetchServiceLastId(t, router.push).then((result) => {
+      console.log(result.data);
+      setCorrelativo(result.data + 1);
+    });
   }, []);
   useEffect(() => {
     fetchCountriest().then((data) => {
@@ -100,7 +103,7 @@ function FormService({ locale, isEdit, isCreate }) {
   };
 
   const cancel = () => {
-    router.push("/");
+    router.push("/business/closeServices/search");
   };
   const openFileDialog = (index) => {
     fileInputRefs[index].current.click();
@@ -162,7 +165,7 @@ function FormService({ locale, isEdit, isCreate }) {
         <div className="d-flex justify-content-end mt-2">
           <div className="col-sm-2">
             <h6 className="text-end ">
-              ID {t.business.title} {formData.pryId==0? "N/A" : formData.pryId}
+              ID {t.business.title} {correlativo == 0 ? "N/A" : correlativo}
             </h6>
           </div>
         </div>
@@ -235,6 +238,7 @@ function FormService({ locale, isEdit, isCreate }) {
                 type="text"
                 className="form-control"
                 id="pryNombre"
+                name="pryNombre"
                 value={formData.pryNombre}
                 onChange={handleInputChange(formData, setFormData)}
               />
@@ -397,15 +401,17 @@ function FormService({ locale, isEdit, isCreate }) {
             </button>
           </div> */}
         </div>
-        <div className="d-flex justify-content-end mt-2 mb-2">
-          <div className="col-sm-2">
-            <button className="btn btn-primary">{t.Common.saveDraf}</button>
-          </div>
-          <div className="col-sm-2">
-            <button className="btn btn-primary">
-              {t.business.saveClosing}
+        <div className="d-flex justify-content-end mb-3">
+          {isCreate || isEdit ? (
+            <button type="submit" className="btn btn-primary m-2">
+              {isEdit ? t.Common.edit : t.Common.saveButton}
             </button>
-          </div>
+          ) : (
+            <></>
+          )}
+          <button type="button" className="btn btn-danger m-2" onClick={cancel}>
+            {isCreate ? t.Common.cancel : t.Common.goBack}
+          </button>
         </div>
       </form>
     </>
