@@ -82,6 +82,7 @@ export const proyectoCreateAsyncApiUrl=`${apiBaseUrl}/proyecto/createAsync`;
 export const proyectoUpdateAsyncApiUrl=`${apiBaseUrl}/proyecto/updateAsync`;
 export const proyectoDeleteAsyncApiUrl=`${apiBaseUrl}/proyecto/deleteAsync`;
 export const proyectoApiUrl=`${apiBaseUrl}/proyecto`;
+export const proyectoDocumentoByIdApiUrl=`${apiBaseUrl}/proyecto/GetByIdProject`;
 export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
 export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
 //perfil

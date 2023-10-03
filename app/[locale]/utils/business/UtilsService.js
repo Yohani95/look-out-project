@@ -240,8 +240,21 @@ export const fetchProyecto = async () => {
     return [];
   }
 };
-export const downloadFiles = async (filePairs) => {
-  for (const [path] of filePairs) {
+export const fetchProyectoDocumentoById = async (id) => {
+  try {
+    const response = await fetch(`${proyectoDocumentoByIdApiUrl}/${id}`);
+    const data = await response.json();
+    const urls = data.map(element => element.documento.DocUrl);
+    return urls;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+
+export const downloadFiles = async (id) => {
+  const urls = await fetchProyectoDocumentoById(id);
+  for (const path of urls) {
     try {
       const url=`${proyectoGeFileApiUrl}?path=${encodeURIComponent(path)}`;
       const response = await fetch(url,{

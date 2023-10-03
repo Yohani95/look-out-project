@@ -29,11 +29,11 @@ function ListService({locale}) {
         key: "actions",
         render: (item) => (
           <ServiceButtons
-            id={item.emaId}
-            onDelete={() => handleDelete(item.emaId,t,fetchList)}
-            onEdit={() => handleEdit(item.emaId,t,router.push)}
-            onView={()=>handleView(item.emaId,router.push)}
-            downloadFile={() => downloadFiles([["C:\\Users\\KPaz\\source\\repos\\look-out-api\\look-out-api\\bin\\Debug\\net6.0\\File\\1\\e3eeabaf-6d15-498a-a094-e32e77a5a94d.jpeg"]])}
+            id={item.pryId}
+            onDelete={() => handleDelete(item.pryId,t,fetchList)}
+            onEdit={() => handleEdit(item.pryId,t,router.push)}
+            onView={()=>handleView(item.pryId,router.push)}
+            downloadFile={() => downloadFiles(item.pryId)}
             />
         ),
       },
@@ -54,7 +54,7 @@ function ListService({locale}) {
          const modifiedData = await response.map((item) => ({
               ...item,
            pryFechaInicioEstimada: formatDate(item.pryFechaInicioEstimada),
-           pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada)
+          // pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada)
         //     item.per.perNombres + " " + item.per.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
         //     cliId:
         //     item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo

@@ -127,7 +127,7 @@ function FormService({ locale, isEdit, isCreate }) {
           .toString()
           .padStart(2, "0"); // Obtener el mes en formato "mm"
         const day = startDateCopy.getDate().toString().padStart(2, "0"); // Obtener el día en formato "dd"
-        const formattedEndDate = `${day}/${month}/${year}`;
+        const formattedEndDate = `${month}/${day}/${year}`;
         setFormData((prevData) => ({
           ...prevData,
           endDate: formattedEndDate,
