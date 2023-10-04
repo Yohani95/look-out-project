@@ -5,6 +5,7 @@ import FormPerfil from "@/app/[locale]/components/admin/perfil/FormPerfil";
 function page({params}) {
   const t = useTranslations();
   const locale = useLocale();
+  console.log("Params: "+ params);
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">

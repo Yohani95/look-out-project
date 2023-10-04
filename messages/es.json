@@ -130,7 +130,8 @@
     "lastName":"Apellido Paterno",
     "secondName":"Apellido Materno",
     "phones":"teléfonos",
-    "emailExist":"El email ya existe."
+    "emailExist":"El email ya existe.",
+    "perfil": "Perfil"
   },
   "Index": {
     "title": "HOLA!"

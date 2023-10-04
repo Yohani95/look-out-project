@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import {
   handleInputChange,
   handleFormSubmit,
-  fetchPerfilType,
   fetchPerfilById,
 } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
 function FormPerfil({ locale, isEdit, isCreate, idPerfil }) {
@@ -14,10 +13,10 @@ function FormPerfil({ locale, isEdit, isCreate, idPerfil }) {
   const t = require(`@/messages/${locale}.json`);
   const [formData, setFormData] = useState({
     id: null,
-    prfNombre: "",
-    prfDescripcion: "",
+    prf_Nombre: "",
+    prf_Descripcion: "",
   });
-
+console.log("idPerfil: "+idPerfil);
   if (idPerfil!= null && !isNaN(idPerfil)) {
     useEffect(() => {
       fetchPerfilById(idPerfil,t,setFormData,router.push);
@@ -25,7 +24,7 @@ function FormPerfil({ locale, isEdit, isCreate, idPerfil }) {
   }
 
   const cancel = () => {
-    router.push("/admin/pefil/search");
+    router.push("/admin/perfil/search");
   };
   const handleSelectChange = (event, fieldName) => {
     const selectedValue = event.target.value;
@@ -39,42 +38,41 @@ function FormPerfil({ locale, isEdit, isCreate, idPerfil }) {
     setFormData
   );
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <fieldset disabled={!isCreate && !isEdit ? true : false}>
         {isCreate || isEdit ? (
           <h4>
             {isEdit ? `${t.Common.edit} ${t.Common.perfil}` : `${t.Common.create} ${t.Common.perfil}`}
           </h4>
         ) : (
-          <h4>{t.Account.perfil}</h4>
+          <h4>{t.Common.perfil}</h4>
         )}
         <div className="mb-3 row align-items-center">
-          <label htmlFor="prfNombre" className="col-sm-2 col-form-label">
-            {t.Common.perfil}
+          <label htmlFor="prf_Nombre" className="col-sm-2 col-form-label">
+            {t.Common.name}
           </label>
           <div className="col-sm-4">
             <input
-              type="perfil"
+              type="text"
               className="form-control"
-              id=""
-              name="prfNombre"
-              value={formData.prfNombre}
+              id="prf_Nombre"
+              name="prf_Nombre"
+              value={formData.prf_Nombre}
               onChange={handleInputChange(formData, setFormData)}
               required
             />
           </div>
-          <label htmlFor="prfDescripcion" className="col-sm-2 col-form-label">
-            {t.Common.perfil}
+          <label htmlFor="prf_Descripcion" className="col-sm-2 col-form-label">
+            {t.Common.description}
           </label>
           <div className="col-sm-4">
           <input
-              type="perfil"
+              type="text"
               className="form-control"
-              id=""
-              name="prfDescripcion"
-              value={formData.prfDescripcion}
+              id="prf_Descripcion"
+              name="prf_Descripcion"
+              value={formData.prf_Descripcion}
               onChange={handleInputChange(formData, setFormData)}
-              //title={t.Common.prfNombre}
               required
             />
             </div>
