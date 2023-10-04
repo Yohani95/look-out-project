@@ -1,6 +1,6 @@
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import {proyectoCreateAsyncApiUrl,proyectoLastIdApiUrl} from "@/app/api/apiConfig";
+import {proyectoCreateAsyncApiUrl,proyectoLastIdApiUrl,proyectoApiUrl,proyectoGeFileApiUrl} from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -16,29 +16,31 @@ export const handleFormSubmit =
       const data = new FormData();
       // Agrega los campos de formulario
       const proyectoData = {
-        pryNombre: "P1",
+        pryId: formData.pryId,
+        pryNombre: formData.pryNombre,
         prpId: 1,
         epyId: 1,
-        tseId: 1,
-        pryFechaInicioEstimada: "2023-09-26T00:00:00",
+        tseId: formData.tseId,
+        pryFechaInicioEstimada: formData.startDate,
         pryValor: 1,
         monId: 1,
-        pryIdCliente: 1,
-        pryFechaCierreEstimada: "2023-09-26T00:00:00",
-        pryFechaCierre: "2023-09-26T00:00:00",
-        pryIdContacto: 1,
-        pryIdContactoClave: 1,
+        pryIdCliente: formData.cliId,
+        pryFechaCierreEstimada: formData.endDate ,
+        pryFechaCierre: formData.closeDate,
+        pryIdContacto: formData.perId,
+        pryIdContactoClave: formData.perId,
       };
+      console.log(proyectoData);
       // Corrige los nombres de los campos
-      data.append('proyecto', JSON.stringify(proyectoData));
+      data.append('proyectoJson', JSON.stringify(proyectoData));
   
       // Agrega los archivos
-      data.append('fil-e1', formData.file1);
-      data.append('file2', formData.file2);
+      data.append('files', formData.file1);
+      data.append('files', formData.file2);
 
       const url = isEditMode
-        ? `${""}/${formData.id}`
-        : `${"https://localhost:44318/api/Proyecto/createAsync"}`;
+        ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
+        : `${proyectoCreateAsyncApiUrl}`;
       const method = isEditMode ? "PUT" : "POST";
       await NotificationSweet({
         title: isEditMode
@@ -64,7 +66,7 @@ export const handleFormSubmit =
           text: translations.notification.success.text,
           type: translations.notification.success.type,
           push: push,
-          link: "/contact/address/search",
+          link: "/business/closeServices/search",
         });
       } else if (response.status === 409) {
         NotificationSweet({
@@ -73,8 +75,8 @@ export const handleFormSubmit =
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
-            ? `/contact/address/edit/${formData.cliId}`
-            : "/contact/address/create",
+            ? `/business/closeServices/edit/${formData.cliId}`
+            : "/business/closeServices/create",
         });
       } else {
         NotificationSweet({
@@ -83,8 +85,8 @@ export const handleFormSubmit =
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
-            ? `/contact/address/edit/${formData.cliId}`
-            : "/contact/address/create",
+            ? `/business/closeServices/edit/${formData.cliId}`
+            : "/business/closeServices/create",
         });
       }
     } catch (error) {
@@ -93,7 +95,7 @@ export const handleFormSubmit =
         text: translations.notification.error.text,
         type: translations.notification.error.type,
         push: push,
-        link: "/contact/address/search",
+        link: "/business/closeServices/search",
       });
       console.error("Error sending data:", error);
       // router.push('');
@@ -153,12 +155,12 @@ export const handleEdit = async (idService, trans, push) => {
     trans.notification.edit.buttonCancel
   );
   if (confirmed) {
-    push(`/contact/address/${idService}`);
+    push(`/business/closeServices/edit/${idService}`);
   }
 };
 export const fetchServiceById = async (Id, t, setFormData, push) => {
   try {
-    const response = await fetch(`${""}/${Id}`);
+    const response = await fetch(`${proyectoApiUrl}/${Id}`);
     if (response.ok) {
       const result = await response.json();
       setFormData(result.data); // Suponiendo que los campos del formulario coinciden con los del cliente
@@ -168,7 +170,7 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "//search",
+        link: "/business/closeServices/search",
       });
     }
   } catch (error) {
@@ -178,24 +180,24 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
       text: t.Common.notExist,
       type: t.notification.warning.type,
       push: push,
-      link: "//search",
+      link: "/business/closeServices/search",
     });
   }
 };
 
-export const fetchServiceLastId = async (Id, t, setFormData, push) => {
+export const fetchServiceLastId = async (t,push) => {
   try {
     const response = await fetch(`${proyectoLastIdApiUrl}`);
     if (response.ok) {
       const result = await response.json();
-      setFormData(result.data); // Suponiendo que los campos del formulario coinciden con los del cliente
+      return result; // Suponiendo que los campos del formulario coinciden con los del cliente
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "//search",
+        link: "/business/closeServices/search",
       });
     }
   } catch (error) {
@@ -205,13 +207,13 @@ export const fetchServiceLastId = async (Id, t, setFormData, push) => {
       text: t.Common.notExist,
       type: t.notification.warning.type,
       push: push,
-      link: "//search",
+      link: "/business/closeServices/search",
     });
   }
 };
 
 export const handleView = async (idService, push) => {
-  push(`//view/${idService}`);
+  push(`/business/closeServices/view/${idService}`);
 };
 export const GetLastIdProjecService = async () => {
   try {
@@ -226,5 +228,53 @@ export const GetLastIdProjecService = async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
+  }
+};
+export const fetchProyecto = async () => {
+  try {
+    const response = await fetch(`${proyectoApiUrl}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+export const fetchProyectoDocumentoById = async (id) => {
+  try {
+    const response = await fetch(`${proyectoDocumentoByIdApiUrl}/${id}`);
+    const data = await response.json();
+    const urls = data.map(element => element.documento.DocUrl);
+    return urls;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+
+export const downloadFiles = async (id) => {
+  const urls = await fetchProyectoDocumentoById(id);
+  for (const path of urls) {
+    try {
+      const url=`${proyectoGeFileApiUrl}?path=${encodeURIComponent(path)}`;
+      const response = await fetch(url,{
+        method: "GET",
+        headers: {},
+      });
+      if (!response.ok) {
+        throw new Error(`Error al descargar el archivo: ${path}`);
+      }
+      const blob = await response.blob();
+      const urlBlob = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = urlBlob;
+      a.download = path;
+      a.style.display = 'none'; // Ocultar el enlace
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a); // Eliminar el enlace después de la descarga
+    } catch (error) {
+      console.error(`Error al descargar el archivo`, error);
+    }
   }
 };

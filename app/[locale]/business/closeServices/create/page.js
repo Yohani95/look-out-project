@@ -16,7 +16,7 @@ function page() {
       <div className="d-flex justify-content-center align-items-center m-4">
         <div className="card col-lg-10 shadow ">
           <div className="container">
-            <FormService locale={locale}/>
+            <FormService locale={locale} isCreate={true} isEdit={false}/>
           </div>
         </div>
       </div>
