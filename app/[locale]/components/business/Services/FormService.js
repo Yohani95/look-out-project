@@ -42,7 +42,6 @@ function FormService({ locale, isEdit, isCreate }) {
 
   useEffect(() => {
     fetchServiceLastId(t, router.push).then((result) => {
-      console.log(result.data);
       setCorrelativo(result.data + 1);
     });
   }, []);
@@ -114,31 +113,33 @@ function FormService({ locale, isEdit, isCreate }) {
   const fileInputRefs = [useRef(null), useRef(null)];
   const calculateEndDate = () => {
     const { startDate, months } = formData;
-    if (months < 1 || months > 60) {
-      return; // No actualices el estado si el valor está fuera del rango
-    }
-    if (startDate && months) {
-      const startDateCopy = new Date(startDate);
-      const parsedMonths = parseInt(months, 10);
-      if (!isNaN(parsedMonths)) {
-        startDateCopy.setMonth(startDateCopy.getMonth() + parsedMonths);
-        const year = startDateCopy.getFullYear();
-        const month = (startDateCopy.getMonth() + 1)
-          .toString()
-          .padStart(2, "0"); // Obtener el mes en formato "mm"
-        const day = startDateCopy.getDate().toString().padStart(2, "0"); // Obtener el día en formato "dd"
-        const formattedEndDate = `${month}/${day}/${year}`;
+    try {
+      if (months < 1 || months > 60) {
+        return; // No actualices el estado si el valor está fuera del rango
+      }
+      if (startDate && months) {
+        const startDateCopy = new Date(startDate);
+        const parsedMonths = parseInt(months, 10);
+        if (!isNaN(parsedMonths)) {
+          const startDateCopy = new Date(startDate);
+          const parsedMonths = parseInt(months, 10);
+          if (!isNaN(parsedMonths)) {
+            startDateCopy.setMonth(startDateCopy.getMonth() + parsedMonths);
+            setFormData((prevData) => ({
+              ...prevData,
+              endDate: startDateCopy, // Aquí actualiza endDate como un objeto Date
+            }));
+          }
+        }
+      } else {
+        // Si uno de los campos no está lleno o es inválido, borra la fecha de finalización
         setFormData((prevData) => ({
           ...prevData,
-          endDate: formattedEndDate,
+          endDate: null,
         }));
       }
-    } else {
-      // Si uno de los campos no está lleno o es inválido, borra la fecha de finalización
-      setFormData((prevData) => ({
-        ...prevData,
-        endDate: null,
-      }));
+    } catch (error) {
+      console.log("Error calculando fecha estimada" + error);
     }
   };
   useEffect(() => {
@@ -201,7 +202,6 @@ function FormService({ locale, isEdit, isCreate }) {
                 onChange={(date) =>
                   setFormData({ ...formData, closeDate: date })
                 }
-                isRead={true}
               />
             </div>
             <SelectField
@@ -382,14 +382,10 @@ function FormService({ locale, isEdit, isCreate }) {
               {t.business.estimatedClosingDate}
             </label>
             <div className="col-sm-2">
-              <input
-                type="text"
-                className="form-control"
-                id="endDate"
-                name="endDate"
-                value={formData.endDate || ""}
-                required
-                disabled
+              <MyDatePicker
+                selectedDate={formData.endDate}
+                onChange={(date) => setFormData({ ...formData, endDate: date })}
+                isRead={true}
               />
             </div>
           </div>

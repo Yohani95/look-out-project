@@ -1,6 +1,7 @@
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import {proyectoCreateAsyncApiUrl,proyectoLastIdApiUrl,proyectoApiUrl,proyectoGeFileApiUrl} from "@/app/api/apiConfig";
+import {proyectoCreateAsyncApiUrl,proyectoLastIdApiUrl,proyectoApiUrl,proyectoGeFileApiUrl,proyectoDocumentoByIdApiUrl} from "@/app/api/apiConfig";
+import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -244,7 +245,7 @@ export const fetchProyectoDocumentoById = async (id) => {
   try {
     const response = await fetch(`${proyectoDocumentoByIdApiUrl}/${id}`);
     const data = await response.json();
-    const urls = data.map(element => element.documento.DocUrl);
+    const urls = data.map(element => element.documento.docUrl);
     return urls;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -252,8 +253,31 @@ export const fetchProyectoDocumentoById = async (id) => {
   }
 };
 
-export const downloadFiles = async (id) => {
+export const downloadFiles = async (id,translations) => {
+  const confirmed = await ConfirmationDialog(
+    trans.notification.files.title,
+    trans.notification.files.text,
+    trans.notification.files.type,
+    trans.notification.files.buttonOk,
+    trans.notification.files.buttonCancel
+  );
+  if(confirmed!=true){
+    return;
+  }
   const urls = await fetchProyectoDocumentoById(id);
+  
+  if (!urls || urls.length === 0) {
+    // Mostrar notificación de que no hay documentos (urls es nulo o un arreglo vacío)
+    NotificationSweet({
+      title: translations.notification.warning.title,
+      text: translations.client.clientNameExist,
+      type: translations.notification.warning.type,
+      push: push,
+      link: "",
+    });
+    return;
+  }
+
   for (const path of urls) {
     try {
       const url=`${proyectoGeFileApiUrl}?path=${encodeURIComponent(path)}`;
@@ -275,6 +299,11 @@ export const downloadFiles = async (id) => {
       document.body.removeChild(a); // Eliminar el enlace después de la descarga
     } catch (error) {
       console.error(`Error al descargar el archivo`, error);
+      NotificationSweet({
+        title: trans.notification.error.title,
+        text: trans.notification.error.text,
+        type: trans.notification.error.type,
+      });
     }
   }
 };

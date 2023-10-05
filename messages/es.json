@@ -131,7 +131,8 @@
     "secondName":"Apellido Materno",
     "phones":"teléfonos",
     "emailExist":"El email ya existe.",
-    "perfil": "Perfil"
+    "perfil": "Perfil",
+    "correlative":"correlative"
   },
   "Index": {
     "title": "HOLA!"
@@ -389,6 +390,13 @@
       "title": "Por favor espera...",
       "text": "",
       "type": "info"
+    },
+    "files": {
+      "title": "Información",
+      "text": "¿Estás seguro descargar?",
+      "type": "info",
+      "buttonOk":"Sí, descagar",
+      "buttonCancel":"Cancelar"
     }
 
   }

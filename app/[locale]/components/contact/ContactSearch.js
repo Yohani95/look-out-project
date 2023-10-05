@@ -44,7 +44,6 @@ function ContactSearch({ locale }) {
     try {
       setIsLoading(true);
       const fetchedData = await fetchPersonByContact();
-      console.log(fetchedData.data)
       const modifiedData = await fetchedData.data.map((item) => ({
         ...item,
         id:item.persona.id,

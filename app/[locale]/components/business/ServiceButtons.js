@@ -11,10 +11,10 @@ function ServiceButtons({onDelete,onEdit,onView,downloadFile }) {
       <FaEdit size={16} onClick={onEdit}/>
     </Button>
     <Button size="sm" variant="link" >
-      <FaTrash size={16} className="" onClick={onDelete}/>
+      <FaFileDownload  size={16} onClick={downloadFile}/>
     </Button>
     <Button size="sm" variant="link" >
-      <FaFileDownload title='descargar documento' size={16} onClick={downloadFile}/>
+      <FaTrash size={16} className="" onClick={onDelete}/>
     </Button>
   </>
   )

@@ -20,7 +20,7 @@ function ListService({locale}) {
     let t = require(`@/messages/${locale}.json`);
     const router = useRouter();
     const columns = [
-        { title: "ID", key: "pryId" },
+        { title: t.Common.correlative, key: "pryId" },
         { title: t.Common.name, key: "pryNombre" },
         { title: t.business.estimatedStartDate, key: "pryFechaInicioEstimada" },
         { title: t.business.estimatedClosingDate, key: "pryFechaCierreEstimada" },
@@ -33,7 +33,7 @@ function ListService({locale}) {
             onDelete={() => handleDelete(item.pryId,t,fetchList)}
             onEdit={() => handleEdit(item.pryId,t,router.push)}
             onView={()=>handleView(item.pryId,router.push)}
-            downloadFile={() => downloadFiles(item.pryId)}
+            downloadFile={() => downloadFiles(item.pryId,t)}
             />
         ),
       },
@@ -50,11 +50,10 @@ function ListService({locale}) {
       try {
         setIsLoading(true);
         const response = await fetchProyecto();
-        console.log(response)
          const modifiedData = await response.map((item) => ({
               ...item,
            pryFechaInicioEstimada: formatDate(item.pryFechaInicioEstimada),
-          // pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada)
+          pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada)
         //     item.per.perNombres + " " + item.per.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
         //     cliId:
         //     item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo
@@ -66,7 +65,6 @@ function ListService({locale}) {
         setData(modifiedData);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching phone data:", error);
         setError(true);
         setIsLoading(false);
       }
@@ -82,7 +80,7 @@ function ListService({locale}) {
       <ErroData message={t.Common.errorMsg} />
     ) : data.length === 0 ? ( // Verifica si no hay datos
       <div className="text-center justify-content-center align-items-center">
-        <h4>{t.Common.email}</h4> {t.Common.noData}
+        <h4>{t.Ficha.business}</h4> {t.Common.noData}
       </div>
     ) : (
       <TableCommon

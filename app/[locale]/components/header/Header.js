@@ -123,6 +123,10 @@ const Header = () => {
           list:{
             name: t("Nav.administration.user"),
             link: "/admin/user/list",
+          },
+          profile:{
+            name: t("Common.profile"),
+            link: "/admin/perfil/search",
           }
         },
         title:t("Nav.administration.title")

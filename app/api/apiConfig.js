@@ -66,7 +66,6 @@ export const emailTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
 export const addressApiUrl = `${apiBaseUrl}/direccion`;
 export const addressCreateApiUrl = `${apiBaseUrl}/email`;
 export const addressEditApiUrl = `${apiBaseUrl}/email`;
-
 export const addressTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
 
 
@@ -76,13 +75,13 @@ export const girosApiUrl = `${apiBaseUrl}/giros`;
 //comuna estados clientes
 export const estadoClienteApiUrl = `${apiBaseUrl}/estadoClientes`;
 
-//Tipo Servicio o Proyecto
+//Tipo Servicio o Proyecto, ProyectoDocumento
 export const TipoServicioApiUrl=`${apiBaseUrl}/TipoServicio`;
 export const proyectoCreateAsyncApiUrl=`${apiBaseUrl}/proyecto/createAsync`;
 export const proyectoUpdateAsyncApiUrl=`${apiBaseUrl}/proyecto/updateAsync`;
 export const proyectoDeleteAsyncApiUrl=`${apiBaseUrl}/proyecto/deleteAsync`;
 export const proyectoApiUrl=`${apiBaseUrl}/proyecto`;
-export const proyectoDocumentoByIdApiUrl=`${apiBaseUrl}/proyecto/GetByIdProject`;
+export const proyectoDocumentoByIdApiUrl=`${apiBaseUrl}/ProyectoDocumento/GetByIdProject`;
 export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
 export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
 //perfil

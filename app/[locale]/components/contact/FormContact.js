@@ -63,7 +63,7 @@ function FormContact({ locale, isEdit, isCreate,idPerson }) {
     setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
   const cancel = () => {
-    router.push("/contact/search");
+    router.back();
   };
   return (
     <form onSubmit={handleSubmit}>
