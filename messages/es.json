@@ -123,16 +123,16 @@
     "attach": "Adjuntar",
     "userName": "Nombre de Usuario",
     "loadingData": "Cangando Datos...",
-    "notExist":"no existe el registro",
-    "noData":" No hay datos disponibles en la base de datos.",
-    "InvalidCredentials":"Credenciales no válidas",
-    "giro":"Giro",
-    "lastName":"Apellido Paterno",
-    "secondName":"Apellido Materno",
-    "phones":"teléfonos",
-    "emailExist":"El email ya existe.",
+    "notExist": "no existe el registro",
+    "noData": " No hay datos disponibles en la base de datos.",
+    "InvalidCredentials": "Credenciales no válidas",
+    "giro": "Giro",
+    "lastName": "Apellido Paterno",
+    "secondName": "Apellido Materno",
+    "phones": "teléfonos",
+    "emailExist": "El email ya existe.",
     "perfil": "Perfil",
-    "correlative":"correlative"
+    "correlative": "Correlativo"
   },
   "Index": {
     "title": "HOLA!"
@@ -189,7 +189,7 @@
     "account": "Cuenta",
     "action": "Acciones",
     "title": "Crear Cuenta",
-    "edit":"Editar Cuenta",
+    "edit": "Editar Cuenta",
     "name": "Nombre de Cuenta",
     "country": "País",
     "select": "Seleccionar",
@@ -269,14 +269,10 @@
       "user": "Usuarios de Sistema",
       "userList": "Usuarios",
       "createUser": "Crear Usuario de Sistema",
-      "editUser":"Editar Usuario de Sistema"
+      "editUser": "Editar Usuario de Sistema"
     },
-    "phone":{
-
-    },
-    "email":{
-
-    }
+    "phone": {},
+    "email": {}
   },
   "business": {
     "title": "Negocio",
@@ -376,17 +372,17 @@
       "title": "Información",
       "text": "¿Estás seguro de editar?",
       "type": "info",
-      "buttonOk":"Sí, Editar",
-      "buttonCancel":"Cancelar"
+      "buttonOk": "Sí, Editar",
+      "buttonCancel": "Cancelar"
     },
-    "deleting":{
+    "deleting": {
       "title": "¿Estás seguro de eliminar?",
       "text": "Una vez eliminado, no podrás recuperar los datos",
       "type": "info",
-      "buttonOk":"Sí, Eliminar",
-      "buttonCancel":"Cancelar"
+      "buttonOk": "Sí, Eliminar",
+      "buttonCancel": "Cancelar"
     },
-    "loading":{
+    "loading": {
       "title": "Por favor espera...",
       "text": "",
       "type": "info"
@@ -395,10 +391,8 @@
       "title": "Información",
       "text": "¿Estás seguro descargar?",
       "type": "info",
-      "buttonOk":"Sí, descagar",
-      "buttonCancel":"Cancelar"
+      "buttonOk": "Sí, Descargar archivo",
+      "buttonCancel": "Cancelar"
     }
-
   }
-  
 }

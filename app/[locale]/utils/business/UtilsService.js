@@ -1,6 +1,12 @@
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import {proyectoCreateAsyncApiUrl,proyectoLastIdApiUrl,proyectoApiUrl,proyectoGeFileApiUrl,proyectoDocumentoByIdApiUrl} from "@/app/api/apiConfig";
+import {
+  proyectoCreateAsyncApiUrl,
+  proyectoLastIdApiUrl,
+  proyectoApiUrl,
+  proyectoGeFileApiUrl,
+  proyectoDocumentoByIdApiUrl,
+} from "@/app/api/apiConfig";
 import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
@@ -26,18 +32,17 @@ export const handleFormSubmit =
         pryValor: 1,
         monId: 1,
         pryIdCliente: formData.cliId,
-        pryFechaCierreEstimada: formData.endDate ,
+        pryFechaCierreEstimada: formData.endDate,
         pryFechaCierre: formData.closeDate,
         pryIdContacto: formData.perId,
         pryIdContactoClave: formData.perId,
       };
-      console.log(proyectoData);
       // Corrige los nombres de los campos
-      data.append('proyectoJson', JSON.stringify(proyectoData));
-  
+      data.append("proyectoJson", JSON.stringify(proyectoData));
+
       // Agrega los archivos
-      data.append('files', formData.file1);
-      data.append('files', formData.file2);
+      data.append("files", formData.file1);
+      data.append("files", formData.file2);
 
       const url = isEditMode
         ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
@@ -60,7 +65,6 @@ export const handleFormSubmit =
         headers: {},
         body: data,
       });
-      console.log(response)
       if (response.ok) {
         NotificationSweet({
           title: translations.notification.success.title,
@@ -164,7 +168,30 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
     const response = await fetch(`${proyectoApiUrl}/${Id}`);
     if (response.ok) {
       const result = await response.json();
-      setFormData(result.data); // Suponiendo que los campos del formulario coinciden con los del cliente
+      result.startDate = new Date(result.pryFechaInicioEstimada);
+      result.closeDate = new Date(result.pryFechaCierre);
+      const endDate =new Date(result.pryFechaCierreEstimada)
+      const timeDifference = endDate.getTime() - result.startDate .getTime(); 
+      const monthsDifference = timeDifference / (1000 * 60 * 60 * 24 * 30.44); 
+      // Redondear el valor de meses a entero
+      result.months = Math.round(monthsDifference);
+      //obtener documentos 
+      const documentos = await fetchProyectoDocumentoById(result.pryId);
+      for (let i = 0; i < documentos.length; i++) {
+        const documento = documentos[i];
+        const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(documento.docUrl)}`;
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {},
+        });
+      
+        if (response.ok) {
+          const blob = await response.blob();
+          // Asigna el documento al resultado con el nombre correspondiente (file1, file2, etc.)
+          result[`file${i + 1}`] = new File([blob], documento.docNombre);
+        }
+      }
+      setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
@@ -177,16 +204,16 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
   } catch (error) {
     console.error("Error fetching client data:", error);
     NotificationSweet({
-      title: t.notification.warning.title,
-      text: t.Common.notExist,
-      type: t.notification.warning.type,
+      title: t.notification.error.title,
+      text: t.notification.error.text,
+      type: t.notification.error.type,
       push: push,
       link: "/business/closeServices/search",
     });
   }
 };
 
-export const fetchServiceLastId = async (t,push) => {
+export const fetchServiceLastId = async (t, push) => {
   try {
     const response = await fetch(`${proyectoLastIdApiUrl}`);
     if (response.ok) {
@@ -245,28 +272,28 @@ export const fetchProyectoDocumentoById = async (id) => {
   try {
     const response = await fetch(`${proyectoDocumentoByIdApiUrl}/${id}`);
     const data = await response.json();
-    const urls = data.map(element => element.documento.docUrl);
-    return urls;
+    const documento = data.map((element) => element.documento);
+    return documento;
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
   }
 };
 
-export const downloadFiles = async (id,translations) => {
+export const downloadFiles = async (id, translations) => {
   const confirmed = await ConfirmationDialog(
-    trans.notification.files.title,
-    trans.notification.files.text,
-    trans.notification.files.type,
-    trans.notification.files.buttonOk,
-    trans.notification.files.buttonCancel
+    translations.notification.files.title,
+    translations.notification.files.text,
+    translations.notification.files.type,
+    translations.notification.files.buttonOk,
+    translations.notification.files.buttonCancel
   );
-  if(confirmed!=true){
+  if (confirmed != true) {
     return;
   }
-  const urls = await fetchProyectoDocumentoById(id);
-  
-  if (!urls || urls.length === 0) {
+  const documentos = await fetchProyectoDocumentoById(id);
+
+  if (!documentos || documentos.length === 0) {
     // Mostrar notificación de que no hay documentos (urls es nulo o un arreglo vacío)
     NotificationSweet({
       title: translations.notification.warning.title,
@@ -277,32 +304,33 @@ export const downloadFiles = async (id,translations) => {
     });
     return;
   }
-
-  for (const path of urls) {
+  for (const documento of documentos) {
     try {
-      const url=`${proyectoGeFileApiUrl}?path=${encodeURIComponent(path)}`;
-      const response = await fetch(url,{
+      const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(
+        documento.docUrl
+      )}`;
+      const response = await fetch(url, {
         method: "GET",
         headers: {},
       });
       if (!response.ok) {
-        throw new Error(`Error al descargar el archivo: ${path}`);
+        throw new Error(`Error al descargar el archivo: ${documento.docUrl}`);
       }
       const blob = await response.blob();
       const urlBlob = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = urlBlob;
-      a.download = path;
-      a.style.display = 'none'; // Ocultar el enlace
+      a.download = documento.docNombre;
+      a.style.display = "none"; // Ocultar el enlace
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a); // Eliminar el enlace después de la descarga
     } catch (error) {
       console.error(`Error al descargar el archivo`, error);
       NotificationSweet({
-        title: trans.notification.error.title,
-        text: trans.notification.error.text,
-        type: trans.notification.error.type,
+        title: translations.notification.error.title,
+        text: translations.notification.error.text,
+        type: translations.notification.error.type,
       });
     }
   }
