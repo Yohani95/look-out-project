@@ -6,6 +6,7 @@ import {
   proyectoApiUrl,
   proyectoGeFileApiUrl,
   proyectoDocumentoByIdApiUrl,
+  proyectoDeleteAsyncApiUrl
 } from "@/app/api/apiConfig";
 import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 export const handleInputChange = (formData, setFormData) => (event) => {
@@ -123,7 +124,7 @@ export const handleDelete = async (idService, trans, fetchService) => {
       showLoading: true,
     });
     try {
-      const response = await fetch(`${""}/${idService}`, {
+      const response = await fetch(`${proyectoDeleteAsyncApiUrl}/${idService}`, {
         method: "DELETE",
       }); // Utiliza Axios para hacer la solicitud DELETE
       if (response.ok) {
