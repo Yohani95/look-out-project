@@ -86,3 +86,5 @@ export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
 export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
+//
+export const monedaApiUrl=`${apiBaseUrl}/Moneda`;

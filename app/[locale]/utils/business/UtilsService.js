@@ -143,7 +143,6 @@ export const handleDelete = async (idService, trans, fetchService) => {
         });
       }
     } catch (error) {
-      console.log(error);
       NotificationSweet({
         title: trans.notification.error.title,
         text: trans.notification.error.text,

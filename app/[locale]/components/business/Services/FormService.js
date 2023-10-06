@@ -15,6 +15,9 @@ import {
   fetchServiceById,
   fetchServiceLastId,
 } from "@/app/[locale]/utils/business/UtilsService";
+import TableCommon from "@/app/[locale]/components/common/TableCommon"
+import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
+import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
 function FormService({ locale, isEdit, isCreate, idService }) {
   const { data: session, status } = useSession();
   const [countryOptions, setCountryOptions] = useState([]);
@@ -23,6 +26,10 @@ function FormService({ locale, isEdit, isCreate, idService }) {
   const [accountOptions, setAccountOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [correlativo, setCorrelativo] = useState([]);
+  const [perfilOptions, setPerfilOptions] = useState([]);
+  const [monedaOptions, setMonedaOptions] = useState([]);
+  const [tablaCommon, setTablaCommon] = useState([]);
+
   const [formData, setFormData] = useState({
     pryId: 0,
     cliId: 0,
@@ -37,10 +44,57 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     startDate: "",
     closeDate: null,
     months: null,
+    idMon: 0,
+    idPerfil: 0,
+    fee: 0,
+    base: "",
   });
   let t = require(`@/messages/${locale}.json`);
   const router = useRouter();
+  const handleAddToTablaCommon = () => {
+    // Crear un objeto que represente el elemento seleccionado
+    const nuevoElemento = {
+      idPerfil: formData.idPerfil,
+      fee: formData.fee,
+      idMon: formData.idMon,
+      base: formData.base,
+    };
 
+    // Agregar el nuevo elemento a la lista tablaCommon
+    setTablaCommon([...tablaCommon, nuevoElemento]);
+  };
+  const columns = [
+    { title: t.Common.correlative, key: "idPerfil" },
+    { title: t.Common.name, key: "fee" },
+    { title: t.business.estimatedStartDate, key: "idMon" },
+    { title: t.business.estimatedClosingDate, key: "base" }
+  ]
+  const timeOptions = [
+    { value: "mes", label: t.time.month },
+    { value: "semana", label: t.time.week },
+    { value: "hora", label: t.time.hour },
+    // Agrega más opciones según sea necesario
+  ];
+  useEffect(() => {
+    fetchMoneda().then((data) => {
+      const options = data.map((moneda) => ({
+        value: moneda.monId,
+        label: moneda.monNombre,
+      }));
+      setMonedaOptions(options);
+      setIsLoading(false);
+    });
+  }, []);
+  useEffect(() => {
+    fetchPerfil().then((data) => {
+      const options = data.map((perfil) => ({
+        value: perfil.id,
+        label: perfil.prf_Nombre + " " + perfil.prf_Descripcion,
+      }));
+      setPerfilOptions(options);
+      setIsLoading(false);
+    });
+  }, []);
   useEffect(() => {
     if (isCreate) {
       fetchServiceLastId(t, router.push).then((result) => {
@@ -414,14 +468,68 @@ function FormService({ locale, isEdit, isCreate, idService }) {
               </div>
             </div>
           </div>
-          <div className="mb-2 row d-flex justify-content-end">
-            {/* <div className="col-sm-1">
-            <button className="text-end badge btn btn-primary">
-              {t.Common.include} ...{" "}
-            </button>
-          </div> */}
+          <div className="mb-3 row align-items-center ">
+            <SelectField
+              label={t.Common.profile}
+              options={perfilOptions}
+              preOption={t.Account.select}
+              labelClassName="col-sm-1 col-form-label"
+              divClassName="col-sm-2"
+              onChange={(e) => handleSelectChange(e, "idPerfil")}
+              selectedValue={formData.idPerfil}
+            />
+            <label htmlFor="fee" className="col-sm-1 col-form-label">
+              {t.Common.fee}
+            </label>
+            <div className="col-sm-2">
+              <input
+                type="number"
+                className="form-control"
+                name="fee"
+                id="fee"
+                value={formData.fee}
+                onChange={handleInputChange(formData, setFormData)}
+              />
+            </div>
+            <SelectField
+              label=""
+              options={monedaOptions}
+              preOption={t.Account.select}
+              labelClassName="col-sm-1 col-form-label"
+              divClassName="col-sm-1"
+              onChange={(e) => handleSelectChange(e, "idMon")}
+              selectedValue={formData.idMon}
+            />
+            <label htmlFor="" className="col-sm-1 col-form-label">
+              {t.Common.base}
+            </label>
+            <div className="col-sm-2">
+              <select
+                className="form-control form-select"
+                onChange={(e) => handleSelectChange(e, "base")}
+              >
+                <option value="">{t.Account.select}</option>
+                {timeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-sm-1">
+              <button type="button" className="text-end badge btn btn-primary" onClick={handleAddToTablaCommon}>
+                {t.Common.include} ...{" "}
+              </button>
+            </div>
           </div>
         </fieldset>
+        <TableCommon
+        columns={columns}
+        noResultsFound={t.Common.noResultsFound}
+        data={tablaCommon}
+        title={t.Ficha.business}
+        search={t.Account.table.search}
+      />
         <div className="d-flex justify-content-end mb-3">
           {isCreate || isEdit ? (
             <button type="submit" className="btn btn-primary m-2">

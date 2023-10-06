@@ -394,5 +394,10 @@
       "buttonOk": "Sí, Descargar archivo",
       "buttonCancel": "Cancelar"
     }
+  },
+  "time":{
+    "month":"Mes",
+    "week":"Semana",
+    "hour":"Hora"
   }
 }
