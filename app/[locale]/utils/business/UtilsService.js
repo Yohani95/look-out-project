@@ -6,7 +6,8 @@ import {
   proyectoApiUrl,
   proyectoGeFileApiUrl,
   proyectoDocumentoByIdApiUrl,
-  proyectoDeleteAsyncApiUrl
+  proyectoDeleteAsyncApiUrl,
+  proyectoWithEntitiesApiUrl
 } from "@/app/api/apiConfig";
 import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 export const handleInputChange = (formData, setFormData) => (event) => {
@@ -37,7 +38,10 @@ export const handleFormSubmit =
         pryFechaCierre: formData.closeDate,
         pryIdContacto: formData.perId,
         pryIdContactoClave: formData.perId,
+        TarifarioConvenio: formData.listPerfil
       };
+      console.log(proyectoData)
+      return;
       // Corrige los nombres de los campos
       data.append("proyectoJson", JSON.stringify(proyectoData));
 
@@ -260,7 +264,7 @@ export const GetLastIdProjecService = async () => {
 };
 export const fetchProyecto = async () => {
   try {
-    const response = await fetch(`${proyectoApiUrl}`);
+    const response = await fetch(`${proyectoWithEntitiesApiUrl}`);
     const data = await response.json();
     return data;
   } catch (error) {

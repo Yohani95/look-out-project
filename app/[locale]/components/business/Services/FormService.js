@@ -63,10 +63,11 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       (option) => option.value == formData.idMon
     )?.label;
     const nuevoElemento = {
-      idPerfil: formData.idPerfil,
-      fee: formData.fee,
-      idMon: formData.idMon,
-      base: formData.base,
+      TcPerfilAsignado: formData.idPerfil,
+      TcTarifa: formData.fee,
+      TcMoneda: formData.idMon,
+      TcBase: formData.base,
+      TcStatus:0
     };
     setFormData((prevData) => ({
       ...prevData,
@@ -80,11 +81,6 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       base: formData.base,
     };
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
-
-    setFormData((prevData) => ({
-      ...prevData,
-      listPerfil: [...prevData.listPerfil, nuevoElemento],
-    }));
   };
   const handleDeleteItem = (idPerfil) => {
     // Encuentra el índice del elemento en tablaCommon que coincide con el idPerfil
@@ -99,17 +95,17 @@ function FormService({ locale, isEdit, isCreate, idService }) {
 
       // Elimina el elemento de tablaCommon
       updatedTablaCommon.splice(index, 1);
-
+      const idPerfilLabel = perfilOptions.find(
+        (option) => option.label == idPerfil
+      )?.value;
       // Encuentra el índice del elemento en formData.listPerfil que coincide con el idPerfil
       const listPerfilIndex = updatedListPerfil.findIndex(
-        (element) => element.idPerfil === idPerfil
+        (element) => element.TcPerfilAsignado == idPerfilLabel
       );
-
       if (listPerfilIndex !== -1) {
         // Elimina el elemento de formData.listPerfil
         updatedListPerfil.splice(listPerfilIndex, 1);
       }
-
       // Actualiza los estados de tablaCommon y formData.listPerfil
       setTablaCommon(updatedTablaCommon);
 
@@ -117,7 +113,6 @@ function FormService({ locale, isEdit, isCreate, idService }) {
         ...prevData,
         listPerfil: updatedListPerfil,
       }));
-      console.log(updatedListPerfil);
     }
   };
   const columns = [
@@ -345,7 +340,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                     : ""}
                 </span>
               </div>
-              <label htmlFor="accountName" className="col-sm-2 col-form-label">
+              <label htmlFor="closeDate" className="col-sm-2 col-form-label">
                 {t.Ficha.table.business.dateEnd}
               </label>
               <div className="col-sm-3">
@@ -583,7 +578,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                 ))}
               </select>
             </div>
-            <label htmlFor="" className="col-sm-1 col-form-label">
+            <label htmlFor="base" className="col-sm-1 col-form-label">
               {t.Common.base}
             </label>
             <div className="col-sm-2">

@@ -84,6 +84,7 @@ export const proyectoApiUrl=`${apiBaseUrl}/proyecto`;
 export const proyectoDocumentoByIdApiUrl=`${apiBaseUrl}/ProyectoDocumento/GetByIdProject`;
 export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
 export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
+export const proyectoWithEntitiesApiUrl=`${apiBaseUrl}/proyecto/WithEntities`;
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
 //
