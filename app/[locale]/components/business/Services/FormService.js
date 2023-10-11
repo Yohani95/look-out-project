@@ -7,6 +7,7 @@ import SelectField from "@/app/[locale]/components/common/SelectField";
 import fetchCountriest from "@/app/[locale]/utils/country/Countrylist";
 import { fetchTypeService } from "@/app/[locale]/utils/project/tipoServicio/UtilsTypeService";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
+import { Button } from "react-bootstrap";
 import { useSession, signOut } from "next-auth/react";
 import {
   handleInputChange,
@@ -15,7 +16,8 @@ import {
   fetchServiceById,
   fetchServiceLastId,
 } from "@/app/[locale]/utils/business/UtilsService";
-import TableCommon from "@/app/[locale]/components/common/TableCommon"
+import { FaTrash } from "react-icons/fa";
+import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
 import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
 function FormService({ locale, isEdit, isCreate, idService }) {
@@ -48,27 +50,95 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     idPerfil: 0,
     fee: 0,
     base: "",
+    listPerfil: [],
   });
   let t = require(`@/messages/${locale}.json`);
   const router = useRouter();
   const handleAddToTablaCommon = () => {
-    // Crear un objeto que represente el elemento seleccionado
+    // Obtén los labels correspondientes a los ids seleccionados
+    const idPerfilLabel = perfilOptions.find(
+      (option) => option.value == formData.idPerfil
+    )?.label;
+    const idMonLabel = monedaOptions.find(
+      (option) => option.value == formData.idMon
+    )?.label;
     const nuevoElemento = {
       idPerfil: formData.idPerfil,
       fee: formData.fee,
       idMon: formData.idMon,
       base: formData.base,
     };
+    setFormData((prevData) => ({
+      ...prevData,
+      listPerfil: [...prevData.listPerfil, nuevoElemento],
+      // Mantén los ids en formData sin cambiarlos
+    }));
+    const nuevoElementoTabla = {
+      idPerfil: idPerfilLabel, // Almacena el label en la tabla
+      fee: formData.fee,
+      idMon: idMonLabel, // Almacena el label en la tabla
+      base: formData.base,
+    };
+    setTablaCommon([...tablaCommon, nuevoElementoTabla]);
 
-    // Agregar el nuevo elemento a la lista tablaCommon
-    setTablaCommon([...tablaCommon, nuevoElemento]);
+    setFormData((prevData) => ({
+      ...prevData,
+      listPerfil: [...prevData.listPerfil, nuevoElemento],
+    }));
+  };
+  const handleDeleteItem = (idPerfil) => {
+    // Encuentra el índice del elemento en tablaCommon que coincide con el idPerfil
+    const index = tablaCommon.findIndex(
+      (element) => element.idPerfil === idPerfil
+    );
+
+    if (index !== -1) {
+      // Crea copias de las listas tablaCommon y formData.listPerfil
+      const updatedTablaCommon = [...tablaCommon];
+      const updatedListPerfil = [...formData.listPerfil];
+
+      // Elimina el elemento de tablaCommon
+      updatedTablaCommon.splice(index, 1);
+
+      // Encuentra el índice del elemento en formData.listPerfil que coincide con el idPerfil
+      const listPerfilIndex = updatedListPerfil.findIndex(
+        (element) => element.idPerfil === idPerfil
+      );
+
+      if (listPerfilIndex !== -1) {
+        // Elimina el elemento de formData.listPerfil
+        updatedListPerfil.splice(listPerfilIndex, 1);
+      }
+
+      // Actualiza los estados de tablaCommon y formData.listPerfil
+      setTablaCommon(updatedTablaCommon);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        listPerfil: updatedListPerfil,
+      }));
+      console.log(updatedListPerfil);
+    }
   };
   const columns = [
-    { title: t.Common.correlative, key: "idPerfil" },
-    { title: t.Common.name, key: "fee" },
-    { title: t.business.estimatedStartDate, key: "idMon" },
-    { title: t.business.estimatedClosingDate, key: "base" }
-  ]
+    { title: t.business.assignedProfile, key: "idPerfil" },
+    { title: t.Common.fee, key: "fee" },
+    { title: t.Common.currency, key: "idMon" },
+    { title: t.Common.base, key: "base" },
+    {
+      title: "Acciones", // Título de la columna de acciones
+      key: "actions",
+      render: (item) => (
+        <Button size="sm" variant="link">
+          <FaTrash
+            size={16}
+            className=""
+            onClick={() => handleDeleteItem(item.idPerfil)}
+          />
+        </Button>
+      ),
+    },
+  ];
   const timeOptions = [
     { value: "mes", label: t.time.month },
     { value: "semana", label: t.time.week },
@@ -159,8 +229,14 @@ function FormService({ locale, isEdit, isCreate, idService }) {
   };
   if (idService != null && !isNaN(idService)) {
     useEffect(() => {
-      fetchServiceById(idService, t, setFormData, router.push);
-      setCorrelativo(formData.pryId);
+      fetchServiceById(idService, t, (data) => {
+        setFormData((prevData) => ({
+          ...prevData,
+          // Otros campos...
+          listPerfil: data.listPerfil, // Asigna los datos de las personas
+        }));
+        setCorrelativo(data.pryId);
+      }, router.push);
     }, [idService]);
   }
   useEffect(() => {
@@ -278,6 +354,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   onChange={(date) =>
                     setFormData({ ...formData, closeDate: date })
                   }
+                  title={t.Common.date}
                 />
               </div>
               <SelectField
@@ -437,6 +514,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   onChange={(date) =>
                     setFormData({ ...formData, startDate: date })
                   }
+                  title={t.Common.date}
                 />
               </div>
               <label htmlFor="months" className="col-sm-1 col-form-label">
@@ -464,6 +542,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                     setFormData({ ...formData, endDate: date })
                   }
                   isRead={true}
+                  title={t.Common.date}
                 />
               </div>
             </div>
@@ -491,15 +570,19 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                 onChange={handleInputChange(formData, setFormData)}
               />
             </div>
-            <SelectField
-              label=""
-              options={monedaOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-1"
-              onChange={(e) => handleSelectChange(e, "idMon")}
-              selectedValue={formData.idMon}
-            />
+            <div className="col-sm-2">
+              <select
+                className="form-control form-select"
+                onChange={(e) => handleSelectChange(e, "idMon")}
+              >
+                <option value="">{t.Account.select}</option>
+                {monedaOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
             <label htmlFor="" className="col-sm-1 col-form-label">
               {t.Common.base}
             </label>
@@ -517,19 +600,23 @@ function FormService({ locale, isEdit, isCreate, idService }) {
               </select>
             </div>
             <div className="col-sm-1">
-              <button type="button" className="text-end badge btn btn-primary" onClick={handleAddToTablaCommon}>
+              <button
+                type="button"
+                className="text-end badge btn btn-primary"
+                onClick={handleAddToTablaCommon}
+              >
                 {t.Common.include} ...{" "}
               </button>
             </div>
           </div>
         </fieldset>
         <TableCommon
-        columns={columns}
-        noResultsFound={t.Common.noResultsFound}
-        data={tablaCommon}
-        title={t.Ficha.business}
-        search={t.Account.table.search}
-      />
+          columns={columns}
+          noResultsFound={t.Common.noResultsFound}
+          data={tablaCommon}
+          title={t.business.agreedRate}
+          search={t.Account.table.search}
+        />
         <div className="d-flex justify-content-end mb-3">
           {isCreate || isEdit ? (
             <button type="submit" className="btn btn-primary m-2">

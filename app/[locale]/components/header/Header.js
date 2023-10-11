@@ -1,5 +1,5 @@
 import Nav from "./Nav";
-import { useTranslations,useLocale } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 const Header = () => {
   const t = useTranslations();
   const languages = {
@@ -11,7 +11,6 @@ const Header = () => {
     pt: t("Languages.portuguese"),
 
     namesMenu: {
-      
       account: {
         link: {
           search: {
@@ -19,7 +18,7 @@ const Header = () => {
             link: "/account/search",
           },
         },
-        title:t("Nav.account.title"),
+        title: t("Nav.account.title"),
       },
       contacts: {
         title: t("Nav.contacts.title"),
@@ -45,22 +44,22 @@ const Header = () => {
       business: {
         title: t("Account.business"),
         link: {
-          insertProject: {
-            name: t("Nav.business.insertProject"),
-            link: "/business/closeProject",
-          },
+          // insertProject: {
+          //   name: t("Nav.business.insertProject"),
+          //   link: "/business/closeProject",
+          // },
           insertServices: {
             name: t("Nav.business.insertServices"),
             link: "/business/closeServices/search",
           },
-          insertSupport: {
-            name: t("Nav.business.insertSupport"),
-            link: "/business/closeSupport",
-          },
-          search: {
-            name: `${t("Common.search")} ${t("Account.business")}`,
-            link: "/",
-          },
+          // insertSupport: {
+          //   name: t("Nav.business.insertSupport"),
+          //   link: "/business/closeSupport",
+          // },
+          // search: {
+          //   name: `${t("Common.search")} ${t("Account.business")}`,
+          //   link: "/",
+          // },
         },
       },
       project: {
@@ -101,8 +100,8 @@ const Header = () => {
         },
         title: t("Common.services"),
       },
-      facture:{
-        link:{
+      facture: {
+        link: {
           search: {
             name: t("Nav.facture.billing"),
             link: "/facture/search",
@@ -112,25 +111,25 @@ const Header = () => {
             link: "/facture/request",
           },
         },
-        title:t("Nav.facture.bills")
+        title: t("Nav.facture.bills"),
       },
-      admin:{
-        link:{
-          create:{
+      admin: {
+        link: {
+          create: {
             name: t("Nav.administration.createUser"),
             link: "/admin/user/create",
           },
-          list:{
+          list: {
             name: t("Nav.administration.user"),
             link: "/admin/user/list",
           },
-          profile:{
+          profile: {
             name: t("Common.profile"),
             link: "/admin/perfil/search",
-          }
+          },
         },
-        title:t("Nav.administration.title")
-      }
+        title: t("Nav.administration.title"),
+      },
     },
   };
 
