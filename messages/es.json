@@ -74,6 +74,7 @@
     "chooseOption": "Elegir una opción",
     "invalidEmail": "Correo electrónico inválido.",
     "requiredField": "Este campo es obligatorio.",
+    "requiredFieldEmail": "Los campos del email son obligatorio.",
     "passwordMismatch": "Las contraseñas no coinciden.",
     "minCharacters": "Mínimo {count} caracteres.",
     "maxCharacters": "Máximo {count} caracteres.",

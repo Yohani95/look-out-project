@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-function MyDatePicker({ onChange, selectedDate,isRead=false,title }) {
+function MyDatePicker({ onChange, selectedDate,isRead=false,title,locale }) {
   return (
     <div>
       <DatePicker
@@ -13,6 +13,7 @@ function MyDatePicker({ onChange, selectedDate,isRead=false,title }) {
         dateFormat="dd/MM/yyyy"
         required
         readOnly={isRead}
+        locale={locale}
       />
     </div>
   );

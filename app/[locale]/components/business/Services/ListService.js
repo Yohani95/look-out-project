@@ -58,7 +58,6 @@ function ListService({ locale }) {
         pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada),
         type: item.tipSer.tseDescripcion,
         account:item.cli.cliNombre
-
         //     item.per.perNombres + " " + item.per.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
         //     cliId:
         //     item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo

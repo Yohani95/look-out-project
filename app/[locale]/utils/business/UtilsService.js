@@ -40,8 +40,6 @@ export const handleFormSubmit =
         pryIdContactoClave: formData.perId,
         TarifarioConvenio: formData.listPerfil
       };
-      console.log(proyectoData)
-      return;
       // Corrige los nombres de los campos
       data.append("proyectoJson", JSON.stringify(proyectoData));
 

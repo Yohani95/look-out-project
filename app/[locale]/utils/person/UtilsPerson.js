@@ -34,12 +34,17 @@ export const handleFormSubmit =
           perApellidoPaterno: formData.perApellidoPaterno,
           perApellidoMaterno: formData.perApellidoMaterno,
           paiId: formData.paiId,
-          perIdNacional: '1',
-          perFechaNacimiento: "2023-09-05T19:50:26.112Z",
+          perIdNacional: 1,
+          perFechaNacimiento: formData.birth,
           tpeId: contacto
         },
         idCliente: formData.idCliente,
+        emails: formData.emails,
+        telefonos: formData.telefonos,
+        direcciones: formData.direcciones
       };
+      console.log(personaDTO)
+      return;
       const url = isEditMode
         ? `${personContactEditApiUrl}/${formData.id}`
         : `${personContactCreateApiUrl}`;
@@ -146,6 +151,7 @@ export const fetchPersonByContact = async () => {
   try {
     const response = await fetch(personContactGetAllApiUrl);
     const data = await response.json();
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
