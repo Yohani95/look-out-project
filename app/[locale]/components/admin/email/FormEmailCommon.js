@@ -92,10 +92,11 @@ function FormEmailCommon({
     };
     const nuevoElementoData = {
       emailId: 0,
+      CliId: null,
       emaEmail: formEmail.emaEmail,
       temId: formEmail.temId,
-      emaVigente: formEmail.emaVigente 
-
+      emaVigente: formEmail.emaVigente ,
+      cliId: formData.idCliente
     };
     setFormData((prevData) => ({
       ...prevData,
@@ -135,6 +136,7 @@ function FormEmailCommon({
     const selectedValue = event.target.value;
     setFormEmail((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
+  
   return (
     <>
       <h4>{t.Common.email}</h4>
@@ -193,7 +195,7 @@ function FormEmailCommon({
       ) : error ? (
         <ErroData message={t.Common.errorMsg} />
       ) : idEmail == [] ? ( // Verifica si no hay datos
-        <div className="text-center justify-content-center align-items-center">
+        <div className="text-center justify-content-center align-items-center"> 
           <h4>{t.Common.email}</h4> {t.Common.noData}
         </div>
       ) : (

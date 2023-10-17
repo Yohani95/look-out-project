@@ -39,6 +39,7 @@ export const personContactCreateApiUrl = `${apiBaseUrl}/personas/createWithEntit
 export const personContactEditApiUrl = `${apiBaseUrl}/personas/editWithEntities`;
 export const personContactDeleteApiUrl = `${apiBaseUrl}/personas/deleteWithEntities`;
 export const personContactByIdClientApiUrl = `${apiBaseUrl}/Personas/GetAllContactByIdClient`;
+export const personGetAllContactDTOClientApiUrl = `${apiBaseUrl}/Personas/GetAllContact`;
 //ClientePersona
 export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersonaDTOById`;
 export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllClientRelations`;

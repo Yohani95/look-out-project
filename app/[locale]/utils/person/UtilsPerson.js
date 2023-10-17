@@ -8,11 +8,12 @@ import {
   personContactEditApiUrl,
   personContactDeleteApiUrl,
   personContactGetAllApiUrl,
-  personContactByIdClientApiUrl
+  personContactByIdClientApiUrl,
+  personGetAllContactDTOClientApiUrl
 } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-
+import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import axios from "axios";
 
 export const handleInputChange = (formData, setFormData) => (event) => {
@@ -34,7 +35,7 @@ export const handleFormSubmit =
           perApellidoPaterno: formData.perApellidoPaterno,
           perApellidoMaterno: formData.perApellidoMaterno,
           paiId: formData.paiId,
-          perIdNacional: 1,
+          perIdNacional: "1",
           perFechaNacimiento: formData.birth,
           tpeId: contacto
         },
@@ -43,8 +44,6 @@ export const handleFormSubmit =
         telefonos: formData.telefonos,
         direcciones: formData.direcciones
       };
-      console.log(personaDTO)
-      return;
       const url = isEditMode
         ? `${personContactEditApiUrl}/${formData.id}`
         : `${personContactCreateApiUrl}`;
@@ -113,6 +112,16 @@ export const handleFormSubmit =
 export const fetchPerson = async () => {
   try {
     const response = await fetch(personKamApiUrl);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+export const fetchPersonDTOContact = async () => {
+  try {
+    const response = await fetch(personGetAllContactDTOClientApiUrl);
     const data = await response.json();
     return data;
   } catch (error) {

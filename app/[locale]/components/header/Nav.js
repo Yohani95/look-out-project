@@ -22,7 +22,6 @@ const MyNav = ({ t, locale }) => {
         className="navbar-custom navbar-dark "
         expand="lg"
       >
-        {" "}
         {/* Agrega las clases "navbar-dark bg-primary" */}
         <Container className="d-flex justify-content-center align-items-center">
           {" "}
@@ -122,6 +121,7 @@ const MyNav = ({ t, locale }) => {
             </>
           )}
         </Container>
+        
       </Navbar>
     </>
   );

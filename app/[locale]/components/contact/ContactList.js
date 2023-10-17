@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import ErroData from "@/app/[locale]/components/common/ErroData";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import { fetchPersonByContact } from "@/app/[locale]/utils/person/UtilsPerson";
+import { fetchPersonByContact,fetchPersonDTOContact } from "@/app/[locale]/utils/person/UtilsPerson";
 function ContactList({ locale, onRadioChange,idPersons, isView}) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -41,7 +41,7 @@ function ContactList({ locale, onRadioChange,idPersons, isView}) {
       async function fetchData() {
         try {
             setIsLoading(true);
-            const fetchedData = await fetchPersonByContact();
+            const fetchedData = await fetchPersonDTOContact();
             // Manipulación de datos para reemplazar valores nulos con "N/A"
              const modifiedData =await fetchedData.data.map((item) => ({
               ...item,

@@ -10,6 +10,9 @@ import {
 } from "@/app/[locale]/utils/person/UtilsPerson";
 import FormEmailCommon from "../admin/email/FormEmailCommon";
 import { useRouter } from "next/navigation";
+import FormPhoneCommon from "../admin/phone/FormPhoneCommon";
+import FormAddressCommon from "../world/address/FormAddressCommon";
+import MyDatePicker from "../common/MyDatePicker";
 function FormContact({ locale, isEdit, isCreate, idPerson }) {
   const t = require(`@/messages/${locale}.json`);
   const [clientOptions, setClientOptions] = useState([]);
@@ -22,10 +25,11 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
     perApellidoMaterno: "",
     paiId: 0,
     tpeId: 3,
+    birth:"",
     idCliente: 0,
-    emails:[],
-    telefonos:[],
-    direccion:[]
+    emails: [],
+    telefonos: [],
+    direcciones: [],
   });
   const FillClient = async () => {
     try {
@@ -120,6 +124,7 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
             {t.Common.secondName}
           </label>
           <div className="col-sm-3">
+            
             <input
               type="text"
               className="form-control"
@@ -131,6 +136,21 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
           </div>
         </div>
         <div className=" mb-3 row align-items-center">
+        <label
+            htmlFor="perApellidoMaterno"
+            className="col-sm-1 col-form-label"
+          >
+            {t.Common.birthDay}
+          </label>
+        <div className="col-sm-3">
+                <MyDatePicker
+                  selectedDate={formData.birth}
+                  onChange={(date) =>
+                    setFormData({ ...formData, birth: date })
+                  }
+                  title={t.Common.date}
+                />
+        </div>
           <SelectField
             label={t.Account.country}
             options={countryOptions}
@@ -155,6 +175,20 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
+        />
+        <hr/>
+        <FormPhoneCommon
+          t={t}
+          formData={formData}
+          setFormData={setFormData}
+          handleInputChange={handleInputChange}
+        />
+        <hr/>
+        <FormAddressCommon
+         t={t}
+         formData={formData}
+         setFormData={setFormData}
+         handleInputChange={handleInputChange}
         />
       </fieldset>
       <div className="d-flex justify-content-end mb-3">
