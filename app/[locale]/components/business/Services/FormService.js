@@ -20,6 +20,7 @@ import { FaTrash } from "react-icons/fa";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
 import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
+import ProfessionalForm from "./ProfessionalForm";
 function FormService({ locale, isEdit, isCreate, idService }) {
   const { data: session, status } = useSession();
   const [countryOptions, setCountryOptions] = useState([]);
@@ -67,7 +68,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       TcTarifa: formData.fee,
       TcMoneda: formData.idMon,
       TcBase: formData.base,
-      TcStatus:0
+      TcStatus: 0,
     };
     setFormData((prevData) => ({
       ...prevData,
@@ -135,9 +136,9 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     },
   ];
   const timeOptions = [
-    { value: "mes", label: t.time.month },
-    { value: "semana", label: t.time.week },
-    { value: "hora", label: t.time.hour },
+    { value: 1, label: t.time.month },
+    { value: 2, label: t.time.week },
+    { value: 3, label: t.time.hour },
     // Agrega más opciones según sea necesario
   ];
   useEffect(() => {
@@ -186,20 +187,14 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       setTypeServiceOptions(options);
     });
   }, []);
-  const FillClient = async () => {
-    try {
-      const datos = await fechtClients();
-      const options = datos.map((item) => ({
+  useEffect(() => {
+    fechtClients().then((data)=>{
+      const options = data.map((item) => ({
         value: item.cliId,
         label: item.cliNombre,
       }));
       setAccountOptions(options);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-  useEffect(() => {
-    FillClient();
+    });
   }, []);
   const handleSelectChange = (event, fieldName) => {
     const selectedValue = event.target.value;
@@ -224,14 +219,12 @@ function FormService({ locale, isEdit, isCreate, idService }) {
   };
   if (idService != null && !isNaN(idService)) {
     useEffect(() => {
-      fetchServiceById(idService, t, (data) => {
-        setFormData((prevData) => ({
-          ...prevData,
-          // Otros campos...
-          listPerfil: data.listPerfil, // Asigna los datos de las personas
-        }));
-        setCorrelativo(data.pryId);
-      }, router.push);
+      fetchServiceById(
+        idService,
+        t,
+        setFormData,
+        router.push
+      );
     }, [idService]);
   }
   useEffect(() => {
@@ -620,11 +613,26 @@ function FormService({ locale, isEdit, isCreate, idService }) {
           ) : (
             <></>
           )}
-          <button type="button" className="btn btn-danger m-2" onClick={cancel}>
+          {/* <button type="button" className="btn btn-danger m-2" onClick={cancel}>
             {isCreate ? t.Common.cancel : t.Common.goBack}
-          </button>
+          </button> */}
         </div>
       </form>
+      {idService && (
+        <>
+          <hr />
+          <ProfessionalForm t={t} />
+          <div className="d-flex justify-content-end mb-3">
+            <button
+              type="button"
+              className="btn btn-danger m-2"
+              onClick={cancel}
+            >
+              {isCreate ? t.Common.cancel : t.Common.goBack}
+            </button>
+          </div>
+        </>
+      )}
     </>
   );
 }

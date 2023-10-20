@@ -129,10 +129,19 @@
     "giro": "Giro",
     "lastName": "Apellido Paterno",
     "secondName": "Apellido Materno",
+    "lastNames":"Apellidos",
     "phones": "teléfonos",
     "emailExist": "El email ya existe.",
     "perfil": "Perfil",
-    "correlative": "Correlativo"
+    "correlative": "Correlativo",
+    "FieldsAreRequired":"Los campos son obligatorios.",
+    "phoneExist":"El Teléfono ya existe.",
+    "commune":"Comuna",
+    "number":"Número",
+    "blockAddress":"Block (opcional)",
+    "birthDay":"Fecha Nacimiento",
+    "dateAssignment":"Fecha Asignación",
+    "noDocument":"Sin documentos"
   },
   "Index": {
     "title": "HOLA!"
