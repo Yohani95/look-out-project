@@ -24,24 +24,26 @@ export const handleFormSubmit =
     try {
       const data = new FormData();
       // Agrega los campos de formulario
-      const proyectoData = {
-        pryId: formData.pryId,
-        pryNombre: formData.pryNombre,
-        prpId: 1,
-        epyId: 1,
-        tseId: formData.tseId,
-        pryFechaInicioEstimada: formData.startDate,
-        pryValor: 1,
-        monId: 1,
-        pryIdCliente: formData.cliId,
-        pryFechaCierreEstimada: formData.endDate,
-        pryFechaCierre: formData.closeDate,
-        pryIdContacto: formData.perId,
-        pryIdContactoClave: formData.perId,
+      const proyectoDTO = {
+        proyecto:{
+          pryId: formData.pryId,
+          pryNombre: formData.pryNombre,
+          prpId: 1,
+          epyId: 1,
+          tseId: formData.tseId,
+          pryFechaInicioEstimada: formData.startDate,
+          pryValor: 1,
+          monId: 1,
+          pryIdCliente: formData.cliId,
+          pryFechaCierreEstimada: formData.endDate,
+          pryFechaCierre: formData.closeDate,
+          pryIdContacto: formData.perId,
+          pryIdContactoClave: formData.perId,
+        },
         TarifarioConvenio: formData.listPerfil
       };
       // Corrige los nombres de los campos
-      data.append("proyectoJson", JSON.stringify(proyectoData));
+      data.append("proyectoJson", JSON.stringify(proyectoDTO));
 
       // Agrega los archivos
       data.append("files", formData.file1);
@@ -179,6 +181,7 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
       result.months = Math.round(monthsDifference);
       //obtener documentos 
       const documentos = await fetchProyectoDocumentoById(result.pryId);
+      
       for (let i = 0; i < documentos.length; i++) {
         const documento = documentos[i];
         const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(documento.docUrl)}`;
@@ -186,13 +189,13 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
           method: "GET",
           headers: {},
         });
-      
         if (response.ok) {
           const blob = await response.blob();
           // Asigna el documento al resultado con el nombre correspondiente (file1, file2, etc.)
           result[`file${i + 1}`] = new File([blob], documento.docNombre);
         }
       }
+      console.log(result)
       setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
     } else if (response.status == 404) {
       NotificationSweet({
@@ -294,15 +297,14 @@ export const downloadFiles = async (id, translations) => {
     return;
   }
   const documentos = await fetchProyectoDocumentoById(id);
-
+  console.log(documentos)
+  
   if (!documentos || documentos.length === 0) {
     // Mostrar notificación de que no hay documentos (urls es nulo o un arreglo vacío)
     NotificationSweet({
-      title: translations.notification.warning.title,
-      text: translations.client.clientNameExist,
-      type: translations.notification.warning.type,
-      push: push,
-      link: "",
+      title: translations.notification.files.title,
+      text: translations.Common.noDocument,
+      type: translations.notification.files.type,
     });
     return;
   }
@@ -311,10 +313,12 @@ export const downloadFiles = async (id, translations) => {
       const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(
         documento.docUrl
       )}`;
+      console.log(url);
       const response = await fetch(url, {
         method: "GET",
         headers: {},
       });
+      console.log(response)
       if (!response.ok) {
         throw new Error(`Error al descargar el archivo: ${documento.docUrl}`);
       }
