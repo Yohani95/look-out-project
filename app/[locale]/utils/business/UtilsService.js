@@ -7,9 +7,12 @@ import {
   proyectoGeFileApiUrl,
   proyectoDocumentoByIdApiUrl,
   proyectoDeleteAsyncApiUrl,
-  proyectoWithEntitiesApiUrl
+  proyectoWithEntitiesApiUrl,
+  proyectoByIdWithEntitiesApiUrl,
 } from "@/app/api/apiConfig";
+import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
 import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
+import {fetchByIdProyecto} from "@/app/[locale]/utils/business/tarifario/UtilsTarifario"
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -25,7 +28,7 @@ export const handleFormSubmit =
       const data = new FormData();
       // Agrega los campos de formulario
       const proyectoDTO = {
-        proyecto:{
+        proyecto: {
           pryId: formData.pryId,
           pryNombre: formData.pryNombre,
           prpId: 1,
@@ -40,7 +43,7 @@ export const handleFormSubmit =
           pryIdContacto: formData.perId,
           pryIdContactoClave: formData.perId,
         },
-        TarifarioConvenio: formData.listPerfil
+        TarifarioConvenio: formData.listPerfil,
       };
       // Corrige los nombres de los campos
       data.append("proyectoJson", JSON.stringify(proyectoDTO));
@@ -128,9 +131,12 @@ export const handleDelete = async (idService, trans, fetchService) => {
       showLoading: true,
     });
     try {
-      const response = await fetch(`${proyectoDeleteAsyncApiUrl}/${idService}`, {
-        method: "DELETE",
-      }); // Utiliza Axios para hacer la solicitud DELETE
+      const response = await fetch(
+        `${proyectoDeleteAsyncApiUrl}/${idService}`,
+        {
+          method: "DELETE",
+        }
+      ); // Utiliza Axios para hacer la solicitud DELETE
       if (response.ok) {
         NotificationSweet({
           title: trans.notification.success.title,
@@ -167,24 +173,27 @@ export const handleEdit = async (idService, trans, push) => {
     push(`/business/closeServices/edit/${idService}`);
   }
 };
-export const fetchServiceById = async (Id, t, setFormData, push) => {
+export const fetchServiceById = async (Id, t, setFormData, push,setTablaCommon,tablaCommon) => {
   try {
-    const response = await fetch(`${proyectoApiUrl}/${Id}`);
+    const response = await fetch(`${proyectoByIdWithEntitiesApiUrl}/${Id}`);
     if (response.ok) {
-      const result = await response.json();
+      const resultData = await response.json();
+      const result=resultData.data;
       result.startDate = new Date(result.pryFechaInicioEstimada);
       result.closeDate = new Date(result.pryFechaCierre);
-      const endDate =new Date(result.pryFechaCierreEstimada)
-      const timeDifference = endDate.getTime() - result.startDate .getTime(); 
-      const monthsDifference = timeDifference / (1000 * 60 * 60 * 24 * 30.44); 
+      const endDate = new Date(result.pryFechaCierreEstimada);
+      const timeDifference = endDate.getTime() - result.startDate.getTime();
+      const monthsDifference = timeDifference / (1000 * 60 * 60 * 24 * 30.44);
       // Redondear el valor de meses a entero
       result.months = Math.round(monthsDifference);
-      //obtener documentos 
+      //obtener documentos
       const documentos = await fetchProyectoDocumentoById(result.pryId);
-      
+
       for (let i = 0; i < documentos.length; i++) {
         const documento = documentos[i];
-        const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(documento.docUrl)}`;
+        const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(
+          documento.docUrl
+        )}`;
         const response = await fetch(url, {
           method: "GET",
           headers: {},
@@ -195,8 +204,42 @@ export const fetchServiceById = async (Id, t, setFormData, push) => {
           result[`file${i + 1}`] = new File([blob], documento.docNombre);
         }
       }
-      console.log(result)
-      setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
+      const tarifarios= await fetchByIdProyecto(result.pryId)
+      tarifarios.data.forEach(element => {
+        const nuevoElemento = {
+          TcPerfilAsignado: element.tcPerfilAsignado,
+          TcTarifa: element.tcTarifa,
+          TcMoneda: element.tcMoneda,
+          TcBase: element.tcBase,
+          TcStatus: 0,
+        };
+        setFormData((prevData) => ({
+          ...prevData,
+          listPerfil: [...prevData.listPerfil, nuevoElemento],
+          perfiles: [...prevData.perfiles, element]
+        }));
+        const nuevoElementoTabla = {
+          idPerfil: element.perfil.prf_Nombre, // Almacena el label en la tabla
+          fee: element.tcTarifa,
+          idMon: element.moneda.monNombre, // Almacena el label en la tabla
+          base: element.tcBase === 1 ? "mes" : element.tcBase === 3 ? "hora" : "semana",
+        };
+        setTablaCommon([...tablaCommon, nuevoElementoTabla]);
+      });
+      const persons = await fetchPersonGetbyIdClient(result.pryIdCliente);
+      const options = persons.data
+      .filter((item) => item.id === result.pryIdContacto)
+      .map((item) => ({
+        label: item.perNombres + " " + item.perApellidoPaterno,
+      }))[0];
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        cliId: result.pryIdCliente,
+        perId: result.pryIdContacto,
+        personData: options.label,
+        client:result.cli.cliNombre,
+        ...result,
+      }));
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
@@ -297,8 +340,8 @@ export const downloadFiles = async (id, translations) => {
     return;
   }
   const documentos = await fetchProyectoDocumentoById(id);
-  console.log(documentos)
-  
+  console.log(documentos);
+
   if (!documentos || documentos.length === 0) {
     // Mostrar notificación de que no hay documentos (urls es nulo o un arreglo vacío)
     NotificationSweet({
@@ -318,7 +361,7 @@ export const downloadFiles = async (id, translations) => {
         method: "GET",
         headers: {},
       });
-      console.log(response)
+      console.log(response);
       if (!response.ok) {
         throw new Error(`Error al descargar el archivo: ${documento.docUrl}`);
       }

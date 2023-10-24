@@ -84,9 +84,13 @@ export const proyectoDeleteAsyncApiUrl=`${apiBaseUrl}/proyecto/DeleteWithEntitie
 export const proyectoApiUrl=`${apiBaseUrl}/proyecto`;
 export const proyectoDocumentoByIdApiUrl=`${apiBaseUrl}/ProyectoDocumento/GetByIdProject`;
 export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
+export const proyectoByIdWithEntitiesApiUrl=`${apiBaseUrl}/proyecto/GetByIdWithEntities`;
 export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
 export const proyectoWithEntitiesApiUrl=`${apiBaseUrl}/proyecto/WithEntities`;
+//tarifario convenido
+export const tarifarioApiUrl=`${apiBaseUrl}/TarifarioConvenio`
+export const tarifarioGetByIdProyectoApiUrl=`${apiBaseUrl}/TarifarioConvenio/GetByIdProyectoWithEntities`
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
-//
+//moneda
 export const monedaApiUrl=`${apiBaseUrl}/Moneda`;

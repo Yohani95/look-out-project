@@ -6,8 +6,10 @@ import SelectField from "@/app/[locale]/components/common/SelectField";
 import ErroData from "@/app/[locale]/components/common/ErroData";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { handleInputChange } from "@/app/[locale]/utils/business/UtilsParticipants";
-function ProfessionalForm({ idService, t }) {
+import { Button } from "react-bootstrap";
+import { FaTrash } from "react-icons/fa";
+import { handleInputChange,handleDelete } from "@/app/[locale]/utils/business/UtilsParticipants";
+function ProfessionalForm({ idService, t, perfiles }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
@@ -24,9 +26,10 @@ function ProfessionalForm({ idService, t }) {
     fechaAsignacion: "",
     perApellidoPaterno: "",
     perApellidoMaterno: "",
+    participantesDTO:[],
   });
   const columns = [
-    { title: t.Common.rut, key: "rut" },
+    { title: t.Common.rut, key: "perIdNacional" },
     { title: t.Common.name, key: "perNombre" },
     { title: t.Common.profile, key: "perfil" },
     { title: t.Common.dateAssignment, key: "fechaAsignacion" },
@@ -34,15 +37,15 @@ function ProfessionalForm({ idService, t }) {
     {
       title: t.Account.action, // Título de la columna de acciones
       key: "actions",
-      // render: (item) => (
-      //   <Button size="sm" variant="link">
-      //     <FaTrash
-      //       size={16}
-      //       className=""
-      //       onClick={() => handleDeleteItem(item)}
-      //     />
-      //   </Button>
-      // ),
+      render: (item) => (
+        <Button size="sm" variant="link">
+          <FaTrash
+            size={16}
+            className=""
+            onClick={() => handleDeleteItem(item)}
+          />
+        </Button>
+      ),
     },
   ];
   const [data, setData] = useState([]);
@@ -53,52 +56,48 @@ function ProfessionalForm({ idService, t }) {
       [fieldName]: selectedValue,
     }));
   };
-  //   useEffect(() => {
-  //     fetchComuna().then((data) => {
-  //       const options = data.map((item) => ({
-  //         value: item.id,
-  //         label: item.nombre,
-  //       }));
-  //       setPerfilOptions(options);
-  //     });
-  //   }, []);
+  useEffect(() => {
+    const options = perfiles.map((item) => ({
+      value: item.perfil.id,
+      label: item.perfil.prf_Nombre,
+    }));
+    setPerfilOptions(options);
+  }, [perfiles]);
   const handleAddToTablaCommon = () => {
-    // const typeLabelComuna = comunaOptions.find(
-    //   (option) => option.value == formDataAddress.comId
-    // )?.label;
-    // const typeLabelType = addressOptions.find(
-    //   (option) => option.value == formDataAddress.tdirId
-    // )?.label;
-    // console.log(typeLabelType);
-    const perfil = data.find((perfil) =>perfil.id=formDataJob.prfId);
+    const tarifario=perfiles.find((tarifario)=>tarifario.perfil.id==formDataJob.prfId);
     const nuevoElementoTabla = {
-      perTarifa: perfil.fee,
-      perfil: perfil.nombre,
-      perIdNacional: formDataJob.rut,
-      perNombre: formDataJob.perNombre + " " + formDataJob.perApellidoPaterno,
-      fechaAsignacion: formDataJob.fechaAsignacion,
+      perTarifa: tarifario.tcTarifa,
+      perfil: tarifario.perfil.prf_Nombre,
+      perIdNacional: formDataJob.perIdNacional,
+      perNombre: formDataJob.perNombre + " " + formDataJob.perApellidoPaterno+ " " + formDataJob.perApellidoMaterno,
+      fechaAsignacion: formDataJob.fechaAsignacion.toLocaleDateString(),
     };
     const participanteDTO = {
       proyectoParticipante: {
         pryId: idService,
         prfId: formDataJob.prfId,
         fechaAsignacion: formDataJob.fechaAsignacion,
+        PerTartifa: tarifario.tcTarifa
       },
       persona: {
-        perIdNacional: formDataJob.rut,
+        perIdNacional: formDataJob.perIdNacional,
         perNombre: formDataJob.perNombre,
         perApellidoPaterno: formDataJob.perApellidoPaterno,
         perApellidoMaterno: "",
         prfId: formDataJob.prfId,
       },
     };
+    setformDataJob((prevData) => ({
+      ...prevData,
+      participantesDTO: [...prevData.participantesDTO, participanteDTO],
+      // Mantén los ids en formData sin cambiarlos
+    }));
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };
   const handleDeleteItem = (participante) => {
     // Encuentra el índice del elemento en tablaCommon que coincide con el emaemail
     const index = tablaCommon.findIndex(
-      (element) =>
-        element.rut === participante.rut
+      (element) => element.rut === participante.rut
     );
     if (index !== -1) {
       const updatedTablaCommon = [...tablaCommon];
@@ -114,7 +113,7 @@ function ProfessionalForm({ idService, t }) {
           <label htmlFor="perIdNacional" className="col-sm-1 col-form-label">
             {t.Common.rut}
           </label>
-          <div className="col-sm-3">
+          <div className="col-sm-2">
             <input
               type="text"
               className="form-control"
@@ -142,15 +141,31 @@ function ProfessionalForm({ idService, t }) {
             htmlFor="perApellidoPaterno"
             className="col-sm-1 col-form-label"
           >
-            {t.Common.lastNames}
+            {t.Common.lastName}
           </label>
-          <div className="col-sm-3">
+          <div className="col-sm-2">
             <input
               type="text"
               className="form-control"
               id="perApellidoPaterno"
               name="perApellidoPaterno"
               value={formDataJob.perApellidoPaterno}
+              onChange={handleInputChange(formDataJob, setformDataJob)}
+            />
+          </div>
+          <label
+            htmlFor="perApellidoMaterno"
+            className="col-sm-1 col-form-label"
+          >
+            {t.Common.secondName}
+          </label>
+          <div className="col-sm-2">
+            <input
+              type="text"
+              className="form-control"
+              id="perApellidoMaterno"
+              name="perApellidoMaterno"
+              value={formDataJob.perApellidoMaterno}
               onChange={handleInputChange(formDataJob, setformDataJob)}
             />
           </div>
