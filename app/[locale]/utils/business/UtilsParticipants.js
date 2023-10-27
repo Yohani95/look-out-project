@@ -1,20 +1,45 @@
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import {
+  participanteCreateAsyncApiUrl,
+  participanteApiUrl,
+  participanteGetByIdProyectoApiUrl,
+  participanteDeletedByRutApiUrl,
+  apiHeaders 
+} from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-  export const handleFormSubmit =
-  (formData, translations, push, isEditMode = false) =>
+  const { name, value } = event.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    [name]: value,
+  }));
+};
+export const handleFormSubmit =
+  (formData, translations, isEditMode = false, handleAddToTablaCommon,tarifario,idService) =>
   async (event) => {
     event.preventDefault();
     try {
+      //tipo persona en base de datos es 4 los profesionales quizas implementar un sedder
+      const tipoPersona=4;
+      const profesionalesDTO = {
+        persona: {
+          perIdNacional: formData.perIdNacional,
+          perNombres: formData.perNombre,
+          perApellidoPaterno: formData.perApellidoPaterno,
+          perApellidoMaterno: formData.perApellidoMaterno,
+          prfId: formData.prfId,
+          tpeId: tipoPersona
+        },
+        participante: {
+          pryId: idService,
+          prfId: formData.prfId,
+          fechaAsignacion: formData.fechaAsignacion,
+          PerTartifa: tarifario.tcTarifa
+        },
+      };
       const url = isEditMode
-        ? `${proyectoUpdateAsyncApiUrl}/${formData.tcId}`//falta id
-        : `${proyectoCreateAsyncApiUrl}`;
+        ? `${participanteApiUrl}/${formData.ppaId}` //falta id
+        : `${participanteCreateAsyncApiUrl}`;
       const method = isEditMode ? "PUT" : "POST";
       await NotificationSweet({
         title: isEditMode
@@ -30,36 +55,27 @@ export const handleInputChange = (formData, setFormData) => (event) => {
       });
       const response = await fetch(url, {
         method: method,
-        headers: {},
-        body: data,
+        headers: apiHeaders,
+        body: JSON.stringify(profesionalesDTO),
       });
       if (response.ok) {
         NotificationSweet({
           title: translations.notification.success.title,
           text: translations.notification.success.text,
           type: translations.notification.success.type,
-          push: push,
-          link: "//search",
         });
+        handleAddToTablaCommon();
       } else if (response.status === 409) {
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,
           type: translations.notification.warning.type,
-          push: push,
-          link: isEditMode
-            ? `//edit/${formData.cliId}`
-            : "//create",
         });
       } else {
         NotificationSweet({
           title: translations.notification.warning.title,
-          text: translations.client.clientNameExist,
+          text: translations.notification.error.text,
           type: translations.notification.warning.type,
-          push: push,
-          link: isEditMode
-            ? `//edit/${formData.cliId}`
-            : "//create",
         });
       }
     } catch (error) {
@@ -67,72 +83,77 @@ export const handleInputChange = (formData, setFormData) => (event) => {
         title: translations.notification.error.title,
         text: translations.notification.error.text,
         type: translations.notification.error.type,
-        push: push,
-        link: "//search",
       });
       console.error("Error sending data:", error);
       // router.push('');
     }
   };
 
-  export const handleDelete = async (id, trans, fetch) => {
-    const confirmed = await ConfirmationDialog(
-      trans.notification.deleting.title,
-      trans.notification.deleting.text,
-      trans.notification.deleting.type,
-      trans.notification.deleting.buttonOk,
-      trans.notification.deleting.buttonCancel
-    );
-    if (confirmed) {
-      await NotificationSweet({
-        title: trans.notification.loading.title,
-        text: "",
-        type: trans.notification.loading.type,
-        showLoading: true,
+export const handleDelete = async (rut, trans, fetch) => {
+  const confirmed = await ConfirmationDialog(
+    trans.notification.deleting.title,
+    trans.notification.deleting.text,
+    trans.notification.deleting.type,
+    trans.notification.deleting.buttonOk,
+    trans.notification.deleting.buttonCancel
+  );
+  if (confirmed) {
+    await NotificationSweet({
+      title: trans.notification.loading.title,
+      text: "",
+      type: trans.notification.loading.type,
+      showLoading: true,
+    });
+    try {
+      const response = await fetch(`${participanteDeletedByRutApiUrl}/${rut}`, {
+        method: "DELETE",
       });
-      try {
-        const response = await fetch(
-          `${""}/${id}`,
-          {
-            method: "DELETE",
-          }
-        ); 
-        if (response.ok) {
-          NotificationSweet({
-            title: trans.notification.success.title,
-            text: trans.notification.success.text,
-            type: trans.notification.success.type,
-          });
-          fetch();
-        } else {
-          NotificationSweet({
-            title: trans.notification.error.title,
-            text: trans.notification.error.text,
-            type: trans.notification.error.type,
-          });
-        }
-      } catch (error) {
+      if (response.ok) {
+        NotificationSweet({
+          title: trans.notification.success.title,
+          text: trans.notification.success.text,
+          type: trans.notification.success.type,
+        });
+        fetch();
+      } else {
         NotificationSweet({
           title: trans.notification.error.title,
           text: trans.notification.error.text,
           type: trans.notification.error.type,
         });
       }
+    } catch (error) {
+      NotificationSweet({
+        title: trans.notification.error.title,
+        text: trans.notification.error.text,
+        type: trans.notification.error.type,
+      });
+    }
+  }
+};
+export const handleEdit = async (id, trans, push) => {
+  const confirmed = await ConfirmationDialog(
+    trans.notification.edit.title,
+    trans.notification.edit.text,
+    trans.notification.edit.type,
+    trans.notification.edit.buttonOk,
+    trans.notification.edit.buttonCancel
+  );
+  if (confirmed) {
+    push(`//edit/${id}`);
+  }
+};
+export const handleView = async (id, push) => {
+  push(`//view/${id}`);
+};
+export const fetchParticipanteByIdProyecto = async (id) => {
+    try {
+      const response = await fetch(`${participanteGetByIdProyectoApiUrl}/${id}`);
+      const data = await response.json();
+      console.log(data)
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
     }
   };
-  export const handleEdit = async (id, trans, push) => {
-    const confirmed = await ConfirmationDialog(
-      trans.notification.edit.title,
-      trans.notification.edit.text,
-      trans.notification.edit.type,
-      trans.notification.edit.buttonOk,
-      trans.notification.edit.buttonCancel
-    );
-    if (confirmed) {
-      push(`//edit/${id}`);
-    }
-  };
-  export const handleView = async (id, push) => {
-    push(`//view/${id}`);
-  };
-  

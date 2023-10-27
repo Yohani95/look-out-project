@@ -90,6 +90,12 @@ export const proyectoWithEntitiesApiUrl=`${apiBaseUrl}/proyecto/WithEntities`;
 //tarifario convenido
 export const tarifarioApiUrl=`${apiBaseUrl}/TarifarioConvenio`
 export const tarifarioGetByIdProyectoApiUrl=`${apiBaseUrl}/TarifarioConvenio/GetByIdProyectoWithEntities`
+//Proyecto participantes
+
+export const participanteApiUrl=`${apiBaseUrl}/ProyectoParticipante`
+export const participanteCreateAsyncApiUrl=`${apiBaseUrl}/ProyectoParticipante/CreateAsync`
+export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/deletedAsyncGetByIdProyecto`
+export const participanteGetByIdProyectoApiUrl=`${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
 //moneda

@@ -8,8 +8,13 @@ import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { Button } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
-import { handleInputChange,handleDelete } from "@/app/[locale]/utils/business/UtilsParticipants";
-function ProfessionalForm({ idService, t, perfiles }) {
+import {
+  handleInputChange,
+  handleDelete,
+  handleFormSubmit,
+  fetchParticipanteByIdProyecto 
+} from "@/app/[locale]/utils/business/UtilsParticipants";
+function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
@@ -26,7 +31,7 @@ function ProfessionalForm({ idService, t, perfiles }) {
     fechaAsignacion: "",
     perApellidoPaterno: "",
     perApellidoMaterno: "",
-    participantesDTO:[],
+    participantesDTO: [],
   });
   const columns = [
     { title: t.Common.rut, key: "perIdNacional" },
@@ -56,6 +61,28 @@ function ProfessionalForm({ idService, t, perfiles }) {
       [fieldName]: selectedValue,
     }));
   };
+  useEffect(()=>{
+    fetchParticipanteByIdProyecto(idService).then((profesionales)=>{
+      console.log(profesionales)
+      profesionales.data.map((element)=>{
+        console.log(element)
+        const nuevoElementoTabla = {
+          perTarifa: element.ppaId,
+          perfil: element.perfil.prf_Nombre,
+          perIdNacional: element.persona.perIdNacional,
+          perNombre:
+          element.persona.perNombres +
+            " " +
+            element.persona.perApellidoPaterno +
+            " " +
+            element.persona.perApellidoMaterno,
+          //fechaAsignacion: element.fechaAsignacion.toLocaleDateString(),
+        };
+        setTablaCommon([ ...tablaCommon,nuevoElementoTabla]);
+      })
+      
+    })
+  },[]);
   useEffect(() => {
     const options = perfiles.map((item) => ({
       value: item.perfil.id,
@@ -63,41 +90,40 @@ function ProfessionalForm({ idService, t, perfiles }) {
     }));
     setPerfilOptions(options);
   }, [perfiles]);
+  const tarifario = perfiles.find(
+    (tarifario) => tarifario.perfil.id == formDataJob.prfId
+  );
   const handleAddToTablaCommon = () => {
-    const tarifario=perfiles.find((tarifario)=>tarifario.perfil.id==formDataJob.prfId);
+    const index = tablaCommon.findIndex(
+      (element) => element.perIdNacional === formDataJob.perIdNacional
+    );
+    if (index !== -1) {
+      NotificationSweet({
+        title: t.notification.warning.title,
+        text: t.Common.emailExist,
+        type: t.notification.warning.type,
+      });
+      return;
+    }
     const nuevoElementoTabla = {
       perTarifa: tarifario.tcTarifa,
       perfil: tarifario.perfil.prf_Nombre,
       perIdNacional: formDataJob.perIdNacional,
-      perNombre: formDataJob.perNombre + " " + formDataJob.perApellidoPaterno+ " " + formDataJob.perApellidoMaterno,
+      perNombre:
+        formDataJob.perNombre +
+        " " +
+        formDataJob.perApellidoPaterno +
+        " " +
+        formDataJob.perApellidoMaterno,
       fechaAsignacion: formDataJob.fechaAsignacion.toLocaleDateString(),
     };
-    const participanteDTO = {
-      proyectoParticipante: {
-        pryId: idService,
-        prfId: formDataJob.prfId,
-        fechaAsignacion: formDataJob.fechaAsignacion,
-        PerTartifa: tarifario.tcTarifa
-      },
-      persona: {
-        perIdNacional: formDataJob.perIdNacional,
-        perNombre: formDataJob.perNombre,
-        perApellidoPaterno: formDataJob.perApellidoPaterno,
-        perApellidoMaterno: "",
-        prfId: formDataJob.prfId,
-      },
-    };
-    setformDataJob((prevData) => ({
-      ...prevData,
-      participantesDTO: [...prevData.participantesDTO, participanteDTO],
-      // Mantén los ids en formData sin cambiarlos
-    }));
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };
+
   const handleDeleteItem = (participante) => {
     // Encuentra el índice del elemento en tablaCommon que coincide con el emaemail
     const index = tablaCommon.findIndex(
-      (element) => element.rut === participante.rut
+      (element) => element.perIdNacional === participante.perIdNacional
     );
     if (index !== -1) {
       const updatedTablaCommon = [...tablaCommon];
@@ -105,6 +131,15 @@ function ProfessionalForm({ idService, t, perfiles }) {
       setTablaCommon(updatedTablaCommon);
     }
   };
+
+  const handleSubmit = handleFormSubmit(
+    formDataJob,
+    t,
+    isEdit,
+    handleAddToTablaCommon,
+    tarifario,
+    idService
+  );
   return (
     <>
       <form>
@@ -135,6 +170,7 @@ function ProfessionalForm({ idService, t, perfiles }) {
               name="perNombre"
               value={formDataJob.perNombre}
               onChange={handleInputChange(formDataJob, setformDataJob)}
+              required
             />
           </div>
           <label
@@ -151,6 +187,7 @@ function ProfessionalForm({ idService, t, perfiles }) {
               name="perApellidoPaterno"
               value={formDataJob.perApellidoPaterno}
               onChange={handleInputChange(formDataJob, setformDataJob)}
+              required
             />
           </div>
           <label
@@ -167,6 +204,7 @@ function ProfessionalForm({ idService, t, perfiles }) {
               name="perApellidoMaterno"
               value={formDataJob.perApellidoMaterno}
               onChange={handleInputChange(formDataJob, setformDataJob)}
+              required
             />
           </div>
         </div>
@@ -199,30 +237,30 @@ function ProfessionalForm({ idService, t, perfiles }) {
             <button
               type="button"
               className="text-end badge btn btn-primary"
-              onClick={handleAddToTablaCommon}
+              onClick={handleSubmit}
             >
               {t.Common.add} ...{" "}
             </button>
           </div>
         </div>
-        {isLoading ? (
-          <LoadingData loadingMessage={t.Common.loadingData} />
-        ) : error ? (
-          <ErroData message={t.Common.errorMsg} />
-        ) : data == [] ? ( // Verifica si no hay datos
-          <div className="text-center justify-content-center align-items-center">
-            <h4>{t.Common.address}</h4> {t.Common.noData}
-          </div>
-        ) : (
-          <TableCommon
-            columns={columns}
-            noResultsFound={t.Common.noResultsFound}
-            data={tablaCommon}
-            title=""
-            search={t.Account.table.search}
-          />
-        )}
       </form>
+      {isLoading ? (
+        <LoadingData loadingMessage={t.Common.loadingData} />
+      ) : error ? (
+        <ErroData message={t.Common.errorMsg} />
+      ) : data == [] ? ( // Verifica si no hay datos
+        <div className="text-center justify-content-center align-items-center">
+          <h4>{t.Common.address}</h4> {t.Common.noData}
+        </div>
+      ) : (
+        <TableCommon
+          columns={columns}
+          noResultsFound={t.Common.noResultsFound}
+          data={tablaCommon}
+          title=""
+          search={t.Account.table.search}
+        />
+      )}
     </>
   );
 }
