@@ -7,18 +7,20 @@ import ErroData from "@/app/[locale]/components/common/ErroData";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { Button } from "react-bootstrap";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaPlus } from "react-icons/fa";
 import {
   handleInputChange,
   handleDelete,
   handleFormSubmit,
-  fetchParticipanteByIdProyecto 
+  fetchParticipanteByIdProyecto,
 } from "@/app/[locale]/utils/business/UtilsParticipants";
+import { validarRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
 function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
   const [perfilOptions, setPerfilOptions] = useState([]);
+  const [addStatus, setAdd] = useState(false);
   const [formDataJob, setformDataJob] = useState({
     ppaId: 0,
     pyrId: "",
@@ -43,13 +45,18 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       title: t.Account.action, // Título de la columna de acciones
       key: "actions",
       render: (item) => (
-        <Button size="sm" variant="link">
-          <FaTrash
-            size={16}
-            className=""
-            onClick={() => handleDeleteItem(item)}
-          />
-        </Button>
+        <>
+          <Button size="sm" variant="link">
+            <FaTrash
+              size={16}
+              className=""
+              onClick={() => handleDeleteAndItem(item, t)}
+            />
+          </Button>
+          <Button size="sm" variant="link" onClick={handleOpenNewWindow}>
+            <FaPlus size={16} className="" />
+          </Button>
+        </>
       ),
     },
   ];
@@ -61,28 +68,29 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       [fieldName]: selectedValue,
     }));
   };
-  useEffect(()=>{
-    fetchParticipanteByIdProyecto(idService).then((profesionales)=>{
-      console.log(profesionales)
-      profesionales.data.map((element)=>{
-        console.log(element)
-        const nuevoElementoTabla = {
-          perTarifa: element.ppaId,
-          perfil: element.perfil.prf_Nombre,
-          perIdNacional: element.persona.perIdNacional,
-          perNombre:
+  useEffect(() => {
+    fetchParticipanteByIdProyecto(idService).then((profesionales) => {
+      const nuevosElementosTabla = profesionales.data.map((element) => ({
+        perTarifa: element.perTartifa,
+        perfil: element.perfil.prf_Nombre,
+        perIdNacional: element.persona.perIdNacional,
+        perNombre:
           element.persona.perNombres +
-            " " +
-            element.persona.perApellidoPaterno +
-            " " +
-            element.persona.perApellidoMaterno,
-          //fechaAsignacion: element.fechaAsignacion.toLocaleDateString(),
-        };
-        setTablaCommon([ ...tablaCommon,nuevoElementoTabla]);
-      })
-      
-    })
-  },[]);
+          " " +
+          element.persona.perApellidoPaterno +
+          " " +
+          element.persona.perApellidoMaterno,
+        fechaAsignacion: element.fechaAsignacion
+          ? element.fechaAsignacion
+          : "N/A",
+      }));
+
+      setTablaCommon([...tablaCommon, ...nuevosElementosTabla]);
+    });
+  }, []);
+  const handleOpenNewWindow = () => {
+    window.open("/service/createNovelty", "_blank");
+  };
   useEffect(() => {
     const options = perfiles.map((item) => ({
       value: item.perfil.id,
@@ -131,7 +139,17 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       setTablaCommon(updatedTablaCommon);
     }
   };
-
+  const handleDeleteAndItem = async (item, t) => {
+    try {
+      const result = await handleDelete(item.perIdNacional, t);
+      console.log(result);
+      if (result == 200) {
+        handleDeleteItem(item);
+      }
+    } catch (error) {
+      console.error("Ocurrió un error o la eliminación se canceló:", error);
+    }
+  };
   const handleSubmit = handleFormSubmit(
     formDataJob,
     t,
@@ -142,7 +160,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   );
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h4>{t.Common.professionals}</h4>
         <div className="mb-3 row align-items-center">
           <label htmlFor="perIdNacional" className="col-sm-1 col-form-label">
@@ -151,14 +169,21 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
           <div className="col-sm-2">
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${
+                addStatus && !validarRut(formDataJob.perIdNacional)
+                  ? "is-invalid"
+                  : ""
+              }`}
               id="perIdNacional"
               name="perIdNacional"
               value={formDataJob.perIdNacional}
               onChange={handleInputChange(formDataJob, setformDataJob)}
+              title="Rut invalido"
+              placeholder="12345678-9"
               required
             />
           </div>
+
           <label htmlFor="perNombre" className="col-sm-1 col-form-label">
             {t.Common.name}
           </label>
@@ -235,9 +260,11 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
           </div>
           <div className="col-sm-1">
             <button
-              type="button"
+              type="submit"
               className="text-end badge btn btn-primary"
-              onClick={handleSubmit}
+              onClick={() => {
+                setAdd(true);
+              }}
             >
               {t.Common.add} ...{" "}
             </button>

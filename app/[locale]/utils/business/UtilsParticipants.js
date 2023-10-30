@@ -7,6 +7,7 @@ import {
   participanteDeletedByRutApiUrl,
   apiHeaders 
 } from "@/app/api/apiConfig";
+import { validarRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -18,7 +19,12 @@ export const handleFormSubmit =
   (formData, translations, isEditMode = false, handleAddToTablaCommon,tarifario,idService) =>
   async (event) => {
     event.preventDefault();
+    
     try {
+      if (!validarRut(formData.perIdNacional)) {
+        console.log("valido rut")
+        return;
+      }
       //tipo persona en base de datos es 4 los profesionales quizas implementar un sedder
       const tipoPersona=4;
       const profesionalesDTO = {
@@ -89,48 +95,59 @@ export const handleFormSubmit =
     }
   };
 
-export const handleDelete = async (rut, trans, fetch) => {
-  const confirmed = await ConfirmationDialog(
-    trans.notification.deleting.title,
-    trans.notification.deleting.text,
-    trans.notification.deleting.type,
-    trans.notification.deleting.buttonOk,
-    trans.notification.deleting.buttonCancel
-  );
-  if (confirmed) {
-    await NotificationSweet({
-      title: trans.notification.loading.title,
-      text: "",
-      type: trans.notification.loading.type,
-      showLoading: true,
-    });
-    try {
-      const response = await fetch(`${participanteDeletedByRutApiUrl}/${rut}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        NotificationSweet({
-          title: trans.notification.success.title,
-          text: trans.notification.success.text,
-          type: trans.notification.success.type,
+  export const handleDelete = async (rut, trans) => {
+    return new Promise(async (resolve, reject) => {
+      const confirmed = await ConfirmationDialog(
+        trans.notification.deleting.title,
+        trans.notification.deleting.text,
+        trans.notification.deleting.type,
+        trans.notification.deleting.buttonOk,
+        trans.notification.deleting.buttonCancel
+      );
+  
+      if (confirmed) {
+        await NotificationSweet({
+          title: trans.notification.loading.title,
+          text: "",
+          type: trans.notification.loading.type,
+          showLoading: true,
         });
-        fetch();
+  
+        try {
+          const response = await fetch(`${participanteDeletedByRutApiUrl}/${rut}`, {
+            method: "DELETE",
+          });
+  
+          if (response.ok) {
+            NotificationSweet({
+              title: trans.notification.success.title,
+              text: trans.notification.success.text,
+              type: trans.notification.success.type,
+            });
+            resolve(200); // Resolvemos la promesa si la eliminación es exitosa.
+          } else {
+            NotificationSweet({
+              title: trans.notification.error.title,
+              text: trans.notification.error.text,
+              type: trans.notification.error.type,
+            });
+            resolve(response.status);
+            // Rechazamos la promesa si hay un error.
+          }
+        } catch (error) {
+          NotificationSweet({
+            title: trans.notification.error.title,
+            text: trans.notification.error.text,
+            type: trans.notification.error.type,
+          });
+          resolve(new Error('Mensaje de error'));
+        }
       } else {
-        NotificationSweet({
-          title: trans.notification.error.title,
-          text: trans.notification.error.text,
-          type: trans.notification.error.type,
-        });
+        resolve(new Error('Eliminación cancelada')); // Rechazamos la promesa si la eliminación se cancela.
       }
-    } catch (error) {
-      NotificationSweet({
-        title: trans.notification.error.title,
-        text: trans.notification.error.text,
-        type: trans.notification.error.type,
-      });
-    }
-  }
-};
+    });
+  };
+  
 export const handleEdit = async (id, trans, push) => {
   const confirmed = await ConfirmationDialog(
     trans.notification.edit.title,
@@ -150,7 +167,6 @@ export const fetchParticipanteByIdProyecto = async (id) => {
     try {
       const response = await fetch(`${participanteGetByIdProyectoApiUrl}/${id}`);
       const data = await response.json();
-      console.log(data)
       return data;
     } catch (error) {
       console.error('Error fetching data:', error);

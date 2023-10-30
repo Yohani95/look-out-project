@@ -94,7 +94,7 @@ export const tarifarioGetByIdProyectoApiUrl=`${apiBaseUrl}/TarifarioConvenio/Get
 
 export const participanteApiUrl=`${apiBaseUrl}/ProyectoParticipante`
 export const participanteCreateAsyncApiUrl=`${apiBaseUrl}/ProyectoParticipante/CreateAsync`
-export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/deletedAsyncGetByIdProyecto`
+export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/deletedAsync`
 export const participanteGetByIdProyectoApiUrl=`${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
