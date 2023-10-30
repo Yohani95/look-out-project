@@ -3,7 +3,7 @@ export const Hero_content = () => {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">
-        <div className="col-lg-10"> <h6 style={{ margin: '0' }}>Version Alfa 16/10/2023</h6></div>
+        <div className="col-lg-10"> <h6 style={{ margin: '0' }}>Version Alfa 30/10/2023</h6></div>
       </div>
       
       <div className="d-flex justify-content-center align-items-center m-4">
