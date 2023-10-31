@@ -22,7 +22,6 @@ export const handleFormSubmit =
     
     try {
       if (!validarRut(formData.perIdNacional)) {
-        console.log("valido rut")
         return;
       }
       //tipo persona en base de datos es 4 los profesionales quizas implementar un sedder

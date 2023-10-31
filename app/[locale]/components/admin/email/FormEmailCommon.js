@@ -139,7 +139,6 @@ function FormEmailCommon({
   
   return (
     <>
-      <h4>{t.Common.email}</h4>
       <div className=" mb-3 row align-items-center ">
         <label htmlFor="emaEmail" className="col-sm-2 col-form-label">
           {t.Common.email}

@@ -37,20 +37,19 @@ const MyNav = ({ t, locale }) => {
               <Navbar.Collapse id="navbarSupportedContent">
                 <Nav className="me-auto">
                   <Nav.Item>
-                    <Link className="nav-link" href={"/account/search"}>{translations.Common.accounts}</Link>
+                    <Link className="nav-link" href={"/account/search"}>
+                      {translations.Common.accounts}
+                    </Link>
                   </Nav.Item>
-                  {/* <CommonDropDown
-                    t={t.namesMenu.account}
-                    title={t.namesMenu.account.title}
-                  /> */}
                   <CommonDropDown
                     t={t.namesMenu.contacts}
                     title={t.namesMenu.contacts.title}
                   />
-                  <CommonDropDown
-                    t={t.namesMenu.business}
-                    title={t.namesMenu.business.title}
-                  />
+                  <Nav.Item>
+                    <Link className="nav-link" href={"/business/closeServices/search"}>
+                      {translations.Ficha.business}
+                    </Link>
+                  </Nav.Item>
                   <CommonDropDown
                     t={t.namesMenu.project}
                     title={t.namesMenu.project.title}
@@ -121,7 +120,6 @@ const MyNav = ({ t, locale }) => {
             </>
           )}
         </Container>
-        
       </Navbar>
     </>
   );

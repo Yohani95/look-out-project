@@ -29,4 +29,19 @@ export const validarRut=(rut)=> {
       return rutVerificador === digitoVerificador.toString();
     }
   }
+  export const formatearRut=(rut)=> {
+    if (!rut) return '';
+
+    // Eliminar puntos y guión (si los tiene)
+    rut = rut.replace(/[\.-]/g, '');
+  
+    // Verificar si el RUT es válido
+    if (!/^\d{1,8}[-]?[\dkK]$/i.test(rut)) {
+      return rut; // Si no es un RUT válido, se muestra tal como está
+    }
+  
+    // Formatear el RUT
+    rut = rut.replace(/^(\d{1,3})(\d{3})(\d{3})([\dkK])$/i, '$1.$2.$3-$4');
+    return rut;
+  }
   

@@ -14,7 +14,8 @@ import {
   handleFormSubmit,
   fetchParticipanteByIdProyecto,
 } from "@/app/[locale]/utils/business/UtilsParticipants";
-import { validarRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
+import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
+import { validarRut,formatearRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
 function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -73,16 +74,14 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       const nuevosElementosTabla = profesionales.data.map((element) => ({
         perTarifa: element.perTartifa,
         perfil: element.perfil.prf_Nombre,
-        perIdNacional: element.persona.perIdNacional,
+        perIdNacional: formatearRut(element.persona.perIdNacional),
         perNombre:
           element.persona.perNombres +
           " " +
           element.persona.perApellidoPaterno +
           " " +
           element.persona.perApellidoMaterno,
-        fechaAsignacion: element.fechaAsignacion
-          ? element.fechaAsignacion
-          : "N/A",
+          fechaAsignacion: new Date(element.fechaAsignacion).toLocaleDateString(),
       }));
 
       setTablaCommon([...tablaCommon, ...nuevosElementosTabla]);
@@ -116,7 +115,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     const nuevoElementoTabla = {
       perTarifa: tarifario.tcTarifa,
       perfil: tarifario.perfil.prf_Nombre,
-      perIdNacional: formDataJob.perIdNacional,
+      perIdNacional: formatearRut(formDataJob.perIdNacional),
       perNombre:
         formDataJob.perNombre +
         " " +
@@ -160,134 +159,135 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   );
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <h4>{t.Common.professionals}</h4>
-        <div className="mb-3 row align-items-center">
-          <label htmlFor="perIdNacional" className="col-sm-1 col-form-label">
-            {t.Common.rut}
-          </label>
-          <div className="col-sm-2">
-            <input
-              type="text"
-              className={`form-control ${
-                addStatus && !validarRut(formDataJob.perIdNacional)
-                  ? "is-invalid"
-                  : ""
-              }`}
-              id="perIdNacional"
-              name="perIdNacional"
-              value={formDataJob.perIdNacional}
-              onChange={handleInputChange(formDataJob, setformDataJob)}
-              title="Rut invalido"
-              placeholder="12345678-9"
-              required
-            />
-          </div>
+      <BoxInfo title={t.Common.professionals} startShow={false}>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3 row align-items-center">
+            <label htmlFor="perIdNacional" className="col-sm-1 col-form-label">
+              {t.Common.rut}
+            </label>
+            <div className="col-sm-2">
+              <input
+                type="text"
+                className={`form-control ${
+                  addStatus && !validarRut(formDataJob.perIdNacional)
+                    ? "is-invalid"
+                    : ""
+                }`}
+                id="perIdNacional"
+                name="perIdNacional"
+                value={formDataJob.perIdNacional}
+                onChange={handleInputChange(formDataJob, setformDataJob)}
+                title="Rut invalido"
+                placeholder="12345678-9"
+                required
+              />
+            </div>
 
-          <label htmlFor="perNombre" className="col-sm-1 col-form-label">
-            {t.Common.name}
-          </label>
-          <div className="col-sm-2">
-            <input
-              type="name"
-              className="form-control"
-              id="perNombre"
-              name="perNombre"
-              value={formDataJob.perNombre}
-              onChange={handleInputChange(formDataJob, setformDataJob)}
-              required
-            />
-          </div>
-          <label
-            htmlFor="perApellidoPaterno"
-            className="col-sm-1 col-form-label"
-          >
-            {t.Common.lastName}
-          </label>
-          <div className="col-sm-2">
-            <input
-              type="text"
-              className="form-control"
-              id="perApellidoPaterno"
-              name="perApellidoPaterno"
-              value={formDataJob.perApellidoPaterno}
-              onChange={handleInputChange(formDataJob, setformDataJob)}
-              required
-            />
-          </div>
-          <label
-            htmlFor="perApellidoMaterno"
-            className="col-sm-1 col-form-label"
-          >
-            {t.Common.secondName}
-          </label>
-          <div className="col-sm-2">
-            <input
-              type="text"
-              className="form-control"
-              id="perApellidoMaterno"
-              name="perApellidoMaterno"
-              value={formDataJob.perApellidoMaterno}
-              onChange={handleInputChange(formDataJob, setformDataJob)}
-              required
-            />
-          </div>
-        </div>
-        <div className=" mb-3 row align-items-center">
-          <SelectField
-            label={`${t.Common.profile}`}
-            options={perfilOptions}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-2"
-            onChange={(e) => handleSelectChange(e, "prfId")}
-            selectedValue={formDataJob.prfId}
-          />
-          <label
-            htmlFor="perApellidoMaterno"
-            className="col-sm-1 col-form-label"
-          >
-            {t.Common.dateAssignment}
-          </label>
-          <div className="col-sm-2">
-            <MyDatePicker
-              selectedDate={formDataJob.fechaAsignacion}
-              onChange={(date) =>
-                setformDataJob({ ...formDataJob, fechaAsignacion: date })
-              }
-              title={t.Common.date}
-            />
-          </div>
-          <div className="col-sm-1">
-            <button
-              type="submit"
-              className="text-end badge btn btn-primary"
-              onClick={() => {
-                setAdd(true);
-              }}
+            <label htmlFor="perNombre" className="col-sm-1 col-form-label">
+              {t.Common.name}
+            </label>
+            <div className="col-sm-2">
+              <input
+                type="name"
+                className="form-control"
+                id="perNombre"
+                name="perNombre"
+                value={formDataJob.perNombre}
+                onChange={handleInputChange(formDataJob, setformDataJob)}
+                required
+              />
+            </div>
+            <label
+              htmlFor="perApellidoPaterno"
+              className="col-sm-1 col-form-label"
             >
-              {t.Common.add} ...{" "}
-            </button>
+              {t.Common.lastName}
+            </label>
+            <div className="col-sm-2">
+              <input
+                type="text"
+                className="form-control"
+                id="perApellidoPaterno"
+                name="perApellidoPaterno"
+                value={formDataJob.perApellidoPaterno}
+                onChange={handleInputChange(formDataJob, setformDataJob)}
+                required
+              />
+            </div>
+            <label
+              htmlFor="perApellidoMaterno"
+              className="col-sm-1 col-form-label"
+            >
+              {t.Common.secondName}
+            </label>
+            <div className="col-sm-2">
+              <input
+                type="text"
+                className="form-control"
+                id="perApellidoMaterno"
+                name="perApellidoMaterno"
+                value={formDataJob.perApellidoMaterno}
+                onChange={handleInputChange(formDataJob, setformDataJob)}
+                required
+              />
+            </div>
           </div>
-        </div>
-      </form>
-      {isLoading ? (
-        <LoadingData loadingMessage={t.Common.loadingData} />
-      ) : error ? (
-        <ErroData message={t.Common.errorMsg} />
-      ) : data == [] ? ( // Verifica si no hay datos
-        <div className="text-center justify-content-center align-items-center">
-          <h4>{t.Common.address}</h4> {t.Common.noData}
-        </div>
-      ) : (
-        <TableCommon
-          columns={columns}
-          noResultsFound={t.Common.noResultsFound}
-          data={tablaCommon}
-          title=""
-          search={t.Account.table.search}
-        />
-      )}
+          <div className=" mb-3 row align-items-center">
+            <SelectField
+              label={`${t.Common.profile}`}
+              options={perfilOptions}
+              preOption={t.Account.select}
+              labelClassName="col-sm-1 col-form-label"
+              divClassName="col-sm-2"
+              onChange={(e) => handleSelectChange(e, "prfId")}
+              selectedValue={formDataJob.prfId}
+            />
+            <label
+              htmlFor="perApellidoMaterno"
+              className="col-sm-1 col-form-label"
+            >
+              {t.Common.dateAssignment}
+            </label>
+            <div className="col-sm-2">
+              <MyDatePicker
+                selectedDate={formDataJob.fechaAsignacion}
+                onChange={(date) =>
+                  setformDataJob({ ...formDataJob, fechaAsignacion: date })
+                }
+                title={t.Common.date}
+              />
+            </div>
+            <div className="col-sm-1">
+              <button
+                type="submit"
+                className="text-end badge btn btn-primary"
+                onClick={() => {
+                  setAdd(true);
+                }}
+              >
+                {t.Common.add} ...{" "}
+              </button>
+            </div>
+          </div>
+        </form>
+        {isLoading ? (
+          <LoadingData loadingMessage={t.Common.loadingData} />
+        ) : error ? (
+          <ErroData message={t.Common.errorMsg} />
+        ) : data == [] ? ( // Verifica si no hay datos
+          <div className="text-center justify-content-center align-items-center">
+            <h4>{t.Common.address}</h4> {t.Common.noData}
+          </div>
+        ) : (
+          <TableCommon
+            columns={columns}
+            noResultsFound={t.Common.noResultsFound}
+            data={tablaCommon}
+            title=""
+            search={t.Account.table.search}
+          />
+        )}
+      </BoxInfo>
     </>
   );
 }

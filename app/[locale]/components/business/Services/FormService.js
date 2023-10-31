@@ -21,6 +21,7 @@ import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
 import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
+import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
 import ProfessionalForm from "./ProfessionalForm";
 function FormService({ locale, isEdit, isCreate, idService }) {
   const { data: session, status } = useSession();
@@ -553,7 +554,6 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   </div>
                 </div>
                 <hr />
-
                 <div className="mb-3 row align-items-center">
                   <label
                     htmlFor="estimatedStartDate"
@@ -599,8 +599,8 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="mb-3 row align-items-center ">
+                <BoxInfo title={t.business.agreedRate}> 
+                <div className="mb-3 row align-items-center ">
                 <SelectField
                   label={t.Common.profile}
                   options={perfilOptions}
@@ -662,14 +662,18 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   </button>
                 </div>
               </div>
-            </fieldset>
-            <TableCommon
+              <TableCommon
               columns={columns}
               noResultsFound={t.Common.noResultsFound}
               data={tablaCommon}
               title={t.business.agreedRate}
               search={t.Account.table.search}
             />
+                </BoxInfo>
+               
+              </div>
+            </fieldset>
+            
             <div className="d-flex justify-content-end mb-3">
               {isCreate || isEdit ? (
                 <button type="submit" className="btn btn-primary m-2">
@@ -691,6 +695,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
               )}
             </div>
           </form>
+          
           {idService && (
             <>
               <hr />

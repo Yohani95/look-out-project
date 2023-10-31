@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import FormPhoneCommon from "../admin/phone/FormPhoneCommon";
 import FormAddressCommon from "../world/address/FormAddressCommon";
 import MyDatePicker from "../common/MyDatePicker";
+import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
 function FormContact({ locale, isEdit, isCreate, idPerson }) {
   const t = require(`@/messages/${locale}.json`);
   const [clientOptions, setClientOptions] = useState([]);
@@ -25,7 +26,7 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
     perApellidoMaterno: "",
     paiId: 0,
     tpeId: 3,
-    birth:"",
+    birth: "",
     idCliente: 0,
     emails: [],
     telefonos: [],
@@ -124,7 +125,6 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
             {t.Common.secondName}
           </label>
           <div className="col-sm-3">
-            
             <input
               type="text"
               className="form-control"
@@ -136,21 +136,19 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
           </div>
         </div>
         <div className=" mb-3 row align-items-center">
-        <label
+          <label
             htmlFor="perApellidoMaterno"
             className="col-sm-1 col-form-label"
           >
             {t.Common.birthDay}
           </label>
-        <div className="col-sm-3">
-                <MyDatePicker
-                  selectedDate={formData.birth}
-                  onChange={(date) =>
-                    setFormData({ ...formData, birth: date })
-                  }
-                  title={t.Common.date}
-                />
-        </div>
+          <div className="col-sm-3">
+            <MyDatePicker
+              selectedDate={formData.birth}
+              onChange={(date) => setFormData({ ...formData, birth: date })}
+              title={t.Common.date}
+            />
+          </div>
           <SelectField
             label={t.Account.country}
             options={countryOptions}
@@ -170,26 +168,32 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
             selectedValue={formData.idCliente}
           />
         </div>
+        <BoxInfo title={t.Common.email} startShow={false}>
         <FormEmailCommon
           t={t}
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
         />
-        <hr/>
+        </BoxInfo>
+        <hr />
+        <BoxInfo title={t.Account.phone} startShow={false}>
         <FormPhoneCommon
           t={t}
           formData={formData}
           setFormData={setFormData}
           handleInputChange={handleInputChange}
         />
-        <hr/>
-        <FormAddressCommon
-         t={t}
-         formData={formData}
-         setFormData={setFormData}
-         handleInputChange={handleInputChange}
-        />
+        </BoxInfo>
+        <hr />
+        <BoxInfo title={t.Common.address} startShow={false}>
+          <FormAddressCommon
+            t={t}
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+          />
+        </BoxInfo>
       </fieldset>
       <div className="d-flex justify-content-end mb-3">
         {isCreate || isEdit ? (

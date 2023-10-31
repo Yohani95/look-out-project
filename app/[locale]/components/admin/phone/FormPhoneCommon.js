@@ -140,7 +140,6 @@ function FormPhoneCommon({
   };
   return (
     <>
-      <h4>{t.Account.phone}</h4>
       <div className=" mb-3 row align-items-center ">
         <label htmlFor="telNumero" className="col-sm-2 col-form-label">
         {t.Account.phone}
