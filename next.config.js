@@ -11,3 +11,5 @@ const withNextIntl = require('next-intl/plugin')(
 module.exports = withNextIntl({
     nextConfig,
   });
+  const path = require('path');
+  

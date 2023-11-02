@@ -96,6 +96,11 @@ export const participanteApiUrl=`${apiBaseUrl}/ProyectoParticipante`
 export const participanteCreateAsyncApiUrl=`${apiBaseUrl}/ProyectoParticipante/CreateAsync`
 export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/deletedAsync`
 export const participanteGetByIdProyectoApiUrl=`${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`
+
+//Novedades
+export const novedadApiUrl=`${apiBaseUrl}/novedades`
+// Tipo de novedades
+export const tipoNovedadApiUrl=`${apiBaseUrl}/tipoNovedades`
 //perfil
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
 //moneda
