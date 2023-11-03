@@ -330,8 +330,9 @@
     "noveltyByProfessional": "Novedad por Profesional",
     "noveltyType": "Tipo novedad",
     "noveltyDate": "Fecha Novedad",
-    "newRol": "Nuevo Rol",
+    "newRol": "Nuevo Perfil",
     "dateTo": "Fecha Hasta",
+    "dateFrom": "Fecha Desde",
     "historyNovelty": "Historial de Novedades"
   },
   "facture": {

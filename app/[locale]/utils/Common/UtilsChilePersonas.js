@@ -44,4 +44,12 @@ export const validarRut=(rut)=> {
     rut = rut.replace(/^(\d{1,3})(\d{3})(\d{3})([\dkK])$/i, '$1.$2.$3-$4');
     return rut;
   }
+  export const quitarPuntosRut = (rut) => {
+    if (!rut) return '';
+  
+    // Eliminar puntos (.) del RUT
+    rut = rut.replace(/\./g, '');
+    return rut;
+  }
+  
   

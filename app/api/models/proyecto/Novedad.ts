@@ -1,30 +1,14 @@
 class Novedad {
-  id: number;
-  idPersona: number;
-  idProyecto: number;
-  fechaInicio: Date;
-  fechaHasta: Date;
-  IdPerfil: number;
-  idTipoNovedad: number;
-  observaciones: string;
+  id: number = 0;
+  idPersona: number | null = null;
+  idProyecto: number | null = null;
+  fechaInicio: Date | null = null;
+  fechaHasta: Date | null = null;
+  idPerfil: number | null = null;
+  idTipoNovedad: number | null = null;
+  observaciones: string | null = "N/A";
 
-  constructor(
-    idPersona: number,
-    idProyecto: number,
-    fechaInicio: Date,
-    fechaHasta: Date,
-    IdPerfil: number,
-    idTipoNovedad: number,
-    observaciones: string
-  ) {
-    this.id = 0;
-    this.idPersona = idPersona;
-    this.idProyecto = idProyecto;
-    this.fechaInicio = fechaInicio;
-    this.fechaHasta = fechaHasta;
-    this.IdPerfil = IdPerfil;
-    this.observaciones = observaciones;
-    this.idTipoNovedad = idTipoNovedad;
+  constructor() {
   }
 }
 

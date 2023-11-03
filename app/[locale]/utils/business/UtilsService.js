@@ -222,7 +222,7 @@ export const fetchServiceById = async (Id, t, setFormData, push,setTablaCommon,t
           idPerfil: element.perfil.prf_Nombre, // Almacena el label en la tabla
           fee: element.tcTarifa,
           idMon: element.moneda.monNombre, // Almacena el label en la tabla
-          base: element.tcBase === 1 ? "mes" : element.tcBase === 3 ? "hora" : "semana",
+          base: element.tcBase === 1 ? t.time.mes : element.tcBase === 3 ? t.time.hour : t.time.week,
         };
         setTablaCommon([...tablaCommon, nuevoElementoTabla]);
       });

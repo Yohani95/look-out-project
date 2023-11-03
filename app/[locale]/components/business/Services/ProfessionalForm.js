@@ -14,9 +14,14 @@ import {
   handleFormSubmit,
   fetchParticipanteByIdProyecto,
 } from "@/app/[locale]/utils/business/UtilsParticipants";
+import Persona from "@/app/api/models/admin/Persona";
 import { useRouter } from "next/navigation";
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
-import { validarRut,formatearRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
+import {
+  validarRut,
+  formatearRut,
+  quitarPuntosRut,
+} from "@/app/[locale]/utils/Common/UtilsChilePersonas";
 function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -37,8 +42,9 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     perApellidoMaterno: "",
     participantesDTO: [],
   });
-  const router=useRouter();
+  const router = useRouter();
   const columns = [
+    { title: "ID", key: "id" },
     { title: t.Common.rut, key: "perIdNacional" },
     { title: t.Common.name, key: "perNombre" },
     { title: t.Common.profile, key: "perfil" },
@@ -56,7 +62,13 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
               onClick={() => handleDeleteAndItem(item, t)}
             />
           </Button>
-          <Button size="sm" variant="link" onClick={handleOpenNewWindow}>
+          <Button
+            size="sm"
+            variant="link"
+            onClick={() =>
+              router.push(`/service/createNovelty/${idService}/${item.id}`)
+            }
+          >
             <FaPlus size={16} className="" />
           </Button>
         </>
@@ -71,9 +83,10 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       [fieldName]: selectedValue,
     }));
   };
-  useEffect(() => {
+  const fetchData = () => {
     fetchParticipanteByIdProyecto(idService).then((profesionales) => {
       const nuevosElementosTabla = profesionales.data.map((element) => ({
+        id: element.persona.id,
         perTarifa: element.perTartifa,
         perfil: element.perfil.prf_Nombre,
         perIdNacional: formatearRut(element.persona.perIdNacional),
@@ -83,15 +96,16 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
           element.persona.perApellidoPaterno +
           " " +
           element.persona.perApellidoMaterno,
-          fechaAsignacion: new Date(element.fechaAsignacion).toLocaleDateString(),
+        fechaAsignacion: new Date(element.fechaAsignacion).toLocaleDateString(),
       }));
 
       setTablaCommon([...tablaCommon, ...nuevosElementosTabla]);
     });
-  }, []);
-  const handleOpenNewWindow = () => {
-    router.push(`/service/createNovelty/${idService}/${725}`)
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   useEffect(() => {
     const options = perfiles.map((item) => ({
       value: item.perfil.id,
@@ -142,8 +156,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   };
   const handleDeleteAndItem = async (item, t) => {
     try {
-      const result = await handleDelete(item.perIdNacional, t);
-      console.log(result);
+      const result = await handleDelete(quitarPuntosRut(item.perIdNacional), t);
       if (result == 200) {
         handleDeleteItem(item);
       }
@@ -155,7 +168,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     formDataJob,
     t,
     isEdit,
-    handleAddToTablaCommon,
+    fetchData,
     tarifario,
     idService
   );

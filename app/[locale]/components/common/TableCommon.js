@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Table, Container } from "react-bootstrap";
 
-const TableComponent = ({ data, columns, title, search, noResultsFound,actions,idioma }) => {
+const TableCommon = ({ data, columns, title, search, noResultsFound,actions,idioma }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10); // Valor inicial de filas por página
@@ -128,4 +128,4 @@ const TableComponent = ({ data, columns, title, search, noResultsFound,actions,i
   );
 };
 
-export default TableComponent;
+export default TableCommon;

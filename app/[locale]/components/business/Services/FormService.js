@@ -197,6 +197,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
           label: item.cliNombre,
         }));
         setAccountOptions(options);
+        setIsLoading(false)
       });
     }
   }, []);

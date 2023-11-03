@@ -16,7 +16,7 @@ export const handleInputChange = (formData, setFormData) => (event) => {
   }));
 };
 export const handleFormSubmit =
-  (formData, translations, isEditMode = false, handleAddToTablaCommon,tarifario,idService) =>
+  (formData, translations, isEditMode = false, fetchDataProfesionales,tarifario,idService) =>
   async (event) => {
     event.preventDefault();
     
@@ -69,7 +69,7 @@ export const handleFormSubmit =
           text: translations.notification.success.text,
           type: translations.notification.success.type,
         });
-        handleAddToTablaCommon();
+        fetchDataProfesionales();
       } else if (response.status === 409) {
         NotificationSweet({
           title: translations.notification.warning.title,
