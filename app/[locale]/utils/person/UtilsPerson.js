@@ -226,8 +226,9 @@ export const handleEdit = async (idPerson, trans, push) => {
 
 export const fetchGetbyId = async (idPerson) => {
   try {
-    const response = await fetch(`${""}/${idPerson}`);
-    return response;
+    const response = await fetch(`${personApiUrl}/${idPerson}`);
+    const data=response.json()
+    return data;
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];

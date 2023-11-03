@@ -1,10 +1,9 @@
 import React from "react";
 import { useTranslations,useLocale } from "next-intl";
 import MyTitle from "@/app/[locale]/components/common/MyTitle";
-import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import FormNovelty from "@/app/[locale]/components/business/Services/FormNovelty";
 import ButtonsNovelty from "@/app/[locale]/components/service/ButtonsNovelty";
-function page() {
+function page({params}) {
   const t = useTranslations();
   const locale=useLocale();
   const columnsPeriods = [
@@ -29,16 +28,7 @@ function page() {
       <div className="d-flex justify-content-center align-items-center">
         <div className="card col-lg-10 shadow">
           <div className="container mt-4 mb-4">
-            <FormNovelty locale={locale}/>
-            {/* <TableCommon
-              columns={columnsPeriods}
-              noResultsFound={t("Common.noResultsFound")}
-              data={data}
-              title={t("service.historyNovelty")}
-              search={t("Account.table.search")}
-              idioma={t("Account.action")}
-              actions={actions}
-            /> */}
+            <FormNovelty locale={locale} idPersona={params.idPersona} idProyecto={params.IdProject}/>
           </div>
         </div>
       </div>

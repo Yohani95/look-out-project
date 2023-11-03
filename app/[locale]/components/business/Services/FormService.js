@@ -29,7 +29,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
   const [typeServiceOptions, setTypeServiceOptions] = useState([]);
   const [contactOptions, setContactOptions] = useState([]);
   const [accountOptions, setAccountOptions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [correlativo, setCorrelativo] = useState([]);
   const [perfilOptions, setPerfilOptions] = useState([]);
   const [monedaOptions, setMonedaOptions] = useState([]);
@@ -229,6 +229,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       const fetchData = async () => {
         try {
           await fetchServiceById(idService, t, setFormData, router.push, setTablaCommon, tablaCommon);
+          setIsLoading(false)
         } catch (error) {
           console.error(error);
         }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Swal from 'sweetalert2';
-const NotificationSweet = ({ title, text, type, showLoading,push,link }) => {
+const NotificationSweet = async ({ title, text, type, showLoading,push,link }) => {
   const options = {
     title,
     text,

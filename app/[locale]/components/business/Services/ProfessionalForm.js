@@ -14,6 +14,7 @@ import {
   handleFormSubmit,
   fetchParticipanteByIdProyecto,
 } from "@/app/[locale]/utils/business/UtilsParticipants";
+import { useRouter } from "next/navigation";
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
 import { validarRut,formatearRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
 function ProfessionalForm({ isEdit, idService, t, perfiles }) {
@@ -36,6 +37,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     perApellidoMaterno: "",
     participantesDTO: [],
   });
+  const router=useRouter();
   const columns = [
     { title: t.Common.rut, key: "perIdNacional" },
     { title: t.Common.name, key: "perNombre" },
@@ -88,7 +90,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     });
   }, []);
   const handleOpenNewWindow = () => {
-    window.open("/service/createNovelty", "_blank");
+    router.push(`/service/createNovelty/${idService}/${725}`)
   };
   useEffect(() => {
     const options = perfiles.map((item) => ({
