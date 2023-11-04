@@ -24,6 +24,7 @@ import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
 import ProfessionalForm from "./ProfessionalForm";
 function FormService({ locale, isEdit, isCreate, idService }) {
+  //========DECLARACION DE VARIABLES ===============
   const { data: session, status } = useSession();
   const [countryOptions, setCountryOptions] = useState([]);
   const [typeServiceOptions, setTypeServiceOptions] = useState([]);
@@ -34,13 +35,14 @@ function FormService({ locale, isEdit, isCreate, idService }) {
   const [perfilOptions, setPerfilOptions] = useState([]);
   const [monedaOptions, setMonedaOptions] = useState([]);
   const [tablaCommon, setTablaCommon] = useState([]);
+  const fileInputRefs = [useRef(null), useRef(null)];
   const [formData, setFormData] = useState({
     pryId: 0,
     cliId: 0,
     pryNombre: "",
     perId: 0,
     tseId: 0,
-    paiId: 0,
+    paisId: 0,
     kamId: 0,
     file1: null,
     file2: null,
@@ -49,16 +51,171 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     closeDate: null,
     months: null,
     idMon: 0,
-    idPerfil: 0,
+    idPerfil: 1,
     fee: 0,
     base: "",
     listPerfil: [],
-    personData:"",
-    client:"",
-    perfiles:[]
+    personData: "",
+    client: "",
+    perfiles: [],
   });
   let t = require(`@/messages/${locale}.json`);
   const router = useRouter();
+  const timeOptions = [
+    { value: 1, label: t.time.month },
+    { value: 2, label: t.time.week },
+    { value: 3, label: t.time.hour },
+    // Agrega más opciones según sea necesario
+  ];
+  const columns = [
+    { title: t.business.assignedProfile, key: "idPerfil" },
+    { title: t.Common.fee, key: "fee" },
+    { title: t.Common.currency, key: "idMon" },
+    { title: t.Common.base, key: "base" },
+    {
+      title: "Acciones", // Título de la columna de acciones
+      key: "actions",
+      render: (item) => (
+        <Button size="sm" variant="link">
+          <FaTrash
+            size={16}
+            className=""
+            onClick={() => handleDeleteItem(item.idPerfil)}
+          />
+        </Button>
+      ),
+    },
+  ];
+  //========FIN DECLARACION DE VARIABLES ===============
+ /*
+   =================================================================================
+   SECCION DE USSEFFECT
+   =================================================================================
+*/
+  useEffect(() => {
+    fetchMoneda().then((data) => {
+      const options = data.map((moneda) => ({
+        value: moneda.monId,
+        label: moneda.monNombre,
+      }));
+      setMonedaOptions(options);
+    });
+  }, []);
+  useEffect(() => {
+    fetchPerfil().then((data) => {
+      const options = data.map((perfil) => ({
+        value: perfil.id,
+        label: perfil.prf_Nombre + " " + perfil.prf_Descripcion,
+      }));
+      setPerfilOptions(options);
+    });
+  }, []);
+  useEffect(() => {
+    if (isCreate) {
+      fetchServiceLastId(t, router.push).then((result) => {
+        setCorrelativo(result.data + 1);
+      });
+    }
+  }, []);
+  useEffect(() => {
+    fetchCountriest().then((data) => {
+      const options = data.map((country) => ({
+        value: country.paiId,
+        label: country.paiNombre,
+      }));
+      setCountryOptions(options);
+    });
+  }, []);
+  useEffect(() => {
+    fetchTypeService().then((data) => {
+      const options = data.map((item) => ({
+        value: item.tseId,
+        label: `${item.tseNombre} ${item.tseDescripcion} `,
+      }));
+      setTypeServiceOptions(options);
+    });
+  }, []);
+  useEffect(() => {
+    if (isEdit || isCreate) {
+      fechtClients().then((data) => {
+        const options = data.map((item) => ({
+          value: item.cliId,
+          label: item.cliNombre,
+        }));
+        setAccountOptions(options);
+        setIsLoading(false);
+      });
+    }
+  }, []);
+  const handleSelectChange = (event, fieldName) => {
+    const selectedValue = event.target.value;
+    setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
+    // if (fieldName == "cliId") {
+    //   fetchPersonGetbyIdClient(selectedValue).then((person) => {
+    //     const options = person.data.map((item) => ({
+    //       value: item.id,
+    //       label: item.perNombres + " " + item.perApellidoPaterno,
+    //     }));
+    //     setContactOptions(options);
+    //   });
+    // }
+  };
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setFormData({
+      ...formData,
+      [name]: files[0],
+    });
+  };
+  useEffect(() => {
+    setCorrelativo(formData.pryId);
+  }, [formData.pryId]);
+  useEffect(() => {
+    if (session) {
+      setFormData((prevData) => ({
+        ...prevData,
+        kamId: session.user.persona.id,
+      }));
+    }
+  }, [session]);
+  useEffect(() => {
+    fetchPersonGetbyIdClient(formData.cliId).then((person) => {
+      const options = person.data.map((item) => ({
+        value: item.id,
+        label: item.perNombres + " " + item.perApellidoPaterno,
+      }));
+      setContactOptions(options);
+    });
+  }, [formData.cliId]);
+  useEffect(() => {
+    calculateEndDate();
+  }, [formData.startDate, formData.months]);
+  if (idService != null && !isNaN(idService)) {
+    const fetchData = async () => {
+      try {
+        await fetchServiceById(
+          idService,
+          t,
+          setFormData,
+          router.push,
+          setTablaCommon,
+          tablaCommon
+        );
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    useEffect(() => {
+      fetchData();
+    }, []);
+  }
+  //=======FIN SECCION DE USSEFFECT===============
+  /*
+   =================================================================================
+   Seccion Funciones de componente
+   =================================================================================
+*/
   const handleAddToTablaCommon = () => {
     // Obtén los labels correspondientes a los ids seleccionados
     const idPerfilLabel = perfilOptions.find(
@@ -120,126 +277,6 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       }));
     }
   };
-  const columns = [
-    { title: t.business.assignedProfile, key: "idPerfil" },
-    { title: t.Common.fee, key: "fee" },
-    { title: t.Common.currency, key: "idMon" },
-    { title: t.Common.base, key: "base" },
-    {
-      title: "Acciones", // Título de la columna de acciones
-      key: "actions",
-      render: (item) => (
-        <Button size="sm" variant="link">
-          <FaTrash
-            size={16}
-            className=""
-            onClick={() => handleDeleteItem(item.idPerfil)}
-          />
-        </Button>
-      ),
-    },
-  ];
-  const timeOptions = [
-    { value: 1, label: t.time.month },
-    { value: 2, label: t.time.week },
-    { value: 3, label: t.time.hour },
-    // Agrega más opciones según sea necesario
-  ];
-  useEffect(() => {
-    fetchMoneda().then((data) => {
-      const options = data.map((moneda) => ({
-        value: moneda.monId,
-        label: moneda.monNombre,
-      }));
-      setMonedaOptions(options);
-
-    });
-  }, []);
-  useEffect(() => {
-    fetchPerfil().then((data) => {
-      const options = data.map((perfil) => ({
-        value: perfil.id,
-        label: perfil.prf_Nombre + " " + perfil.prf_Descripcion,
-      }));
-      setPerfilOptions(options);
-    });
-  }, []);
-  useEffect(() => {
-    if (isCreate) {
-      fetchServiceLastId(t, router.push).then((result) => {
-        setCorrelativo(result.data + 1);
-      });
-    }
-  }, []);
-  useEffect(() => {
-    fetchCountriest().then((data) => {
-      const options = data.map((country) => ({
-        value: country.paiId,
-        label: country.paiNombre,
-      }));
-      setCountryOptions(options);
-    });
-  }, []);
-  useEffect(() => {
-    fetchTypeService().then((data) => {
-      const options = data.map((item) => ({
-        value: item.tseId,
-        label: `${item.tseNombre} ${item.tseDescripcion} `,
-      }));
-      setTypeServiceOptions(options);
-    });
-  }, []);
-  useEffect(() => {
-    if(isEdit||isCreate){
-      fechtClients().then((data) => {
-        const options = data.map((item) => ({
-          value: item.cliId,
-          label: item.cliNombre,
-        }));
-        setAccountOptions(options);
-        setIsLoading(false)
-      });
-    }
-  }, []);
-  const handleSelectChange = (event, fieldName) => {
-    const selectedValue = event.target.value;
-    //console.log(`Selected ${fieldName}:`, selectedValue);
-    setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
-    if (fieldName == "cliId") {
-      fetchPersonGetbyIdClient(selectedValue).then((person) => {
-        const options = person.data.map((item) => ({
-          value: item.id,
-          label: item.perNombres + " " + item.perApellidoPaterno,
-        }));
-        setContactOptions(options);
-      });
-    }
-  };
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
-    setFormData({
-      ...formData,
-      [name]: files[0],
-    });
-  };
-  useEffect(() => {
-    setCorrelativo(formData.pryId);
-  }, [formData.pryId]);
-  
-    if (idService != null && !isNaN(idService)) {
-      const fetchData = async () => {
-        try {
-          await fetchServiceById(idService, t, setFormData, router.push, setTablaCommon, tablaCommon);
-          setIsLoading(false)
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      useEffect(() => {
-        fetchData();
-      }, []);
-    }
-  
   const cancel = () => {
     router.push("/business/closeServices/search");
   };
@@ -249,7 +286,6 @@ function FormService({ locale, isEdit, isCreate, idService }) {
   const goContactCreate = () => {
     router.push("/contact/create");
   };
-  const fileInputRefs = [useRef(null), useRef(null)];
   const calculateEndDate = () => {
     const { startDate, months } = formData;
     try {
@@ -281,17 +317,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       console.log("Error calculando fecha estimada" + error);
     }
   };
-  useEffect(() => {
-    if (session) {
-      setFormData((prevData) => ({
-        ...prevData,
-        kamId: session.user.persona.id,
-      }));
-    }
-  }, [session]);
-  useEffect(() => {
-    calculateEndDate();
-  }, [formData.startDate, formData.months]);
+
   const handleSubmit = handleFormSubmit(
     formData,
     t,
@@ -370,42 +396,42 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                     preOption={t.Account.select}
                     labelClassName="col-sm-1 col-form-label"
                     divClassName="col-sm-2"
-                    onChange={(e) => handleSelectChange(e, "paiId")}
-                    selectedValue={formData.paiId}
+                    onChange={(e) => handleSelectChange(e, "paisId")}
+                    selectedValue={formData.paisId}
                   />
                 </div>
 
                 <div className=" mb-3 row align-items-center">
-                {!isCreate && !isEdit ?
-                  <>
-                   <label
-                    htmlFor="client"
-                    className="col-sm-1 col-form-label"
-                  >
-                    {t.Account.name}
-                  </label>
-                  <div className="col-sm-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="client"
-                      name="client"
-                      value={formData.client}
-                      onChange={handleInputChange(formData, setFormData)}
+                  {!isCreate && !isEdit ? (
+                    <>
+                      <label
+                        htmlFor="client"
+                        className="col-sm-1 col-form-label"
+                      >
+                        {t.Account.name}
+                      </label>
+                      <div className="col-sm-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="client"
+                          name="client"
+                          value={formData.client}
+                          onChange={handleInputChange(formData, setFormData)}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <SelectField
+                      label={t.Account.name}
+                      options={accountOptions}
+                      preOption={t.Account.select}
+                      labelClassName="col-sm-1 col-form-label"
+                      divClassName="col-sm-3"
+                      onChange={(e) => handleSelectChange(e, "cliId")}
+                      selectedValue={formData.cliId}
                     />
-                  </div>
-                  </>
-                  :
-                  <SelectField
-                  label={t.Account.name}
-                  options={accountOptions}
-                  preOption={t.Account.select}
-                  labelClassName="col-sm-1 col-form-label"
-                  divClassName="col-sm-3"
-                  onChange={(e) => handleSelectChange(e, "cliId")}
-                  selectedValue={formData.cliId}
-                />
-                  }
+                  )}
                   <div className="col-sm-2">
                     <button type="button" className="badge btn btn-primary">
                       {t.Common.request} (+){" "}
@@ -430,37 +456,37 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                 </div>
 
                 <div className=" mb-3 row align-items-center">
-                  {!isCreate && !isEdit ?
-                  <>
-                   <label
-                    htmlFor="personData"
-                    className="col-sm-1 col-form-label"
-                  >
-                    {t.Common.contact}
-                  </label>
-                  <div className="col-sm-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="personData"
-                      name="personData"
-                      value={formData.personData}
-                      onChange={handleInputChange(formData, setFormData)}
-                    />
-                  </div>
-                  </>
-                  :
+                  {!isCreate && !isEdit ? (
+                    <>
+                      <label
+                        htmlFor="personData"
+                        className="col-sm-1 col-form-label"
+                      >
+                        {t.Common.contact}
+                      </label>
+                      <div className="col-sm-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="personData"
+                          name="personData"
+                          value={formData.personData}
+                          onChange={handleInputChange(formData, setFormData)}
+                        />
+                      </div>
+                    </>
+                  ) : (
                     <SelectField
-                    label={t.Common.contact}
-                    options={contactOptions}
-                    preOption={t.Account.select}
-                    labelClassName="col-sm-1 col-form-label"
-                    divClassName="col-sm-3"
-                    onChange={(e) => handleSelectChange(e, "perId")}
-                    selectedValue={formData.perId}
-                  />
-                  }
-                
+                      label={t.Common.contact}
+                      options={contactOptions}
+                      preOption={t.Account.select}
+                      labelClassName="col-sm-1 col-form-label"
+                      divClassName="col-sm-3"
+                      onChange={(e) => handleSelectChange(e, "perId")}
+                      selectedValue={formData.perId}
+                    />
+                  )}
+
                   <div className="col-sm-2">
                     <button
                       type="button"
@@ -601,81 +627,80 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                     />
                   </div>
                 </div>
-                <BoxInfo title={t.business.agreedRate}> 
-                <div className="mb-3 row align-items-center ">
-                <SelectField
-                  label={t.Common.profile}
-                  options={perfilOptions}
-                  preOption={t.Account.select}
-                  labelClassName="col-sm-1 col-form-label"
-                  divClassName="col-sm-2"
-                  onChange={(e) => handleSelectChange(e, "idPerfil")}
-                  selectedValue={formData.idPerfil}
-                />
-                <label htmlFor="fee" className="col-sm-1 col-form-label">
-                  {t.Common.fee}
-                </label>
-                <div className="col-sm-2">
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="fee"
-                    id="fee"
-                    value={formData.fee}
-                    onChange={handleInputChange(formData, setFormData)}
+                <BoxInfo title={t.business.agreedRate}>
+                  <div className="mb-3 row align-items-center ">
+                    <SelectField
+                      label={t.Common.profile}
+                      options={perfilOptions}
+                      preOption={t.Account.select}
+                      labelClassName="col-sm-1 col-form-label"
+                      divClassName="col-sm-2"
+                      onChange={(e) => handleSelectChange(e, "idPerfil")}
+                      selectedValue={formData.idPerfil}
+                    />
+                    <label htmlFor="fee" className="col-sm-1 col-form-label">
+                      {t.Common.fee}
+                    </label>
+                    <div className="col-sm-2">
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="fee"
+                        id="fee"
+                        value={formData.fee}
+                        onChange={handleInputChange(formData, setFormData)}
+                      />
+                    </div>
+                    <div className="col-sm-2">
+                      <select
+                        className="form-control form-select"
+                        onChange={(e) => handleSelectChange(e, "idMon")}
+                      >
+                        <option value="">{t.Account.select}</option>
+                        {monedaOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <label htmlFor="base" className="col-sm-1 col-form-label">
+                      {t.Common.base}
+                    </label>
+                    <div className="col-sm-2">
+                      <select
+                        className="form-control form-select"
+                        onChange={(e) => handleSelectChange(e, "base")}
+                      >
+                        <option value="">{t.Account.select}</option>
+                        {timeOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-sm-1">
+                      <button
+                        type="button"
+                        className="text-end badge btn btn-primary"
+                        onClick={handleAddToTablaCommon}
+                      >
+                        {t.Common.include} ...{" "}
+                      </button>
+                    </div>
+                  </div>
+                  <TableCommon
+                    columns={columns}
+                    noResultsFound={t.Common.noResultsFound}
+                    data={tablaCommon}
+                    title={t.business.agreedRate}
+                    search={t.Account.table.search}
                   />
-                </div>
-                <div className="col-sm-2">
-                  <select
-                    className="form-control form-select"
-                    onChange={(e) => handleSelectChange(e, "idMon")}
-                  >
-                    <option value="">{t.Account.select}</option>
-                    {monedaOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <label htmlFor="base" className="col-sm-1 col-form-label">
-                  {t.Common.base}
-                </label>
-                <div className="col-sm-2">
-                  <select
-                    className="form-control form-select"
-                    onChange={(e) => handleSelectChange(e, "base")}
-                  >
-                    <option value="">{t.Account.select}</option>
-                    {timeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-sm-1">
-                  <button
-                    type="button"
-                    className="text-end badge btn btn-primary"
-                    onClick={handleAddToTablaCommon}
-                  >
-                    {t.Common.include} ...{" "}
-                  </button>
-                </div>
-              </div>
-              <TableCommon
-              columns={columns}
-              noResultsFound={t.Common.noResultsFound}
-              data={tablaCommon}
-              title={t.business.agreedRate}
-              search={t.Account.table.search}
-            />
                 </BoxInfo>
-               
               </div>
             </fieldset>
-            
+
             <div className="d-flex justify-content-end mb-3">
               {isCreate || isEdit ? (
                 <button type="submit" className="btn btn-primary m-2">
@@ -697,11 +722,15 @@ function FormService({ locale, isEdit, isCreate, idService }) {
               )}
             </div>
           </form>
-          
+
           {idService && (
             <>
               <hr />
-              <ProfessionalForm t={t} idService={idService} perfiles={formData.perfiles}/>
+              <ProfessionalForm
+                t={t}
+                idService={idService}
+                perfiles={formData.perfiles}
+              />
               <div className="d-flex justify-content-end mb-3">
                 <button
                   type="button"

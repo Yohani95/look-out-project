@@ -2,6 +2,7 @@ import NotificationSweet from "@/app/[locale]/components/common/NotificationSwee
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
 import {
   proyectoCreateAsyncApiUrl,
+  proyectoUpdateAsyncApiUrl,
   proyectoLastIdApiUrl,
   proyectoApiUrl,
   proyectoGeFileApiUrl,
@@ -11,7 +12,6 @@ import {
   proyectoByIdWithEntitiesApiUrl,
 } from "@/app/api/apiConfig";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { ResponseCookies } from "next/dist/compiled/@edge-runtime/cookies";
 import {fetchByIdProyecto} from "@/app/[locale]/utils/business/tarifario/UtilsTarifario"
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
@@ -36,6 +36,7 @@ export const handleFormSubmit =
           tseId: formData.tseId,
           pryFechaInicioEstimada: formData.startDate,
           pryValor: 1,
+          paisId:formData.paisId,
           monId: 1,
           pryIdCliente: formData.cliId,
           pryFechaCierreEstimada: formData.endDate,
@@ -51,7 +52,7 @@ export const handleFormSubmit =
       // Agrega los archivos
       data.append("files", formData.file1);
       data.append("files", formData.file2);
-
+      console.log(proyectoDTO)
       const url = isEditMode
         ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
         : `${proyectoCreateAsyncApiUrl}`;
@@ -84,7 +85,7 @@ export const handleFormSubmit =
       } else if (response.status === 409) {
         NotificationSweet({
           title: translations.notification.warning.title,
-          text: translations.client.clientNameExist,
+          text: translations.notification.warning.text,
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
@@ -93,9 +94,9 @@ export const handleFormSubmit =
         });
       } else {
         NotificationSweet({
-          title: translations.notification.warning.title,
-          text: translations.client.clientNameExist,
-          type: translations.notification.warning.type,
+          title: translations.notification.error.title,
+          text: translations.notification.error.text,
+          type: translations.notification.error.type,
           push: push,
           link: isEditMode
             ? `/business/closeServices/edit/${formData.cliId}`
@@ -224,7 +225,8 @@ export const fetchServiceById = async (Id, t, setFormData, push,setTablaCommon,t
           idMon: element.moneda.monNombre, // Almacena el label en la tabla
           base: element.tcBase === 1 ? t.time.mes : element.tcBase === 3 ? t.time.hour : t.time.week,
         };
-        setTablaCommon([...tablaCommon, nuevoElementoTabla]);
+        setTablaCommon((prevTablaCommon) => [...prevTablaCommon, nuevoElementoTabla]);
+
       });
       const persons = await fetchPersonGetbyIdClient(result.pryIdCliente);
       const options = persons.data
