@@ -52,7 +52,6 @@ export const handleFormSubmit =
       // Agrega los archivos
       data.append("files", formData.file1);
       data.append("files", formData.file2);
-      console.log(proyectoDTO)
       const url = isEditMode
         ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
         : `${proyectoCreateAsyncApiUrl}`;

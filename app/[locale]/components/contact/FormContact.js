@@ -14,7 +14,10 @@ import FormPhoneCommon from "../admin/phone/FormPhoneCommon";
 import FormAddressCommon from "../world/address/FormAddressCommon";
 import MyDatePicker from "../common/MyDatePicker";
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
+import LoadingData from "@/app/[locale]/components/common/LoadingData";
+import ErroData from "@/app/[locale]/components/common/ErroData";
 function FormContact({ locale, isEdit, isCreate, idPerson }) {
+  //========DECLARACION DE VARIABLES ===============
   const t = require(`@/messages/${locale}.json`);
   const [clientOptions, setClientOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -32,6 +35,11 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
     telefonos: [],
     direcciones: [],
   });
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  //========FIN DECLARACION DE VARIABLES ===============
+
+  //=======SECCION DE USSEFFECT===============
   const FillClient = async () => {
     try {
       const datos = await fechtClients();
@@ -47,6 +55,11 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
   useEffect(() => {
     FillClient();
   }, []);
+  if (idPerson != null && !isNaN(idPerson)) {
+    useEffect(() => {
+      fetchPersonById(idPerson, t, setFormData, router.push);
+    }, [idPerson]);
+  }
   useEffect(() => {
     fetchCountriest().then((data) => {
       const options = data.map((country) => ({
@@ -55,13 +68,9 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
       }));
       setCountryOptions(options);
     });
+    setLoading(false)
   }, []);
-  if (idPerson != null && !isNaN(idPerson)) {
-    useEffect(() => {
-      fetchPersonById(idPerson, t, setFormData, router.push);
-    }, [idPerson]);
-  }
-
+  //=======FIN SECCION DE USSEFFECT===============
   const handleSubmit = handleFormSubmit(
     formData,
     t,
@@ -69,7 +78,6 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
     isEdit,
     setFormData
   );
-
   const handleSelectChange = (event, fieldName) => {
     const selectedValue = event.target.value;
     // console.log(`Selected ${fieldName}:`, selectedValue);
@@ -78,6 +86,8 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
   const cancel = () => {
     router.back();
   };
+  if (isLoading) return <LoadingData loadingMessage={t.Common.loadingData} />;
+  if (error) return <ErroData message={t.Common.errorMsg} />;
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={!isCreate && !isEdit ? true : false}>
@@ -169,21 +179,21 @@ function FormContact({ locale, isEdit, isCreate, idPerson }) {
           />
         </div>
         <BoxInfo title={t.Common.email} startShow={false}>
-        <FormEmailCommon
-          t={t}
-          formData={formData}
-          setFormData={setFormData}
-          handleInputChange={handleInputChange}
-        />
+          <FormEmailCommon
+            t={t}
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+          />
         </BoxInfo>
         <hr />
         <BoxInfo title={t.Account.phone} startShow={false}>
-        <FormPhoneCommon
-          t={t}
-          formData={formData}
-          setFormData={setFormData}
-          handleInputChange={handleInputChange}
-        />
+          <FormPhoneCommon
+            t={t}
+            formData={formData}
+            setFormData={setFormData}
+            handleInputChange={handleInputChange}
+          />
         </BoxInfo>
         <hr />
         <BoxInfo title={t.Common.address} startShow={false}>

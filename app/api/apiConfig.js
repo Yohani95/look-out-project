@@ -60,7 +60,7 @@ export const emailApiUrl = `${apiBaseUrl}/Email`;
 export const emailEntitiesApiUrl = `${apiBaseUrl}/Email/getAllEmail`;
 export const emailCreateApiUrl = `${apiBaseUrl}/email/create`;
 export const emailEditApiUrl = `${apiBaseUrl}/email/edit`;
-
+export const emailByIdPersonApiUrl = `${apiBaseUrl}/email/getAllEmailById`;
 export const emailTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
 
 //address url

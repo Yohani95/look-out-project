@@ -8,6 +8,9 @@ import { FaTrash, FaEdit, FaEye } from "react-icons/fa";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { Button } from "react-bootstrap";
+import LoadingData from "@/app/[locale]/components/common/LoadingData";
+import ErroData from "@/app/[locale]/components/common/ErroData";
+import { fetchemailByIdPersona } from "@/app/[locale]/utils/email/UtilsEmail";
 function FormEmailCommon({
   t,
   idEmail,
@@ -16,7 +19,7 @@ function FormEmailCommon({
   handleInputChange,
 }) {
   const [emailOptions, setEmailOptions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
   const [formEmail, setFormEmail] = useState({
@@ -53,9 +56,33 @@ function FormEmailCommon({
       setEmailOptions(options);
     });
   }, []);
-  if (idEmail != null) {
-    setIsLoading(true);
-  }
+  useEffect(() => {
+    fetchemailByIdPersona(9,t,setFormData).then(()=>{
+      if (formData.emails) {
+        if (Array.isArray(formData.emails)) {
+          formData.emails.map((item) => {
+            const nuevoElementoTabla = {
+              emailId: 0,
+              emaEmail: item.emaEmail,
+              temId: item.tem.temNombre,
+              emaVigente:
+                item.emaVigente == 1 ? (
+                  <FaCheck style={{ color: "green" }} />
+                ) : (
+                  <FaTimes style={{ color: "red" }} />
+                ),
+            };
+            setTablaCommon((prevTablaCommon) => [
+              ...prevTablaCommon,
+              nuevoElementoTabla,
+            ]);
+          });
+        }
+    }
+    }).then(()=>{
+      setIsLoading(false);
+    });
+  }, []);
   const handleAddToTablaCommon = () => {
     if (!formEmail.emaEmail || !formEmail.temId || !formEmail.temId) {
       NotificationSweet({
@@ -95,13 +122,12 @@ function FormEmailCommon({
       CliId: null,
       emaEmail: formEmail.emaEmail,
       temId: formEmail.temId,
-      emaVigente: formEmail.emaVigente ,
-      cliId: formData.idCliente
+      emaVigente: formEmail.emaVigente,
+      cliId: formData.idCliente,
     };
     setFormData((prevData) => ({
       ...prevData,
       emails: [...prevData.emails, nuevoElementoData],
-      // Mantén los ids en formData sin cambiarlos
     }));
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };
@@ -119,7 +145,7 @@ function FormEmailCommon({
 
       setTablaCommon(updatedTablaCommon);
       //Actualizar DAta despues de la tabla
-       const listData = updatedListData.findIndex(
+      const listData = updatedListData.findIndex(
         (element) => element.emaEmail == emaEmail
       );
       if (listData !== -1) {
@@ -136,7 +162,7 @@ function FormEmailCommon({
     const selectedValue = event.target.value;
     setFormEmail((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
-  
+
   return (
     <>
       <div className=" mb-3 row align-items-center ">
@@ -150,7 +176,7 @@ function FormEmailCommon({
             id="emaEmail"
             name="emaEmail"
             value={formEmail.emaEmail}
-            onChange={handleInputChange(formData, setFormEmail)}
+            onChange={handleInputChange(formEmail, setFormEmail)}
             //title={t.Common.emaEmail}
           />
         </div>
@@ -194,7 +220,7 @@ function FormEmailCommon({
       ) : error ? (
         <ErroData message={t.Common.errorMsg} />
       ) : idEmail == [] ? ( // Verifica si no hay datos
-        <div className="text-center justify-content-center align-items-center"> 
+        <div className="text-center justify-content-center align-items-center">
           <h4>{t.Common.email}</h4> {t.Common.noData}
         </div>
       ) : (

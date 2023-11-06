@@ -240,7 +240,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       idPerfil: idPerfilLabel, // Almacena el label en la tabla
       fee: formData.fee,
       idMon: idMonLabel, // Almacena el label en la tabla
-      base: formData.base,
+      base: formData.base ===1? t.time.mes : formData.base === 3 ? t.time.hour : t.time.week,
     };
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };

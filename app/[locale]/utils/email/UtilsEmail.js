@@ -6,7 +6,8 @@ import {
   emailCreateApiUrl,
   emailEditApiUrl,
   emailTypeApiUrl,
-  emailEntitiesApiUrl
+  emailEntitiesApiUrl,
+  emailByIdPersonApiUrl
 } from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
@@ -150,16 +151,20 @@ export const handleEdit = async (idemail, trans, push) => {
     push(`/admin/email/edit/${idemail}`);
   }
 };
-export const fetchemailById = async (Id, t, setFormData, push) => {
+export const fetchemailByIdPersona = async (Id, t, setFormData, push) => {
   try {
-    const response = await fetch(`${emailApiUrl}/${Id}`);
+    const response = await fetch(`${emailByIdPersonApiUrl}/${Id}`);
+  
     if (response.ok) {
       const result = await response.json();
-      setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
+      setFormData((prevData) => ({
+        ...prevData,
+        emails: Array.isArray(prevData.emails) ? [...prevData.emails, result] : result,
+      }));
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
-        text: t.Common.notExist,
+        text: t.notification.warning.text,
         type: t.notification.warning.type,
         push: push,
         link: "/admin/email/search",
