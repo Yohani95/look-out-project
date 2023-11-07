@@ -157,10 +157,7 @@ export const fetchemailByIdPersona = async (Id, t, setFormData, push) => {
   
     if (response.ok) {
       const result = await response.json();
-      setFormData((prevData) => ({
-        ...prevData,
-        emails: Array.isArray(prevData.emails) ? [...prevData.emails, result] : result,
-      }));
+      return result
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,

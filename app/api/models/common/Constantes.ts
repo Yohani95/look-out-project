@@ -6,10 +6,10 @@ export class Constantes {
     };
   
     TipoPersona = {
-      PERSONA_CONTACTO: 1,
-      PERSONA_KAM: 0,
-      PERSONA_PROFESIONAL: 0,
-      PERSONA_ADMIN: 0,
+      PERSONA_ADMIN: 1,
+      PERSONA_CONTACTO: 3,
+      PERSONA_KAM: 2,
+      PERSONA_PROFESIONAL: 4,
     };
   }
   

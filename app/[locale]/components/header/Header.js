@@ -127,6 +127,10 @@ const Header = () => {
             name: t("Common.profile"),
             link: "/admin/perfil/search",
           },
+          employe:{
+            name:t("Common.professionals"),
+            link: "/admin/professionals/search"
+          }
         },
         title: t("Nav.administration.title"),
       },

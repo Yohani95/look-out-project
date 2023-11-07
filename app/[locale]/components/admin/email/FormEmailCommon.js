@@ -57,31 +57,34 @@ function FormEmailCommon({
     });
   }, []);
   useEffect(() => {
-    fetchemailByIdPersona(9,t,setFormData).then(()=>{
-      if (formData.emails) {
-        if (Array.isArray(formData.emails)) {
-          formData.emails.map((item) => {
-            const nuevoElementoTabla = {
-              emailId: 0,
-              emaEmail: item.emaEmail,
-              temId: item.tem.temNombre,
-              emaVigente:
-                item.emaVigente == 1 ? (
-                  <FaCheck style={{ color: "green" }} />
-                ) : (
-                  <FaTimes style={{ color: "red" }} />
-                ),
-            };
-            setTablaCommon((prevTablaCommon) => [
-              ...prevTablaCommon,
-              nuevoElementoTabla,
-            ]);
-          });
-        }
-    }
-    }).then(()=>{
-      setIsLoading(false);
-    });
+    fetchemailByIdPersona(9, t, setFormData)
+      .then((data) => {
+        console.log(formData.emails);
+        data.map((item) => {
+          const nuevoElementoTabla = {
+            emailId: 0,
+            emaEmail: item.emaEmail,
+            temId: item.tem.temNombre,
+            emaVigente:
+              item.emaVigente == 1 ? (
+                <FaCheck style={{ color: "green" }} />
+              ) : (
+                <FaTimes style={{ color: "red" }} />
+              ),
+          };
+          setTablaCommon((prevTablaCommon) => [
+            ...prevTablaCommon,
+            nuevoElementoTabla,
+          ]);
+        });
+        setFormData((prevData) => ({
+          ...prevData,
+          emails: Array.isArray(prevData.emails) ? [prevData.emails, result] : result,
+        }));
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
   }, []);
   const handleAddToTablaCommon = () => {
     if (!formEmail.emaEmail || !formEmail.temId || !formEmail.temId) {
