@@ -6,6 +6,7 @@ import {
   addressCreateApiUrl,
   addressEditApiUrl,
   addressTypeApiUrl,
+  addressByIdPersonApiUrl
 } from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
@@ -172,6 +173,30 @@ export const fetchaddressById = async (Id, t, setFormData, push) => {
       type: t.notification.warning.type,
       push: push,
       link: "/contact/address/search",
+    });
+  }
+};
+export const fetchaddressByIdPerson = async (idPerson, t) => {
+  try {
+    const response = await fetch(`${addressByIdPersonApiUrl}/${idPerson}`);
+    if (response.ok) {
+      const result = await response.json();
+     return result;
+    } else if (response.status == 404) {
+      // NotificationSweet({
+      //   title: t.notification.warning.title,
+      //   text: t.Common.,
+      //   type: t.notification.warning.type,
+      //   push: push,
+      //   link: "/contact/address/search",
+      // });
+    }
+  } catch (error) {
+    console.error("Error fetching client data:", error);
+    NotificationSweet({
+      title: t.notification.error.title,
+      text: t.notification.error.text,
+      type: t.notification.error.type,
     });
   }
 };

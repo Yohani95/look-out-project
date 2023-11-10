@@ -41,6 +41,7 @@ export const personContactDeleteApiUrl = `${apiBaseUrl}/personas/deleteWithEntit
 export const personContactByIdClientApiUrl = `${apiBaseUrl}/Personas/GetAllContactByIdClient`;
 export const personGetAllContactDTOClientApiUrl = `${apiBaseUrl}/Personas/GetAllContact`;
 //ClientePersona
+export const ClientePersonaApiUrl = `${apiBaseUrl}/ClientePersona`;
 export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersonaDTOById`;
 export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllClientRelations`;
 
@@ -54,6 +55,7 @@ export const phoneCreateApiUrl = `${apiBaseUrl}/telefono`;
 export const phoneEditApiUrl = `${apiBaseUrl}/telefono`;
 export const phoneEntitiesApiUrl = `${apiBaseUrl}/telefono/getAllTelefonos`;
 export const phoneTypeApiUrl = `${apiBaseUrl}/tipoTelefono`;
+export const phoneByIdPersonApiUrl = `${apiBaseUrl}/telefono/getAllTelefonoByIdPerson`;
 //email url
 
 export const emailApiUrl = `${apiBaseUrl}/Email`;
@@ -68,6 +70,7 @@ export const addressApiUrl = `${apiBaseUrl}/direccion`;
 export const addressCreateApiUrl = `${apiBaseUrl}/email`;
 export const addressEditApiUrl = `${apiBaseUrl}/email`;
 export const addressTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
+export const addressByIdPersonApiUrl = `${apiBaseUrl}/direccion/getAllDireccionByIdPerson`;
 
 
 //comuna giros

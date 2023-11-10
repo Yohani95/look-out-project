@@ -6,12 +6,13 @@ function page({ params }) {
   const t = useTranslations();
   const locale = useLocale();
   return (
-    <BasePages title={t("Nav.contacts.edit")}>
+    <BasePages title={`${t("Common.edit")} ${t("Common.contact")}`}>
       <FormContact
         locale={locale}
-        isEdit={false}
+        isEdit={true}
         isCreate={false}
         idPerson={params.id}
+        idClient={params.idClient}
       />
     </BasePages>
   );

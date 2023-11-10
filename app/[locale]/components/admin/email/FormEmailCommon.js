@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import SelectField from "@/app/[locale]/components/common/SelectField";
 import { fetchemailType } from "@/app/[locale]/utils/email/UtilsEmail";
-import CommonActionsButton from "@/app/[locale]/components/common/CommonActionsButtons";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { FaTrash, FaEdit, FaEye } from "react-icons/fa";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
@@ -11,23 +10,20 @@ import { Button } from "react-bootstrap";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import ErroData from "@/app/[locale]/components/common/ErroData";
 import { fetchemailByIdPersona } from "@/app/[locale]/utils/email/UtilsEmail";
+import Email from "@/app/api/models/admin/Email";
 function FormEmailCommon({
   t,
   idEmail,
   formData,
   setFormData,
   handleInputChange,
+  idPersona,
 }) {
   const [emailOptions, setEmailOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
-  const [formEmail, setFormEmail] = useState({
-    idEmail: "",
-    emaEmail: "",
-    temId: 0,
-    emaVigente: 0,
-  });
+  const [formEmail, setFormEmail] = useState(new Email());
   const columns = [
     // { title: t.Common.correlative, key: "emaId" },
     { title: t.Common.email, key: "emaEmail" },
@@ -47,6 +43,10 @@ function FormEmailCommon({
       ),
     },
   ];
+  const status = [
+    { label: t.Common.no, value: 0 },
+    { label: t.Common.yes, value: 1 },
+  ];
   useEffect(() => {
     fetchemailType().then((data) => {
       const options = data.map((item) => ({
@@ -54,38 +54,46 @@ function FormEmailCommon({
         label: item.temNombre,
       }));
       setEmailOptions(options);
+      if(!idPersona) setIsLoading(false)
     });
   }, []);
-  useEffect(() => {
-    fetchemailByIdPersona(9, t, setFormData)
-      .then((data) => {
-        console.log(formData.emails);
-        data.map((item) => {
-          const nuevoElementoTabla = {
-            emailId: 0,
-            emaEmail: item.emaEmail,
-            temId: item.tem.temNombre,
-            emaVigente:
-              item.emaVigente == 1 ? (
-                <FaCheck style={{ color: "green" }} />
-              ) : (
-                <FaTimes style={{ color: "red" }} />
-              ),
-          };
-          setTablaCommon((prevTablaCommon) => [
-            ...prevTablaCommon,
-            nuevoElementoTabla,
-          ]);
+  if(idPersona){
+    useEffect(() => {
+      fetchemailByIdPersona(idPersona, t, setFormData)
+        .then((data) => {
+          const newEmails = data.map((item) => {
+            const nuevoElementoTabla = {
+              emailId: 0,
+              emaEmail: item.emaEmail,
+              temId: item.tem.temNombre,
+              emaVigente:
+                item.emaVigente == 1 ? (
+                  <FaCheck style={{ color: "green" }} />
+                ) : (
+                  <FaTimes style={{ color: "red" }} />
+                ),
+            };
+            setTablaCommon((prevTablaCommon) => [
+              ...prevTablaCommon,
+              nuevoElementoTabla,
+            ]);
+            const email = new Email(item);
+            return email; // Devolver el objeto Email creado
+          });
+  
+          setFormData((prevData) => ({
+            ...prevData,
+            emails: newEmails, // Agregar los objetos Email al arreglo emails
+          }));
+        })
+        .then(() => {
+          setIsLoading(false);
+        }).catch((error)=>{
+          setError(true)
+          setIsLoading(false);
         });
-        setFormData((prevData) => ({
-          ...prevData,
-          emails: Array.isArray(prevData.emails) ? [prevData.emails, result] : result,
-        }));
-      })
-      .then(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    }, []);
+  }
   const handleAddToTablaCommon = () => {
     if (!formEmail.emaEmail || !formEmail.temId || !formEmail.temId) {
       NotificationSweet({
@@ -120,17 +128,10 @@ function FormEmailCommon({
           <FaTimes style={{ color: "red" }} />
         ),
     };
-    const nuevoElementoData = {
-      emailId: 0,
-      CliId: null,
-      emaEmail: formEmail.emaEmail,
-      temId: formEmail.temId,
-      emaVigente: formEmail.emaVigente,
-      cliId: formData.idCliente,
-    };
+    formEmail.perId = idPersona;
     setFormData((prevData) => ({
       ...prevData,
-      emails: [...prevData.emails, nuevoElementoData],
+      emails: [...prevData.emails, formEmail],
     }));
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };
@@ -165,11 +166,11 @@ function FormEmailCommon({
     const selectedValue = event.target.value;
     setFormEmail((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
   };
-
+  if(error) return <ErroData message={t.Common.errorOccurred}/>
   return (
     <>
       <div className=" mb-3 row align-items-center ">
-        <label htmlFor="emaEmail" className="col-sm-2 col-form-label">
+        <label htmlFor="emaEmail" className="col-sm-1 col-form-label">
           {t.Common.email}
         </label>
         <div className="col-sm-3">
@@ -192,23 +193,27 @@ function FormEmailCommon({
           onChange={(e) => handleSelectChange(e, "temId")}
           selectedValue={formEmail.temId}
         />
-        <label htmlFor="emaVigente" className="col-form-label col-sm-1">
-          {t.user.active}
-        </label>
-        <div className="col-sm-1">
-          <select
-            className="form-control form-select"
-            id="emaVigente"
-            name="emaVigente"
-            value={formEmail.emaVigente}
-            onChange={handleInputChange(formEmail, setFormEmail)}
-            required
-          >
-            <option value={1}>Ok</option>
-            <option value={0}>No</option>
-          </select>
-        </div>
-        <div className="col-sm-1">
+        <SelectField
+          label={` ${t.user.active}`}
+          options={status}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "emaVigente")}
+          selectedValue={formEmail.emaVigente}
+        />
+      </div>
+      <div className=" mb-3 row align-items-center ">
+      <SelectField
+          label={`${t.Ficha.main_account} `}
+          options={status}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "emaPrincipal")}
+          selectedValue={formEmail.emaPrincipal}
+        />
+      <div className="col-sm-1">
           <button
             type="button"
             className="text-end badge btn btn-primary"
@@ -217,7 +222,7 @@ function FormEmailCommon({
             {t.Common.add} ...{" "}
           </button>
         </div>
-      </div>
+        </div>
       {isLoading ? (
         <LoadingData loadingMessage={t.Common.loadingData} />
       ) : error ? (

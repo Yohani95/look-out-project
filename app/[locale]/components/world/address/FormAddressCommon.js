@@ -7,36 +7,30 @@ import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import { fetchComuna } from "@/app/[locale]/utils/comuna/utilsComuna";
-import { fetchaddressType } from "@/app/[locale]/utils/address/UtilsAddress";
+import { fetchaddressType,fetchaddressByIdPerson} from "@/app/[locale]/utils/address/UtilsAddress";
+import Address from "@/app/api/models/admin/Address";
+import ErroData from "@/app/[locale]/components/common/ErroData";
+import LoadingData from "@/app/[locale]/components/common/LoadingData";
+import { handleInputChange,handleSelectChange } from "@/app/[locale]/utils/Form/UtilsForm";
 function FormAddressCommon({
   t,
-  direcciones,
   formData,
   setFormData,
-  handleInputChange,
+  idPersona
 }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
   const [comunaOptions, setComunaOptions] = useState([]);
   const [addressOptions, setAddressOptions] = useState([]);
-  const [formDataAddress, setFormDataAddress] = useState({
-    dirId: 0,
-    CliId: "",
-    PerId: 0,
-    dirCalle: "",
-    dirNumero: "",
-    comId: 0,
-    dirBlock: 0,
-    tdirId: 0,
-  });
+  const [formDataAddress, setFormDataAddress] = useState(new Address());
   const columns = [
     { title: "ID", key: "dirId" },
     { title: t.Common.address, key: "dirCalle" },
     { title: t.Common.number, key: "dirNumero" },
     { title: t.Common.blockAddress, key: "dirBlock" },
     { title: t.Common.commune, key: "comId" },
-    { title: t.Ficha.type, key: "tdirId" },
+    { title: t.Ficha.type, key: "tdiId" },
     {
       title: t.Account.action, // Título de la columna de acciones
       key: "actions",
@@ -51,7 +45,41 @@ function FormAddressCommon({
       ),
     },
   ];
+  if (idPersona) {
+    useEffect(() => {
+      fetchaddressByIdPerson(idPersona, t)
+        .then((data) => {
+          console.log(data)
+          const newAddress = data.map((item) => {
+            setTablaCommon((prevTablaCommon) => [
+              ...prevTablaCommon,
+              {
+                ...item,
+                tdiId: item.tdi.tdiNombre,
+                comId: item.com.comNombre
+              }
+            ]);
+            const address = new Address(item);
+            console.log(item)
+            console.log(address)
+            return address; // Devolver el objeto creado
+          });
 
+          console.log(newAddress)
+          setFormData((prevData) => ({
+            ...prevData,
+            direcciones: newAddress, // Agregar los objetos  al arreglo
+          }));
+        })
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(true);
+          setIsLoading(false);
+        });
+    }, []);
+  }
   useEffect(() => {
     fetchComuna().then((data) => {
       const options = data.map((item) => ({
@@ -73,7 +101,7 @@ function FormAddressCommon({
   const handleAddToTablaCommon = () => {
     if (
       !formDataAddress.dirCalle ||
-      !formDataAddress.tdirId ||
+      !formDataAddress.tdiId ||
       !formDataAddress.dirNumero
     ) {
       NotificationSweet({
@@ -98,9 +126,8 @@ function FormAddressCommon({
       (option) => option.value == formDataAddress.comId
     )?.label;
     const typeLabelType = addressOptions.find(
-      (option) => option.value == formDataAddress.tdirId
+      (option) => option.value == formDataAddress.tdiId
     )?.label;
-    console.log(typeLabelType);
     const nuevoElementoTabla = {
       dirId: 0,
       CliId: null,
@@ -108,29 +135,24 @@ function FormAddressCommon({
       dirNumero: formDataAddress.dirNumero,
       comId: typeLabelComuna,
       dirBlock: formDataAddress.dirBlock,
-      tdirId: typeLabelType,
+      tdiId: typeLabelType,
     };
-    const nuevoElementoData = {
-      dirId: 0,
-      CliId: null,
-      dirNumero: formDataAddress.dirNumero,
-      dirCalle: formDataAddress.dirCalle,
-      comId: formDataAddress.comId,
-      dirBlock: formDataAddress.dirBlock,
-      tdirId: formDataAddress.tdirId,
-    };
+    formDataAddress.perId=idPersona;
     setFormData((prevData) => ({
       ...prevData,
-      direcciones: [...prevData.direcciones, nuevoElementoData],
+      direcciones: [...prevData.direcciones, formDataAddress],
       // Mantén los ids en formData sin cambiarlos
     }));
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };
   const handleDeleteItem = (direccion) => {
+    console.log(direccion)
     // Encuentra el índice del elemento en tablaCommon que coincide con el emaemail
     const index = tablaCommon.findIndex(
-      (element) => element.dirCalle === direccion.dirCalle && element.dirNumero === direccion.dirNumero
-    );
+       (element) =>
+    element.dirId === direccion.dirId ||
+    (element.dirCalle === direccion.dirCalle && element.dirNumero === direccion.dirNumero)
+);
     if (index !== -1) {
       const updatedTablaCommon = [...tablaCommon];
       const updatedListData = [...formData.direcciones];
@@ -141,7 +163,7 @@ function FormAddressCommon({
       setTablaCommon(updatedTablaCommon);
       //Actualizar DAta despues de la tabla
       const listData = updatedListData.findIndex(
-        (element) => element.dirCalle === direccion.dirCalle && element.dirNumero === direccion.dirNumero
+        (element) => element.dirCalle === direccion.dirCalle && element.dirNumero === direccion.dirNumero || element.dirId=== direccion.dirId
       );
       if (listData !== -1) {
         updatedListData.splice(listData, 1);
@@ -153,10 +175,8 @@ function FormAddressCommon({
       }));
     }
   };
-  const handleSelectChange = (event, fieldName) => {
-    const selectedValue = event.target.value;
-    setFormDataAddress((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
-  };
+
+  if (error) return <ErroData message={t.Common.errorOccurred} />;
   return (
     <>
       <div className="mb-3 row align-items-center">
@@ -176,7 +196,7 @@ function FormAddressCommon({
         <label htmlFor="dirNumero" className="col-sm-1 col-form-label">
           {t.Common.number}
         </label>
-        <div className="col-sm-1">
+        <div className="col-sm-2">
           <input
             type="number"
             className="form-control"
@@ -212,7 +232,7 @@ function FormAddressCommon({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "comId")}
+          onChange={(e) => handleSelectChange(e, "comId",setFormDataAddress)}
           selectedValue={formDataAddress.comId}
         />
       </div>
@@ -223,8 +243,8 @@ function FormAddressCommon({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "tdirId")}
-          selectedValue={formDataAddress.tdirId}
+          onChange={(e) => handleSelectChange(e, "tdiId",setFormDataAddress)}
+          selectedValue={formDataAddress.tdiId}
         />
         <div className="col-sm-1">
           <button
@@ -240,7 +260,7 @@ function FormAddressCommon({
         <LoadingData loadingMessage={t.Common.loadingData} />
       ) : error ? (
         <ErroData message={t.Common.errorMsg} />
-      ) : direcciones == [] ? ( // Verifica si no hay datos
+      ) : tablaCommon.length === 0  ? ( // Verifica si no hay datos
         <div className="text-center justify-content-center align-items-center">
           <h4>{t.Common.address}</h4> {t.Common.noData}
         </div>

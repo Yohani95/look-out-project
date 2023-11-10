@@ -1,5 +1,7 @@
 {
   "Common": {
+    "yes":"Sí",
+    "no":"No",
     "KPAZ": "KPAZ",
     "close": "Cierre",
     "welcomeMessage": "¡Bienvenido a mi aplicación de software!",

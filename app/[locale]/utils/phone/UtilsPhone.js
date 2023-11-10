@@ -6,6 +6,7 @@ import {
   phoneCreateApiUrl,
   phoneEditApiUrl,
   phoneTypeApiUrl,
+  phoneByIdPersonApiUrl,
   phoneEntitiesApiUrl ,
 } from "@/app/api/apiConfig";
 export const handleInputChange = (formData, setFormData) => (event) => {
@@ -168,11 +169,33 @@ export const fetchPhoneById = async (Id, t, setFormData, push) => {
   } catch (error) {
     console.error("Error fetching client data:", error);
     NotificationSweet({
-      title: t.notification.warning.title,
-      text: t.Common.notExist,
-      type: t.notification.warning.type,
+      title: t.notification.erro.title,
+      text: t.notification.error.text,
+      type: t.notification.error.type,
       push: push,
       link: "/admin/phone/search",
+    });
+  }
+};
+export const fetchPhoneByIdPerson = async (IdPerson, t) => {
+  try {
+    const response = await fetch(`${phoneByIdPersonApiUrl}/${IdPerson}`);
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else if (response.status == 404) {
+      NotificationSweet({
+        title: t.notification.warning.title,
+        text: t.notification.warning.text,
+        type: t.notification.warning.type,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching client data:", error);
+    NotificationSweet({
+      title: t.notification.error.title,
+      text: t.notification.error.text,
+      type: t.notification.error.type,
     });
   }
 };

@@ -151,7 +151,7 @@ export const handleEdit = async (idemail, trans, push) => {
     push(`/admin/email/edit/${idemail}`);
   }
 };
-export const fetchemailByIdPersona = async (Id, t, setFormData, push) => {
+export const fetchemailByIdPersona = async (Id, t, push) => {
   try {
     const response = await fetch(`${emailByIdPersonApiUrl}/${Id}`);
   
@@ -169,13 +169,13 @@ export const fetchemailByIdPersona = async (Id, t, setFormData, push) => {
     }
   } catch (error) {
     console.error("Error fetching data:", error);
-    NotificationSweet({
-      title: t.notification.warning.title,
-      text: t.Common.notExist,
-      type: t.notification.warning.type,
-      push: push,
-      link: "/admin/email/search",
-    });
+    // NotificationSweet({
+    //   title: t.notification.warning.title,
+    //   text: t.notification.warning.text,
+    //   type: t.notification.warning.type,
+    //   push: push,
+    //   link: "/admin/email/search",
+    // });
   }
 };
 export const handleView = async (idemail, push) => {

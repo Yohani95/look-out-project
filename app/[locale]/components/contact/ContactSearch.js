@@ -31,8 +31,8 @@ function ContactSearch({ locale }) {
           <ActionButtons
             id={item.id}
             onDelete={() => handleDelete(item.id,t,fetchData)}
-            onEdit={() => handleEdit(item.id,t,router.push)}
-            onView={()=>handleView(item.id,router.push)}
+            onEdit={() => handleEdit(item.id,item.idCliente,t,router.push)}
+            onView={()=>handleView(item.id,item.idCliente,router.push)}
           />
         ),
       },
@@ -52,7 +52,8 @@ function ContactSearch({ locale }) {
         position: "N/A",
         email: item.email||"N/A",
         telefono: item.telefono||"N/A",
-        account: item.cuenta||"N/A"
+        account: item.cuenta||"N/A",
+        idCliente: item.idCliente
         // Agregar otros campos y reemplazar si es necesario
       }));
       setData(modifiedData); // Actualiza el estado con los datos manipulados
