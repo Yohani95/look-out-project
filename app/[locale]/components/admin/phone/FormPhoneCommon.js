@@ -50,6 +50,7 @@ function FormPhoneCommon({ t, formData, setFormData, idPersona }) {
         label: item.tteNombre,
       }));
       setPhoneOptions(options);
+      if(!idPersona) setIsLoading(false)
     });
   }, []);
   if (idPersona) {
@@ -75,10 +76,8 @@ function FormPhoneCommon({ t, formData, setFormData, idPersona }) {
               nuevoElementoTabla,
             ]);
             const phone = new Phone(item);
-            console.log(item)
             return phone; // Devolver el objeto creado
           });
-          console.log(newPhones)
           setFormData((prevData) => ({
             ...prevData,
             telefonos: newPhones, // Agregar los objetos  al arreglo

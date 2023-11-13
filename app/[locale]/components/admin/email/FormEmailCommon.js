@@ -227,7 +227,7 @@ function FormEmailCommon({
         <LoadingData loadingMessage={t.Common.loadingData} />
       ) : error ? (
         <ErroData message={t.Common.errorMsg} />
-      ) : idEmail == [] ? ( // Verifica si no hay datos
+      ) : tablaCommon.length === 0 ? ( // Verifica si no hay datos
         <div className="text-center justify-content-center align-items-center">
           <h4>{t.Common.email}</h4> {t.Common.noData}
         </div>

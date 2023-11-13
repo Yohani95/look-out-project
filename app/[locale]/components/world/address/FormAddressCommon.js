@@ -49,7 +49,6 @@ function FormAddressCommon({
     useEffect(() => {
       fetchaddressByIdPerson(idPersona, t)
         .then((data) => {
-          console.log(data)
           const newAddress = data.map((item) => {
             setTablaCommon((prevTablaCommon) => [
               ...prevTablaCommon,
@@ -60,8 +59,6 @@ function FormAddressCommon({
               }
             ]);
             const address = new Address(item);
-            console.log(item)
-            console.log(address)
             return address; // Devolver el objeto creado
           });
 
@@ -88,6 +85,7 @@ function FormAddressCommon({
       }));
       setComunaOptions(options);
     });
+    if(!idPersona) setIsLoading(false)
   }, []);
   useEffect(() => {
     fetchaddressType().then((data) => {

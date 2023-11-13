@@ -20,7 +20,7 @@ import Persona from "@/app/api/models/admin/Persona";
 import ClientePersona from "@/app/api/models/cuenta/ClientePersona";
 import { ClientePersonaApiUrl } from "@/app/api/apiConfig";
 import { handleSelectChange } from "../../utils/Form/UtilsForm";
-function ContactInfoSection({ t, formData, setFormData, idPerson }) {
+function ContactInfoSection({ t, formData, setFormData, idPerson,setLoading}) {
   const [clientOptions, setClientOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
   const FillClient = async () => {
@@ -45,7 +45,7 @@ function ContactInfoSection({ t, formData, setFormData, idPerson }) {
         label: country.paiNombre,
       }));
       setCountryOptions(options);
-      if (!idPerson) setLoading(false);
+      //if (!idPerson) setLoading(false);
     });
   }, []);
   return (
@@ -219,7 +219,7 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
     telefonos: [],
     direcciones: [],
   });
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   //========FIN DECLARACION DE VARIABLES ===============
 
@@ -233,6 +233,7 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
           const filteredData = cliPer.find(
             (p) => p.cliId == idClient && p.perId == idPerson
           );
+          console.log(filteredData)
           setFormData((prevData) => ({
             ...prevData,
             clientePersona: filteredData,
@@ -256,10 +257,10 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
   const cancel = () => {
     router.back();
   };
-  useEffect(() => {
+  // useEffect(() => {
 
-    console.log(formData)
-  }, [formData]);
+  //   console.log(formData)
+  // }, [formData]);
   if (isLoading) return <LoadingData loadingMessage={t.Common.loadingData} />;
   if (error) return <ErroData message={t.Common.errorMsg} />;
   return (
