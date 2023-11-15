@@ -235,16 +235,6 @@ export const handleEdit = async (idPerson, idClient, trans, push) => {
   }
 };
 
-export const fetchGetbyId = async (idPerson) => {
-  try {
-    const response = await fetch(`${personApiUrl}/${idPerson}`);
-    const data = response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return [];
-  }
-};
 export const fetchPersonGetbyIdClient = async (idClient) => {
   try {
     const response = await fetch(
@@ -270,5 +260,60 @@ export const handleRelations = async () => {
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
+  }
+};
+/*
+_____________________________________________________
+
+***************Fetch Person**********************
+_____________________________________________________
+
+*/
+export const fetchAllPerson=async () =>{
+  try {
+    const response = await fetch(`${personApiUrl}`,{
+      next:{
+        tags:["professionals"]
+      },
+      cache:"no-cache"
+    });
+    const data =await  response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+
+export const fetchGetbyId = async (idPerson) => {
+  try {
+    const response = await fetch(`${personApiUrl}/${idPerson}`);
+    const data = response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+/*
+_____________________________________________________
+
+***************Fetch Professionals Person **********************
+_____________________________________________________
+
+*/
+export const handleViewProfessional = async (idPerson, push) => {
+  push(`/admin/professional/view/${idPerson}`);
+};
+export const handleEditProfessional = async (idPerson, trans, push) => {
+  const confirmed = await ConfirmationDialog(
+    trans.notification.edit.title,
+    trans.notification.edit.text,
+    trans.notification.edit.type,
+    trans.notification.edit.buttonOk,
+    trans.notification.edit.buttonCancel
+  );
+  if (confirmed) {
+    push(`/admin/professional/edit/${idPerson}`);
   }
 };

@@ -139,99 +139,82 @@ function FormNovelty({ locale, idPersona, idProyecto }) {
         </div>
       </div>
       <hr />
-      <form onSubmit={submit}>
-        <div className="mb-3 row align-items-center">
-          <SelectField
-            label={`${t.service.noveltyType}`}
-            options={noveltyTypeOptions}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-3"
-            onChange={(e) =>
-              handleSelectChange(e, "idTipoNovedad", setFormData)
-            }
-            selectedValue={formData.idTipoNovedad}
+      <div className="mb-3 row align-items-center">
+        <SelectField
+          label={`${t.service.noveltyType}`}
+          options={noveltyTypeOptions}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-3"
+          onChange={(e) => handleSelectChange(e, "idTipoNovedad", setFormData)}
+          selectedValue={formData.idTipoNovedad}
+        />
+      </div>
+      <div className="mb-3 row align-items-center">
+        <label
+          htmlFor="estimatedClosingDate"
+          className="col-sm-1 col-form-label"
+        >
+          {t.service.noveltyDate}
+        </label>
+        <div className="col-sm-5">
+          <MyDatePicker
+            selectedDate={formData.fechaInicio}
+            onChange={(date) => setFormData({ ...formData, fechaInicio: date })}
+            title={t.Common.date}
           />
         </div>
-        <div className="mb-3 row align-items-center">
-          <label
-            htmlFor="estimatedClosingDate"
-            className="col-sm-1 col-form-label"
-          >
-            {t.service.noveltyDate}
-          </label>
-          <div className="col-sm-5">
+        <label
+          htmlFor="estimatedClosingDate"
+          className="col-sm-1 col-form-label"
+        >
+          {t.service.dateTo}
+        </label>
+
+        <div className="col-sm-5">
+          <fieldset disabled={dateStatus}>
             <MyDatePicker
-              selectedDate={formData.fechaInicio}
+              selectedDate={formData.fechaHasta}
               onChange={(date) =>
-                setFormData({ ...formData, fechaInicio: date })
+                setFormData({ ...formData, fechaHasta: date })
               }
               title={t.Common.date}
             />
-          </div>
-          <label
-            htmlFor="estimatedClosingDate"
-            className="col-sm-1 col-form-label"
-          >
-            {t.service.dateTo}
-          </label>
-
-          <div className="col-sm-5">
-            <fieldset disabled={dateStatus}>
-              <MyDatePicker
-                selectedDate={formData.fechaHasta}
-                onChange={(date) =>
-                  setFormData({ ...formData, fechaHasta: date })
-                }
-                title={t.Common.date}
-              />
-            </fieldset>
-          </div>
+          </fieldset>
         </div>
-        <fieldset disabled={perfilStatus}>
-          <div className="mb-3 row align-items-center">
-            <SelectField
-              label={`${t.service.newRol}`}
-              options={perfilOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-3"
-              onChange={(e) => handleSelectChange(e, "IdPerfil", setFormData)}
-              selectedValue={formData.IdPerfil}
-            />
-          </div>
-        </fieldset>
+      </div>
+      <fieldset disabled={perfilStatus}>
         <div className="mb-3 row align-items-center">
-          <label htmlFor="observacion" className="col-sm-1 col-form-label">
-            {t.Common.observations}
-          </label>
-          <div className="col-sm-11">
-            <textarea
-              type="text-area"
-              className="form-control"
-              id="observaciones"
-              name="observaciones"
-              value={formData.observaciones}
-              onChange={handleInputChange(formData, setFormData)}
-              required
-            />
-          </div>
+          <SelectField
+            label={`${t.service.newRol}`}
+            options={perfilOptions}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, "IdPerfil", setFormData)}
+            selectedValue={formData.IdPerfil}
+          />
         </div>
-        <div className="d-flex justify-content-end mt-2 mb-2 ">
-        <button className="btn btn-primary m-2">{t.Common.add}</button>
-          <button
-            className="btn btn-danger m-2"
-            onClick={() => {
-              router.back();
-            }}
-          >
-            {t.Common.goBack}
-          </button>
+      </fieldset>
+      <div className="mb-3 row align-items-center">
+        <label htmlFor="observacion" className="col-sm-1 col-form-label">
+          {t.Common.observations}
+        </label>
+        <div className="col-sm-11">
+          <textarea
+            type="text-area"
+            className="form-control"
+            id="observaciones"
+            name="observaciones"
+            value={formData.observaciones}
+            onChange={handleInputChange(formData, setFormData)}
+            required
+          />
         </div>
-      </form>
+      </div>
       <hr />
       <BoxInfo title={t.service.historyNovelty}>
-        <ListNovelty locale={locale} idPersona={idPersona}/>
+        <ListNovelty locale={locale} idPersona={idPersona} />
       </BoxInfo>
     </>
   );

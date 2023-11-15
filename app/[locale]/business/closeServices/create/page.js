@@ -6,7 +6,7 @@ function page() {
   const t = useTranslations();
   const locale = useLocale();
   return (
-    <BasePages title={`${t("Nav.business.insertServices")}`} additionalContent={"hola"}>
+    <BasePages title={`${t("Nav.business.insertServices")}`}>
       <FormService locale={locale} isCreate={true} isEdit={false} />
     </BasePages>
   );

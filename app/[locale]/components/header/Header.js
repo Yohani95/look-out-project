@@ -129,7 +129,7 @@ const Header = () => {
           },
           employe:{
             name:t("Common.professionals"),
-            link: "/admin/professionals/search"
+            link: "/admin/professional/search"
           }
         },
         title: t("Nav.administration.title"),

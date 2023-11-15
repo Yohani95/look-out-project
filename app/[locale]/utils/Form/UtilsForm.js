@@ -10,7 +10,7 @@ export const handleInputChange = (formData, setFormData) => (event) => {
 };
 export const handleSelectChange = (event, fieldName, setFormData) => {
   const selectedValue = event.target.value;
-  //console.log(`Selected ${fieldName}:`, selectedValue);
+  console.log(`Selected ${fieldName}:`, selectedValue);
   setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
 };
 /*
@@ -18,45 +18,41 @@ export const handleSelectChange = (event, fieldName, setFormData) => {
    Funcion SUBMIT GENERICO
    =================================================================================
 */
-export const handleFormSubmit =
-  (
-    formData,
-    translations,
-    push,
-    isEditMode = false,
-    redirectLink,
-    apiUrl,
-    id
-  ) =>
-  async (event) => {
-    event.preventDefault();
-    try {
-      await handleLoandingNotification(translations, isEditMode);
-      const url = isEditMode ? `${apiUrl.edit}/${id}` : `${apiUrl.create}`;
-      const method = isEditMode ? "PUT" : "POST";
-      const response = await fetch(url, {
-        method: method,
-        headers: apiHeaders,
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        console.log(response);
-        handleSuccessNotification(translations, push, redirectLink);
-      } else if (response.status === 409) {
-        handleConflictNotification(
-          translations,
-          push,
-          isEditMode,
-          redirectLink
-        );
-      } else {
-        handleWarningNotification(translations, push, isEditMode, redirectLink);
-      }
-    } catch (error) {
-      handleErrorNotification(translations, push);
-      console.error("Error sending data:", error);
+export const handleFormSubmit = async (
+  formData,
+  translations,
+  push,
+  isEditMode = false,
+  redirectLink,
+  apiUrl,
+  id
+) => {
+  try {
+    //await handleLoandingNotification(translations, isEditMode);
+    const url = isEditMode ? `${apiUrl.edit}/${id}` : `${apiUrl.create}`;
+    const method = isEditMode ? "PUT" : "POST";
+    console.log(url);
+    console.log(method);
+    console.log(JSON.stringify(formData));
+    const response = await fetch(url, {
+      method: method,
+      headers: apiHeaders,
+      body: JSON.stringify(formData),
+    });
+
+    console.log(response)
+    if (response.ok) {
+      handleSuccessNotification(translations, push, redirectLink);
+    } else if (response.status === 409) {
+      handleConflictNotification(translations, push, isEditMode, redirectLink);
+    } else {
+      handleWarningNotification(translations, push, isEditMode, redirectLink);
     }
-  };
+  } catch (error) {
+    handleErrorNotification(translations, push);
+    console.error("Error sending data:", error);
+  }
+};
 /*
    =================================================================================
    Funcion GETALL GENERICO

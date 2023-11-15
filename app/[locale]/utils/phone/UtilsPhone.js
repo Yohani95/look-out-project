@@ -73,7 +73,6 @@ export const handleFormSubmit =
             : "/admin/phone/create",
         });
       } else {
-        console.log(response);
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,

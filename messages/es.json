@@ -412,5 +412,9 @@
     "month":"Mes",
     "week":"Semana",
     "hour":"Hora"
+  },
+  "ValidationMessages": {
+    "required": "Este campo es obligatorio.",
+    "maxLength": "El valor ingresado supera la longitud máxima permitida."
   }
 }

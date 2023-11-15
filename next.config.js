@@ -2,6 +2,9 @@
 const nextConfig = {
   productionSourceMaps: true,
   devtool: 'source-map',
+  experimental: {
+    serverActions: true,
+  },
 }
 
 const withNextIntl = require('next-intl/plugin')(

@@ -40,6 +40,12 @@ export const personContactEditApiUrl = `${apiBaseUrl}/personas/editWithEntities`
 export const personContactDeleteApiUrl = `${apiBaseUrl}/personas/deleteWithEntities`;
 export const personContactByIdClientApiUrl = `${apiBaseUrl}/Personas/GetAllContactByIdClient`;
 export const personGetAllContactDTOClientApiUrl = `${apiBaseUrl}/Personas/GetAllContact`;
+/**
+ * URL PARA PROFESIONALES
+ **/
+export const professionalApiUrl=  `${apiBaseUrl}/personas`;
+export const professionalCreateApiUrl=  `${apiBaseUrl}/personas`;
+export const professionalEditApiUrl=  `${apiBaseUrl}/personas`;
 //ClientePersona
 export const ClientePersonaApiUrl = `${apiBaseUrl}/ClientePersona`;
 export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersonaDTOById`;
@@ -56,6 +62,7 @@ export const phoneEditApiUrl = `${apiBaseUrl}/telefono`;
 export const phoneEntitiesApiUrl = `${apiBaseUrl}/telefono/getAllTelefonos`;
 export const phoneTypeApiUrl = `${apiBaseUrl}/tipoTelefono`;
 export const phoneByIdPersonApiUrl = `${apiBaseUrl}/telefono/getAllTelefonoByIdPerson`;
+
 //email url
 
 export const emailApiUrl = `${apiBaseUrl}/Email`;
