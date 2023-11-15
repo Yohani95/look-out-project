@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { professionalEditApiUrl,professionalApiUrl } from "@/app/api/apiConfig";
 import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
 import { revalidatePath,revalidateTag } from "next/cache";
+export const revalidate=true;
 function ProfessionalsEdit({ persona, data, locale }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
@@ -22,21 +23,21 @@ function ProfessionalsEdit({ persona, data, locale }) {
     validationSchema,
     //validateOnMount: true,
     onSubmit: async (values) => {
-      await handleFormSubmit(
-        values,
-        t,
-        router.push,
-        true,
-        "/admin/professional",
-        apiurl,
-        persona.id
-      ).then(()=>{
-        console.log("realizando")
-        revalidateTag("professionals")
-      revalidatePath(`/admin/professional/edit/${persona.id}`)
-      revalidatePath(`/admin/professional/search`)
-      });
-    },
+      try {
+        await handleFormSubmit(
+          values,
+          t,
+          router.push,
+          true,
+          "/admin/professional",
+          apiurl,
+          persona.id
+        );
+        console.log("Realizando revalidaciones");
+      } catch (error) {
+        console.error("Error al manejar el formulario:", error);
+      }
+    }
   });
   return (
     <>

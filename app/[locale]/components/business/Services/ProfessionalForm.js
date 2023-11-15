@@ -41,6 +41,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     perApellidoPaterno: "",
     perApellidoMaterno: "",
     participantesDTO: [],
+    periodo: 0,
   });
   const router = useRouter();
   const columns = [
@@ -172,82 +173,45 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     tarifario,
     idService
   );
+  const generatePeriods = () => {
+    const currentDate = new Date();
+    const lastMonth = new Date(currentDate);
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    const twoMonthsAgo = new Date(currentDate);
+    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
+
+    return [
+      { key: "1", label: "Último mes", value: lastMonth.toISOString() }, // Puedes cambiar "value" según tus necesidades
+      { key: "2", label: "Hace dos meses", value: twoMonthsAgo.toISOString() },
+      // Agrega más periodos según sea necesario
+    ];
+  };
   return (
     <>
       <BoxInfo title={t.Common.professionals} startShow={false}>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3 row align-items-center">
-            <label htmlFor="perIdNacional" className="col-sm-1 col-form-label">
-              {t.Common.rut}
-            </label>
-            <div className="col-sm-2">
-              <input
-                type="text"
-                className={`form-control ${
-                  addStatus && !validarRut(formDataJob.perIdNacional)
-                    ? "is-invalid"
-                    : ""
-                }`}
-                id="perIdNacional"
-                name="perIdNacional"
-                value={formDataJob.perIdNacional}
-                onChange={handleInputChange(formDataJob, setformDataJob)}
-                title="Rut invalido"
-                placeholder="12345678-9"
-                required
-              />
-            </div>
-
-            <label htmlFor="perNombre" className="col-sm-1 col-form-label">
-              {t.Common.name}
-            </label>
-            <div className="col-sm-2">
-              <input
-                type="name"
-                className="form-control"
-                id="perNombre"
-                name="perNombre"
-                value={formDataJob.perNombre}
-                onChange={handleInputChange(formDataJob, setformDataJob)}
-                required
-              />
-            </div>
-            <label
-              htmlFor="perApellidoPaterno"
-              className="col-sm-1 col-form-label"
-            >
-              {t.Common.lastName}
-            </label>
-            <div className="col-sm-2">
-              <input
-                type="text"
-                className="form-control"
-                id="perApellidoPaterno"
-                name="perApellidoPaterno"
-                value={formDataJob.perApellidoPaterno}
-                onChange={handleInputChange(formDataJob, setformDataJob)}
-                required
-              />
-            </div>
-            <label
-              htmlFor="perApellidoMaterno"
-              className="col-sm-1 col-form-label"
-            >
-              {t.Common.secondName}
-            </label>
-            <div className="col-sm-2">
-              <input
-                type="text"
-                className="form-control"
-                id="perApellidoMaterno"
-                name="perApellidoMaterno"
-                value={formDataJob.perApellidoMaterno}
-                onChange={handleInputChange(formDataJob, setformDataJob)}
-                required
-              />
-            </div>
+          <div className="d-flex justify-content-end container mb-3">
+            <SelectField
+              label={`${t.Common.period}`}
+              options={generatePeriods()}
+              preOption={t.Account.select}
+              labelClassName="col-sm-1 col-form-label"
+              divClassName="col-sm-2"
+              onChange={(e) => handleSelectChange(e, "periodo")}
+              selectedValue={formDataJob.periodo}
+            />
           </div>
+
           <div className=" mb-3 row align-items-center">
+            <SelectField
+              label={`${t.Common.professionals}`}
+              options={perfilOptions}
+              preOption={t.Account.select}
+              labelClassName="col-sm-2 col-form-label"
+              divClassName="col-sm-2"
+              onChange={(e) => handleSelectChange(e, "prfId")}
+              selectedValue={""}
+            />
             <SelectField
               label={`${t.Common.profile}`}
               options={perfilOptions}
@@ -262,6 +226,21 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
               className="col-sm-1 col-form-label"
             >
               {t.Common.dateAssignment}
+            </label>
+            <div className="col-sm-2">
+              <MyDatePicker
+                selectedDate={formDataJob.fechaAsignacion}
+                onChange={(date) =>
+                  setformDataJob({ ...formDataJob, fechaAsignacion: date })
+                }
+                title={t.Common.date}
+              />
+            </div>
+            <label
+              htmlFor="perApellidoMaterno"
+              className="col-sm-1 col-form-label"
+            >
+              {t.project.dateEnd}
             </label>
             <div className="col-sm-2">
               <MyDatePicker

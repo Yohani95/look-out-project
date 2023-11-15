@@ -19,7 +19,7 @@ async function page({ params }) {
     <BasePages title={`${t.Common.professionals}`}>
       <ProfessionalsEdit locale={locale} data={data} persona={persona} />
     </BasePages>
-  );
+  ); 
 }
 
 export default page;

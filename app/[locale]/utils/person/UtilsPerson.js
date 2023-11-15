@@ -15,7 +15,6 @@ import NotificationSweet from "@/app/[locale]/components/common/NotificationSwee
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import axios from "axios";
-
 export const handleInputChange =
   (formData, setFormData) => (event) => {
     
@@ -273,7 +272,7 @@ export const fetchAllPerson=async () =>{
   try {
     const response = await fetch(`${personApiUrl}`,{
       next:{
-        tags:["professionals"]
+        tags:["personas"]
       },
       cache:"no-cache"
     });
@@ -287,7 +286,12 @@ export const fetchAllPerson=async () =>{
 
 export const fetchGetbyId = async (idPerson) => {
   try {
-    const response = await fetch(`${personApiUrl}/${idPerson}`);
+    const response = await fetch(`${personApiUrl}/${idPerson}`,{
+      next:{
+        tags:["persona"]
+      },
+      cache:"no-store"
+    });
     const data = response.json();
     return data;
   } catch (error) {

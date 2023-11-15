@@ -312,6 +312,7 @@
     "projectList": "Lista de Proyectos",
     "dateStart": "Fecha Inicio",
     "dateEnd": "Fecha Término",
+    "datecut":"Fecha de Corte",
     "businessClosing": "Cierre Comercial",
     "estimatedTerm": "Plazo Estimado",
     "ClosingDate": "Fecha de Cierre",

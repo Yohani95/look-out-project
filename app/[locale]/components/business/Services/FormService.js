@@ -626,6 +626,22 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                       title={t.Common.date}
                     />
                   </div>
+                  
+                </div>
+                <div className="mb-3 row align-items-center">
+                <label htmlFor="dateCut" className="col-sm-2 col-form-label">
+                    {t.project.datecut}
+                  </label>
+                  <div className="col-sm-2">
+                    <MyDatePicker
+                      selectedDate={formData.dateCut}
+                      onChange={(date) =>
+                        setFormData({ ...formData, dateCut: date })
+                      }
+                      isRead={true}
+                      title={t.Common.date}
+                    />
+                  </div>
                 </div>
                 <BoxInfo title={t.business.agreedRate}>
                   <div className="mb-3 row align-items-center ">
