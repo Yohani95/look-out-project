@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import { fechtClients } from "@/app/[locale]/utils/client/ClientFormLogic";
 import SelectField from "@/app/[locale]/components/common/SelectField";
-import fetchCountriest from "@/app/[locale]/utils/country/Countrylist";
-import { fetchTypeService } from "@/app/[locale]/utils/project/tipoServicio/UtilsTypeService";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
 import { Button } from "react-bootstrap";
 import { useSession, signOut } from "next-auth/react";
@@ -19,22 +17,20 @@ import {
 import { FaTrash } from "react-icons/fa";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
-import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
-import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
 import ProfessionalForm from "./ProfessionalForm";
-function FormService({ locale, isEdit, isCreate, idService }) {
+import Proyecto from "@/app/api/models/proyecto/Proyecto";
+import { useFormik } from "formik";
+import { EditAction } from "../../admin/professionals/ProfessionalsActions";
+function FormService({ locale, isEdit, isCreate, idService, data }) {
   //========DECLARACION DE VARIABLES ===============
   const { data: session, status } = useSession();
-  const [countryOptions, setCountryOptions] = useState([]);
-  const [typeServiceOptions, setTypeServiceOptions] = useState([]);
   const [contactOptions, setContactOptions] = useState([]);
   const [accountOptions, setAccountOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [correlativo, setCorrelativo] = useState([]);
-  const [perfilOptions, setPerfilOptions] = useState([]);
-  const [monedaOptions, setMonedaOptions] = useState([]);
   const [tablaCommon, setTablaCommon] = useState([]);
+  const [proyectoModel, setProyecto] = useState(new Proyecto());
   const fileInputRefs = [useRef(null), useRef(null)];
   const [formData, setFormData] = useState({
     pryId: 0,
@@ -87,53 +83,17 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     },
   ];
   //========FIN DECLARACION DE VARIABLES ===============
- /*
+  /*
    =================================================================================
    SECCION DE USSEFFECT
    =================================================================================
 */
-  useEffect(() => {
-    fetchMoneda().then((data) => {
-      const options = data.map((moneda) => ({
-        value: moneda.monId,
-        label: moneda.monNombre,
-      }));
-      setMonedaOptions(options);
-    });
-  }, []);
-  useEffect(() => {
-    fetchPerfil().then((data) => {
-      const options = data.map((perfil) => ({
-        value: perfil.id,
-        label: perfil.prf_Nombre + " " + perfil.prf_Descripcion,
-      }));
-      setPerfilOptions(options);
-    });
-  }, []);
   useEffect(() => {
     if (isCreate) {
       fetchServiceLastId(t, router.push).then((result) => {
         setCorrelativo(result.data + 1);
       });
     }
-  }, []);
-  useEffect(() => {
-    fetchCountriest().then((data) => {
-      const options = data.map((country) => ({
-        value: country.paiId,
-        label: country.paiNombre,
-      }));
-      setCountryOptions(options);
-    });
-  }, []);
-  useEffect(() => {
-    fetchTypeService().then((data) => {
-      const options = data.map((item) => ({
-        value: item.tseId,
-        label: `${item.tseNombre} ${item.tseDescripcion} `,
-      }));
-      setTypeServiceOptions(options);
-    });
   }, []);
   useEffect(() => {
     if (isEdit || isCreate) {
@@ -179,14 +139,15 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     }
   }, [session]);
   useEffect(() => {
-    fetchPersonGetbyIdClient(formData.cliId).then((person) => {
-      const options = person.data.map((item) => ({
+    fetchPersonGetbyIdClient(proyectoModel.pryIdCliente).then((person) => {
+      console.log(person);
+      const options = person?.data?.map((item) => ({
         value: item.id,
         label: item.perNombres + " " + item.perApellidoPaterno,
       }));
       setContactOptions(options);
     });
-  }, [formData.cliId]);
+  }, [proyectoModel.pryIdCliente]);
   useEffect(() => {
     calculateEndDate();
   }, [formData.startDate, formData.months]);
@@ -199,7 +160,8 @@ function FormService({ locale, isEdit, isCreate, idService }) {
           setFormData,
           router.push,
           setTablaCommon,
-          tablaCommon
+          tablaCommon,
+          setProyecto
         );
         setIsLoading(false);
       } catch (error) {
@@ -218,10 +180,10 @@ function FormService({ locale, isEdit, isCreate, idService }) {
 */
   const handleAddToTablaCommon = () => {
     // Obtén los labels correspondientes a los ids seleccionados
-    const idPerfilLabel = perfilOptions.find(
+    const idPerfilLabel = data.perfiles.find(
       (option) => option.value == formData.idPerfil
     )?.label;
-    const idMonLabel = monedaOptions.find(
+    const idMonLabel = data.monedas.find(
       (option) => option.value == formData.idMon
     )?.label;
     const nuevoElemento = {
@@ -240,7 +202,12 @@ function FormService({ locale, isEdit, isCreate, idService }) {
       idPerfil: idPerfilLabel, // Almacena el label en la tabla
       fee: formData.fee,
       idMon: idMonLabel, // Almacena el label en la tabla
-      base: formData.base ===1? t.time.mes : formData.base === 3 ? t.time.hour : t.time.week,
+      base:
+        formData.base === 1
+          ? t.time.mes
+          : formData.base === 3
+          ? t.time.hour
+          : t.time.week,
     };
     setTablaCommon([...tablaCommon, nuevoElementoTabla]);
   };
@@ -257,7 +224,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
 
       // Elimina el elemento de tablaCommon
       updatedTablaCommon.splice(index, 1);
-      const idPerfilLabel = perfilOptions.find(
+      const idPerfilLabel = data.perfiles.find(
         (option) => option.label == idPerfil
       )?.value;
       // Encuentra el índice del elemento en formData.listPerfil que coincide con el idPerfil
@@ -278,7 +245,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     }
   };
   const cancel = () => {
-    router.push("/business/closeServices/search");
+    router.back();
   };
   const openFileDialog = (index) => {
     fileInputRefs[index].current.click();
@@ -287,7 +254,9 @@ function FormService({ locale, isEdit, isCreate, idService }) {
     router.push("/contact/create");
   };
   const calculateEndDate = () => {
-    const { startDate, months } = formData;
+    const { months } = formData;
+    const { pryFechaInicioEstimada: startDate } = proyectoModel;
+
     try {
       if (months < 1 || months > 60) {
         return; // No actualices el estado si el valor está fuera del rango
@@ -300,38 +269,69 @@ function FormService({ locale, isEdit, isCreate, idService }) {
           const parsedMonths = parseInt(months, 10);
           if (!isNaN(parsedMonths)) {
             startDateCopy.setMonth(startDateCopy.getMonth() + parsedMonths);
-            setFormData((prevData) => ({
+            setProyecto((prevData) => ({
               ...prevData,
-              endDate: startDateCopy, // Aquí actualiza endDate como un objeto Date
+              pryFechaCierreEstimada: startDateCopy, // Aquí actualiza endDate como un objeto Date
             }));
           }
         }
       } else {
         // Si uno de los campos no está lleno o es inválido, borra la fecha de finalización
-        setFormData((prevData) => ({
+        setProyecto((prevData) => ({
           ...prevData,
-          endDate: null,
+          pryFechaCierreEstimada: null,
         }));
       }
     } catch (error) {
       console.log("Error calculando fecha estimada" + error);
     }
   };
-
-  const handleSubmit = handleFormSubmit(
-    formData,
-    t,
-    router.push,
-    isEdit,
-    setFormData
-  );
+  const validationSchema = Proyecto.getValidationSchema(t);
+  const formik = useFormik({
+    initialValues: new Proyecto(proyectoModel),
+    validationSchema,
+    //validateOnMount: true,
+    onSubmit: async (values, { setSubmitting }) => {
+      console.log("Submitting form with values:", values);
+      try {
+        // Utiliza una variable para almacenar la función handleFormSubmit
+        // Utiliza una variable para almacenar la función handleFormSubmit
+        const proyectoDTO = {
+          proyecto: values,
+          TarifarioConvenio: formData.listPerfil,
+        };
+        const data = new FormData();
+        data.append("proyectoJson", JSON.stringify(proyectoDTO));
+        // Agrega los archivos
+        data.append("files", formData.file1);
+        data.append("files", formData.file2);
+        console.log(data);
+        return;
+        handleFormSubmit(data, t, router.push, isEdit);
+        console.log("After handleFormSubmit");
+        // Ejecuta la función almacenada
+        console.log("After handleFormSubmit");
+        // Ejecuta la función almacenada
+        console.log("After handleFormSubmit");
+      } catch (error) {
+        console.error("Error in handleFormSubmit:", error);
+      } finally {
+        EditAction();
+        setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
+      }
+    },
+  });
   return (
     <>
       {isLoading ? (
         <LoadingData loadingMessage={t.Common.loadingData} />
       ) : (
         <>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={(e) => {
+              formik.handleSubmit(e);
+            }}
+          >
             <fieldset disabled={!isCreate && !isEdit ? true : false}>
               <div className="d-flex justify-content-between align-items-center mt-2">
                 {isCreate && (
@@ -383,21 +383,21 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   </label>
                   <div className="col-sm-3">
                     <MyDatePicker
-                      selectedDate={formData.closeDate}
+                      selectedDate={proyectoModel.pryFechaCierre}
                       onChange={(date) =>
-                        setFormData({ ...formData, closeDate: date })
+                        setProyecto({ ...proyectoModel, pryFechaCierre: date })
                       }
                       title={t.Common.date}
                     />
                   </div>
                   <SelectField
                     label={t.Account.country}
-                    options={isLoading ? [] : countryOptions}
+                    options={data.paises}
                     preOption={t.Account.select}
                     labelClassName="col-sm-1 col-form-label"
                     divClassName="col-sm-2"
                     onChange={(e) => handleSelectChange(e, "paisId")}
-                    selectedValue={formData.paisId}
+                    selectedValue={proyectoModel.paisId}
                   />
                 </div>
 
@@ -405,7 +405,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   {!isCreate && !isEdit ? (
                     <>
                       <label
-                        htmlFor="client"
+                        htmlFor="cliNombre"
                         className="col-sm-1 col-form-label"
                       >
                         {t.Account.name}
@@ -414,10 +414,13 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                         <input
                           type="text"
                           className="form-control"
-                          id="client"
-                          name="client"
-                          value={formData.client}
-                          onChange={handleInputChange(formData, setFormData)}
+                          id="cliNombre"
+                          name="cliNombre"
+                          value={proyectoModel.cliente.cliNombre}
+                          onChange={handleInputChange(
+                            proyectoModel,
+                            setProyecto
+                          )}
                         />
                       </div>
                     </>
@@ -428,8 +431,8 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                       preOption={t.Account.select}
                       labelClassName="col-sm-1 col-form-label"
                       divClassName="col-sm-3"
-                      onChange={(e) => handleSelectChange(e, "cliId")}
-                      selectedValue={formData.cliId}
+                      onChange={(e) => handleSelectChange(e, "pryIdCliente")}
+                      selectedValue={proyectoModel.pryIdCliente}
                     />
                   )}
                   <div className="col-sm-2">
@@ -449,8 +452,8 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                       className="form-control"
                       id="pryNombre"
                       name="pryNombre"
-                      value={formData.pryNombre}
-                      onChange={handleInputChange(formData, setFormData)}
+                      value={proyectoModel.pryNombre}
+                      onChange={handleInputChange(proyectoModel, setProyecto)}
                     />
                   </div>
                 </div>
@@ -470,8 +473,8 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                           className="form-control"
                           id="personData"
                           name="personData"
-                          value={formData.personData}
-                          onChange={handleInputChange(formData, setFormData)}
+                          value={proyectoModel.contacto.getNombreCompleto()}
+                          //onChange={handleInputChange(proyectoModel, setProyecto)}
                         />
                       </div>
                     </>
@@ -482,8 +485,8 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                       preOption={t.Account.select}
                       labelClassName="col-sm-1 col-form-label"
                       divClassName="col-sm-3"
-                      onChange={(e) => handleSelectChange(e, "perId")}
-                      selectedValue={formData.perId}
+                      onChange={(e) => handleSelectChange(e, "pryIdContacto")}
+                      selectedValue={proyectoModel.pryIdContacto}
                     />
                   )}
 
@@ -498,12 +501,12 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   </div>
                   <SelectField
                     label={`${t.Account.type} ${t.Account.business}`}
-                    options={typeServiceOptions}
+                    options={data.tipoServicios}
                     preOption={t.Account.select}
                     labelClassName="col-sm-1 col-form-label"
                     divClassName="col-sm-3"
                     onChange={(e) => handleSelectChange(e, "tseId")}
-                    selectedValue={formData.tseId}
+                    selectedValue={proyectoModel.tseId}
                   />
                 </div>
 
@@ -591,9 +594,12 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   </label>
                   <div className="col-sm-2">
                     <MyDatePicker
-                      selectedDate={formData.startDate}
+                      selectedDate={proyectoModel.pryFechaInicioEstimada}
                       onChange={(date) =>
-                        setFormData({ ...formData, startDate: date })
+                        setProyecto({
+                          ...proyectoModel.pryFechaInicioEstimada,
+                          pryFechaInicioEstimada: date,
+                        })
                       }
                       title={t.Common.date}
                     />
@@ -618,27 +624,28 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   </label>
                   <div className="col-sm-2">
                     <MyDatePicker
-                      selectedDate={formData.endDate}
+                      selectedDate={proyectoModel.pryFechaCierreEstimada}
                       onChange={(date) =>
-                        setFormData({ ...formData, endDate: date })
+                        setProyecto({
+                          ...proyectoModel,
+                          pryFechaCierreEstimada: date,
+                        })
                       }
                       isRead={true}
                       title={t.Common.date}
                     />
                   </div>
-                  
                 </div>
                 <div className="mb-3 row align-items-center">
-                <label htmlFor="dateCut" className="col-sm-2 col-form-label">
+                  <label htmlFor="dateCut" className="col-sm-2 col-form-label">
                     {t.project.datecut}
                   </label>
                   <div className="col-sm-2">
                     <MyDatePicker
-                      selectedDate={formData.dateCut}
+                      selectedDate={proyectoModel.fechaCorte}
                       onChange={(date) =>
-                        setFormData({ ...formData, dateCut: date })
+                        setProyecto({ ...proyectoModel, fechaCorte: date })
                       }
-                      isRead={true}
                       title={t.Common.date}
                     />
                   </div>
@@ -647,7 +654,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                   <div className="mb-3 row align-items-center ">
                     <SelectField
                       label={t.Common.profile}
-                      options={perfilOptions}
+                      options={data.perfiles}
                       preOption={t.Account.select}
                       labelClassName="col-sm-1 col-form-label"
                       divClassName="col-sm-2"
@@ -673,7 +680,7 @@ function FormService({ locale, isEdit, isCreate, idService }) {
                         onChange={(e) => handleSelectChange(e, "idMon")}
                       >
                         <option value="">{t.Account.select}</option>
-                        {monedaOptions.map((option) => (
+                        {data.monedas.map((option) => (
                           <option key={option.value} value={option.value}>
                             {option.label}
                           </option>

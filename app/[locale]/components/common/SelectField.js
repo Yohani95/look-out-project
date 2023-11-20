@@ -10,7 +10,7 @@ const SelectField = ({ label, options, labelClassName, divClassName,preOption,ac
       <div className={`${divClassName}`}>
         <select className="form-control form-select" disabled={action} onChange={onChange} required value={selectedValue}>
         <option value="">{preOption}</option>
-          {options.map((option) => (
+          {options?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

@@ -5,7 +5,9 @@ import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import Persona from "@/app/api/models/admin/Persona";
 import { handleEditProfessional } from "@/app/[locale]/utils/person/UtilsPerson";
 import ActionButtons from "../../contact/ActionButtons";
+import { EditAction } from "./ProfessionalsActions";
 async function ProfesionalsSearch({ data, locale }) {
+  EditAction()
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
   const columns = [

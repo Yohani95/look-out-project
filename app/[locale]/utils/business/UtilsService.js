@@ -12,7 +12,14 @@ import {
   proyectoByIdWithEntitiesApiUrl,
 } from "@/app/api/apiConfig";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import {fetchByIdProyecto} from "@/app/[locale]/utils/business/tarifario/UtilsTarifario"
+import { fetchByIdProyecto } from "@/app/[locale]/utils/business/tarifario/UtilsTarifario";
+import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
+import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
+import fetchCountriest from "@/app/[locale]/utils/country/Countrylist";
+import { fetchTypeService } from "@/app/[locale]/utils/project/tipoServicio/UtilsTypeService";
+import { differenceInMonths, differenceInCalendarMonths } from "date-fns";
+import Proyecto from "@/app/api/models/proyecto/Proyecto";
+import { fechtClients } from "@/app/[locale]/utils/client/ClientFormLogic";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -20,38 +27,9 @@ export const handleInputChange = (formData, setFormData) => (event) => {
     [name]: value,
   }));
 };
-export const handleFormSubmit =
-  (formData, translations, push, isEditMode = false) =>
-  async (event) => {
-    event.preventDefault();
+export const handleFormSubmit = async (formData, translations, push, isEditMode = false) => {
+    //event.preventDefault();
     try {
-      const data = new FormData();
-      // Agrega los campos de formulario
-      const proyectoDTO = {
-        proyecto: {
-          pryId: formData.pryId,
-          pryNombre: formData.pryNombre,
-          prpId: 1,
-          epyId: 1,
-          tseId: formData.tseId,
-          pryFechaInicioEstimada: formData.startDate,
-          pryValor: 1,
-          paisId:formData.paisId,
-          monId: 1,
-          pryIdCliente: formData.cliId,
-          pryFechaCierreEstimada: formData.endDate,
-          pryFechaCierre: formData.closeDate,
-          pryIdContacto: formData.perId,
-          pryIdContactoClave: formData.perId,
-        },
-        TarifarioConvenio: formData.listPerfil,
-      };
-      // Corrige los nombres de los campos
-      data.append("proyectoJson", JSON.stringify(proyectoDTO));
-
-      // Agrega los archivos
-      data.append("files", formData.file1);
-      data.append("files", formData.file2);
       const url = isEditMode
         ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
         : `${proyectoCreateAsyncApiUrl}`;
@@ -71,7 +49,7 @@ export const handleFormSubmit =
       const response = await fetch(url, {
         method: method,
         headers: {},
-        body: data,
+        body: formData,
       });
       if (response.ok) {
         NotificationSweet({
@@ -173,19 +151,31 @@ export const handleEdit = async (idService, trans, push) => {
     push(`/business/closeServices/edit/${idService}`);
   }
 };
-export const fetchServiceById = async (Id, t, setFormData, push,setTablaCommon,tablaCommon) => {
+export const fetchServiceById = async (
+  Id,
+  t,
+  setFormData,
+  push,
+  setTablaCommon,
+  tablaCommon,
+  setProyecto
+) => {
   try {
     const response = await fetch(`${proyectoByIdWithEntitiesApiUrl}/${Id}`);
     if (response.ok) {
       const resultData = await response.json();
-      const result=resultData.data;
+      const result = resultData.data;
+      let proyecto = new Proyecto(result);
+      console.log(result);
+      console.log(proyecto.paisId);
+      //const
       result.startDate = new Date(result.pryFechaInicioEstimada);
       result.closeDate = new Date(result.pryFechaCierre);
       const endDate = new Date(result.pryFechaCierreEstimada);
-      const timeDifference = endDate.getTime() - result.startDate.getTime();
-      const monthsDifference = timeDifference / (1000 * 60 * 60 * 24 * 30.44);
+      const monthsDifference = differenceInMonths(result.startDate, endDate);
       // Redondear el valor de meses a entero
-      result.months = Math.round(monthsDifference);
+      console.log(monthsDifference);
+      //result.months = Math.round(monthsDifference);
       //obtener documentos
       const documentos = await fetchProyectoDocumentoById(result.pryId);
 
@@ -204,8 +194,8 @@ export const fetchServiceById = async (Id, t, setFormData, push,setTablaCommon,t
           result[`file${i + 1}`] = new File([blob], documento.docNombre);
         }
       }
-      const tarifarios= await fetchByIdProyecto(result.pryId)
-      tarifarios.data.forEach(element => {
+      const tarifarios = await fetchByIdProyecto(proyecto.pryId);
+      const elementosTabla = tarifarios.data.map((element) => {
         const nuevoElemento = {
           TcPerfilAsignado: element.tcPerfilAsignado,
           TcTarifa: element.tcTarifa,
@@ -213,34 +203,41 @@ export const fetchServiceById = async (Id, t, setFormData, push,setTablaCommon,t
           TcBase: element.tcBase,
           TcStatus: 0,
         };
+
         setFormData((prevData) => ({
           ...prevData,
           listPerfil: [...prevData.listPerfil, nuevoElemento],
-          perfiles: [...prevData.perfiles, element]
+          perfiles: [...prevData.perfiles, element],
         }));
-        const nuevoElementoTabla = {
-          idPerfil: element.perfil.prf_Nombre, // Almacena el label en la tabla
-          fee: element.tcTarifa,
-          idMon: element.moneda.monNombre, // Almacena el label en la tabla
-          base: element.tcBase === 1 ? t.time.mes : element.tcBase === 3 ? t.time.hour : t.time.week,
-        };
-        setTablaCommon((prevTablaCommon) => [...prevTablaCommon, nuevoElementoTabla]);
 
+        return {
+          idPerfil: element.perfil.prf_Nombre,
+          fee: element.tcTarifa,
+          idMon: element.moneda.monNombre,
+          base:
+            element.tcBase === 1
+              ? t.time.mes
+              : element.tcBase === 3
+              ? t.time.hour
+              : t.time.week,
+        };
       });
+      setTablaCommon(elementosTabla);
       const persons = await fetchPersonGetbyIdClient(result.pryIdCliente);
       const options = persons.data
-      .filter((item) => item.id === result.pryIdContacto)
-      .map((item) => ({
-        label: item.perNombres + " " + item.perApellidoPaterno,
-      }))[0];
+        .filter((item) => item.id === result.pryIdContacto)
+        .map((item) => ({
+          label: item.perNombres + " " + item.perApellidoPaterno,
+        }))[0];
       setFormData((prevFormData) => ({
         ...prevFormData,
         cliId: result.pryIdCliente,
         perId: result.pryIdContacto,
         personData: options.label,
-        client:result.cli.cliNombre,
+        client: proyecto.cliente.cliNombre,
         ...result,
       }));
+      setProyecto(proyecto);
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
@@ -383,5 +380,54 @@ export const downloadFiles = async (id, translations) => {
         type: translations.notification.error.type,
       });
     }
+  }
+};
+export const GetData = async () => {
+  try {
+    const [monedas, perfiles, paises, tipoServicios, clientes] =
+      await Promise.all([
+        fetchMoneda(),
+        fetchPerfil(),
+        fetchCountriest(),
+        fetchTypeService(),
+        fechtClients(),
+      ]);
+
+    const mappedMonedas = monedas.map((moneda) => ({
+      value: moneda.monId,
+      label: moneda.monNombre,
+    }));
+
+    const mappedPerfiles = perfiles.map((perfil) => ({
+      value: perfil.id,
+      label: perfil.prf_Nombre + " " + perfil.prf_Descripcion,
+    }));
+
+    const mappedPaises = paises.map((country) => ({
+      value: country.paiId,
+      label: country.paiNombre,
+    }));
+
+    const mappedTipoServicios = tipoServicios.map((item) => ({
+      value: item.tseId,
+      label: `${item.tseNombre} ${item.tseDescripcion} `,
+    }));
+
+    const mappedclientes = clientes.map((item) => ({
+      value: item.cliId,
+      label: item.cliNombre,
+    }));
+
+    return {
+      monedas: mappedMonedas,
+      perfiles: mappedPerfiles,
+      paises: mappedPaises,
+      tipoServicios: mappedTipoServicios,
+      clientes:mappedclientes 
+    };
+  } catch (error) {
+    // Manejo de errores si alguna de las operaciones falla
+    console.error("Error al obtener los datos:", error);
+    throw error;
   }
 };

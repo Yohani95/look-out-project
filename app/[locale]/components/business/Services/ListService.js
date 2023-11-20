@@ -56,8 +56,8 @@ function ListService({ locale }) {
         ...item,
         pryFechaInicioEstimada: formatDate(item.pryFechaInicioEstimada),
         pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada),
-        type: item.tipSer.tseDescripcion,
-        account:item.cli.cliNombre
+        type: item.tipoServicio.tseDescripcion,
+        account:item.cliente.cliNombre
         //     item.per.perNombres + " " + item.per.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
         //     cliId:
         //     item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo

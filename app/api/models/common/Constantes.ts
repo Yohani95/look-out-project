@@ -5,7 +5,7 @@ export class Constantes {
       CAMBIO_PERFIL: 4,
     };
   
-    TipoPersona = {
+    static TipoPersona = {
       PERSONA_ADMIN: 1,
       PERSONA_CONTACTO: 3,
       PERSONA_KAM: 2,

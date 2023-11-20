@@ -6,13 +6,17 @@ import ProfessionalsFormSection from "@/app/[locale]/components/admin/profession
 import { useRouter } from "next/navigation";
 import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
 import { professionalCreateApiUrl } from "@/app/api/apiConfig";
+import { EditAction } from "./ProfessionalsActions";
 function ProfessionalsCreate({ locale, data }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
 
   //validación con Yup
   const validationSchema = Persona.validationRules(t);
-
+  const apiurl = {
+    edit: "",
+    create: professionalCreateApiUrl,
+  };
   const formik = useFormik({
     initialValues: new Persona(),
     validationSchema,
@@ -27,7 +31,7 @@ function ProfessionalsCreate({ locale, data }) {
           router.push,
           false,
           "/admin/professional",
-          professionalCreateApiUrl,
+          apiurl,
           0
         );
         // Ejecuta la función almacenada
@@ -35,6 +39,7 @@ function ProfessionalsCreate({ locale, data }) {
       } catch (error) {
         console.error("Error in handleFormSubmit:", error);
       } finally {
+        EditAction()
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
     },

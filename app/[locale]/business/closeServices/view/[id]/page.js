@@ -3,16 +3,19 @@ import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import { useTranslations, useLocale } from "next-intl";
 import FormService from "@/app/[locale]/components/business/Services/FormService";
 import BasePages from "@/app/[locale]/components/common/BasePages";
-function page({ params }) {
-  const t = useTranslations();
+import { GetData } from "@/app/[locale]/utils/business/UtilsService";
+async function page({ params }) {
   const locale = useLocale();
+  const t = require(`@/messages/${locale}.json`);
+  const data=await GetData();
   return (
-    <BasePages title={`${t("business.title")}`}>
+    <BasePages title={t.business.title}>
       <FormService
         locale={locale}
         isEdit={false}
         isCreate={false}
         idService={params.id}
+        data={data}
       />
     </BasePages>
   );

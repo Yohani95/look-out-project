@@ -1,17 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
-import SelectField from "@/app/[locale]/components/common/SelectField";
 import ErroData from "@/app/[locale]/components/common/ErroData";
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
+import { Tooltip } from "react-tooltip";
+//import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { FaTrash, FaPlus } from "react-icons/fa";
+import { FaPlus, FaToggleOff, FaToggleOn } from "react-icons/fa";
+import { useFormik } from "formik";
 import {
-  handleInputChange,
   handleDelete,
-  handleFormSubmit,
   fetchParticipanteByIdProyecto,
 } from "@/app/[locale]/utils/business/UtilsParticipants";
 import Persona from "@/app/api/models/admin/Persona";
@@ -22,46 +20,64 @@ import {
   formatearRut,
   quitarPuntosRut,
 } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
+import { Constantes } from "@/app/api/models/common/Constantes";
+import {
+  participanteApiUrl,
+  personTipoPersonaApiUrl,
+} from "@/app/api/apiConfig";
+import ParticipanteForm from "../proyectoParticipante/ParticipanteForm";
+import ProyectoParticipante from "@/app/api/models/proyecto/ProyectoParticipante";
+import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
+import SelectField from "../../common/SelectField";
 function ProfessionalForm({ isEdit, idService, t, perfiles }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
   const [perfilOptions, setPerfilOptions] = useState([]);
-  const [addStatus, setAdd] = useState(false);
-  const [formDataJob, setformDataJob] = useState({
-    ppaId: 0,
-    pyrId: "",
-    perId: 0,
-    carId: "",
-    perTarifa: "",
-    prfId: 0,
-    perIdNacional: "",
-    perNombre: "",
-    fechaAsignacion: "",
-    perApellidoPaterno: "",
-    perApellidoMaterno: "",
-    participantesDTO: [],
-    periodo: 0,
-  });
+  const [professionals, setProfessionalsOptions] = useState([]);
   const router = useRouter();
+  const apiurl = {
+    edit: participanteApiUrl,
+    create: participanteApiUrl,
+  };
   const columns = [
-    { title: "ID", key: "id" },
+    { title: "ID", key: "idParticipante" },
     { title: t.Common.rut, key: "perIdNacional" },
     { title: t.Common.name, key: "perNombre" },
     { title: t.Common.profile, key: "perfil" },
     { title: t.Common.dateAssignment, key: "fechaAsignacion" },
+    { title: t.project.dateEnd, key: "fechaTermino" },
     { title: t.Common.fee, key: "perTarifa" },
+    //{ title: t.Common.status, key: "estado" },
     {
       title: t.Account.action, // Título de la columna de acciones
       key: "actions",
       render: (item) => (
         <>
           <Button size="sm" variant="link">
-            <FaTrash
-              size={16}
-              className=""
-              onClick={() => handleDeleteAndItem(item, t)}
-            />
+            {item.status == true ? (
+              <>
+                <FaToggleOff
+                  size={16}
+                  className="my-anchor-element" // Clase para el elemento ancla
+                  onClick={() => handleUnAssing(item.data, t)} // Acción del botón
+                />
+                <Tooltip anchorSelect=".my-anchor-element" place="top">
+                  {t.Common.unassign}
+                </Tooltip>
+              </>
+            ) : (
+              <>
+                <FaToggleOn
+                  size={16}
+                  className="my-anchor-element" // Clase para el elemento ancla
+                  onClick={() => handleUnAssing(item.data, t, false)} // Acción del botón
+                />
+                <Tooltip anchorSelect=".my-anchor-element" place="top">
+                  {t.Common.reassign}
+                </Tooltip>
+              </>
+            )}
           </Button>
           <Button
             size="sm"
@@ -70,42 +86,54 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
               router.push(`/service/createNovelty/${idService}/${item.id}`)
             }
           >
-            <FaPlus size={16} className="" />
+            <FaPlus size={16} className="my-novedad" />
+            <Tooltip anchorSelect=".my-novedad" place="top">
+              {t.Nav.services.createNovelty}
+            </Tooltip>
           </Button>
         </>
       ),
     },
   ];
-  const [data, setData] = useState([]);
-  const handleSelectChange = (event, fieldName) => {
-    const selectedValue = event.target.value;
-    setformDataJob((prevData) => ({
-      ...prevData,
-      [fieldName]: selectedValue,
-    }));
-  };
   const fetchData = () => {
-    fetchParticipanteByIdProyecto(idService).then((profesionales) => {
-      const nuevosElementosTabla = profesionales.data.map((element) => ({
-        id: element.persona.id,
-        perTarifa: element.perTartifa,
-        perfil: element.perfil.prf_Nombre,
-        perIdNacional: formatearRut(element.persona.perIdNacional),
-        perNombre:
-          element.persona.perNombres +
-          " " +
-          element.persona.perApellidoPaterno +
-          " " +
-          element.persona.perApellidoMaterno,
-        fechaAsignacion: new Date(element.fechaAsignacion).toLocaleDateString(),
-      }));
-
-      setTablaCommon([...tablaCommon, ...nuevosElementosTabla]);
-    });
+    try {
+      fetchParticipanteByIdProyecto(idService).then((profesionales) => {
+        const nuevosElementosTabla = profesionales.data.map((element) => ({
+          id: element.persona.id,
+          idParticipante: element.ppaId,
+          perTarifa: element.perTarifa,
+          perfil: element.perfil.prf_Nombre,
+          perIdNacional: formatearRut(element.persona.perIdNacional),
+          perNombre: new Persona(element.persona).getNombreCompleto(),
+          fechaAsignacion: new Date(
+            element.fechaAsignacion
+          ).toLocaleDateString(),
+          fechaTermino:element.fechaTermino || "N/A",
+          status: element.estado,
+          data: element,
+          //estado:element.estado,
+        }));
+        setTablaCommon([...nuevosElementosTabla]);
+      });
+    } catch (error) {
+      setError(true);
+    }
   };
-
+  const fetchProfessionals = async () => {
+    const response = await fetch(
+      `${personTipoPersonaApiUrl}/${Constantes.TipoPersona.PERSONA_PROFESIONAL}`
+    );
+    let personas = [new Persona()];
+    personas = await response.json();
+    const options = personas.map((persona) => {
+      return new Persona(persona).getSelectOptions();
+    });
+    setProfessionalsOptions(options);
+  };
   useEffect(() => {
+    fetchProfessionals();
     fetchData();
+    setIsLoading(false);
   }, []);
   useEffect(() => {
     const options = perfiles.map((item) => ({
@@ -114,65 +142,36 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     }));
     setPerfilOptions(options);
   }, [perfiles]);
-  const tarifario = perfiles.find(
-    (tarifario) => tarifario.perfil.id == formDataJob.prfId
-  );
-  const handleAddToTablaCommon = () => {
-    const index = tablaCommon.findIndex(
-      (element) => element.perIdNacional === formDataJob.perIdNacional
-    );
-    if (index !== -1) {
-      NotificationSweet({
-        title: t.notification.warning.title,
-        text: t.Common.emailExist,
-        type: t.notification.warning.type,
-      });
-      return;
-    }
-    const nuevoElementoTabla = {
-      perTarifa: tarifario.tcTarifa,
-      perfil: tarifario.perfil.prf_Nombre,
-      perIdNacional: formatearRut(formDataJob.perIdNacional),
-      perNombre:
-        formDataJob.perNombre +
-        " " +
-        formDataJob.perApellidoPaterno +
-        " " +
-        formDataJob.perApellidoMaterno,
-      fechaAsignacion: formDataJob.fechaAsignacion.toLocaleDateString(),
-    };
-    setTablaCommon([...tablaCommon, nuevoElementoTabla]);
-  };
-
-  const handleDeleteItem = (participante) => {
-    // Encuentra el índice del elemento en tablaCommon que coincide con el emaemail
-    const index = tablaCommon.findIndex(
-      (element) => element.perIdNacional === participante.perIdNacional
-    );
-    if (index !== -1) {
-      const updatedTablaCommon = [...tablaCommon];
-      updatedTablaCommon.splice(index, 1);
-      setTablaCommon(updatedTablaCommon);
-    }
-  };
-  const handleDeleteAndItem = async (item, t) => {
+  const handleUnAssing = async (item, t, unassing = true) => {
     try {
-      const result = await handleDelete(quitarPuntosRut(item.perIdNacional), t);
-      if (result == 200) {
-        handleDeleteItem(item);
+      const participante = new ProyectoParticipante(
+        item.ppaId,
+        item.pryId,
+        item.perId,
+        item.carId,
+        item.perTarifa,
+        item.prfId,
+        item.fechaAsignacion,
+        item.fechaTermino,
+        item.estado
+      );
+      if (unassing) {
+        participante.estado = 0;
       }
+      await handleFormSubmit(
+        participante,
+        t,
+        null,
+        true,
+        null,
+        apiurl,
+        item.ppaId
+      );
+      fetchData();
     } catch (error) {
       console.error("Ocurrió un error o la eliminación se canceló:", error);
     }
   };
-  const handleSubmit = handleFormSubmit(
-    formDataJob,
-    t,
-    isEdit,
-    fetchData,
-    tarifario,
-    idService
-  );
   const generatePeriods = () => {
     const currentDate = new Date();
     const lastMonth = new Date(currentDate);
@@ -186,91 +185,68 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       // Agrega más periodos según sea necesario
     ];
   };
+  const validateRules = ProyectoParticipante.validationRules(t);
+  const formik = useFormik({
+    initialValues: new ProyectoParticipante(),
+    validateRules,
+    //validateOnMount: true,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        // Utiliza una variable para almacenar la función handleFormSubmit
+        values.perTarifa = await perfiles.find(
+          (tarifario) => tarifario.perfil.id == values.prfId
+        )?.tcTarifa;
+        values.pryId = idService;
+        await handleFormSubmit(values, t, null, false, null, apiurl);
+        fetchData();
+      } catch (error) {
+        console.error("Error in handleFormSubmit:", error);
+      } finally {
+        EditAction();
+        setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
+      }
+    },
+  });
   return (
     <>
       <BoxInfo title={t.Common.professionals} startShow={false}>
-        <form onSubmit={handleSubmit}>
-          <div className="d-flex justify-content-end container mb-3">
-            <SelectField
+        <div className="d-flex justify-content-end container mb-3">
+          <SelectField
               label={`${t.Common.period}`}
               options={generatePeriods()}
               preOption={t.Account.select}
               labelClassName="col-sm-1 col-form-label"
               divClassName="col-sm-2"
               onChange={(e) => handleSelectChange(e, "periodo")}
-              selectedValue={formDataJob.periodo}
+              //selectedValue={formDataJob.periodo}
             />
-          </div>
-
-          <div className=" mb-3 row align-items-center">
-            <SelectField
-              label={`${t.Common.professionals}`}
-              options={perfilOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-2 col-form-label"
-              divClassName="col-sm-2"
-              onChange={(e) => handleSelectChange(e, "prfId")}
-              selectedValue={""}
-            />
-            <SelectField
-              label={`${t.Common.profile}`}
-              options={perfilOptions}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-2"
-              onChange={(e) => handleSelectChange(e, "prfId")}
-              selectedValue={formDataJob.prfId}
-            />
-            <label
-              htmlFor="perApellidoMaterno"
-              className="col-sm-1 col-form-label"
-            >
-              {t.Common.dateAssignment}
-            </label>
-            <div className="col-sm-2">
-              <MyDatePicker
-                selectedDate={formDataJob.fechaAsignacion}
-                onChange={(date) =>
-                  setformDataJob({ ...formDataJob, fechaAsignacion: date })
-                }
-                title={t.Common.date}
-              />
-            </div>
-            <label
-              htmlFor="perApellidoMaterno"
-              className="col-sm-1 col-form-label"
-            >
-              {t.project.dateEnd}
-            </label>
-            <div className="col-sm-2">
-              <MyDatePicker
-                selectedDate={formDataJob.fechaAsignacion}
-                onChange={(date) =>
-                  setformDataJob({ ...formDataJob, fechaAsignacion: date })
-                }
-                title={t.Common.date}
-              />
-            </div>
-            <div className="col-sm-1">
-              <button
-                type="submit"
-                className="text-end badge btn btn-primary"
-                onClick={() => {
-                  setAdd(true);
-                }}
-              >
-                {t.Common.add} ...{" "}
-              </button>
-            </div>
+        </div>
+        <form
+          onSubmit={(e) => {
+            formik.handleSubmit(e);
+          }}
+        >
+          <ParticipanteForm
+            professionals={professionals}
+            perfiles={perfilOptions}
+            t={t}
+            formData={formik.values}
+            setFormData={formik.setValues}
+            formik={formik}
+          />
+          <div className="d-flex justify-content-end mb-3">
+            <button type="submit" className="text-end  btn btn-primary">
+              {t.Common.add}{" "}
+            </button>
           </div>
         </form>
         {isLoading ? (
           <LoadingData loadingMessage={t.Common.loadingData} />
         ) : error ? (
           <ErroData message={t.Common.errorMsg} />
-        ) : data == [] ? ( // Verifica si no hay datos
+        ) : tablaCommon.length == [] ? ( // Verifica si no hay datos
           <div className="text-center justify-content-center align-items-center">
-            <h4>{t.Common.address}</h4> {t.Common.noData}
+            <h4>{t.Common.professionals}</h4> {t.Common.noData}
           </div>
         ) : (
           <TableCommon

@@ -53,6 +53,13 @@ class Persona {
   getNombreCompleto(): string {
     return `${this.perNombres} ${this.perApellidoPaterno} ${this.perApellidoMaterno}`;
   }
+  getSelectOptions(): { value: number; label: string } {
+    return {
+      value: this.id,
+      label: this.getNombreCompleto()
+    };
+  }
+  
 }
 
 export default Persona;

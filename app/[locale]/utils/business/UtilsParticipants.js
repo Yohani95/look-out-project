@@ -8,6 +8,7 @@ import {
   apiHeaders 
 } from "@/app/api/apiConfig";
 import { validarRut } from "@/app/[locale]/utils/Common/UtilsChilePersonas";
+import { Constantes } from "@/app/api/models/common/Constantes";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -15,84 +16,6 @@ export const handleInputChange = (formData, setFormData) => (event) => {
     [name]: value,
   }));
 };
-export const handleFormSubmit =
-  (formData, translations, isEditMode = false, fetchDataProfesionales,tarifario,idService) =>
-  async (event) => {
-    event.preventDefault();
-    
-    try {
-      if (!validarRut(formData.perIdNacional)) {
-        return;
-      }
-      //tipo persona en base de datos es 4 los profesionales quizas implementar un sedder
-      const tipoPersona=4;
-      const profesionalesDTO = {
-        persona: {
-          perIdNacional: formData.perIdNacional,
-          perNombres: formData.perNombre,
-          perApellidoPaterno: formData.perApellidoPaterno,
-          perApellidoMaterno: formData.perApellidoMaterno,
-          prfId: formData.prfId,
-          tpeId: tipoPersona
-        },
-        participante: {
-          pryId: idService,
-          prfId: formData.prfId,
-          fechaAsignacion: formData.fechaAsignacion,
-          PerTartifa: tarifario.tcTarifa
-        },
-      };
-      const url = isEditMode
-        ? `${participanteApiUrl}/${formData.ppaId}` //falta id
-        : `${participanteCreateAsyncApiUrl}`;
-      const method = isEditMode ? "PUT" : "POST";
-      await NotificationSweet({
-        title: isEditMode
-          ? translations.notification.loading.title
-          : translations.notification.create.title,
-        text: isEditMode
-          ? translations.notification.loading.text
-          : translations.notification.create.text,
-        type: isEditMode
-          ? translations.notification.loading.type
-          : translations.notification.create.type,
-        showLoading: true,
-      });
-      const response = await fetch(url, {
-        method: method,
-        headers: apiHeaders,
-        body: JSON.stringify(profesionalesDTO),
-      });
-      if (response.ok) {
-        NotificationSweet({
-          title: translations.notification.success.title,
-          text: translations.notification.success.text,
-          type: translations.notification.success.type,
-        });
-        fetchDataProfesionales();
-      } else if (response.status === 409) {
-        NotificationSweet({
-          title: translations.notification.warning.title,
-          text: translations.client.clientNameExist,
-          type: translations.notification.warning.type,
-        });
-      } else {
-        NotificationSweet({
-          title: translations.notification.warning.title,
-          text: translations.notification.error.text,
-          type: translations.notification.warning.type,
-        });
-      }
-    } catch (error) {
-      NotificationSweet({
-        title: translations.notification.error.title,
-        text: translations.notification.error.text,
-        type: translations.notification.error.type,
-      });
-      console.error("Error sending data:", error);
-      // router.push('');
-    }
-  };
 
   export const handleDelete = async (rut, trans) => {
     return new Promise(async (resolve, reject) => {

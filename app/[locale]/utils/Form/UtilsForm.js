@@ -10,7 +10,7 @@ export const handleInputChange = (formData, setFormData) => (event) => {
 };
 export const handleSelectChange = (event, fieldName, setFormData) => {
   const selectedValue = event.target.value;
-  console.log(`Selected ${fieldName}:`, selectedValue);
+  //console.log(`Selected ${fieldName}:`, selectedValue);
   setFormData((prevData) => ({ ...prevData, [fieldName]: selectedValue }));
 };
 /*
@@ -28,12 +28,12 @@ export const handleFormSubmit = async (
   id
 ) => {
   try {
-    //await handleLoandingNotification(translations, isEditMode);
+    await handleLoandingNotification(translations, isEditMode);
     const url = isEditMode ? `${apiUrl.edit}/${id}` : `${apiUrl.create}`;
     const method = isEditMode ? "PUT" : "POST";
-    console.log(url);
-    console.log(method);
-    console.log(JSON.stringify(formData));
+    //console.log(url);
+    //console.log(method);
+    //console.log(JSON.stringify(formData));
     const response = await fetch(url, {
       method: method,
       headers: apiHeaders,
@@ -126,8 +126,8 @@ function handleSuccessNotification(translations, push, redirectLink) {
     title: translations.notification.success.title,
     text: translations.notification.success.text,
     type: translations.notification.success.type,
-    push: push,
-    link: `${redirectLink}/search`,
+    push: push || null,
+    link: redirectLink? `${redirectLink}/search` : null,
   });
 }
 function handleConflictNotification(
@@ -140,7 +140,7 @@ function handleConflictNotification(
     title: translations.notification.warning.title,
     text: translations.notification.warning.text,
     type: translations.notification.warning.type,
-    push: push,
+    push: push || null,
     link: isEditMode ? `${redirectLink}/edit/${id}` : `${redirectLink}/create`,
   });
 }
@@ -155,8 +155,10 @@ function handleWarningNotification(
     title: translations.notification.warning.title,
     text: translations.notification.warning.text,
     type: translations.notification.warning.type,
-    //push: push,
-    //link: isEditMode ? `${redirectLink}/edit/${id}` : `${redirectLink}/create`,
+    push: push || null,
+    link: (redirectLink && redirectLink.trim() !== '') ? 
+    (isEditMode ? `${redirectLink}/edit/${id}` : `${redirectLink}/create`) 
+    : null,
   });
 }
 
@@ -165,8 +167,8 @@ function handleErrorNotification(translations, push, redirectLink) {
     title: translations.notification.error.title,
     text: translations.notification.error.text,
     type: translations.notification.error.type,
-    push: push,
-    link: `${redirectLink}/search`,
+    push: push || null,
+    link: redirectLink? `${redirectLink}/search`:null,
   });
 }
 async function handleLoandingNotification(translations, isEditMode) {

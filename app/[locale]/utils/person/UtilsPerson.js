@@ -270,12 +270,7 @@ _____________________________________________________
 */
 export const fetchAllPerson=async () =>{
   try {
-    const response = await fetch(`${personApiUrl}`,{
-      next:{
-        tags:["personas"]
-      },
-      cache:"no-cache"
-    });
+    const response = await fetch(`${personApiUrl}`);
     const data =await  response.json();
     return data;
   } catch (error) {
@@ -286,12 +281,7 @@ export const fetchAllPerson=async () =>{
 
 export const fetchGetbyId = async (idPerson) => {
   try {
-    const response = await fetch(`${personApiUrl}/${idPerson}`,{
-      next:{
-        tags:["persona"]
-      },
-      cache:"no-store"
-    });
+    const response = await fetch(`${personApiUrl}/${idPerson}`);
     const data = response.json();
     return data;
   } catch (error) {

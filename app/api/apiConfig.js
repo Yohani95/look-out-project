@@ -33,6 +33,7 @@ export const kam=2;
 export const contacto=3;
 export const personApiUrl = `${apiBaseUrl}/personas`;
 export const personContactGetAllApiUrl=`${apiBaseUrl}/personas/GetAllContactEnteties`;
+export const personTipoPersonaApiUrl = `${apiBaseUrl}/personas/tipoPersona`;
 export const personKamApiUrl = `${apiBaseUrl}/personas/tipoPersona/${kam}`;
 export const personContactApiUrl = `${apiBaseUrl}/personas/tipoPersona/${contacto}`;
 export const personContactCreateApiUrl = `${apiBaseUrl}/personas/createWithEntities`;
