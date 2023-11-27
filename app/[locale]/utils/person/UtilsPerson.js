@@ -270,7 +270,7 @@ _____________________________________________________
 */
 export const fetchAllPerson=async () =>{
   try {
-    const response = await fetch(`${personApiUrl}`);
+    const response = await fetch(`${personApiUrl}`,{cache:"no-cache"});
     const data =await  response.json();
     return data;
   } catch (error) {

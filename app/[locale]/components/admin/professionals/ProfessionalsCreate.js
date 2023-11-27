@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
 import { professionalCreateApiUrl } from "@/app/api/apiConfig";
 import { EditAction } from "./ProfessionalsActions";
+import { Constantes } from "@/app/api/models/common/Constantes";
+import { submitProfessional } from "@/app/[locale]/utils/person/PersonActions";
 function ProfessionalsCreate({ locale, data }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
@@ -22,10 +24,10 @@ function ProfessionalsCreate({ locale, data }) {
     validationSchema,
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log("Submitting form with values:", values);
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
-        await  handleFormSubmit(
+        values.tpeId=Constantes.TipoPersona.PERSONA_PROFESIONAL
+        const form= handleFormSubmit(
           values,
           t,
           router.push,
@@ -34,12 +36,12 @@ function ProfessionalsCreate({ locale, data }) {
           apiurl,
           0
         );
+         await submitProfessional()
         // Ejecuta la función almacenada
-        console.log("After handleFormSubmit");
       } catch (error) {
         console.error("Error in handleFormSubmit:", error);
       } finally {
-        EditAction()
+        //EditAction()
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
     },

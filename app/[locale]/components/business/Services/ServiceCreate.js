@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { handleFormSubmit } from "@/app/[locale]/utils/business/UtilsService";
-import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import Proyecto from "@/app/api/models/proyecto/Proyecto";
 import { useFormik } from "formik";
 import { EditAction } from "../../admin/professionals/ProfessionalsActions";
@@ -53,12 +52,12 @@ function ServiceCreate({ t, data }) {
           formik.handleSubmit(e);
         }}
       >
-        <div className="d-flex justify-content-between align-items-center mt-2">
+        <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
           <h4>{`${t.Common.create} ${t.business.title}`}</h4>
           <div className="col-sm-2 text-end">
             <h6>
               {t.Common.correlative} {t.business.title}{" "}
-              {correlativo === 0 ? "N/A" : correlativo}
+              {correlativo ? "#" : correlativo}
             </h6>
           </div>
         </div>

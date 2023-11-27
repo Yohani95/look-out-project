@@ -1,17 +1,51 @@
 import React from "react";
-import MyTitle from "@/app/[locale]/components/common/MyTitle";
 import { useLocale } from "next-intl";
-import FormService from "@/app/[locale]/components/business/Services/FormService";
 import BasePages from "@/app/[locale]/components/common/BasePages";
-import { GetData } from "@/app/[locale]/utils/business/UtilsService";
+import {
+  GetData,
+  fetchServiceById,
+} from "@/app/[locale]/utils/business/UtilsService";
 import ServiceEdit from "@/app/[locale]/components/business/Services/ServiceEdit";
+import { fetchData } from "@/app/[locale]/utils/Form/UtilsForm";
+import { tarifarioGetByIdProyectoApiUrl } from "@/app/api/apiConfig";
+import { Constantes } from "@/app/api/models/common/Constantes";
 async function page({ params }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
-  const data=await GetData();
+  const data = await GetData();
+  const { proyecto, archivos } = await fetchServiceById(params.id, t);
+  data.tarifarios = await fetch(
+    `${tarifarioGetByIdProyectoApiUrl}/${params.id}`,
+    {
+      cache:"no-cache",
+      next:{
+        tags:["tarifas"]
+      }
+    }
+  ).then(async (result) => {
+    result=await result.json()
+    const tarifas = result.data?.map((item) => ({
+      tcId: item.tcId,
+      tcMoneda: item.moneda.monNombre,
+      tcPerfilAsignado: item.perfil.prf_Nombre,
+      tcPerfilAsignadoId:item.perfil.id,
+      tcTarifa: item.tcTarifa,
+      tcBase:
+        Constantes.generarOpcionesDeTiempo(t).find(
+          (option) => option.value === item.tcBase
+        )?.label || "N/A",
+    }));
+    return tarifas;
+  });
   return (
     <BasePages title={t.business.title}>
-      <ServiceEdit t={t} idService={params.id} data={data}/>
+      <ServiceEdit
+        t={t}
+        idService={params.id}
+        data={data}
+        proyecto={JSON.parse(JSON.stringify(proyecto))}
+        files={archivos}
+      />
     </BasePages>
   );
 }

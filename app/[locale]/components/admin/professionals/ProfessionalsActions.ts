@@ -5,7 +5,7 @@ import axios from 'axios';
 import { revalidatePath, revalidateTag } from 'next/cache'
  
 export async function EditAction() {
-  revalidatePath('/')
+    revalidatePath('/')
 }
 export const deletePersonById=async (id) =>{
   try {
@@ -18,4 +18,7 @@ export const deletePersonById=async (id) =>{
   }finally{
 
   }
+}
+export async function tagAction(tag) {
+  revalidateTag(tag)
 }

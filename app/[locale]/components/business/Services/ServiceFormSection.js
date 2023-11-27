@@ -7,8 +7,9 @@ import SelectField from "../../common/SelectField";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import { useSession } from "next-auth/react";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { Tooltip } from "react-tooltip";
 import { addMonths } from "date-fns";
+import { Button } from "react-bootstrap";
+import { FaFileDownload } from "react-icons/fa";
 function ServiceFormSection({
   proyectoModel,
   setProyecto,
@@ -51,8 +52,8 @@ function ServiceFormSection({
     });
   }, [proyectoModel.pryIdCliente]);
   useEffect(() => {
- calculateEndDate();
-  }, [proyectoModel.months,proyectoModel.pryFechaInicioEstimada]);
+    calculateEndDate();
+  }, [proyectoModel.months, proyectoModel.pryFechaInicioEstimada]);
   //=======FIN SECCION DE USSEFFECT===============
   /*
      =================================================================================
@@ -71,13 +72,13 @@ function ServiceFormSection({
   };
   const calculateEndDate = () => {
     const { months, pryFechaInicioEstimada } = proyectoModel;
-    
+
     if (!months || !pryFechaInicioEstimada) {
       return; // No calcular si no hay datos suficientes
     }
-  
+
     const endDate = addMonths(pryFechaInicioEstimada, parseInt(months, 10));
-  
+
     setProyecto({
       ...proyectoModel,
       pryFechaCierreEstimada: endDate,
@@ -89,7 +90,7 @@ function ServiceFormSection({
         <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
         <div className="col-sm-3">
           <span className="form-control">
-            {session 
+            {session
               ? `${session.user.persona.perNombres} ${session.user.persona.perApellidoPaterno}`
               : ""}
           </span>
@@ -211,6 +212,19 @@ function ServiceFormSection({
             >
               {t.Common.uploadFile}
             </button>
+            {formData.file1 && (
+              <>
+                  <Button
+                  className=""
+                    variant="link"
+                    href={formData.file1 && URL.createObjectURL(formData.file1)}
+                    download={formData.file1 && formData.file1.name}
+                  >
+                    <span>{t.Common.downloadFile}</span>
+                    <FaFileDownload size={18} className="link" beat />
+                  </Button>
+              </>
+            )}
           </div>
           <label htmlFor="proposal" className="col-sm-1 col-form-label">
             {t.Common.proposal} {t.Common.accepted}
@@ -243,6 +257,19 @@ function ServiceFormSection({
             >
               {t.Common.uploadFile}
             </button>
+            {formData.file2 && (
+              <>
+                  <Button
+                  className=""
+                    variant="link"
+                    href={formData.file2 && URL.createObjectURL(formData.file2)}
+                    download={formData.file2 && formData.file2.name}
+                  >
+                    <span>{t.Common.downloadFile}</span>
+                    <FaFileDownload size={18} className="link" beat />
+                  </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

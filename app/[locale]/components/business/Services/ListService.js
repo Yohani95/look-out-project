@@ -36,6 +36,7 @@ function ListService({ locale }) {
           onEdit={() => handleEdit(item.pryId, t, router.push)}
           onView={() => handleView(item.pryId, router.push)}
           downloadFile={() => downloadFiles(item.pryId, t)}
+          t={t}
         />
       ),
     },

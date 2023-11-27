@@ -20,7 +20,7 @@ class Proyecto {
   kamId: number | null;
   paisId: number | null;
   fechaCorte: number | null;
-
+  months:number| null;
   cliente: Cliente | null;
   tipoServicio: TipoServicio | null;
   pais: Pais | null;
@@ -39,6 +39,7 @@ class Proyecto {
     this.kamId = data?.kamId || null;
     this.paisId = data?.paisId || 0;
     this.fechaCorte=data?.fechaCorte || 1 ;
+    this.months=data?.months || 1 ;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;

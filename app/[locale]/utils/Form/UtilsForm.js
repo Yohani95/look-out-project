@@ -1,6 +1,7 @@
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { apiHeaders } from "@/app/api/apiConfig";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import { tagAction } from "../../components/admin/professionals/ProfessionalsActions";
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -39,7 +40,6 @@ export const handleFormSubmit = async (
       headers: apiHeaders,
       body: JSON.stringify(formData),
     });
-
     console.log(response)
     if (response.ok) {
       handleSuccessNotification(translations, push, redirectLink);
@@ -60,7 +60,9 @@ export const handleFormSubmit = async (
 */
 export const fetchData = async (url) => {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      cache: "no-cache",
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -99,7 +101,9 @@ export const handleDelete = async (id, trans, fetchData, url) => {
           type: trans.notification.success.type,
         });
         // Actualiza la lista o después de eliminar
-        fetchData();
+        if (fetchData) {
+          await fetchData();
+        }
       } else {
         NotificationSweet({
           title: trans.notification.error.title,
@@ -126,8 +130,8 @@ function handleSuccessNotification(translations, push, redirectLink) {
     title: translations.notification.success.title,
     text: translations.notification.success.text,
     type: translations.notification.success.type,
-    push: push || null,
-    link: redirectLink? `${redirectLink}/search` : null,
+    push: push !== null ? push : null,
+    link: redirectLink!==null ? `${redirectLink}/search` : null,
   });
 }
 function handleConflictNotification(
@@ -156,9 +160,12 @@ function handleWarningNotification(
     text: translations.notification.warning.text,
     type: translations.notification.warning.type,
     push: push || null,
-    link: (redirectLink && redirectLink.trim() !== '') ? 
-    (isEditMode ? `${redirectLink}/edit/${id}` : `${redirectLink}/create`) 
-    : null,
+    link:
+      redirectLink && redirectLink.trim() !== ""
+        ? isEditMode
+          ? `${redirectLink}/edit/${id}`
+          : `${redirectLink}/create`
+        : null,
   });
 }
 
@@ -168,7 +175,7 @@ function handleErrorNotification(translations, push, redirectLink) {
     text: translations.notification.error.text,
     type: translations.notification.error.type,
     push: push || null,
-    link: redirectLink? `${redirectLink}/search`:null,
+    link: redirectLink ? `${redirectLink}/search` : null,
   });
 }
 async function handleLoandingNotification(translations, isEditMode) {

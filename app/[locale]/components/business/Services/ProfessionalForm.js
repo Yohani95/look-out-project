@@ -105,10 +105,12 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
           perfil: element.perfil.prf_Nombre,
           perIdNacional: formatearRut(element.persona.perIdNacional),
           perNombre: new Persona(element.persona).getNombreCompleto(),
-          fechaAsignacion: new Date(
-            element.fechaAsignacion
-          ).toLocaleDateString(),
-          fechaTermino:element.fechaTermino || "N/A",
+          fechaAsignacion: element.fechaAsignacion
+            ? new Date(element.fechaAsignacion).toLocaleDateString()
+            : "N/A",
+          fechaTermino: element.fechaTermino
+            ? new Date(element.fechaTermino).toLocaleDateString()
+            : "N/A",
           status: element.estado,
           data: element,
           //estado:element.estado,
@@ -137,8 +139,8 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   }, []);
   useEffect(() => {
     const options = perfiles.map((item) => ({
-      value: item.perfil.id,
-      label: item.perfil.prf_Nombre,
+      value: item.tcPerfilAsignadoId,
+      label: item.tcPerfilAsignado,
     }));
     setPerfilOptions(options);
   }, [perfiles]);
@@ -193,8 +195,8 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
-        values.perTarifa = await perfiles.find(
-          (tarifario) => tarifario.perfil.id == values.prfId
+        values.perTarifa= perfiles.find(
+          (tarifario) => tarifario.tcPerfilAsignadoId == values.prfId
         )?.tcTarifa;
         values.pryId = idService;
         await handleFormSubmit(values, t, null, false, null, apiurl);
@@ -209,17 +211,17 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
   });
   return (
     <>
-      <BoxInfo title={t.Common.professionals} startShow={false}>
+      <BoxInfo title={t.Common.professionals} startShow={true}>
         <div className="d-flex justify-content-end container mb-3">
           <SelectField
-              label={`${t.Common.period}`}
-              options={generatePeriods()}
-              preOption={t.Account.select}
-              labelClassName="col-sm-1 col-form-label"
-              divClassName="col-sm-2"
-              onChange={(e) => handleSelectChange(e, "periodo")}
-              //selectedValue={formDataJob.periodo}
-            />
+            label={`${t.Common.period}`}
+            options={generatePeriods()}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-2"
+            // onChange={(e) => handleSelectChange(e, "periodo")}
+            //selectedValue={formDataJob.periodo}
+          />
         </div>
         <form
           onSubmit={(e) => {

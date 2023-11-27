@@ -27,71 +27,76 @@ export const handleInputChange = (formData, setFormData) => (event) => {
     [name]: value,
   }));
 };
-export const handleFormSubmit = async (formData, translations, push, isEditMode = false) => {
-    //event.preventDefault();
-    try {
-      const url = isEditMode
-        ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
-        : `${proyectoCreateAsyncApiUrl}`;
-      const method = isEditMode ? "PUT" : "POST";
-      await NotificationSweet({
-        title: isEditMode
-          ? translations.notification.loading.title
-          : translations.notification.create.title,
-        text: isEditMode
-          ? translations.notification.loading.text
-          : translations.notification.create.text,
-        type: isEditMode
-          ? translations.notification.loading.type
-          : translations.notification.create.type,
-        showLoading: true,
+export const handleFormSubmit = async (
+  formData,
+  translations,
+  push,
+  isEditMode = false
+) => {
+  //event.preventDefault();
+  try {
+    const url = isEditMode
+      ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
+      : `${proyectoCreateAsyncApiUrl}`;
+    const method = isEditMode ? "PUT" : "POST";
+    await NotificationSweet({
+      title: isEditMode
+        ? translations.notification.loading.title
+        : translations.notification.create.title,
+      text: isEditMode
+        ? translations.notification.loading.text
+        : translations.notification.create.text,
+      type: isEditMode
+        ? translations.notification.loading.type
+        : translations.notification.create.type,
+      showLoading: true,
+    });
+    const response = await fetch(url, {
+      method: method,
+      headers: {},
+      body: formData,
+    });
+    if (response.ok) {
+      NotificationSweet({
+        title: translations.notification.success.title,
+        text: translations.notification.success.text,
+        type: translations.notification.success.type,
+        push: push,
+        link: "/business/closeServices/search",
       });
-      const response = await fetch(url, {
-        method: method,
-        headers: {},
-        body: formData,
+    } else if (response.status === 409) {
+      NotificationSweet({
+        title: translations.notification.warning.title,
+        text: translations.notification.warning.text,
+        type: translations.notification.warning.type,
+        push: push,
+        link: isEditMode
+          ? `/business/closeServices/edit/${formData.cliId}`
+          : "/business/closeServices/create",
       });
-      if (response.ok) {
-        NotificationSweet({
-          title: translations.notification.success.title,
-          text: translations.notification.success.text,
-          type: translations.notification.success.type,
-          push: push,
-          link: "/business/closeServices/search",
-        });
-      } else if (response.status === 409) {
-        NotificationSweet({
-          title: translations.notification.warning.title,
-          text: translations.notification.warning.text,
-          type: translations.notification.warning.type,
-          push: push,
-          link: isEditMode
-            ? `/business/closeServices/edit/${formData.cliId}`
-            : "/business/closeServices/create",
-        });
-      } else {
-        NotificationSweet({
-          title: translations.notification.error.title,
-          text: translations.notification.error.text,
-          type: translations.notification.error.type,
-          push: push,
-          link: isEditMode
-            ? `/business/closeServices/edit/${formData.cliId}`
-            : "/business/closeServices/create",
-        });
-      }
-    } catch (error) {
+    } else {
       NotificationSweet({
         title: translations.notification.error.title,
         text: translations.notification.error.text,
         type: translations.notification.error.type,
         push: push,
-        link: "/business/closeServices/search",
+        link: isEditMode
+          ? `/business/closeServices/edit/${formData.cliId}`
+          : "/business/closeServices/create",
       });
-      console.error("Error sending data:", error);
-      // router.push('');
     }
-  };
+  } catch (error) {
+    NotificationSweet({
+      title: translations.notification.error.title,
+      text: translations.notification.error.text,
+      type: translations.notification.error.type,
+      push: push,
+      link: "/business/closeServices/search",
+    });
+    console.error("Error sending data:", error);
+    // router.push('');
+  }
+};
 
 export const handleDelete = async (idService, trans, fetchService) => {
   const confirmed = await ConfirmationDialog(
@@ -151,34 +156,24 @@ export const handleEdit = async (idService, trans, push) => {
     push(`/business/closeServices/edit/${idService}`);
   }
 };
-export const fetchServiceById = async (
-  Id,
-  t,
-  setFormData,
-  push,
-  setTablaCommon,
-  tablaCommon,
-  setProyecto
-) => {
+export const fetchServiceById = async (id, t, push) => {
   try {
-    const response = await fetch(`${proyectoByIdWithEntitiesApiUrl}/${Id}`);
+    const response = await fetch(`${proyectoByIdWithEntitiesApiUrl}/${id}`, {
+      cache: "no-cache",
+    });
     if (response.ok) {
       const resultData = await response.json();
       const result = resultData.data;
       let proyecto = new Proyecto(result);
-      console.log(result);
-      console.log(proyecto.paisId);
-      //const
-      result.startDate = new Date(result.pryFechaInicioEstimada);
-      result.closeDate = new Date(result.pryFechaCierre);
-      const endDate = new Date(result.pryFechaCierreEstimada);
-      const monthsDifference = differenceInMonths(result.startDate, endDate);
+      const monthsDifference = differenceInMonths(
+        proyecto.pryFechaCierreEstimada,
+        proyecto.pryFechaInicioEstimada
+      );
       // Redondear el valor de meses a entero
-      console.log(monthsDifference);
-      //result.months = Math.round(monthsDifference);
+      proyecto.months = Math.round(monthsDifference);
       //obtener documentos
       const documentos = await fetchProyectoDocumentoById(result.pryId);
-
+      const archivos = [];
       for (let i = 0; i < documentos.length; i++) {
         const documento = documentos[i];
         const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(
@@ -190,54 +185,59 @@ export const fetchServiceById = async (
         });
         if (response.ok) {
           const blob = await response.blob();
-          // Asigna el documento al resultado con el nombre correspondiente (file1, file2, etc.)
-          result[`file${i + 1}`] = new File([blob], documento.docNombre);
+          const archivo = {
+            documento: documento,
+            nombre: documento.docNombre,
+            blob,
+          };
+          archivos.push(archivo);
         }
       }
-      const tarifarios = await fetchByIdProyecto(proyecto.pryId);
-      const elementosTabla = tarifarios.data.map((element) => {
-        const nuevoElemento = {
-          TcPerfilAsignado: element.tcPerfilAsignado,
-          TcTarifa: element.tcTarifa,
-          TcMoneda: element.tcMoneda,
-          TcBase: element.tcBase,
-          TcStatus: 0,
-        };
+      return { proyecto, archivos };
+      // const tarifarios = await fetchByIdProyecto(proyecto.pryId);
+      // const elementosTabla = tarifarios.data.map((element) => {
+      //   const nuevoElemento = {
+      //     TcPerfilAsignado: element.tcPerfilAsignado,
+      //     TcTarifa: element.tcTarifa,
+      //     TcMoneda: element.tcMoneda,
+      //     TcBase: element.tcBase,
+      //     TcStatus: 0,
+      //   };
 
-        setFormData((prevData) => ({
-          ...prevData,
-          listPerfil: [...prevData.listPerfil, nuevoElemento],
-          perfiles: [...prevData.perfiles, element],
-        }));
+      //   setFormData((prevData) => ({
+      //     ...prevData,
+      //     listPerfil: [...prevData.listPerfil, nuevoElemento],
+      //     perfiles: [...prevData.perfiles, element],
+      //   }));
 
-        return {
-          idPerfil: element.perfil.prf_Nombre,
-          fee: element.tcTarifa,
-          idMon: element.moneda.monNombre,
-          base:
-            element.tcBase === 1
-              ? t.time.mes
-              : element.tcBase === 3
-              ? t.time.hour
-              : t.time.week,
-        };
-      });
-      setTablaCommon(elementosTabla);
-      const persons = await fetchPersonGetbyIdClient(result.pryIdCliente);
-      const options = persons.data
-        .filter((item) => item.id === result.pryIdContacto)
-        .map((item) => ({
-          label: item.perNombres + " " + item.perApellidoPaterno,
-        }))[0];
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        cliId: result.pryIdCliente,
-        perId: result.pryIdContacto,
-        personData: options.label,
-        client: proyecto.cliente.cliNombre,
-        ...result,
-      }));
-      setProyecto(proyecto);
+      //   return {
+      //     idPerfil: element.perfil.prf_Nombre,
+      //     fee: element.tcTarifa,
+      //     idMon: element.moneda.monNombre,
+      //     base:
+      //       element.tcBase === 1
+      //         ? t.time.mes
+      //         : element.tcBase === 3
+      //         ? t.time.hour
+      //         : t.time.week,
+      //   };
+      // });
+      // setTablaCommon(elementosTabla);
+      // const persons = await fetchPersonGetbyIdClient(result.pryIdCliente);
+      // const options = persons.data
+      //   .filter((item) => item.id === result.pryIdContacto)
+      //   .map((item) => ({
+      //     label: item.perNombres + " " + item.perApellidoPaterno,
+      //   }))[0];
+      // setFormData((prevFormData) => ({
+      //   ...prevFormData,
+      //   cliId: result.pryIdCliente,
+      //   perId: result.pryIdContacto,
+      //   personData: options.label,
+      //   client: proyecto.cliente.cliNombre,
+      //   ...result,
+      // }));
+      // setProyecto(proyecto);
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
@@ -423,7 +423,7 @@ export const GetData = async () => {
       perfiles: mappedPerfiles,
       paises: mappedPaises,
       tipoServicios: mappedTipoServicios,
-      clientes:mappedclientes 
+      clientes: mappedclientes,
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla

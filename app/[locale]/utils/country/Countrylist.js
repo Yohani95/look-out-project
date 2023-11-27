@@ -1,7 +1,7 @@
 import { paisApiUrl,apiHeaders } from "@/app/api/apiConfig";
 const fetchCountries = async () => {
     try {
-      const response = await fetch(paisApiUrl);
+      const response = await fetch(paisApiUrl,{cache:"no-cache"});
       const data = await response.json();
       return data;
     } catch (error) {
