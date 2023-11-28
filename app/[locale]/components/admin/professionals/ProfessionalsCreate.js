@@ -37,6 +37,7 @@ function ProfessionalsCreate({ locale, data }) {
           0
         );
          await submitProfessional()
+         router.refresh()
         // Ejecuta la función almacenada
       } catch (error) {
         console.error("Error in handleFormSubmit:", error);

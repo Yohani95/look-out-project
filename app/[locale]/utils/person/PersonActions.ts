@@ -19,10 +19,7 @@ export const fetchAllProfessionals = async () => {
 };
 export const submitProfessional =async ()=>{
   try {
-    revalidatePath("/admin/professional/search")
     revalidateTag("profesionales")
-    console.log("valido")
-    revalidatePath("/admin/professional","page")
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];

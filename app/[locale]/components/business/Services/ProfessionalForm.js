@@ -6,7 +6,13 @@ import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import { Tooltip } from "react-tooltip";
 //import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { FaPlus, FaToggleOff, FaToggleOn } from "react-icons/fa";
+import {
+  FaPlus,
+  FaTimes,
+  FaToggleOff,
+  FaToggleOn,
+  FaCheck,
+} from "react-icons/fa";
 import { useFormik } from "formik";
 import {
   handleDelete,
@@ -29,11 +35,14 @@ import ParticipanteForm from "../proyectoParticipante/ParticipanteForm";
 import ProyectoParticipante from "@/app/api/models/proyecto/ProyectoParticipante";
 import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
 import SelectField from "../../common/SelectField";
-function ProfessionalForm({ isEdit, idService, t, perfiles }) {
+import PeriodosCreate from "./periodos/PeriodosCreate";
+function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
+  const [data, setData] = useState([]);
   const [perfilOptions, setPerfilOptions] = useState([]);
+  const [periodo, setPeriodo] = useState();
   const [professionals, setProfessionalsOptions] = useState([]);
   const router = useRouter();
   const apiurl = {
@@ -48,7 +57,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     { title: t.Common.dateAssignment, key: "fechaAsignacion" },
     { title: t.project.dateEnd, key: "fechaTermino" },
     { title: t.Common.fee, key: "perTarifa" },
-    //{ title: t.Common.status, key: "estado" },
+    { title: t.Common.status, key: "estado" },
     {
       title: t.Account.action, // Título de la columna de acciones
       key: "actions",
@@ -70,10 +79,10 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
               <>
                 <FaToggleOn
                   size={16}
-                  className="my-anchor-element" // Clase para el elemento ancla
+                  className="my-anchor" // Clase para el elemento ancla
                   onClick={() => handleUnAssing(item.data, t, false)} // Acción del botón
                 />
-                <Tooltip anchorSelect=".my-anchor-element" place="top">
+                <Tooltip anchorSelect=".my-anchor" place="top">
                   {t.Common.reassign}
                 </Tooltip>
               </>
@@ -95,9 +104,9 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       ),
     },
   ];
-  const fetchData = () => {
+  const fetchData = async () => {
     try {
-      fetchParticipanteByIdProyecto(idService).then((profesionales) => {
+      await fetchParticipanteByIdProyecto(idService).then((profesionales) => {
         const nuevosElementosTabla = profesionales.data.map((element) => ({
           id: element.persona.id,
           idParticipante: element.ppaId,
@@ -113,9 +122,14 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
             : "N/A",
           status: element.estado,
           data: element,
-          //estado:element.estado,
+          estado: element.estado ? (
+            <FaCheck style={{ color: "green" }} />
+          ) : (
+            <FaTimes style={{ color: "red" }} />
+          ),
         }));
         setTablaCommon([...nuevosElementosTabla]);
+        setData([...nuevosElementosTabla]);
       });
     } catch (error) {
       setError(true);
@@ -169,23 +183,12 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
         apiurl,
         item.ppaId
       );
-      fetchData();
+      await fetchData().then(() => {
+        //handle(periodo);
+      });
     } catch (error) {
       console.error("Ocurrió un error o la eliminación se canceló:", error);
     }
-  };
-  const generatePeriods = () => {
-    const currentDate = new Date();
-    const lastMonth = new Date(currentDate);
-    lastMonth.setMonth(lastMonth.getMonth() - 1);
-    const twoMonthsAgo = new Date(currentDate);
-    twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
-
-    return [
-      { key: "1", label: "Último mes", value: lastMonth.toISOString() }, // Puedes cambiar "value" según tus necesidades
-      { key: "2", label: "Hace dos meses", value: twoMonthsAgo.toISOString() },
-      // Agrega más periodos según sea necesario
-    ];
   };
   const validateRules = ProyectoParticipante.validationRules(t);
   const formik = useFormik({
@@ -195,7 +198,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
-        values.perTarifa= perfiles.find(
+        values.perTarifa = perfiles.find(
           (tarifario) => tarifario.tcPerfilAsignadoId == values.prfId
         )?.tcTarifa;
         values.pryId = idService;
@@ -209,18 +212,70 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
       }
     },
   });
+  const calculatePeriods = () => {
+    let startDate = new Date(proyecto.pryFechaInicioEstimada);
+    let endDate = new Date(proyecto.pryFechaCierreEstimada);
+    let cutoffDate = parseInt(proyecto.fechaCorte, 10);
+    const periods = [];
+    let periodNumber = 1;
+    while (startDate < endDate) {
+      const periodEndDate = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth() + 1,
+        cutoffDate
+      );
+
+      if (periodEndDate > endDate) {
+        periodEndDate.setDate(endDate.getDate()); // Ajustar el último período si excede la fecha de cierre
+      }
+
+      const formattedStartDate = startDate.toLocaleDateString();
+      const formattedEndDate = periodEndDate.toLocaleDateString();
+
+      periods.push({
+        key: `${periodNumber}`,
+        label: `${formattedStartDate} al ${formattedEndDate}`,
+        value: `${startDate.toISOString()} - ${periodEndDate.toISOString()}`,
+      });
+
+      startDate = new Date(periodEndDate);
+      startDate.setDate(startDate.getDate() + 1); // Establecer el inicio del siguiente periodo
+      periodNumber++;
+    }
+
+    return periods;
+  };
+  const handle = (selectedOption) => {
+    if (selectedOption === "") {
+      setTablaCommon(data); // Establecer la data completa
+      return;
+    }
+    const [startDateStr, endDateStr] = selectedOption.split(" - ");
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    console.log(data);
+    const filteredData = data.filter((item) => {
+      const fechaAsignacion = new Date(item.data.fechaAsignacion);
+      return fechaAsignacion >= startDate && fechaAsignacion <= endDate;
+    });
+
+    setTablaCommon(filteredData);
+  };
   return (
     <>
       <BoxInfo title={t.Common.professionals} startShow={true}>
         <div className="d-flex justify-content-end container mb-3">
           <SelectField
             label={`${t.Common.period}`}
-            options={generatePeriods()}
+            options={calculatePeriods()}
             preOption={t.Account.select}
             labelClassName="col-sm-1 col-form-label"
             divClassName="col-sm-2"
-            // onChange={(e) => handleSelectChange(e, "periodo")}
-            //selectedValue={formDataJob.periodo}
+            onChange={(e) => {
+              handle(e.target.value);
+              setPeriodo(e.target.value); // Actualizar el estado del periodo seleccionado
+            }}
+            selectedValue={periodo}
           />
         </div>
         <form
@@ -259,6 +314,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles }) {
             search={t.Account.table.search}
           />
         )}
+        <PeriodosCreate t={t} periodo={periodo}/>
       </BoxInfo>
     </>
   );

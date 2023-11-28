@@ -19,7 +19,7 @@ function TarifarioCreate({ t, data, idService }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         values.prpId = idService;
-        await handleFormSubmit(values, t, "", false, "", apiurl, 0);
+        await handleFormSubmit(values, t, null, false, null, apiurl, 0);
         tagAction("tarifas")
       } catch (error) {
         console.error("Error in handleFormSubmit:", error);

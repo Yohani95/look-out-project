@@ -1,33 +1,33 @@
-import * as Yup from "yup";
+import * as Yup from 'yup';
+import Proyecto from './Proyecto';
 
-class PeriodoProyecto {
-  id: number;
+class PeriodosProyecto {
+  id: number | null;
   idProyecto: number | null;
   fechaPeriodoDesde: Date | null;
   fechaPeriodoHasta: Date | null;
   estado: number | null;
 
-  constructor(
-    id: number,
-    idProyecto: number | null,
-    fechaPeriodoDesde: Date | null,
-    fechaPeriodoHasta: Date | null,
-    estado: number | null
-  ) {
-    this.id = id;
-    this.idProyecto = idProyecto;
-    this.fechaPeriodoDesde = fechaPeriodoDesde;
-    this.fechaPeriodoHasta = fechaPeriodoHasta;
-    this.estado = estado;
+  proyecto : Proyecto | null;
+
+  constructor(data: any) {
+    this.id = data?.id || null;
+    this.idProyecto = data?.idProyecto || null;
+    this.fechaPeriodoDesde = data?.fechaPeriodoDesde || null;
+    this.fechaPeriodoHasta = data?.fechaPeriodoHasta || null;
+    this.estado = data?.estado || null;
+    this.proyecto=data?.proyecto || null
   }
 
-  static validationRules = (t: any) =>
-    Yup.object().shape({
+  static getValidationSchema(t) {
+    return Yup.object().shape({
+      id: Yup.number().nullable(),
       idProyecto: Yup.number().nullable(),
       fechaPeriodoDesde: Yup.date().nullable(),
       fechaPeriodoHasta: Yup.date().nullable(),
       estado: Yup.number().nullable(),
     });
+  }
 }
 
-export default PeriodoProyecto
+export default PeriodosProyecto;

@@ -49,6 +49,7 @@ async function page({ params }) {
       </fieldset>
       <ProfessionalForm
         t={t}
+        proyecto={proyecto}
         idService={proyecto.pryId}
         perfiles={data.tarifarios}
       />
