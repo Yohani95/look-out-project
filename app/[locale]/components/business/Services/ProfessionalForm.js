@@ -36,13 +36,15 @@ import ProyectoParticipante from "@/app/api/models/proyecto/ProyectoParticipante
 import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
 import SelectField from "../../common/SelectField";
 import PeriodosCreate from "./periodos/PeriodosCreate";
+import PeriodosProyecto from "@/app/api/models/proyecto/PeriodosProyecto";
 function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
   const [data, setData] = useState([]);
   const [perfilOptions, setPerfilOptions] = useState([]);
-  const [periodo, setPeriodo] = useState();
+  const [periodo, setPeriodo] = useState("");
+  const [periodoModel, setPeriodoModel] = useState(new PeriodosProyecto());
   const [professionals, setProfessionalsOptions] = useState([]);
   const router = useRouter();
   const apiurl = {
@@ -63,7 +65,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
       key: "actions",
       render: (item) => (
         <>
-          <Button size="sm" variant="link">
+          <Button size="sm" variant="link" disabled={compararFechasPeriodo()}>
             {item.status == true ? (
               <>
                 <FaToggleOff
@@ -130,6 +132,12 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
         }));
         setTablaCommon([...nuevosElementosTabla]);
         setData([...nuevosElementosTabla]);
+        if (periodo === "") {
+          const periodosTotal = calculatePeriods();
+          setPeriodo(periodosTotal[0]?.value);
+        } else {
+          setPeriodo(periodo);
+        }
       });
     } catch (error) {
       setError(true);
@@ -246,21 +254,55 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     return periods;
   };
   const handle = (selectedOption) => {
-    if (selectedOption === "") {
+    console.log(selectedOption)
+    if (selectedOption == ""|| selectedOption==null) {
       setTablaCommon(data); // Establecer la data completa
       return;
     }
     const [startDateStr, endDateStr] = selectedOption.split(" - ");
     const startDate = new Date(startDateStr);
     const endDate = new Date(endDateStr);
-    console.log(data);
     const filteredData = data.filter((item) => {
       const fechaAsignacion = new Date(item.data.fechaAsignacion);
       return fechaAsignacion >= startDate && fechaAsignacion <= endDate;
     });
 
+    const numeroParticipantes = filteredData.length;
+    // Actualizar el objeto periodoModel con los nuevos datos
+    const updatedPeriodoModel = new PeriodosProyecto({
+      pryId: idService, // Establecer el ID del proyecto
+      fechaPeriodoDesde: startDate, // Establecer la fecha desde
+      fechaPeriodoHasta: endDate, // Establecer la fecha hasta
+      estado: 0, // Estado en 0
+      monto: 0, // Monto en 0
+      numeroProfesionales: numeroParticipantes, // Establecer el número de profesionales
+    });
+    setPeriodoModel(updatedPeriodoModel);
     setTablaCommon(filteredData);
   };
+  useEffect(() => {
+    handle(periodo); // Llamar a handle cuando periodo cambie
+  }, [periodo]);
+  const compararFechasPeriodo = () => {
+    if (!periodo || periodo==="") {
+      return true; // Si periodo es null o undefined, devuelve false
+    }
+
+    const [_, endDateStr] = periodo.split(" - "); // Suponiendo que el formato es 'startDate - endDate'
+    const endDate = new Date(endDateStr);
+    const fechaActual = new Date(); // Obtener la fecha actual
+
+    return endDate < fechaActual; // Devuelve true si endDate es mayor que la fecha actual, de lo contrario, false
+  };
+  function isButtonDisabled() {
+    if (tablaCommon.length === 0) {
+      return true;
+    }
+    if (!periodo) {
+      return true; // Si periodo es null o undefined, devuelve false
+    }
+    //return compararFechasPeriodo(); // Si ninguna condición se cumple, el botón se deja habilitado
+  }
   return (
     <>
       <BoxInfo title={t.Common.professionals} startShow={true}>
@@ -271,10 +313,9 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
             preOption={t.Account.select}
             labelClassName="col-sm-1 col-form-label"
             divClassName="col-sm-2"
-            onChange={(e) => {
-              handle(e.target.value);
-              setPeriodo(e.target.value); // Actualizar el estado del periodo seleccionado
-            }}
+            onChange={
+              (e) => setPeriodo(e.target.value) // Actualizar el estado del periodo seleccionado
+            }
             selectedValue={periodo}
           />
         </div>
@@ -292,7 +333,11 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
             formik={formik}
           />
           <div className="d-flex justify-content-end mb-3">
-            <button type="submit" className="text-end  btn btn-primary">
+            <button
+              type="submit"
+              className="text-end  btn btn-primary"
+              disabled={compararFechasPeriodo()}
+            >
               {t.Common.add}{" "}
             </button>
           </div>
@@ -314,7 +359,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
             search={t.Account.table.search}
           />
         )}
-        <PeriodosCreate t={t} periodo={periodo}/>
+        <PeriodosCreate t={t} periodo={periodoModel} isButtonDisabled={isButtonDisabled} idService={idService}/>
       </BoxInfo>
     </>
   );

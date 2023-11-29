@@ -7,7 +7,9 @@ import { tarifarioApiUrl } from "@/app/api/apiConfig";
 import { EditAction, tagAction } from "../../../admin/professionals/ProfessionalsActions";
 import TarifarioSearch from "@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioSearch";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { useRouter } from "next/navigation";
 function TarifarioCreate({ t, data, idService }) {
+  const router=useRouter()
   const apiurl = {
     edit: "",
     create: tarifarioApiUrl,
@@ -21,6 +23,7 @@ function TarifarioCreate({ t, data, idService }) {
         values.prpId = idService;
         await handleFormSubmit(values, t, null, false, null, apiurl, 0);
         tagAction("tarifas")
+        router.refresh()
       } catch (error) {
         console.error("Error in handleFormSubmit:", error);
       } finally {

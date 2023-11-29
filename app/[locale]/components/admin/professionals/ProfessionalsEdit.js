@@ -37,6 +37,7 @@ function ProfessionalsEdit({ persona, data, locale }) {
           apiurl,
           persona.id,
         );
+        router.refresh()
       } catch (error) {
         console.error("Error al manejar el formulario:", error);
       } finally {
