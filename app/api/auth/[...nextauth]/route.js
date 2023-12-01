@@ -56,6 +56,7 @@ export const authOptions = {
   ],
   session: {
     strategy: "jwt",
+    maxAge: 5 * 60
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
@@ -83,7 +84,13 @@ export const authOptions = {
         token.persona=user.persona
       }
       return token
-    }
+    },
+    async signOut({ url, baseUrl }) {
+      // Redireccionar a la URL correspondiente según el entorno
+      const isProduction = process.env.NODE_ENV === 'production';
+      const logoutRoute = isProduction ? 'https://kpazserv0011.azurewebsites.net/' : 'https://localhost:3000/';
+      return logoutRoute;
+    },
     // ...
   },
 };

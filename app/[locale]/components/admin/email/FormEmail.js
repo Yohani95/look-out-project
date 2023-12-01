@@ -7,7 +7,7 @@ import {
   handleInputChange,
   handleFormSubmit,
   fetchemailType,
-  fetchemailById,
+  fetchemailByIdPersona,
 } from "@/app/[locale]/utils/email/UtilsEmail";
 function FormEmail({ locale, isEdit, isCreate, idEmail }) {
   const router = useRouter();
@@ -44,7 +44,7 @@ function FormEmail({ locale, isEdit, isCreate, idEmail }) {
 
   if (idEmail!= null && !isNaN(idEmail)) {
     useEffect(() => {
-      fetchemailById(idEmail,t,setFormData,router.push);
+      fetchemailByIdPersona(idEmail,t,setFormData,router.push);
     }, [idEmail]);
   }
 
