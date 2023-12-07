@@ -5,15 +5,20 @@ import ErroData from "@/app/[locale]/components/common/ErroData";
 import TableCommon from "@/app/[locale]/components/common/TableCommon";
 import Novedad from "@/app/api/models/proyecto/Novedad";
 import { fetchData,handleDelete } from "@/app/[locale]/utils/Form/UtilsForm";
-import { novedadApiUrl } from "@/app/api/apiConfig";
+import { novedadApiUrl,novedadWithEntetiesApiUrl } from "@/app/api/apiConfig";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { Button } from "react-bootstrap";
-function ListNovelty({ locale, idPersona }) {
+import { relative } from "path";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
+import { RefreshList } from "@/app/api/models/common/ActionsCommon";
+function ListNovelty({ locale, idPersona,idProyecto ,listaNovedades}) {
   //========DECLARACION DE VARIABLES ===============
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([new Novedad()]);
   const t = require(`@/messages/${locale}.json`);
+  const router = useRouter();
   const columns = [
     { title: "ID", key: "id" },
     { title: t.user.idPerson, key: "idPersona" },
@@ -29,10 +34,10 @@ function ListNovelty({ locale, idPersona }) {
       render: (item) => (
         <>
           <Button size="sm" variant="link">
-            <FaEdit size={16} onClick={()=>{}} />
+            <FaEdit size={16} onClick={()=>{router.push(`/service/editNovelty/${idProyecto}/${idPersona}/${item.id}`)}} />
           </Button>
           <Button size="sm" variant="link">
-            <FaTrash size={16} className="" onClick={()=>{handleDelete(item.id,t,fillData,`${novedadApiUrl}`)}} />
+            <FaTrash size={16} className="" onClick={()=>{handleDelete(item.id,t,RefreshList,`${novedadApiUrl}`)}} />
           </Button>
         </>
       ),
@@ -42,20 +47,12 @@ function ListNovelty({ locale, idPersona }) {
 
   //=======SECCION DE USSEFFECT===============
   const fillData=()=>{
-    fetchData(`${novedadApiUrl}`)
-    .then((novedad) => {
-      const filter = novedad.filter((item) => item.idPersona == idPersona);
-      setData(filter);
-      setLoading(false);
-    })
-    .catch(() => {
-      setError(true);
-      setLoading(false);
-    });
+      setData(listaNovedades);
   }
   useEffect(() => {
   fillData();
-  }, []);
+  setLoading(false);
+  }, [listaNovedades]);
   //=======FIN SECCION DE USSEFFECT===============
 
   if (isLoading) return <LoadingData loadingMessage={t.Common.loadingData} />;

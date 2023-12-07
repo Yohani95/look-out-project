@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import { useFormik } from 'formik';
-import TableMaterialUI from '../../../common/TablaMaterialUi';
+import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import { Button } from 'react-bootstrap';
 import { FaLockOpen } from 'react-icons/fa';
 import { periodoApiUrl, periodoGetByIdProyectoApiUrl } from '@/app/api/apiConfig';
@@ -20,7 +20,6 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log(periodo)
         // Utiliza una variable para almacenar la función handleFormSubmit
         await handleFormSubmit(periodo, t, null, false, null, apiurl);
         await fetchPeriodo();
@@ -50,8 +49,8 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
             </Tooltip> */}
           </Button>
         ),
+        estado: new PeriodosProyecto(periodo).getEstados(t)
       }));
-      console.log(data)
       setPeriodos(dataWithActions);
     } catch (error) {
       console.error('Error al obtener periodos:', error);
@@ -83,7 +82,7 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
       }}>
         <div className="d-flex justify-content-end mb-3">
           <button type="submit" className="text-end  btn btn-primary" disabled={isButtonDisabled()}>
-            Pre-cierre
+            {t.Common.preclosed}
           </button>
         </div>
       </form>

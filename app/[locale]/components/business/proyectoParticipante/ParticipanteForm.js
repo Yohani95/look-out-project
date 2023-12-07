@@ -56,6 +56,7 @@ const ParticipanteForm = ({
               setFormData({ ...formData, fechaTermino: date })
             }
             title={t.Common.date}
+            shouldBeRequired={false}
           />
         </div>
       </div>

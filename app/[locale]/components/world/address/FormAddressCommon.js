@@ -61,8 +61,6 @@ function FormAddressCommon({
             const address = new Address(item);
             return address; // Devolver el objeto creado
           });
-
-          console.log(newAddress)
           setFormData((prevData) => ({
             ...prevData,
             direcciones: newAddress, // Agregar los objetos  al arreglo
@@ -132,7 +130,7 @@ function FormAddressCommon({
       dirCalle: formDataAddress.dirCalle,
       dirNumero: formDataAddress.dirNumero,
       comId: typeLabelComuna,
-      dirBlock: formDataAddress.dirBlock,
+      dirBlock: formDataAddress.dirBlock || " ",
       tdiId: typeLabelType,
     };
     formDataAddress.perId=idPersona;

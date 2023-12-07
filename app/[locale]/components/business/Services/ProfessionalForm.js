@@ -254,7 +254,6 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     return periods;
   };
   const handle = (selectedOption) => {
-    console.log(selectedOption)
     if (selectedOption == ""|| selectedOption==null) {
       setTablaCommon(data); // Establecer la data completa
       return;
@@ -264,17 +263,31 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     const endDate = new Date(endDateStr);
     const filteredData = data.filter((item) => {
       const fechaAsignacion = new Date(item.data.fechaAsignacion);
-      return fechaAsignacion >= startDate && fechaAsignacion <= endDate;
+      const fechaTermino = item.data.fechaTermino;
+  
+      if (fechaTermino === 'N/A' || fechaTermino === null) {
+        // Si Fecha Término es 'N/A' o nula, verificar Fecha Asignación en el rango
+        return fechaAsignacion <= endDate;
+      }
+  
+      const fechaTerminoDate = new Date(fechaTermino);
+  
+      if (fechaAsignacion <= endDate && fechaTerminoDate >= startDate) {
+        return true; // El rango de fechas se superpone, incluir elemento
+      }
+  
+      return false;
     });
 
     const numeroParticipantes = filteredData.length;
+    const totalTarifa = filteredData.reduce((total, item) => total + item.perTarifa, 0);
     // Actualizar el objeto periodoModel con los nuevos datos
     const updatedPeriodoModel = new PeriodosProyecto({
       pryId: idService, // Establecer el ID del proyecto
       fechaPeriodoDesde: startDate, // Establecer la fecha desde
       fechaPeriodoHasta: endDate, // Establecer la fecha hasta
       estado: 0, // Estado en 0
-      monto: 0, // Monto en 0
+      monto: totalTarifa, // Monto en 0
       numeroProfesionales: numeroParticipantes, // Establecer el número de profesionales
     });
     setPeriodoModel(updatedPeriodoModel);

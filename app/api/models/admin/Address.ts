@@ -13,7 +13,7 @@ class Address
         // Inicializar propiedades con valores predeterminados o del objeto 'data' si está presente
         this.dirCalle = data?.dirCalle || null;
         this.dirNumero = data?.dirNumero || null;
-        this.dirBlock = data?.dirBlock || 0;
+        this.dirBlock = data?.dirBlock || "N/A";
         this.dirId = data?.dirId || 0;
         this.perId = data?.perId || null;
         this.cliId = data?.cliId || null;

@@ -233,7 +233,6 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
           const filteredData = cliPer.find(
             (p) => p.cliId == idClient && p.perId == idPerson
           );
-          console.log(filteredData)
           setFormData((prevData) => ({
             ...prevData,
             clientePersona: filteredData,

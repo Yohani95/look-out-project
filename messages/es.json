@@ -1,5 +1,7 @@
 {
   "Common": {
+    "closed":"Cerrado",
+    "preclosed":"Pre-Cierre",
     "actions": "Acciones",
     "yes":"Sí",
     "no":"No",
@@ -271,7 +273,8 @@
     "services": {
       "addKickOff": "Registrar Kick Off de Servicio",
       "addService": "Registrar Novedades de Servicio",
-      "createNovelty": "Crear Novedad"
+      "createNovelty": "Crear Novedad",
+      "editNovelty": "Editar Novedad"
     },
     "facture": {
       "billing": "Facturación",

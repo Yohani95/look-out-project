@@ -20,9 +20,9 @@ class Email {
       this.emaId = 0;
       this.cliId = null;
       this.perId = null;
-      this.temId = null;
-      this.emaPrincipal = null;
-      this.emaVigente = null;
+      this.temId = 1;
+      this.emaPrincipal = 1;
+      this.emaVigente = "1";
     }
   }
 }

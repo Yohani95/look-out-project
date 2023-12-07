@@ -40,7 +40,6 @@ export const handleFormSubmit = async (
       headers: apiHeaders,
       body: JSON.stringify(formData),
     });
-    console.log(response)
     if (response.ok) {
       handleSuccessNotification(translations, push, redirectLink);
     } else if (response.status === 409) {

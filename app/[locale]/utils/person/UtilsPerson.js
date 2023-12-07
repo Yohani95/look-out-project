@@ -15,6 +15,7 @@ import NotificationSweet from "@/app/[locale]/components/common/NotificationSwee
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import axios from "axios";
+import { Constantes } from "@/app/api/models/common/Constantes";
 export const handleInputChange =
   (formData, setFormData) => (event) => {
     
@@ -48,7 +49,8 @@ export const handleFormSubmit =
   async (event) => {
     event.preventDefault();
     try {
-      console.log(formData);
+      const constante=new Constantes();
+      formData.persona.tpeId=constante.TipoPersona.PERSONA_CONTACTO;
       const url = isEditMode
         ? `${personContactEditApiUrl}/${formData.persona.id}`
         : `${personContactCreateApiUrl}`;
@@ -91,7 +93,6 @@ export const handleFormSubmit =
             : "/contact/create",
         });
       } else {
-        console.log(response);
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,

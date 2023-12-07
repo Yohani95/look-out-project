@@ -58,6 +58,11 @@ class PeriodosProyecto {
         size: 150,
       },
       {
+        accessorKey: "monto",
+        header: `${t.Common.amount}`,
+        size: 150,
+      },
+      {
         accessorKey: "estado",
         header: t.Common.status,
         size: 50,
@@ -68,6 +73,10 @@ class PeriodosProyecto {
         size: 100,
       },
     ];
+  }
+   getEstados(t): string {
+    console.log(this.estado)
+    return this.estado? t.Common.closed:t.Common.preclosed;
   }
   getPeriodoCompleto(): string {
     return `${this.fechaPeriodoDesde.toLocaleDateString()} - ${this.fechaPeriodoHasta.toLocaleDateString()}`;
