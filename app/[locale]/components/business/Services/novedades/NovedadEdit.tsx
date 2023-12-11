@@ -15,7 +15,7 @@ function NovedadEdit({ t, novedad, params }) {
     const [noveltyTypeOptions, setNoveltyTypeOptions] = useState([]);
     const [perfilOptions, setPerfilOptions] = useState([]);
     const [data, setData] = useState([]);
-    const idProyecto=params.idProject;
+    const idProyecto = params.idProject;
     const apiUrls = {
         edit: `${novedadApiUrl}`,
         create: "",
@@ -31,7 +31,7 @@ function NovedadEdit({ t, novedad, params }) {
                 // Utiliza una variable para almacenar la función handleFormSubmit
                 values.idPersona = params.idPersona;
                 values.idProyecto = idProyecto;
-                await handleFormSubmit(values, t, null, true, null, apiUrls,params.id);
+                await handleFormSubmit(values, t, null, true, null, apiUrls, params.id);
             } catch (error) {
                 console.error("Error in handleFormSubmit:", error);
             } finally {
@@ -41,7 +41,6 @@ function NovedadEdit({ t, novedad, params }) {
             }
         },
     });
-
     useEffect(() => {
         fetchGetbyId(params.idPersona).then((data) => {
             // if (data.status && data.status === 404) {
