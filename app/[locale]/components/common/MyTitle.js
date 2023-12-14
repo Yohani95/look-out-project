@@ -10,7 +10,7 @@ function MyTitle({title}) {
       <Breadcrumb.Item active>&nbsp;/&nbsp;{title}</Breadcrumb.Item>
     </Breadcrumb>
     <div style={{ marginLeft: 'auto' }}>
-      <h6 style={{ margin: '0' }}>Version Version 1.0.0 06-12-2023</h6>
+      <h6 style={{ margin: '0' }}>Version Version 1.0.0 13-12-2023</h6>
     </div>
   </div>
   );
