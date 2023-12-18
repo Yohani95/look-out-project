@@ -1,5 +1,6 @@
 {
   "Common": {
+    "billingType":"¿Facturación día hábil?",
     "closed":"Cerrado",
     "preclosed":"Pre-Cierre",
     "actions": "Acciones",

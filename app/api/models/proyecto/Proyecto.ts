@@ -25,7 +25,7 @@ class Proyecto {
   tipoServicio: TipoServicio | null;
   pais: Pais | null;
   contacto: Persona| null;
-  
+  facturacionDiaHabil: number| null;
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || "";
@@ -40,6 +40,7 @@ class Proyecto {
     this.paisId = data?.paisId || 0;
     this.fechaCorte=data?.fechaCorte || 1 ;
     this.months=data?.months || 1 ;
+    this.facturacionDiaHabil=data?.facturacionDiaHabil ||0;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;
