@@ -214,8 +214,6 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
           (tarifario) => tarifario.tcId == values.tarifarioId
         )?.tcPerfilAsignadoId;
         values.pryId = idService;
-        console.log(values)
-        return;
         await handleFormSubmit(values, t, null, false, null, apiurl);
         fetchData();
       } catch (error) {
