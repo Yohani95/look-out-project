@@ -109,6 +109,7 @@ export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/
 export const participanteGetByIdProyectoApiUrl=`${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`
 //periodo proyecto 
 export const periodoApiUrl=`${apiBaseUrl}/PeriodoProyecto`
+export const periodoCreateApiUrl=`${apiBaseUrl}/PeriodoProyecto/createAsync`
 export const periodoGetByIdProyectoApiUrl=`${apiBaseUrl}/PeriodoProyecto/GetByIdProyecto`
 //Novedades
 export const novedadApiUrl=`${apiBaseUrl}/novedades`

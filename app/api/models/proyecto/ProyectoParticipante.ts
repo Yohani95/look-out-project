@@ -10,7 +10,7 @@ class ProyectoParticipante {
   fechaAsignacion: Date | null;
   fechaTermino: Date | null;
   estado: number | null;
-
+  tarifarioId: number | null;
   constructor(
     ppaId: number| null,
     pryId: number| null,
@@ -20,7 +20,8 @@ class ProyectoParticipante {
     prfId: number | null,
     fechaAsignacion: Date | null,
     fechaTermino: Date | null,
-    estado: number | null
+    estado: number | null,
+    tarifarioId: number | null
   ) {
     this.ppaId = ppaId;
     this.pryId = pryId;
@@ -31,6 +32,7 @@ class ProyectoParticipante {
     this.fechaAsignacion = fechaAsignacion;
     this.fechaTermino = fechaTermino;
     this.estado = estado|| 1;
+    this.tarifarioId=tarifarioId;
   }
 
   static validationRules = (t: any) =>
