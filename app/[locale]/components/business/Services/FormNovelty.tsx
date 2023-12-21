@@ -7,7 +7,7 @@ import NotificationSweet from "@/app/[locale]/components/common/NotificationSwee
 import LoadingData from "@/app/[locale]/components/common/LoadingData";
 import { fetchGetbyId } from "@/app/[locale]/utils/person/UtilsPerson";
 import { useRouter } from "next/navigation";
-import { novedadApiUrl } from "@/app/api/apiConfig";
+import { novedadApiUrl,novedadCreateAsyncApiUrl } from "@/app/api/apiConfig";
 import Persona from "@/app/api/models/admin/Persona";
 import { fetchByIdProyecto } from "@/app/[locale]/utils/business/tarifario/UtilsTarifario";
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
@@ -26,7 +26,7 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
   const router = useRouter();
   const [data, setData] = useState([]);
   const apiUrls = {
-    create: novedadApiUrl,
+    create: novedadCreateAsyncApiUrl,
     edit: novedadApiUrl,
   };
   //========FIN DECLARACION DE VARIABLES ===============

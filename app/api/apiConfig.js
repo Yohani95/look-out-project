@@ -114,6 +114,7 @@ export const periodoGetByIdProyectoApiUrl=`${apiBaseUrl}/PeriodoProyecto/GetById
 //Novedades
 export const novedadApiUrl=`${apiBaseUrl}/novedades`
 export const novedadWithEntetiesApiUrl=`${apiBaseUrl}/novedades/NovedadesWithEntities`
+export const novedadCreateAsyncApiUrl=`${apiBaseUrl}/novedades/CreateAsync`
 // Tipo de novedades
 export const tipoNovedadApiUrl=`${apiBaseUrl}/tipoNovedades`
 //perfil
