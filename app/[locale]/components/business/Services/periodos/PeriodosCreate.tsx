@@ -5,14 +5,14 @@ import { useFormik } from 'formik';
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import { Button } from 'react-bootstrap';
 import { FaLockOpen } from 'react-icons/fa';
-import { periodoApiUrl, periodoGetByIdProyectoApiUrl } from '@/app/api/apiConfig';
+import { periodoCreateApiUrl, periodoGetByIdProyectoApiUrl } from '@/app/api/apiConfig';
 import { handleFormSubmit, fetchData } from '@/app/[locale]/utils/Form/UtilsForm';
 function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
   const validationSchema = PeriodosProyecto.getValidationSchema(t);
   const [periodos, setPeriodos] = useState([]);
   const apiurl = {
     edit: "",
-    create: periodoApiUrl,
+    create: periodoCreateApiUrl,
   };
   const formik = useFormik({
     initialValues: periodo,

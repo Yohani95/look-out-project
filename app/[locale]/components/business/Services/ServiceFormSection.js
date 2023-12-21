@@ -84,6 +84,21 @@ function ServiceFormSection({
       pryFechaCierreEstimada: endDate,
     });
   };
+  
+  const handleCheckboxChange = () => {
+    const newValue = proyectoModel.facturacionDiaHabil === 1 ? 0 : 1;
+
+    const newProyectoModel = {
+      ...proyectoModel,
+      facturacionDiaHabil: newValue,
+    };
+
+    setProyecto(newProyectoModel);
+  };
+  useEffect(() => {
+ console.log(proyectoModel.facturacionDiaHabil)
+  }, [proyectoModel])
+  
   return (
     <>
       <div className="mb-3 row align-items-center">
@@ -214,15 +229,15 @@ function ServiceFormSection({
             </button>
             {formData.file1 && (
               <>
-                  <Button
+                <Button
                   className=""
-                    variant="link"
-                    href={formData.file1 && URL.createObjectURL(formData.file1)}
-                    download={formData.file1 && formData.file1.name}
-                  >
-                    <span>{t.Common.downloadFile}</span>
-                    <FaFileDownload size={18} className="link" beat />
-                  </Button>
+                  variant="link"
+                  href={formData.file1 && URL.createObjectURL(formData.file1)}
+                  download={formData.file1 && formData.file1.name}
+                >
+                  <span>{t.Common.downloadFile}</span>
+                  <FaFileDownload size={18} className="link" beat />
+                </Button>
               </>
             )}
           </div>
@@ -259,15 +274,15 @@ function ServiceFormSection({
             </button>
             {formData.file2 && (
               <>
-                  <Button
+                <Button
                   className=""
-                    variant="link"
-                    href={formData.file2 && URL.createObjectURL(formData.file2)}
-                    download={formData.file2 && formData.file2.name}
-                  >
-                    <span>{t.Common.downloadFile}</span>
-                    <FaFileDownload size={18} className="link" beat />
-                  </Button>
+                  variant="link"
+                  href={formData.file2 && URL.createObjectURL(formData.file2)}
+                  download={formData.file2 && formData.file2.name}
+                >
+                  <span>{t.Common.downloadFile}</span>
+                  <FaFileDownload size={18} className="link" beat />
+                </Button>
               </>
             )}
           </div>
@@ -332,6 +347,19 @@ function ServiceFormSection({
           onChange={(e) => handleSelectChange(e, "fechaCorte", setProyecto)}
           selectedValue={proyectoModel.fechaCorte}
         />
+         <label  className="form-check-label col-sm-2" htmlFor="exampleCheck1">
+          {t.Common.billingType}
+        </label>
+        <div className="col-sm-1 form-check">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="facturacionDiaHabil"
+            name="facturacionDiaHabil"
+            checked={proyectoModel.facturacionDiaHabil === 1}
+            onChange={handleCheckboxChange}
+          />
+        </div>
       </div>
     </>
   );

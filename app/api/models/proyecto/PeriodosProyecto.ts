@@ -75,7 +75,6 @@ class PeriodosProyecto {
     ];
   }
    getEstados(t): string {
-    console.log(this.estado)
     return this.estado? t.Common.closed:t.Common.preclosed;
   }
   getPeriodoCompleto(): string {

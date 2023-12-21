@@ -1,14 +1,14 @@
 import React from "react";
-import TarifarioConvenido from "@/app/api/models/proyecto/TarifarioConvenido"
-import {Constantes} from "@/app/api/models/common/Constantes"
+import TarifarioConvenido from "@/app/api/models/proyecto/TarifarioConvenido";
+import { Constantes } from "@/app/api/models/common/Constantes";
 import SelectField from "@/app/[locale]/components/common/SelectField";
 import {
   handleSelectChange,
   handleInputChange,
 } from "@/app/[locale]/utils/Form/UtilsForm";
-function TarifarioForm({t,tarifario,data,setFormData}) {
-  const formData=new TarifarioConvenido(tarifario)
-  const opcionesTiempo =Constantes.generarOpcionesDeTiempo(t)
+function TarifarioForm({ t, tarifario, data, setFormData }) {
+  const formData = new TarifarioConvenido(tarifario);
+  const opcionesTiempo = Constantes.generarOpcionesDeTiempo(t);
   return (
     <>
       <div className="mb-3 row align-items-center ">
@@ -18,7 +18,9 @@ function TarifarioForm({t,tarifario,data,setFormData}) {
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "tcPerfilAsignado",setFormData)}
+          onChange={(e) =>
+            handleSelectChange(e, "tcPerfilAsignado", setFormData)
+          }
           selectedValue={formData.tcPerfilAsignado}
         />
         <label htmlFor="tcTarifa" className="col-sm-1 col-form-label">
@@ -26,31 +28,41 @@ function TarifarioForm({t,tarifario,data,setFormData}) {
         </label>
         <div className="col-sm-2">
           <input
-            type="number"
+            type="text" // Cambiado a tipo "text" para permitir decimales
             className="form-control"
             name="tcTarifa"
             id="tcTarifa"
             value={formData.tcTarifa}
-            min={1}
-            onChange={handleInputChange(formData, setFormData)}
+            onChange={(e) => {
+              const inputValue = e.target.value;
+              // Validar que el valor ingresado sea un número decimal
+              if (/^\d*\.?\d*$/.test(inputValue)) {
+                // Actualizar el estado con el nuevo valor si es válido
+                setFormData({
+                  ...formData,
+                  tcTarifa: inputValue,
+                });
+              }
+            }}
           />
         </div>
+
         <SelectField
           label={t.Ficha.type}
           options={data.monedas}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "tcMoneda",setFormData)}
+          onChange={(e) => handleSelectChange(e, "tcMoneda", setFormData)}
           selectedValue={formData.tcMoneda}
         />
-           <SelectField
+        <SelectField
           label={t.Common.base}
           options={opcionesTiempo}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "tcBase",setFormData)}
+          onChange={(e) => handleSelectChange(e, "tcBase", setFormData)}
           selectedValue={formData.tcBase}
         />
       </div>

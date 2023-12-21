@@ -161,7 +161,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
   }, []);
   useEffect(() => {
     const options = perfiles.map((item) => ({
-      value: item.tcPerfilAsignadoId,
+      value: item.tcId,
       label: item.tcPerfilAsignado,
     }));
     setPerfilOptions(options);
@@ -206,9 +206,13 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
+        console.log(perfiles)
         values.perTarifa = perfiles.find(
-          (tarifario) => tarifario.tcPerfilAsignadoId == values.prfId
+          (tarifario) => tarifario.tcId == values.tarifarioId
         )?.tcTarifa;
+        values.prfId = perfiles.find(
+          (tarifario) => tarifario.tcId == values.tarifarioId
+        )?.tcPerfilAsignadoId;
         values.pryId = idService;
         await handleFormSubmit(values, t, null, false, null, apiurl);
         fetchData();

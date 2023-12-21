@@ -31,8 +31,8 @@ const ParticipanteForm = ({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "prfId",setFormData)}
-          selectedValue={formData.prfId}
+          onChange={(e) => handleSelectChange(e, "tarifarioId",setFormData)}
+          selectedValue={formData.tarifarioId}
         />
         <label htmlFor="fechaAsignacion" className="col-sm-1 col-form-label">
           {t.Common.dateAssignment}
