@@ -3,12 +3,12 @@ import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDia
 import {
   perfilApiUrl
 } from "@/app/api/apiConfig";
-
 export const handleFormSubmit =
   (formData, translations, push, isEditMode = false) =>
   async (event) => {
     event.preventDefault();
     try {
+      formData.id=formData.id!=null ? formData.id:0;
       const url = isEditMode
         ? `${perfilApiUrl}/${formData.id}`
         : `${perfilApiUrl}`;
@@ -49,14 +49,13 @@ export const handleFormSubmit =
       } else {
         console.log(response);
         NotificationSweet({
-          title: translations.notification.warning.title,
-          text: translations.client.clientNameExist,
-          type: translations.notification.warning.type,
+          title: translations.notification.error.title,
+          text: translations.notification.error.text,
+          type: translations.notification.error.type,
           push: push,
-          link: isEditMode
-            ? `/admin/perfil/edit/${formData.id}`
-            : "/admin/perfil/create",
+          link: "/admin/perfil/search",
         });
+        console.error("Error sending data:", error);
       }
     } catch (error) {
       NotificationSweet({
