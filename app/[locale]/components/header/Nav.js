@@ -8,12 +8,13 @@ import CommonDropDown from "@/app/[locale]/components/common/CommonDropDown";
 import { useSession, signOut } from "next-auth/react";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaUser, FaCog } from "react-icons/fa";
+import { red } from "@mui/material/colors";
 const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
   let translations;
   translations = require(`@/messages/${locale}.json`);
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/" });
+    await signOut({ redirect: false,callbackUrl: '/' }); // Redirigir a la página de inicio
   };
   return (
     <>

@@ -61,6 +61,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
      signIn: "/",
+     signOut: "/",
   },
   callbacks: {
     async session({ session, token, user }) {
@@ -85,12 +86,12 @@ export const authOptions = {
       }
       return token
     },
-    async signOut({ url, baseUrl }) {
-      // Redireccionar a la URL correspondiente según el entorno
-      const isProduction = process.env.NODE_ENV === 'production';
-      const logoutRoute = isProduction ? 'https://kpazserv0011.azurewebsites.net/' : 'https://localhost:3000/';
-      return logoutRoute;
-    },
+    // async signOut({ url, baseUrl }) {
+    //   // Redireccionar a la URL correspondiente según el entorno
+    //   const isProduction = process.env.NODE_ENV === 'production';
+    //   const logoutRoute = isProduction ? 'https://kpazserv0011.azurewebsites.net/' : 'https://localhost:3001/';
+    //   return logoutRoute;
+    // },
     // ...
   },
 };
