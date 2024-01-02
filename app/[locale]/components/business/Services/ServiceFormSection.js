@@ -7,7 +7,7 @@ import SelectField from "../../common/SelectField";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import { useSession } from "next-auth/react";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { addMonths } from "date-fns";
+import { addMonths, set } from "date-fns";
 import { Button } from "react-bootstrap";
 import { FaFileDownload } from "react-icons/fa";
 function ServiceFormSection({
@@ -84,7 +84,7 @@ function ServiceFormSection({
       pryFechaCierreEstimada: endDate,
     });
   };
-  
+
   const handleCheckboxChange = () => {
     const newValue = proyectoModel.facturacionDiaHabil === 1 ? 0 : 1;
 
@@ -95,10 +95,7 @@ function ServiceFormSection({
 
     setProyecto(newProyectoModel);
   };
-  useEffect(() => {
- console.log(proyectoModel.facturacionDiaHabil)
-  }, [proyectoModel])
-  
+
   return (
     <>
       <div className="mb-3 row align-items-center">
@@ -347,7 +344,16 @@ function ServiceFormSection({
           onChange={(e) => handleSelectChange(e, "fechaCorte", setProyecto)}
           selectedValue={proyectoModel.fechaCorte}
         />
-         <label  className="form-check-label col-sm-2" htmlFor="exampleCheck1">
+        <SelectField
+          label={`${t.Ficha.type} ${t.Common.currency}`}
+          options={data.monedas}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "monId", setProyecto)}
+          selectedValue={proyectoModel.monId}
+        />
+        <label className="form-check-label col-sm-2" htmlFor="exampleCheck1">
           {t.Common.billingType}
         </label>
         <div className="col-sm-1 form-check">

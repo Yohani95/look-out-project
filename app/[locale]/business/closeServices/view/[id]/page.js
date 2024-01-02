@@ -23,7 +23,6 @@ async function page({ params }) {
     }
   ).then(async (result) => {
     result = await result.json();
-    console.log(result.data)
     const tarifas = result.data?.map((item) => ({
       tcId: item.tcId,
       tcMoneda: item.moneda.monNombre,

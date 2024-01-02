@@ -33,7 +33,7 @@ class Proyecto {
     this.epyId = data?.epyId || null;
     this.tseId = data?.tseId || 0;
     this.pryValor = data?.pryValor || 0;
-    this.monId = data?.monId || null;
+    this.monId = data?.monId || 2;
     this.pryIdCliente = data?.pryIdCliente || 0;
     this.pryIdContacto = data?.pryIdContacto || 0;
     this.kamId = data?.kamId || null;

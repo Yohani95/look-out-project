@@ -225,38 +225,61 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     },
   });
   const calculatePeriods = () => {
-    let startDate = new Date(proyecto.pryFechaInicioEstimada);
-    let endDate = new Date(proyecto.pryFechaCierreEstimada);
-    let cutoffDate = parseInt(proyecto.fechaCorte, 10);
+    const startDate = new Date(proyecto.pryFechaInicioEstimada);
+    const endDate = new Date(proyecto.pryFechaCierreEstimada);
+    const cutoffDate = parseInt(proyecto.fechaCorte, 10);
+    
     const periods = [];
-    let periodNumber = 1;
-    while (startDate < endDate) {
-      const periodEndDate = new Date(
-        startDate.getFullYear(),
-        startDate.getMonth() + 1,
-        cutoffDate
-      );
-
-      if (periodEndDate > endDate) {
-        periodEndDate.setDate(endDate.getDate()); // Ajustar el último período si excede la fecha de cierre
+    let currentDate = new Date(startDate);
+    
+    while (currentDate <= endDate) {
+      let year = currentDate.getFullYear();
+      let month = currentDate.getMonth();
+      let daysInMonth = new Date(year, month + 1, 0).getDate(); // Obtener el número de días en el mes
+      
+      // Determinar el día límite según el mes y año actual
+      let periodEndDate;
+      if (cutoffDate > daysInMonth) {
+        // Si el día de corte excede los días del mes, usar el último día del mes
+        periodEndDate = new Date(year, month, daysInMonth);
+      } else {
+        // Si el día de corte es válido para el mes, usarlo
+        periodEndDate = new Date(year, month, cutoffDate);
       }
-
-      const formattedStartDate = startDate.toLocaleDateString();
+  
+      // Si la fecha de corte es antes de la fecha de inicio, ajustar al próximo mes
+      if (periodEndDate < currentDate) {
+        month++;
+        if (month > 11) {
+          month = 0;
+          year++;
+        }
+        daysInMonth = new Date(year, month + 1, 0).getDate();
+        periodEndDate = new Date(year, month, Math.min(cutoffDate, daysInMonth));
+      }
+  
+      // Si la fecha de corte excede la fecha de cierre, ajustar al día de cierre
+      if (periodEndDate > endDate) {
+        periodEndDate = new Date(endDate);
+      }
+      
+      const formattedStartDate = currentDate.toLocaleDateString();
       const formattedEndDate = periodEndDate.toLocaleDateString();
-
+      
       periods.push({
-        key: `${periodNumber}`,
-        label: `${formattedStartDate} al ${formattedEndDate}`,
-        value: `${startDate.toISOString()} - ${periodEndDate.toISOString()}`,
+        key: `${periods.length + 1}`,
+        label: `${formattedStartDate} - ${formattedEndDate}`,
+        value: `${currentDate.toISOString()} - ${periodEndDate.toISOString()}`,
       });
-
-      startDate = new Date(periodEndDate);
-      startDate.setDate(startDate.getDate() + 1); // Establecer el inicio del siguiente periodo
-      periodNumber++;
+      
+      // Establecer el día después del final del período actual como base para el próximo periodo
+      currentDate = new Date(periodEndDate.getFullYear(), periodEndDate.getMonth(), periodEndDate.getDate() + 1);
     }
-
     return periods;
   };
+  
+  
+  
   const handle = (selectedOption) => {
     if (selectedOption == ""|| selectedOption==null) {
       setTablaCommon(data); // Establecer la data completa
