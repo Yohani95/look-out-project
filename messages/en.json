@@ -1,13 +1,20 @@
 {
   "Common": {
+    "billingType": "Business Day Billing?",
+    "closed": "Closed",
+    "preclosed": "Pre-Closure",
+    "actions": "Actions",
+    "yes": "Yes",
+    "no": "No",
     "KPAZ": "KPAZ",
+    "close": "Close",
     "welcomeMessage": "Welcome to my software application!",
     "saveButton": "Save",
     "updateButton": "Update",
     "hello": "Hello",
     "logout": "Logout",
     "aboutTitle": "About Us",
-    "aboutDescription": "This is the about page.",
+    "aboutDescription": "This is the about us page.",
     "home": "Home",
     "contact": "Contact",
     "submit": "Submit",
@@ -26,7 +33,11 @@
     "products": "Products",
     "orders": "Orders",
     "customers": "Customers",
+    "client": "Client",
+    "proposal": "Proposal",
+    "accepted": "Accepted",
     "account": "Account",
+    "accounts": "Accounts",
     "notifications": "Notifications",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
@@ -61,14 +72,15 @@
     "errorOccurred": "An error occurred. Please try again later.",
     "noResultsFound": "No results found.",
     "goBack": "Go Back",
-    "languageEnglish": "English",
     "languageSpanish": "Spanish",
+    "languageEnglish": "English",
     "languagePortuguese": "Portuguese",
     "changeLanguage": "Change Language",
     "selectTheme": "Select Theme",
-    "chooseOption": "Choose an option",
-    "invalidEmail": "Invalid email address.",
+    "chooseOption": "Choose an Option",
+    "invalidEmail": "Invalid email.",
     "requiredField": "This field is required.",
+    "requiredFieldEmail": "Email fields are required.",
     "passwordMismatch": "Passwords do not match.",
     "minCharacters": "Minimum {count} characters.",
     "maxCharacters": "Maximum {count} characters.",
@@ -84,16 +96,66 @@
     "downloadFile": "Download File",
     "welcomeUser": "Welcome, {{name}}!",
     "orderTotal": "Total: {{amount}}",
-    "influencer":"Influencer",
-    "other":"Other",
-    "decisor":"Decisor",
-    "create" :"Create"
+    "influencer": "Influencer",
+    "other": "Other",
+    "decisor": "Decision Maker",
+    "create": "Create",
+    "request": "Request",
+    "include": "Include",
+    "price": "Price",
+    "saveDraf": "Save Draft",
+    "fee": "Fee",
+    "base": "Base",
+    "currency": "Currency",
+    "status": "Status",
+    "area": "Area",
+    "project": "Projects",
+    "boss": "Boss",
+    "up": "Up",
+    "date": "Date",
+    "milestone": "Milestone",
+    "reassign": "Reassign",
+    "unassign": "Unassign",
+    "services": "Services",
+    "service": "Service",
+    "coordinator": "Coordinator",
+    "name": "Name",
+    "rut": "RUT",
+    "period": "Period",
+    "amount": "Amount",
+    "professionals": "Professionals",
+    "observations": "Observations",
+    "from": "From",
+    "until": "Until",
+    "expiration": "Expiration",
+    "attach": "Attach",
+    "userName": "Username",
+    "loadingData": "Loading Data...",
+    "notExist": "Record does not exist",
+    "noData": "No data available in the database.",
+    "InvalidCredentials": "Invalid credentials",
+    "giro": "Business Activity",
+    "lastName": "Last Name",
+    "secondName": "Middle Name",
+    "lastNames": "Last Names",
+    "phones": "Phones",
+    "emailExist": "Email already exists.",
+    "perfil": "Profile",
+    "correlative": "Correlative",
+    "FieldsAreRequired": "Fields are required.",
+    "phoneExist": "Phone already exists.",
+    "commune": "District",
+    "number": "Number",
+    "blockAddress": "Block (optional)",
+    "birthDay": "Date of Birth",
+    "dateAssignment": "Assignment Date",
+    "noDocument": "No documents"
   },
   "Index": {
-    "title": "Hello world!"
+    "title": "HELLO!"
   },
   "Ficha": {
-    "title": "Account",
+    "title": "Account Profile",
     "name": "Account Name",
     "country": "Country",
     "select": "Select",
@@ -111,7 +173,7 @@
     "place": "Sector",
     "address": "Address",
     "KAM": "KAM",
-    "web": "Web",
+    "web": "Website",
     "type": "Type",
     "button": {
       "delete": "Delete",
@@ -127,7 +189,7 @@
         "title": "Businesses",
         "name": "Business Name",
         "type": "Type",
-        "dateEnd": "Business Closing Date"
+        "dateEnd": "Commercial Closing Date"
       },
       "contacts": {
         "title": "Contacts",
@@ -137,12 +199,14 @@
     }
   },
   "Account": {
-    "saveButton":"Save",
-    "new":"New",
-    "findAccount":"Search Account",
-    "account":"Account",
-    "action":"Actions",
+    "saveButton": "Save",
+    "findAccount": "Find Account",
+    "find": "Find",
+    "new": "New",
+    "account": "Account",
+    "action": "Actions",
     "title": "Create Account",
+    "edit": "Edit Account",
     "name": "Account Name",
     "country": "Country",
     "select": "Select",
@@ -160,7 +224,7 @@
     "place": "Sector",
     "address": "Address",
     "KAM": "KAM",
-    "web": "Web",
+    "web": "Website",
     "type": "Type",
     "button": {
       "delete": "Delete",
@@ -176,7 +240,7 @@
         "title": "Contacts",
         "name": "Contact Name",
         "rol": "Role",
-        "owner":"Owner"
+        "owner": "Owner"
       }
     }
   },
@@ -184,24 +248,186 @@
     "portuguese": "Portuguese",
     "spanish": "Spanish",
     "english": "English",
-    "title" :"Language"
+    "title": "Language"
   },
   "Nav": {
     "account": {
       "title": "Account",
-      "file": "account file",
+      "file": "Account Profile",
       "create": "Create Account",
-      "accountRelationship":"Account Relationship"
+      "accountRelationship": "Account Relationships"
     },
     "contacts": {
       "title": "Contacts",
       "create": "Create Contacts",
-      "file": "Contact file"
+      "file": "Contact Profile"
     },
     "business": {
-      "insertProject": "insert business closing (project)",
-      "insertSuport": "insert business closing (support)",
-      "insertServices": "insert business closing (services)"
+      "insertProject": "Enter Business Closure (Project)",
+      "insertSupport": "Enter Business Closure (Support)",
+      "insertServices": "Enter Business Closure (Services)"
+    },
+    "projects": {
+      "addProject": "Record Project Follow-up",
+      "addKickOff": "Record Project Kick Off"
+    },
+    "services": {
+      "addKickOff": "Record Service Kick Off",
+      "addService": "Record Service News",
+      "createNovelty": "Create Novelty",
+      "editNovelty": "Edit Novelty"
+    },
+    "facture": {
+      "billing": "Billing",
+      "requestBilling": "Request Billing",
+      "bills": "Invoices"
+    },
+    "administration": {
+      "title": "Administration",
+      "user": "System Users",
+      "userList": "Users",
+      "createUser": "Create System User",
+      "editUser": "Edit System User"
+    },
+    "phone": {},
+    "email": {}
+  },
+  "business": {
+    "title": "Business",
+    "estimatedStartDate": "Estimated Start Date",
+    "estimatedTerm": "Estimated Term",
+    "estimatedClosingDate": "Estimated Closing Date",
+    "saleprice": "Sale Price",
+    "milestoneName": "Milestone Name",
+    "milestoneTerm": "Milestone Term",
+    "milestonePrice": "Milestone Price",
+    "estimatedClosingDateReal": "Actual Closing Date",
+    "milestoneFacture": "Milestone Invoicing",
+    "generalComments": "General Comments",
+    "milestoneStatus": "Milestone Status",
+    "milestoneAmount": "Milestone Amount",
+    "saveClosing": "Save Business Closure",
+    "agreedRate": "Agreed Rate",
+    "assignedProfile": "Assigned Profile",
+    "beginningValidity": "Validity Start",
+    "termValidity": "Validity Term",
+    "historyContractedSupports": "History of Contracted Supports",
+    "typeSupport": "Support Type"
+  },
+  "project": {
+    "projectList": "Project List",
+    "dateStart": "Start Date",
+    "dateEnd": "End Date",
+    "datecut": "Cut-off Date",
+    "businessClosing": "Business Closure",
+    "estimatedTerm": "Estimated Term",
+    "ClosingDate": "Closing Date",
+    "agreedClosingDate": "Agreed Closing Date",
+    "agreedTerm": "Agreed Term",
+    "progressMilestone": "Milestone Progress",
+    "newMilestone": "New Milestone",
+    "closeProject": "Close Project",
+    "kickOffProject": "Project Kick Off"
+  },
+  "service": {
+    "docKickOff": "Doc. Kick Off",
+    "assignedProfile": "Assigned Profile",
+    "assignedProfessionals": "Assigned Professionals",
+    "assignmentDate": "Assignment Date",
+    "closedPeriods": "Closed Periods",
+    "preClosingPeriods": "Pre-Closure Periods",
+    "noveltyByProfessional": "Novelty by Professional",
+    "noveltyType": "Novelty Type",
+    "noveltyDate": "Novelty Date",
+    "newRol": "New Profile",
+    "dateTo": "Date To",
+    "dateFrom": "Date From",
+    "historyNovelty": "Novelty History"
+  },
+  "facture": {
+    "billingDetails": "Billing Details",
+    "project": "Project",
+    "businessName": "Business Name",
+    "purchaseOrder": "Purchase Order",
+    "requestedInvoices": "Requested Invoices",
+    "reception": "Reception /HES",
+    "applicationDate": "Application Date"
+  },
+  "user": {
+    "createUser": "Create User",
+    "editUser": "Edit User",
+    "idPerson": "Person ID",
+    "idProfile": "Profile ID",
+    "active": "Active",
+    "userName": "Username",
+    "userNameExist": "Username already exists in the database."
+  },
+  "notification": {
+    "create": {
+      "title": "Creating",
+      "text": "Please wait...",
+      "type": "info"
+    },
+    "success": {
+      "title": "Success!",
+      "text": "Action performed successfully.",
+      "type": "success"
+    },
+    "error": {
+      "title": "Error!",
+      "text": "An error occurred while performing the action.",
+      "type": "error"
+    },
+    "Deleted": {
+      "title": "Deleted",
+      "text": "has been successfully deleted.",
+      "type": "success"
+    },
+    "warning": {
+      "title": "Warning",
+      "text": "Problem while creating.",
+      "type": "warning"
+    },
+    "edit": {
+      "title": "Information",
+      "text": "Are you sure you want to edit?",
+      "type": "info",
+      "buttonOk": "Yes, Edit",
+      "buttonCancel": "Cancel"
+    },
+    "deleting": {
+      "title": "Are you sure to delete?",
+      "text": "Once deleted, you can't recover the data.",
+      "type": "info",
+      "buttonOk": "Yes, Delete",
+      "buttonCancel": "Cancel"
+    },
+    "loading": {
+      "title": "Please wait...",
+      "text": "",
+      "type": "info"
+    },
+    "files": {
+      "title": "Information",
+      "text": "Are you sure to download?",
+      "type": "info",
+      "buttonOk": "Yes, Download File",
+      "buttonCancel": "Cancel"
     }
+  },
+  "time": {
+    "month": "Month",
+    "week": "Week",
+    "hour": "Hour"
+  },
+  "ValidationMessages": {
+    "required": "This field is required.",
+    "maxLength": "The entered value exceeds the maximum allowed length."
+  },
+  "Export": {
+    "exportAllRows": "Export all rows (PDF)",
+    "exportPageRows": "Export only Page (PDF)"
   }
 }
+
+   
