@@ -1,14 +1,21 @@
 {
   "Common": {
+    "billingType": "Faturamento em dia útil?",
+    "closed": "Fechado",
+    "preclosed": "Pré-Fechado",
+    "actions": "Ações",
+    "yes": "Sim",
+    "no": "Não",
     "KPAZ": "KPAZ",
+    "close": "Fechar",
     "welcomeMessage": "Bem-vindo à minha aplicação de software!",
     "saveButton": "Salvar",
     "updateButton": "Atualizar",
     "hello": "Olá",
     "logout": "Sair",
     "aboutTitle": "Sobre nós",
-    "aboutDescription": "Esta é a página sobre nós.",
-    "home": "Início",
+    "aboutDescription": "Esta é a nossa página sobre nós.",
+    "home": "Página inicial",
     "contact": "Contato",
     "submit": "Enviar",
     "cancel": "Cancelar",
@@ -26,7 +33,11 @@
     "products": "Produtos",
     "orders": "Pedidos",
     "customers": "Clientes",
+    "client": "Cliente",
+    "proposal": "Proposta",
+    "accepted": "Aceito",
     "account": "Conta",
+    "accounts": "Contas",
     "notifications": "Notificações",
     "privacyPolicy": "Política de privacidade",
     "termsOfService": "Termos de serviço",
@@ -34,14 +45,14 @@
     "faq": "Perguntas frequentes",
     "help": "Ajuda",
     "signIn": "Entrar",
-    "signUp": "Cadastrar-se",
-    "forgotPassword": "Esqueci minha senha",
+    "signUp": "Registrar",
+    "forgotPassword": "Esqueci a senha",
     "resetPassword": "Redefinir senha",
     "welcomeBack": "Bem-vindo de volta!",
     "alreadyHaveAccount": "Já tem uma conta?",
-    "createNewAccount": "Criar uma nova conta",
+    "createNewAccount": "Criar nova conta",
     "confirmPassword": "Confirmar senha",
-    "email": "Email",
+    "email": "E-mail",
     "password": "Senha",
     "fullName": "Nome completo",
     "address": "Endereço",
@@ -61,19 +72,20 @@
     "errorOccurred": "Ocorreu um erro. Por favor, tente novamente mais tarde.",
     "noResultsFound": "Nenhum resultado encontrado.",
     "goBack": "Voltar",
-    "languagePortuguese": "Português",
     "languageSpanish": "Espanhol",
     "languageEnglish": "Inglês",
+    "languagePortuguese": "Português",
     "changeLanguage": "Alterar idioma",
     "selectTheme": "Selecionar tema",
     "chooseOption": "Escolher uma opção",
-    "invalidEmail": "Email inválido.",
+    "invalidEmail": "E-mail inválido.",
     "requiredField": "Este campo é obrigatório.",
+    "requiredFieldEmail": "Os campos do e-mail são obrigatórios.",
     "passwordMismatch": "As senhas não coincidem.",
     "minCharacters": "Mínimo de {count} caracteres.",
     "maxCharacters": "Máximo de {count} caracteres.",
     "invalidPhoneNumber": "Número de telefone inválido.",
-    "invalidPostalCode": "CEP inválido.",
+    "invalidPostalCode": "Código postal inválido.",
     "invalidURL": "URL inválida.",
     "invalidCreditCard": "Número de cartão de crédito inválido.",
     "invalidDate": "Formato de data inválido.",
@@ -84,13 +96,66 @@
     "downloadFile": "Baixar arquivo",
     "welcomeUser": "Bem-vindo, {{name}}!",
     "orderTotal": "Total: {{amount}}",
-    "influencer":"Influenciador",
-    "other":"Outro",
-    "decisor":"Decisor",
-    "create" :"Create"
+    "influencer": "Influenciador",
+    "other": "Outro",
+    "decisor": "Decisor",
+    "create": "Criar",
+    "request": "Solicitar",
+    "include": "Incluir",
+    "price": "Preço",
+    "saveDraf": "Salvar Rascunho",
+    "fee": "Taxa",
+    "base": "Base",
+    "currency": "Moeda",
+    "status": "Status",
+    "area": "Área",
+    "project": "Projetos",
+    "boss": "Chefe",
+    "up": "Subir",
+    "date": "Data",
+    "milestone": "Marco",
+    "reassign": "Reatribuir",
+    "unassign": "Desatribuir",
+    "services": "Serviços",
+    "service": "Serviço",
+    "coordinator": "Coordenador",
+    "name": "Nome",
+    "rut": "RUT",
+    "period": "Período",
+    "amount": "Quantia",
+    "professionals": "Profissionais",
+    "observations": "Observações",
+    "from": "De",
+    "until": "Até",
+    "expiration": "Vencimento",
+    "attach": "Anexar",
+    "userName": "Nome de Usuário",
+    "loadingData": "Carregando Dados...",
+    "notExist": "o registro não existe",
+    "noData": "Não há dados disponíveis no banco de dados.",
+    "InvalidCredentials": "Credenciais inválidas",
+    "giro": "Giro",
+    "lastName": "Sobrenome",
+    "secondName": "Segundo nome",
+    "lastNames": "Sobrenomes",
+    "phones": "telefones",
+    "emailExist": "O e-mail já existe.",
+    "perfil": "Perfil",
+    "correlative": "Correlativo",
+    "FieldsAreRequired": "Os campos são obrigatórios.",
+    "phoneExist": "O telefone já existe.",
+    "commune": "Comuna",
+    "number": "Número",
+    "blockAddress": "Bloco (opcional)",
+    "birthDay": "Data de Nascimento",
+    "dateAssignment": "Data de Atribuição",
+    "noDocument": "Sem documentos"
+  },
+  "Index": {
+    "title": "HELLO!"
   },
   "Ficha": {
-    "title": "Conta",
+    "title": "Ficha de Conta",
     "name": "Nome da Conta",
     "country": "País",
     "select": "Selecionar",
@@ -100,15 +165,15 @@
     "city": "Cidade",
     "contact_name": "Nome do contato",
     "contacts": "Contato",
-    "position": "Cargo",
+    "position": "Posição",
     "Email": "E-mail",
-    "owner": "Proprietário",
+    "owner": "proprietário",
     "main_account": "Conta Principal",
     "nif": "NIF",
     "place": "Setor",
     "address": "Endereço",
     "KAM": "KAM",
-    "web": "Site",
+    "web": "Web",
     "type": "Tipo",
     "button": {
       "delete": "Excluir",
@@ -124,22 +189,24 @@
         "title": "Negócios",
         "name": "Nome do negócio",
         "type": "Tipo",
-        "dateEnd": "Data de encerramento do negócio"
+        "dateEnd": "Data de encerramento comercial"
       },
       "contacts": {
         "title": "Contatos",
         "name": "Nome do contato",
-        "rol": "Função"
+        "rol": "função"
       }
     }
   },
   "Account": {
-    "saveButton":"Salvar",
-    "new":"Nova",
-    "account":"Conta",
-    "findAccount":"Encontrar Conta",
-    "action":"ações",
-    "title": "Criar uma nova conta",
+    "saveButton": "Salvar",
+    "findAccount": "Buscar Conta",
+    "find": "buscar",
+    "new": "Novo",
+    "account": "Conta",
+    "action": "Ações",
+    "title": "Criar Conta",
+    "edit": "Editar Conta",
     "name": "Nome da Conta",
     "country": "País",
     "select": "Selecionar",
@@ -149,15 +216,15 @@
     "city": "Cidade",
     "contact_name": "Nome do contato",
     "contacts": "Contato",
-    "position": "Cargo",
+    "position": "Posição",
     "Email": "E-mail",
-    "owner": "Proprietário",
+    "owner": "proprietário",
     "main_account": "Conta Principal",
     "nif": "NIF",
     "place": "Setor",
     "address": "Endereço",
     "KAM": "KAM",
-    "web": "Site",
+    "web": "Web",
     "type": "Tipo",
     "button": {
       "delete": "Excluir",
@@ -172,8 +239,8 @@
       "contacts": {
         "title": "Contatos",
         "name": "Nome do contato",
-        "rol": "Função",
-        "owner": "Proprietário"
+        "rol": "função",
+        "owner": "proprietário"
       }
     }
   },
@@ -181,24 +248,184 @@
     "portuguese": "Português",
     "spanish": "Espanhol",
     "english": "Inglês",
-    "title":"linguagem"
+    "title": "Idioma"
   },
   "Nav": {
     "account": {
       "title": "Conta",
-      "file": "Arquivo de conta",
+      "file": "Ficha de conta",
       "create": "Criar conta",
-      "accountRelationship":"Relacionamentos de conta"
+      "accountRelationship": "Relações de Contas"
     },
     "contacts": {
       "title": "Contatos",
       "create": "Criar contatos",
-      "file": "Arquivo de contato"
+      "file": "Ficha de contato"
     },
     "business": {
-      "insertProject": "Inserir fechamento de negócios (projeto)",
-      "insertSuport": "Inserir fechamento de negócios (suporte)",
-      "insertServices": "Inserir fechamento de negócios (serviços)"
+      "insertProject": "Inserir encerramento de negócio (projeto)",
+      "insertSupport": "Inserir encerramento de negócio (suporte)",
+      "insertServices": "Inserir encerramento de negócio (serviços)"
+    },
+    "projects": {
+      "addProject": "Registrar acompanhamento do projeto",
+      "addKickOff": "Registrar Kick Off do projeto"
+    },
+    "services": {
+      "addKickOff": "Registrar Kick Off do serviço",
+      "addService": "Registrar Novidades do serviço",
+      "createNovelty": "Criar Novidade",
+      "editNovelty": "Editar Novidade"
+    },
+    "facture": {
+      "billing": "Faturamento",
+      "requestBilling": "Solicitar Faturamento",
+      "bills": "Faturas"
+    },
+    "administration": {
+      "title": "Administração",
+      "user": "Usuários do Sistema",
+      "userList": "Usuários",
+      "createUser": "Criar Usuário do Sistema",
+      "editUser": "Editar Usuário do Sistema"
+    },
+    "phone": {},
+    "email": {}
+  },
+  "business": {
+    "title": "Negócio",
+    "estimatedStartDate": "Data de início estimada",
+    "estimatedTerm": "Prazo Estimado",
+    "estimatedClosingDate": "Data de Fechamento Estimada",
+    "saleprice": "Preço de Venda",
+    "milestoneName": "Nome do Marco",
+    "milestoneTerm": "Prazo do Marco",
+    "milestonePrice": "Preço do Marco",
+    "estimatedClosingDateReal": "Data de Fechamento Real",
+    "milestoneFacture": "Faturamento do Marco",
+    "generalComments": "Comentários Gerais",
+    "milestoneStatus": "Status do Marco",
+    "milestoneAmount": "Quantia do Marco",
+    "saveClosing": "Salvar Fechamento de Negócio",
+    "agreedRate": "Taxa Acordada",
+    "assignedProfile": "Perfil Atribuído",
+    "beginningValidity": "Início da Validade",
+    "termValidity": "Término da Validade",
+    "historyContractedSupports": "Histórico de Suportes Contratados",
+    "typeSupport": "Tipo de Suporte"
+  },
+  "project": {
+    "projectList": "Lista de Projetos",
+    "dateStart": "Data de Início",
+    "dateEnd": "Data de Término",
+    "datecut": "Data de Corte",
+    "businessClosing": "Encerramento Comercial",
+    "estimatedTerm": "Prazo Estimado",
+    "ClosingDate": "Data de Fechamento",
+    "agreedClosingDate": "Data de Fechamento Acordada",
+    "agreedTerm": "Prazo Acordado",
+    "progressMilestone": "Avanço do Marco",
+    "newMilestone": "Novo Marco",
+    "closeProject": "Fechar Projeto",
+    "kickOffProject": "Kick Off do Projeto"
+  },  "service": {
+    "docKickOff": "Doc. Início",
+    "assignedProfile": "Perfil atribuído",
+    "assignedProfessionals": "Profissionais atribuídos",
+    "assignmentDate": "Data de atribuição",
+    "closedPeriods": "Períodos fechados",
+    "preClosingPeriods": "Períodos de pré-fechamento",
+    "noveltyByProfessional": "Novidade por Profissional",
+    "noveltyType": "Tipo de novidade",
+    "noveltyDate": "Data da novidade",
+    "newRol": "Novo papel",
+    "dateTo": "Data até",
+    "dateFrom": "Data de",
+    "historyNovelty": "Histórico de Novidades"
+  },
+  "facture": {
+    "billingDetails": "Detalhes da faturação",
+    "project": "Projeto",
+    "businessName": "Nome do Negócio",
+    "purchaseOrder": "Ordem de Compra",
+    "requestedInvoices": "Faturas Solicitadas",
+    "reception": "Recepção / HES",
+    "applicationDate": "Data da aplicação"
+  },
+  "user": {
+    "createUser": "Criar Usuário",
+    "editUser": "Editar Usuário",
+    "idPerson": "ID Pessoa",
+    "idProfile": "ID Perfil",
+    "active": "ativo",
+    "userName": "Nome de Usuário",
+    "userNameExist": "O nome de usuário já existe no banco de dados."
+  },
+  "notification": {
+    "create": {
+      "title": "Criando",
+      "text": "Por favor, aguarde...",
+      "type": "info"
+    },
+    "success": {
+      "title": "Sucesso!",
+      "text": "Ação realizada com sucesso.",
+      "type": "success"
+    },
+    "error": {
+      "title": "Erro!",
+      "text": "Ocorreu um erro ao realizar a ação.",
+      "type": "error"
+    },
+    "Deleted": {
+      "title": "Excluído",
+      "text": "foi excluído com sucesso.",
+      "type": "success"
+    },
+    "warning": {
+      "title": "Alerta",
+      "text": "Problema ao realizar a criação.",
+      "type": "warning"
+    },
+    "edit": {
+      "title": "Informação",
+      "text": "Tem certeza de que deseja editar?",
+      "type": "info",
+      "buttonOk": "Sim, Editar",
+      "buttonCancel": "Cancelar"
+    },
+    "deleting": {
+      "title": "Tem certeza de que deseja excluir?",
+      "text": "Uma vez excluído, você não poderá recuperar os dados",
+      "type": "info",
+      "buttonOk": "Sim, Excluir",
+      "buttonCancel": "Cancelar"
+    },
+    "loading": {
+      "title": "Por favor, aguarde...",
+      "text": "",
+      "type": "info"
+    },
+    "files": {
+      "title": "Informação",
+      "text": "Tem certeza de que deseja baixar?",
+      "type": "info",
+      "buttonOk": "Sim, Baixar arquivo",
+      "buttonCancel": "Cancelar"
     }
+  },
+  "time": {
+    "month": "Mês",
+    "week": "Semana",
+    "hour": "Hora"
+  },
+  "ValidationMessages": {
+    "required": "Este campo é obrigatório.",
+    "maxLength": "O valor inserido excede o comprimento máximo permitido."
+  },
+  "Export": {
+    "exportAllRows": "Exportar todas as linhas (PDF)",
+    "exportPageRows": "Exportar apenas Página (PDF)"
   }
 }
+
