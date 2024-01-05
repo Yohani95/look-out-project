@@ -6,7 +6,7 @@ import {
   handleSelectChange,
   handleInputChange,
 } from "@/app/[locale]/utils/Form/UtilsForm";
-function TarifarioForm({ t, tarifario, data, setFormData }) {
+function TarifarioForm({ t, tarifario, data, setFormData,idMoneda }) {
   const formData = new TarifarioConvenido(tarifario);
   const opcionesTiempo = Constantes.generarOpcionesDeTiempo(t);
   return (
@@ -46,16 +46,12 @@ function TarifarioForm({ t, tarifario, data, setFormData }) {
             }}
           />
         </div>
-
-        <SelectField
-          label={t.Ficha.type}
-          options={data.monedas}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "tcMoneda", setFormData)}
-          selectedValue={formData.tcMoneda}
-        />
+        <label htmlFor="tcMoneda" className="col-sm-1 col-form-label">
+          {t.Common.currency}
+        </label>
+        <div className="col-sm-2">
+            <span disabled className="form-control">{data.monedas.find((moneda) => moneda.value ==idMoneda)?.label}</span>
+        </div>
         <SelectField
           label={t.Common.base}
           options={opcionesTiempo}
