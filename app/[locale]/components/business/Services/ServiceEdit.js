@@ -140,7 +140,7 @@ function ServiceEdit({ t, proyecto, data, files }) {
       </form>
       <hr />
       <BoxInfo title={t.business.agreedRate} startShow={false}>
-        <TarifarioCreate t={t} data={data} idService={proyecto.pryId} />
+        <TarifarioCreate t={t} data={data} idService={proyecto.pryId} proyecto={formikProyecto.values}/>
       </BoxInfo>
     </>
   );

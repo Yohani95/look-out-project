@@ -8,7 +8,7 @@ import { EditAction, tagAction } from "../../../admin/professionals/Professional
 import TarifarioSearch from "@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioSearch";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { useRouter } from "next/navigation";
-function TarifarioCreate({ t, data, idService }) {
+function TarifarioCreate({ t, data, idService,proyecto }) {
   const router=useRouter()
   const apiurl = {
     edit: "",
@@ -21,6 +21,7 @@ function TarifarioCreate({ t, data, idService }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         values.prpId = idService;
+        values.tcMoneda = proyecto.monId;
         await handleFormSubmit(values, t, null, false, null, apiurl, 0);
         tagAction("tarifas")
         router.refresh()
@@ -44,6 +45,7 @@ function TarifarioCreate({ t, data, idService }) {
           data={data}
           tarifario={formik.values}
           setFormData={formik.setValues}
+          idMoneda={proyecto.monId}
         />
         <div className="d-flex justify-content-end mb-3">
           <button type="submit" className="btn btn-primary m-2">
