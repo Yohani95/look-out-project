@@ -17,7 +17,7 @@ function page() {
         <div className="card col-lg-10 shadow">
         <div className="container card-cody mt-3 mb-3">
             <div className="d-flex justify-content-end container mb-3">
-              <Link href={"/admin/phone/create"}>
+              <Link href={"/contact/address/create"}>
                 <button type="button" className=" btn btn-primary ">
                   + {t("Account.add")} {t("Common.address")}
                 </button>

@@ -42,29 +42,23 @@ function ListEmail({locale}) {
     try {
       setIsLoading(true);
       const response = await fetchemail();
-      console.log(response)
       const modifiedData = await response.map((item) => ({
         ...item,
-        perId:
-          item.per.perNombres + " " + item.per.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
-          cliId:
-          item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo
-          temId: item.tem.temNombre,
-          emaVigente: item.emaVigente ? <FaCheck style={{ color: 'green' }} /> : <FaTimes style={{ color: 'red' }} />
+        perId: item.per?.perNombres + " " + item.per?.perApellidoPaterno || "N/A",
+        cliId: item.cli?.cliNombre || "N/A",
+        temId: item.tem?.temNombre,
+        emaVigente: item.emaVigente ? <FaCheck style={{ color: 'green' }} /> : <FaTimes style={{ color: 'red' }} />
       }));
-      console.log(modifiedData)
-      setData(response);
-      console.log("test")
+      setData(modifiedData);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching phone data:", error);
       setError(true);
       setIsLoading(false);
     }
-  };
+  };  
   useEffect(() => {
     fetchList();
-    console.log(data.length)
   }, []);
   return (
     <>

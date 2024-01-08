@@ -8,7 +8,9 @@ export class Constantes {
   TipoNovedad = {
     VACACIONES: 1,
     LICENCIA_MEDICA: 2,
+    TERMINO_SERVICIO: 3,
     CAMBIO_PERFIL: 4,
+    PERMISO: 5,
   };
   static TipoPersona = {
     PERSONA_ADMIN: 1,

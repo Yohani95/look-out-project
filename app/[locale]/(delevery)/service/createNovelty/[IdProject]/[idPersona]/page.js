@@ -10,13 +10,15 @@ async function page({ params }) {
   const listaNovedades=await fetchData(`${novedadWithEntetiesApiUrl}`)
   .then((novedad) => {
     const filter = novedad.filter((item) => item.idPersona == params.idPersona);
+    
     const updatedData = filter.map((item) => ({
       ...item,
       idTipoNovedad: item.tipoNovedades.nombre,
-      fechaHasta: item.fechaHasta? new Date(item.fechaHasta).toLocaleDateString(): 'N/A',
-      fechaInicio:new Date(item.fechaInicio).toLocaleDateString()|| 'N/A',
+      fechaHasta: item.fechaHasta? new Date(item.fechaHasta).toLocaleDateString("es-CL"): 'N/A',
+      fechaInicio:new Date(item.fechaInicio).toLocaleDateString("es-CL")|| 'N/A',
       IdPerfil: item.perfil?  item.perfil.nombre: 'N/A'
     }));
+    console.log(updatedData)
     return updatedData;
   });
   return (

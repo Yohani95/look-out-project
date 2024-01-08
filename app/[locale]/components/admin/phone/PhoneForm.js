@@ -9,6 +9,8 @@ import {
   fetchPhoneById
 } from "@/app/[locale]/utils/phone/UtilsPhone";
 import { fetchPersonByContact } from "@/app/[locale]/utils/person/UtilsPerson";
+import { fetchAllContacts} from "@/app/[locale]/utils/person/PersonActions";
+import Persona from "@/app/api/models/admin/Persona";
 function FormPhone({ locale, isEdit, isCreate, idPhone }) {
   const router = useRouter();
   const [phoneOptions, setPhoneOptions] = useState([]);
@@ -39,11 +41,11 @@ function FormPhone({ locale, isEdit, isCreate, idPhone }) {
     });
   }, []);
   useEffect(() => {
-    fetchPersonByContact().then((data) => {
-      const options = data.map((person) => ({
-        value: person.id,
-        label: person.perNombres + " " + person.perApellidoPaterno,
-      }));
+    fetchAllContacts().then((result) => { 
+      const options = result.map((item) => {
+        const personaInstance = new Persona(item);
+        return personaInstance.getSelectOptions();
+      });
       setpersonOptions(options);
     });
   }, []);

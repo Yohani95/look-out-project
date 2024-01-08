@@ -10,6 +10,8 @@ import {
     fetchaddressById,
   } from "@/app/[locale]/utils/address/UtilsAddress";
   import {fetchComuna} from "@/app/[locale]/utils/comuna/utilsComuna" 
+  import { fetchAllContacts} from "@/app/[locale]/utils/person/PersonActions";
+  import Persona from "@/app/api/models/admin/Persona";
 function AddressForm({ locale, isEdit, isCreate, idAddress }) {
   const router = useRouter();
   const [addressOptions, setAddressOptions] = useState([]);
@@ -27,7 +29,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
   const t = require(`@/messages/${locale}.json`);
   useEffect(() => {
     fetchComuna().then((data) => {
-      const options = data.data.map((item) => ({
+      const options = data.map((item) => ({
         value: item.comId,
         label: item.comNombre,
       }));
@@ -36,7 +38,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
   }, []);
   useEffect(() => {
     fetchaddressType().then((data) => {
-      const options = data.data.map((item) => ({
+      const options = data.map((item) => ({
         value: item.temId,
         label: item.temNombre,
       }));
@@ -44,11 +46,11 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
     });
   }, []);
   useEffect(() => {
-    fetchPersonByContact().then((data) => {
-      const options = data.map((person) => ({
-        value: person.id,
-        label: person.perNombres + " " + person.perApellidoPaterno,
-      }));
+    fetchAllContacts().then((result) => { 
+      const options = result.map((item) => {
+        const personaInstance = new Persona(item);
+        return personaInstance.getSelectOptions();
+      });
       setpersonOptions(options);
     });
   }, []);
@@ -83,7 +85,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
         )}{" "}
         <div className="mb-3 row align-items-center">
           <label htmlFor="dirCalle" className="col-sm-2 col-form-label">
-            {t.Account.phone}
+            {t.Common.address}
           </label>
           <div className="col-sm-4">
             <input
