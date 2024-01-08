@@ -9,6 +9,7 @@ import {
   fetchemailType,
   fetchemailByIdPersona,
 } from "@/app/[locale]/utils/email/UtilsEmail";
+import Persona from "@/app/api/models/admin/Persona";
 function FormEmail({ locale, isEdit, isCreate, idEmail }) {
   const router = useRouter();
   const [emailOptions, setEmailOptions] = useState([]);
@@ -33,14 +34,16 @@ function FormEmail({ locale, isEdit, isCreate, idEmail }) {
     });
   }, []);
   useEffect(() => {
-    fetchPersonByContact().then((data) => {
-      const options = data.map((person) => ({
-        value: person.id,
-        label: person.perNombres + " " + person.perApellidoPaterno,
-      }));
+    fetchPersonByContact().then((result) => {
+      console.log(result)
+      const options = result.data.map((item) => {
+        const personaInstance = new Persona(item.persona); // Suponiendo que 'persona' es el objeto con los datos de la persona
+        return personaInstance.getSelectOptions();
+      });
       setpersonOptions(options);
     });
   }, []);
+  
 
   if (idEmail!= null && !isNaN(idEmail)) {
     useEffect(() => {
