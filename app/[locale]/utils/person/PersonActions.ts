@@ -17,6 +17,19 @@ export const fetchAllProfessionals = async () => {
     return [];
   }
 };
+export const fetchAllContacts = async () => {
+  try {
+    const response = await fetch(
+      `${personTipoPersonaApiUrl}/${Constantes.TipoPersona.PERSONA_CONTACTO}`,
+      { cache: "no-cache" ,next:{tags:["profesionales"]}}
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
 export const submitProfessional =async ()=>{
   try {
     revalidateTag("profesionales")
