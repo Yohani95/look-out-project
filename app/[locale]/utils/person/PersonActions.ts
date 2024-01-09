@@ -21,7 +21,7 @@ export const fetchAllContacts = async () => {
   try {
     const response = await fetch(
       `${personTipoPersonaApiUrl}/${Constantes.TipoPersona.PERSONA_CONTACTO}`,
-      { cache: "no-cache" ,next:{tags:["profesionales"]}}
+      { cache: "no-cache" ,next:{tags:["contactos"]}}
     );
     const data = await response.json();
     return data;

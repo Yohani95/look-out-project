@@ -178,6 +178,33 @@ export const fetchemailByIdPersona = async (Id, t, push) => {
     // });
   }
 };
+export const fetchemailById = async (Id, t, push,setData) => {
+  try {
+    const response = await fetch(`${emailApiUrl}/${Id}`);
+  
+    if (response.ok) {
+      const result = await response.json();
+      setData(result)
+    } else if (response.status == 404) {
+      NotificationSweet({
+        title: t.notification.warning.title,
+        text: t.notification.warning.text,
+        type: t.notification.warning.type,
+        push: push,
+        link: "/admin/email/search",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    // NotificationSweet({
+    //   title: t.notification.warning.title,
+    //   text: t.notification.warning.text,
+    //   type: t.notification.warning.type,
+    //   push: push,
+    //   link: "/admin/email/search",
+    // });
+  }
+};
 export const handleView = async (idemail, push) => {
   push(`/admin/email/view/${idemail}`);
 };

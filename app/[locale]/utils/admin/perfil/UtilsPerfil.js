@@ -74,7 +74,6 @@ export const fetchPerfilById = async (id, t, setFormData, push) => {
     console.log(response);
     if (response.ok) {
       const result = await response.json();
-      console.log(result);
       setFormData(result); // Suponiendo que los campos del formulario coinciden con los del cliente
     } else if (response.status == 404) {
       NotificationSweet({
