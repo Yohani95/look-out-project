@@ -9,7 +9,7 @@ class PeriodosProyecto {
   estado: number | null;
   monto: number | null;
   numeroProfesionales: number | null;
-
+  diasTotal : number | null;
   proyecto: Proyecto | null;
 
   constructor(data?: any) {
@@ -20,7 +20,7 @@ class PeriodosProyecto {
     this.estado = data?.estado || 0;
     this.monto = data?.monto || 0;
     this.numeroProfesionales = data?.numeroProfesionales || 0;
-
+    this.diasTotal = data?.diasTotal || 0;
     this.proyecto = data?.proyecto || null;
   }
 
@@ -33,6 +33,8 @@ class PeriodosProyecto {
       estado: Yup.number().nullable(),
       monto: Yup.number().nullable(),
       numeroProfesionales: Yup.number().nullable(),
+      diasTotal: Yup.number().nullable(),
+      montoDiario: Yup.number().nullable(),
     });
   }
   static createColumns(t) {
@@ -60,6 +62,11 @@ class PeriodosProyecto {
       {
         accessorKey: "monto",
         header: `${t.Common.amount}`,
+        size: 150,
+      },
+      {
+        accessorKey: "diasTotal",
+        header: `${t.Common.totalDays}`,
         size: 150,
       },
       {

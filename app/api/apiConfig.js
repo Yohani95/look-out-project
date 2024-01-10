@@ -121,3 +121,6 @@ export const tipoNovedadApiUrl=`${apiBaseUrl}/tipoNovedades`
 export const perfilApiUrl=`${apiBaseUrl}/perfil`;
 //moneda
 export const monedaApiUrl=`${apiBaseUrl}/Moneda`;
+//periodoProfesional
+export const periodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales`;
+export const getPeriodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales/GetAllEntitiesByIdPeriod`;

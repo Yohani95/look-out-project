@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import Persona from '../admin/Persona';
 
 class ProyectoParticipante {
   ppaId: number| null;
@@ -11,6 +12,7 @@ class ProyectoParticipante {
   fechaTermino: Date | null;
   estado: number | null;
   tarifarioId: number | null;
+  persona: Persona | null;
   constructor(
     ppaId: number| null,
     pryId: number| null,
@@ -21,7 +23,8 @@ class ProyectoParticipante {
     fechaAsignacion: Date | null,
     fechaTermino: Date | null,
     estado: number | null,
-    tarifarioId: number | null
+    tarifarioId: number | null,
+    persona: Persona | null
   ) {
     this.ppaId = ppaId;
     this.pryId = pryId;
@@ -29,10 +32,11 @@ class ProyectoParticipante {
     this.carId = carId;
     this.perTarifa = perTarifa;
     this.prfId = prfId;
-    this.fechaAsignacion = fechaAsignacion;
+    this.fechaAsignacion = fechaAsignacion? new Date(fechaAsignacion): null;
     this.fechaTermino = fechaTermino;
     this.estado = estado|| 1;
     this.tarifarioId=tarifarioId;
+    this.persona = persona;
   }
 
   static validationRules = (t: any) =>
