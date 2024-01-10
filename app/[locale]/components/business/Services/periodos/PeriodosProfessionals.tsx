@@ -20,11 +20,9 @@ function PeriodosProfessionals({ data, t, idPeriodo }) {
             setPeriodo(Profesionales[0]?.periodo);
             new PeriodosProyecto(Profesionales[0]?.periodo);
             const filter = Profesionales.map((item) => {
-                const participante = item;
-                item.participante.fechaAsignacion = new Date(item.participante.fechaAsignacion).toLocaleDateString();
-                item.participante.fechaTermino = item.participante.fechaTermino ? new Date(item.participante.fechaTermino).toLocaleDateString() : "N/A";
-                item.participante.persona.perNombres = new Persona(item.participante.persona).getNombreCompleto();
-                return item;
+                const profesional = PeriodosProfesionales.transformProfesionalData(item);
+                profesional.participante.persona.perNombres = new Persona(item.participante.persona).getNombreCompleto();
+                return profesional;
             });
             setPeriodosProfesionales(filter);
         } catch (error) {
@@ -40,19 +38,21 @@ function PeriodosProfessionals({ data, t, idPeriodo }) {
                 <label className='col-sm-1'>
                     {t.project.dateStart} :
                 </label>
-                <span className='col-sm-2'>{new Date(periodo?.fechaPeriodoDesde).toLocaleDateString()}</span>
+                <span className='col-sm-2'>{periodo && periodo.fechaPeriodoDesde ? new Date(periodo.fechaPeriodoDesde).toLocaleDateString() : "N/A"}</span>
                 <label className='col-sm-1'>
                     {t.project.dateEnd} :
                 </label>
-                <span className='col-sm-2'>{new Date(periodo?.fechaPeriodoHasta).toLocaleDateString()}</span>
+                <span className='col-sm-2'>
+                    {periodo && periodo.fechaPeriodoHasta ? new Date(periodo.fechaPeriodoHasta).toLocaleDateString() : "N/A"}
+                </span>
                 <label className='col-sm-1'>
                     {t.Common.totalDays} :
                 </label>
-                <span className='col-sm-1'>{periodo?.diasTotal}</span>
+                <span className='col-sm-1'>{periodo?.diasTotal || 0}</span>
                 <label className='col-sm-1'>
                     {t.Common.total} :
                 </label>
-                <span className='col-sm-2'>{periodo?.monto}</span>
+                <span className='col-sm-2'>{periodo?.monto || 0}</span>
             </div>
             <TableMaterialUI columns={PeriodosProfesionales.createColumns(t)} data={periodosProfesionales} />
             <div className="d-flex justify-content-end mt-2 mb-3">

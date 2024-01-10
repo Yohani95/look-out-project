@@ -31,6 +31,26 @@ class PeriodosProfesionales {
     this.periodo = data?.periodo || null;
     this.participante = data?.participante || null;
   }
+  // Método para obtener la fecha de asignación como string
+  public getFechaAsignacionString(): string | null {
+    return this.participante?.fechaAsignacion
+      ? new Date(this.participante.fechaAsignacion).toLocaleDateString()
+      : "N/A";
+  }
+  static transformProfesionalData(profesional: any) {
+    const profesionalInstance = new PeriodosProfesionales(profesional);
+    return {
+      ...profesional,
+      _fechaInicio: profesionalInstance.getFechaAsignacionString(),
+      _fechaTermino: profesionalInstance.getFechaTerminoString(),
+    };
+  }
+  // Método para obtener la fecha de término como string
+  public getFechaTerminoString(): string | null {
+    return this.participante?.fechaTermino
+      ? new Date(this.participante.fechaTermino).toLocaleDateString()
+      : "N/A";
+  }
 
   static getValidationSchema() {
     return Yup.object().shape({
@@ -67,12 +87,12 @@ class PeriodosProfesionales {
         size: 100,
       },
       {
-        accessorKey: "participante.fechaAsignacion",
+        accessorKey: "_fechaInicio",
         header: `${t.Common.dateAssignment}`,
         size: 100,
       },
       {
-        accessorKey: "participante.fechaTermino",
+        accessorKey: "_fechaTermino",
         header: `${t.project.dateEnd}`,
         size: 100,
       },
