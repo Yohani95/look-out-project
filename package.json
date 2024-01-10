@@ -16,6 +16,7 @@
     "@mui/x-date-pickers": "^6.18.2",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
+    "child_process": "^1.0.2",
     "date-fns": "^2.30.0",
     "formik": "^2.4.5",
     "jspdf": "^2.5.1",
