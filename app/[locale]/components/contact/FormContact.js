@@ -266,9 +266,9 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
     <form onSubmit={handleSubmit}>
       <fieldset disabled={!isCreate && !isEdit ? true : false}>
         {isCreate || isEdit ? (
-          <h4>{isEdit ? t.Account.edit : t.Nav.contacts.create}</h4>
+          <h4>{isEdit ? t.Common.contacts : t.Nav.contacts.create}</h4>
         ) : (
-          <h4>{t.Common.account}</h4>
+          <h4>{t.Common.edit}{t.Common.contact}</h4>
         )}
         <ContactInfoSection
           t={t}

@@ -1,5 +1,10 @@
 {
   "Common": {
+    "total": "Total",
+    "absentDays": "Absent Days",
+    "workedDays": "Worked Days",
+    "totalDays": "Total Days", 
+    "dailyAmount": "Daily Amount",
     "billingType": "Business Day Billing?",
     "closed": "Closed",
     "preclosed": "Pre-Closure",
@@ -342,7 +347,8 @@
     "newRol": "New Profile",
     "dateTo": "Date To",
     "dateFrom": "Date From",
-    "historyNovelty": "Novelty History"
+    "historyNovelty": "Novelty History",
+    "periodDetails":"Period Details"
   },
   "facture": {
     "billingDetails": "Billing Details",

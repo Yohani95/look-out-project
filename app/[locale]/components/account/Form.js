@@ -289,7 +289,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                   name="cliSitioWeb"
                   value={formData.cliSitioWeb}
                   onChange={handleClientInputChange(formData, setFormData)}
-                  required
                 />
               </div>
             </div>

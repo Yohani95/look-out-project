@@ -1,5 +1,10 @@
 {
   "Common": {
+    "total": "Total",
+    "absentDays": "Dias ausentes",
+    "workedDays": "Dias trabalhados",
+    "totalDays": "Total de dias",
+    "dailyAmount": "Quantia diária",
     "billingType": "Faturamento em dia útil?",
     "closed": "Fechado",
     "preclosed": "Pré-Fechado",
@@ -328,7 +333,8 @@
     "newMilestone": "Novo Marco",
     "closeProject": "Fechar Projeto",
     "kickOffProject": "Kick Off do Projeto"
-  },  "service": {
+  }, 
+   "service": {
     "docKickOff": "Doc. Início",
     "assignedProfile": "Perfil atribuído",
     "assignedProfessionals": "Profissionais atribuídos",
@@ -341,7 +347,8 @@
     "newRol": "Novo papel",
     "dateTo": "Data até",
     "dateFrom": "Data de",
-    "historyNovelty": "Histórico de Novidades"
+    "historyNovelty": "Histórico de Novidades",
+    "periodDetails": "Detalhes do Período"
   },
   "facture": {
     "billingDetails": "Detalhes da faturação",

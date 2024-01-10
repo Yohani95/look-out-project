@@ -1,5 +1,10 @@
 {
   "Common": {
+    "total": "Total",
+    "absentDays": "Días Ausentes",
+    "workedDays": "Días Trabajados",
+    "totalDays": "Total de días",
+    "dailyAmount": "Monto Diario",
     "billingType":"¿Facturación día hábil?",
     "closed":"Cerrado",
     "preclosed":"Pre-Cierre",
@@ -342,7 +347,8 @@
     "newRol": "Nuevo Perfil",
     "dateTo": "Fecha Hasta",
     "dateFrom": "Fecha Desde",
-    "historyNovelty": "Historial de Novedades"
+    "historyNovelty": "Historial de Novedades",
+    "periodDetails":"Detalles Período"
   },
   "facture": {
     "billingDetails": "Detalles facturación",
