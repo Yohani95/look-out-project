@@ -312,7 +312,7 @@ function ServiceFormSection({
             id="months"
             name="months"
             min="1"
-            max="60"
+            max="120"
             value={proyectoModel.months || ""}
             onChange={handleInputChange(proyectoModel, setProyecto)}
           />
