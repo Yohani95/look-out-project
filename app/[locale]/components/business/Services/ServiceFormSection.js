@@ -353,6 +353,15 @@ function ServiceFormSection({
           onChange={(e) => handleSelectChange(e, "monId", setProyecto)}
           selectedValue={proyectoModel.monId}
         />
+          <SelectField
+          label={`${t.Ficha.type} ${t.Nav.facture.billing}`}
+          options={data.tiposFacturas}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "idTipoFactura", setProyecto)}
+          selectedValue={proyectoModel.idTipoFactura}
+        />
         <label className="form-check-label col-sm-2" htmlFor="exampleCheck1">
           {t.Common.billingType}
         </label>

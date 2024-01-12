@@ -124,3 +124,9 @@ export const monedaApiUrl=`${apiBaseUrl}/Moneda`;
 //periodoProfesional
 export const periodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales`;
 export const getPeriodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales/GetAllEntitiesByIdPeriod`;
+
+//facturaPeriodo
+export const facturaPeriodoApiUrl=`${apiBaseUrl}/FacturaPeriodo`;
+
+//Tipofacturacion
+export const tipoFacturacionApiUrl=`${apiBaseUrl}/TipoFacturacion`;
