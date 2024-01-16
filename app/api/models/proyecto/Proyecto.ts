@@ -3,6 +3,7 @@ import Cliente from "../cuenta/Cliente";
 import TipoServicio from "./TipoServicio";
 import Pais from "../world/Pais";
 import Persona from "../admin/Persona";
+import TipoFacturacion from "../factura/TipoFacturacion";
 
 class Proyecto {
   pryId: number | null;
@@ -26,6 +27,9 @@ class Proyecto {
   pais: Pais | null;
   contacto: Persona| null;
   facturacionDiaHabil: number| null;
+  idTipoFacturacion : number| null;
+  tipoFacturacion: TipoFacturacion | null;
+
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || "";
@@ -41,12 +45,13 @@ class Proyecto {
     this.fechaCorte=data?.fechaCorte || 1 ;
     this.months=data?.months || 1 ;
     this.facturacionDiaHabil=data?.facturacionDiaHabil ||0;
+    this.idTipoFacturacion=data?.idTipoFacturacion ||0;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;
     this.pais = data?.pais || null;
     this.contacto = data?.contacto || null;
-
+    this.tipoFacturacion = data?.tipoFacturacion || null;
     // Manejo de fechas
     this.pryFechaInicioEstimada = this.isValidDate(data?.pryFechaInicioEstimada)
       ? new Date(data.pryFechaInicioEstimada)

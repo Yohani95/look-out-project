@@ -2,7 +2,16 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-function MyDatePicker({ onChange, selectedDate,isRead=false,title,locale,shouldBeRequired = true}) {
+import {es,ptBR,enUS} from 'date-fns/locale'
+import { useLocale } from "next-intl";
+const locales = {
+  "es": es,
+  "en": enUS,
+  "br": ptBR
+};
+function MyDatePicker({ onChange, selectedDate,isRead=false,title,locale="en",shouldBeRequired = true}) {
+  const idioma= useLocale();
+  const selectedLocale = locales[idioma];
   return (
     <div>
       <DatePicker
@@ -13,7 +22,7 @@ function MyDatePicker({ onChange, selectedDate,isRead=false,title,locale,shouldB
         dateFormat="dd/MM/yyyy"
         required={shouldBeRequired}
         readOnly={isRead}
-        locale={locale}
+        locale={selectedLocale}
       />
     </div>
   );

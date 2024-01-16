@@ -18,17 +18,17 @@ class FacturaPeriodo {
   periodo: PeriodosProyecto | null;
 
   constructor(data?: any) {
-    this.id = data?.id || null;
-    this.rut = data?.rut || null;
-    this.razonSocial = data?.razon_social || null;
-    this.hesCodigo = data?.hes_codigo || null;
-    this.ocCodigo = data?.oc_codigo || null;
+    this.id = data?.id || 0;
+    this.rut = data?.rut || '';
+    this.razonSocial = data?.razon_social || '';
+    this.hesCodigo = data?.hes_codigo || '';
+    this.ocCodigo = data?.oc_codigo || '';
     this.fechaHes = data?.fecha_hes ? new Date(data.fecha_hes) : null;
     this.fechaOc = data?.fecha_oc ? new Date(data.fecha_oc) : null;
-    this.ordenPeriodo = data?.orden_periodo || null;
-    this.observaciones = data?.observaciones || null;
-    this.idPeriodo = data?.id_periodo || null;
-    this.monto = data?.monto || null;
+    this.ordenPeriodo = data?.orden_periodo || '';
+    this.observaciones = data?.observaciones || '';
+    this.idPeriodo = data?.id_periodo || '';
+    this.monto = data?.monto || 0;
     this.fechaFactura = data?.fecha_factura ? new Date(data.fecha_factura) : null;
 
     this.periodo = data?.periodo ? new PeriodosProyecto(data.periodo) : null;
@@ -48,7 +48,7 @@ class FacturaPeriodo {
     };
   }
 
-  static createColumns(t: any) {
+  static createColumns(t?: any) {
     return [
       {
         accessorKey: "id",
@@ -57,35 +57,35 @@ class FacturaPeriodo {
       },
       {
         accessorKey: "rut",
-        header: "RUT",
+        header: t.Common.rut,
         size: 80,
       },
       {
         accessorKey: "razonSocial",
-        header: "Razón Social",
+        header: t.facture.businessName,
         size: 150,
       },
       {
         accessorKey: "hesCodigo",
-        header: "HES Código",
+        header: "HES",
         size: 100,
       },
       {
         accessorKey: "ocCodigo",
-        header: "OC Código",
+        header: "OC",
         size: 100,
       },
       {
         accessorKey: "fechaHes",
-        header: "Fecha HES",
+        header: `${t.Common.date} HES`,
         size: 100,
-        transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
+        //transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
       },
       {
         accessorKey: "fechaOc",
-        header: "Fecha OC",
+        header: `${t.Common.date} OC`,
         size: 100,
-        transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
+        //transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
       },
       {
         accessorKey: "ordenPeriodo",
@@ -98,20 +98,15 @@ class FacturaPeriodo {
         size: 200,
       },
       {
-        accessorKey: "idPeriodo",
-        header: "ID de Período",
-        size: 80,
-      },
-      {
         accessorKey: "monto",
-        header: "Monto",
+        header: t.Common.amount,
         size: 80,
       },
       {
         accessorKey: "fechaFactura",
         header: "Fecha Factura",
         size: 100,
-        transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
+        //transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
       },
     ];
   }
@@ -132,6 +127,10 @@ class FacturaPeriodo {
       fechaFactura: Yup.date().nullable(),
     });
   }
+  static TIPO_FACTURA = {
+    HES: 1,
+    ORDEN_COMPRA: 2
+  };
 }
 
 export default FacturaPeriodo;

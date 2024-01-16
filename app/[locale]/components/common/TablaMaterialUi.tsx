@@ -64,7 +64,9 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
 
     doc.save('my-table.pdf');
   };
-
+  if (!columns || !data) {
+    return null; // O maneja este caso como prefieras
+  }
   const Table = () => {
     const table = useMaterialReactTable<T>({
       columns,

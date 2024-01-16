@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import Proyecto from "./Proyecto";
-
+import { format } from 'date-fns';
 class PeriodosProyecto {
   id: number | null;
   pryId: number | null;
@@ -85,8 +85,8 @@ class PeriodosProyecto {
     return this.estado? t.Common.closed:t.Common.preclosed;
   }
   getPeriodoCompleto(): string {
-    return `${this.fechaPeriodoDesde.toLocaleDateString()} - ${this.fechaPeriodoHasta.toLocaleDateString()}`;
+    const formato = 'dd/MM/yyyy';
+    return `${format(this.fechaPeriodoDesde, formato)} - ${format(this.fechaPeriodoHasta, formato)}`;
   }
 }
-
 export default PeriodosProyecto;
