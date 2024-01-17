@@ -1,8 +1,6 @@
 
-
-import { revalidateTag } from 'next/cache';
+import { revalidateTag,revalidatePath } from 'next/cache';
 import ICrudOperations  from '@/app/api/interfaces/ICrudOperations';
-
 export  class CrudOperations<T> implements ICrudOperations<T> {
   
   constructor(private apiUrl: string, private tag: string) {}
@@ -19,7 +17,8 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
       if(response.ok){
         revalidateTag(this.tag)
       }
-      return response.json();
+      const result = await response.json();
+      return result;
     } catch (error) {
       console.error("Error fetching data:", error);
       return [];
@@ -62,6 +61,7 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'no-cache',
         next:{tags:[this.tag]}
       });
       return response.json();
@@ -78,8 +78,8 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
       });
       if(response.ok){
         revalidateTag(this.tag)
+        return response.ok;
       }
-      return response.json();
     } catch (error) {
       console.error("Error fetching data:", error);
       return [];

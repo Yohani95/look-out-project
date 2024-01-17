@@ -1,30 +1,107 @@
 "use client";
-import React from "react";
-import TableMaterialUI from "@/app/[locale]/components/common/TablaMaterialUi";
+import React, { useMemo } from "react";
 import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
 import PeriodoInfo from "./PeriodoInfo";
 import FactureFormSection from "./FactureFormSection";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import PeriodosProyecto from "@/app/api/models/proyecto/PeriodosProyecto";
-function FactureCreate({ t,periodo,facturas  }: { t: any,periodo:PeriodosProyecto,facturas:FacturaPeriodo[] }) {
-    const validationSchema = FacturaPeriodo.getValidationSchema(t);
+import { createFacturaPeriodo, deleteFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import TableMaterialUI from "../common/TablaMaterialUi";
+import { FaTrash } from "react-icons/fa";
+import { Button } from "react-bootstrap";
+import { handleSuccessNotification } from "@/app/[locale]/utils/Form/UtilsForm";
+import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
+import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
+function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto, facturas: FacturaPeriodo[] }) {
+    const columns = useMemo(() => FacturaPeriodo.createColumns(t), [t]);
     const router = useRouter();
+
+    const totalFacturas = facturas.reduce((total, factura) => total + factura.monto, 0);
+    const maxMontoNextFactura = periodo.monto - totalFacturas;
+    const validationSchema = FacturaPeriodo.getValidationSchema(t, maxMontoNextFactura);
     const formik = useFormik({
         initialValues: new FacturaPeriodo(),
         validationSchema,
         //validateOnMount: true,
-        onSubmit: async (values : FacturaPeriodo, { setSubmitting }) => {
+        onSubmit: async (values: FacturaPeriodo, { setSubmitting }) => {
             try {
-                console.log(values)
+                values.idPeriodo = periodo.id;
+                values.fechaFactura = new Date();
+                await NotificationSweet({
+                    title: t.notification.loading.title,
+                    text: "",
+                    type: t.notification.loading.type,
+                    showLoading: true,
+                });
+                await createFacturaPeriodo(values).then((res) => {
+                    NotificationSweet({
+                        title: t.notification.success.title,
+                        text: t.notification.success.text,
+                        type: t.notification.success.type,
+                    });
+                }).catch((err) => {
+                    NotificationSweet({
+                        title: t.notification.error.title,
+                        text: t.notification.error.text,
+                        type: t.notification.error.type,
+                      });
+                });
                 // Utiliza una variable para almacenar la función handleFormSubmit
             } catch (error) {
-                console.error("Error in handleFormSubmit:", error);
+                console.error("Error in createFORMIK:", error);
             } finally {
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
             }
         },
     });
+    const memoizedFacturaActions = useMemo(() => {
+        const handleDelete = async (facturaId: number) => {
+            const confirmed = await ConfirmationDialog(
+                t.notification.deleting.title,
+                t.notification.deleting.text,
+                t.notification.deleting.type,
+                t.notification.deleting.buttonOk,
+                t.notification.deleting.buttonCancel
+            );
+            if (!confirmed) {
+                return;
+            }
+            await NotificationSweet({
+                title: t.notification.loading.title,
+                text: "",
+                type: t.notification.loading.type,
+                showLoading: true,
+            });
+            await deleteFacturaPeriodo(facturaId).then((res) => {
+                NotificationSweet({
+                    title: t.notification.success.title,
+                    text: t.notification.success.text,
+                    type: t.notification.success.type,
+                });
+            }).catch((err) => {
+                NotificationSweet({
+                    title: t.notification.error.title,
+                    text: t.notification.error.text,
+                    type: t.notification.error.type,
+                  });
+            });
+        };
+        return facturas.map((factura) => ({
+            ...FacturaPeriodo.transformFacturaPeriodoData(factura),
+            actions: (
+                <>
+                    <Button
+                        variant="link"
+                        type="button"
+                        onClick={() => handleDelete(factura.id)}
+                    ><FaTrash size={16} className="my-anchor-element" />
+                    </Button>
+                </>
+            )
+        }));
+    }, [facturas, t]);
     return (
         <>
             <h4>{t?.Nav.facture.requestBilling}</h4>
@@ -32,22 +109,25 @@ function FactureCreate({ t,periodo,facturas  }: { t: any,periodo:PeriodosProyect
             <hr />
             <form
                 onSubmit={(e) => {
+                    e.preventDefault();
                     formik.handleSubmit(e);
                 }}
             >
                 <FactureFormSection
                     t={t}
+                    formik={formik}
                     setFormData={formik.setValues}
                     formData={formik.values}
                     tipoFactura={periodo?.proyecto?.idTipoFacturacion == FacturaPeriodo.TIPO_FACTURA.HES}
                 />
                 <div className="d-flex justify-content-end mt-2 mb-2 ">
-                    <button className="btn btn-primary">{t?.Common.saveButton}</button>
+                    <button type="submit" className="btn btn-primary">{t?.Common.saveButton}</button>
                 </div>
             </form>
             <hr />
             <h4>{t?.facture.requestedInvoices}</h4>
-            <TableMaterialUI columns={FacturaPeriodo.createColumns(t)} data={facturas} />
+            <MemoizedTableMaterialUI columns={columns} data={memoizedFacturaActions} />
+
             <div className="d-flex justify-content-end mt-2 mb-2 ">
                 <button
                     type="button"

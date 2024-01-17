@@ -8,12 +8,15 @@ function FactureFormSection({
   setFormData,
   formData,
   tipoFactura,
+  formik
 }: {
   t: any;
   setFormData: (value: any) => void;
   formData?: FacturaPeriodo;
   tipoFactura: boolean;
+  formik: any;
 }) {
+  
   return (
     <>
       <div className="mb-3 row align-items-center">
@@ -93,6 +96,7 @@ function FactureFormSection({
           </div>
         </div>
       }
+
       <div className="mb-3 row align-items-center">
         <label htmlFor="monto" className="col-sm-2 col-form-label">
           {t.Common.amount}
@@ -104,6 +108,7 @@ function FactureFormSection({
             id="monto"
             name="monto"
             value={formData?.monto}
+            min={1}
             onChange={(e) => {
               const inputValue = e.target.value;
               // Validar que el valor ingresado sea un número decimal
@@ -116,7 +121,31 @@ function FactureFormSection({
               } 
             }}
           />
+          {formik.errors.monto ? <div className="text-danger small">{formik.errors.monto}</div> : null}
         </div>
+        {/* <label htmlFor="fileInput" className="col-sm-2 col-form-label">
+            Documento
+          </label>
+          <div className="col-sm-5">
+            <input
+              type="file"
+              className="form-control"
+              id="fileInput"
+              //onChange={handleFileChange}
+              accept=".pdf, .doc, .docx"
+            />
+          </div>
+          {/* {file && (
+            <>
+              <label className="col-sm-3 col-form-label">
+                {file ? file.name : ""}
+              </label>
+              <Button variant="link" className="col-sm-2" href={file && URL.createObjectURL(file)} download={file && file.name}>
+               {t.Common.downloadFile}  {"      "}
+              <FaFileDownload size={18} className="link" beat/>
+              </Button>
+            </>
+          )} */} 
       </div>
       <div className="mb-3 row align-items-center">
         <label htmlFor="observaciones" className="col-sm-2 col-form-label">

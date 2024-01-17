@@ -1,6 +1,5 @@
 import * as Yup from "yup";
 import PeriodosProyecto from "../proyecto/PeriodosProyecto";
-
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -25,7 +24,7 @@ class FacturaPeriodo {
     this.ocCodigo = data?.oc_codigo || '';
     this.fechaHes = data?.fecha_hes ? new Date(data.fecha_hes) : null;
     this.fechaOc = data?.fecha_oc ? new Date(data.fecha_oc) : null;
-    this.ordenPeriodo = data?.orden_periodo || '';
+    this.ordenPeriodo = data?.orden_periodo || 0 ;
     this.observaciones = data?.observaciones || '';
     this.idPeriodo = data?.id_periodo || '';
     this.monto = data?.monto || 0;
@@ -76,22 +75,20 @@ class FacturaPeriodo {
         size: 100,
       },
       {
-        accessorKey: "fechaHes",
+        accessorKey: "_fechaHes",
         header: `${t.Common.date} HES`,
         size: 100,
-        //transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
       },
       {
-        accessorKey: "fechaOc",
+        accessorKey: "_fechaOc",
         header: `${t.Common.date} OC`,
         size: 100,
-        //transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
       },
-      {
-        accessorKey: "ordenPeriodo",
-        header: "Orden de Período",
-        size: 80,
-      },
+      // {
+      //   accessorKey: "ordenPeriodo",
+      //   header: "Orden de Período",
+      //   size: 80,
+      // },
       {
         accessorKey: "observaciones",
         header: "Observaciones",
@@ -103,15 +100,19 @@ class FacturaPeriodo {
         size: 80,
       },
       {
-        accessorKey: "fechaFactura",
+        accessorKey: "_fechaFactura",
         header: "Fecha Factura",
         size: 100,
-        //transform: (value: Date | null) => value ? new Date(value).toLocaleDateString() : "N/A",
+      },
+      {
+        accessorKey: "actions",
+        header: t.Common.actions,
+        size: 100,
       },
     ];
   }
 
-  static getValidationSchema(t: any) {
+  static getValidationSchema(t: any,maxMonto: number = 0) {
     return Yup.object().shape({
       id: Yup.number().nullable(),
       rut: Yup.string().nullable().max(20, "El campo RUT no puede tener más de 20 caracteres."),
@@ -123,7 +124,10 @@ class FacturaPeriodo {
       ordenPeriodo: Yup.number().nullable(),
       observaciones: Yup.string().nullable().max(200, "El campo Observaciones no puede tener más de 200 caracteres."),
       idPeriodo: Yup.number().nullable(),
-      monto: Yup.number().nullable(),
+      monto: Yup.number() .test('maxMonto', maxMonto === 0 ? 'No se puede crear porque el Monto ya cumple con el presupuesto' 
+      : `El monto no puede exceder ${maxMonto}`, value => {
+        return maxMonto === 0 ? false : value <= maxMonto;
+      }).min(0.1, "El monto debe ser mayor a 0"),
       fechaFactura: Yup.date().nullable(),
     });
   }

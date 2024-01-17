@@ -2,17 +2,17 @@ import React from "react";
 import { useLocale} from "next-intl";
 import BasePages from "@/app/[locale]/components/common/BasePages";
 import FactureCreate from "@/app/[locale]/components/facture/FactureCreate";
-import { PeriodosCrud } from "@/app/api/actions/proyecto/PeriodoActions";
-import { FacturaPeriodoCrud } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import { getPeriodoProyecto } from "@/app/api/actions/proyecto/PeriodoActions";
+import { getFacturaPeriodoByIdPeriodo, } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
+import PeriodosProyecto from "@/app/api/models/proyecto/PeriodosProyecto";
 async function page({params}) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   //periodoProyecto
-  const periodoActions =new PeriodosCrud();
-  const periodo = await periodoActions.GetPeriodoProyecto(params.id);
+  const periodo = await getPeriodoProyecto(params.id) as PeriodosProyecto;
   //facturasPeriodo
-  const facturaActions =new FacturaPeriodoCrud();
-  const facturas=await facturaActions.getAll();
+  const facturas=await getFacturaPeriodoByIdPeriodo(periodo.id) as FacturaPeriodo[];
   return (
     <>
       <BasePages title={t.Nav.facture.requestBilling} >
