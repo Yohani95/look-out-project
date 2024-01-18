@@ -359,8 +359,8 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "idTipoFactura", setProyecto)}
-          selectedValue={proyectoModel.idTipoFactura}
+          onChange={(e) => handleSelectChange(e, "idTipoFacturacion", setProyecto)}
+          selectedValue={proyectoModel.idTipoFacturacion}
         />
         <label className="form-check-label col-sm-2" htmlFor="exampleCheck1">
           {t.Common.billingType}
