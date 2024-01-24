@@ -111,7 +111,45 @@ class FacturaPeriodo {
       },
     ];
   }
-
+  static createColumnsFacturas(t?: any) {
+    return [
+      {
+        accessorKey: "id",
+        header: "ID",
+        size: 50,
+      },
+      {
+        accsessoryKey: "nombrenegocio",
+        header: t.Account.business_name,
+        size:100,
+      },
+      {
+        accsessoryKey: "hito",
+        header:`${t.Common.milestone}/${t.Common.period}` ,
+        size:100,
+      },
+      {
+        accsessoryKey: "kam",
+        header:t.Account.KAM,
+        size:100,
+      },
+      {
+        accsessoryKey: "fechaVencimiento",
+        header:t.Common.expiration,
+        size:50,
+      },
+      {
+        accsessoryKey: "fechaVencimiento",
+        header:`${t.Common.status} Fact.`,
+        size:50,
+      },
+      {
+        accessorKey: "actions",
+        header: t.Common.actions,
+        size: 100,
+      },
+    ];
+  }
   static getValidationSchema(t: any,maxMonto: number = 0) {
     return Yup.object().shape({
       id: Yup.number().nullable(),

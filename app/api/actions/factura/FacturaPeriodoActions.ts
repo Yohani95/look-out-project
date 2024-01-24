@@ -30,3 +30,19 @@ export async function getFacturaPeriodoByIdPeriodo(idPeriodo: number) {
         return [];
     }
 }
+export async function getAllEntetiesFacturaPeriodo() {
+    try {
+        const response = await fetch(`${facturaPeriodoApiUrl}/`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: 'no-cache',
+            next:{tags:[tag]}
+        });
+        return response.json();
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return [];
+    }
+}
