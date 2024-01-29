@@ -312,7 +312,7 @@ function ServiceFormSection({
             id="months"
             name="months"
             min="1"
-            max="60"
+            max="120"
             value={proyectoModel.months || ""}
             onChange={handleInputChange(proyectoModel, setProyecto)}
           />
@@ -352,6 +352,15 @@ function ServiceFormSection({
           divClassName="col-sm-2"
           onChange={(e) => handleSelectChange(e, "monId", setProyecto)}
           selectedValue={proyectoModel.monId}
+        />
+          <SelectField
+          label={`${t.Ficha.type} ${t.Nav.facture.billing}`}
+          options={data.tiposFacturas}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "idTipoFacturacion", setProyecto)}
+          selectedValue={proyectoModel.idTipoFacturacion}
         />
         <label className="form-check-label col-sm-2" htmlFor="exampleCheck1">
           {t.Common.billingType}

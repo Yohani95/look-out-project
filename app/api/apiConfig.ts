@@ -107,10 +107,11 @@ export const participanteApiUrl=`${apiBaseUrl}/ProyectoParticipante`
 export const participanteCreateAsyncApiUrl=`${apiBaseUrl}/ProyectoParticipante/CreateAsync`
 export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/deletedAsync`
 export const participanteGetByIdProyectoApiUrl=`${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`
-//periodo proyecto 
+//periodo proyecto GetPeriodoProyecto
 export const periodoApiUrl=`${apiBaseUrl}/PeriodoProyecto`
 export const periodoCreateApiUrl=`${apiBaseUrl}/PeriodoProyecto/createAsync`
 export const periodoGetByIdProyectoApiUrl=`${apiBaseUrl}/PeriodoProyecto/GetByIdProyecto`
+export const getPeriodoProyectoApiUrl=`${apiBaseUrl}/PeriodoProyecto/GetPeriodoProyecto`
 //Novedades
 export const novedadApiUrl=`${apiBaseUrl}/novedades`
 export const novedadWithEntetiesApiUrl=`${apiBaseUrl}/novedades/NovedadesWithEntities`
@@ -124,3 +125,12 @@ export const monedaApiUrl=`${apiBaseUrl}/Moneda`;
 //periodoProfesional
 export const periodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales`;
 export const getPeriodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales/GetAllEntitiesByIdPeriod`;
+
+//facturaPeriodo
+export const facturaPeriodoApiUrl=`${apiBaseUrl}/FacturaPeriodo`;
+
+//Tipofacturacion
+export const tipoFacturacionApiUrl=`${apiBaseUrl}/TipoFacturacion`;
+
+//DocumentoFactura
+export const documentoFacturaApiUrl=`${apiBaseUrl}/documentoFactura`;

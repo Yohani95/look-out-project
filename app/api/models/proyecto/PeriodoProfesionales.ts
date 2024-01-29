@@ -45,6 +45,7 @@ class PeriodosProfesionales {
       _fechaTermino: profesionalInstance.getFechaTerminoString(),
     };
   }
+  
   // Método para obtener la fecha de término como string
   public getFechaTerminoString(): string | null {
     return this.participante?.fechaTermino

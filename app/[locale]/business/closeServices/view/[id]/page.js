@@ -8,11 +8,14 @@ import { fetchServiceById } from "@/app/[locale]/utils/business/UtilsService";
 import { tarifarioGetByIdProyectoApiUrl } from "@/app/api/apiConfig";
 import ProfessionalForm from "@/app/[locale]//components/business/Services/ProfessionalForm";
 import Link from "next/link";
+import { getAllTipoFacturacion } from "@/app/api/actions/factura/TipoFacturacionActions";
+import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
 async function page({ params }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   const { proyecto, archivos } = await fetchServiceById(params.id, t);
+  const tiposFacturas=await getAllTipoFacturacion();
   data.tarifarios = await fetch(
     `${tarifarioGetByIdProyectoApiUrl}/${params.id}`,
     {
@@ -36,6 +39,7 @@ async function page({ params }) {
     }));
     return tarifas;
   });
+  data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
   return (
     <BasePages title={t.business.title}>
       <fieldset disabled>

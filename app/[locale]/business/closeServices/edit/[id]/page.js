@@ -9,7 +9,10 @@ import ServiceEdit from "@/app/[locale]/components/business/Services/ServiceEdit
 import { fetchData } from "@/app/[locale]/utils/Form/UtilsForm";
 import { tarifarioGetByIdProyectoApiUrl } from "@/app/api/apiConfig";
 import { Constantes } from "@/app/api/models/common/Constantes";
+import { getAllTipoFacturacion } from "@/app/api/actions/factura/TipoFacturacionActions";
+import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
 async function page({ params }) {
+  const tiposFacturas=await getAllTipoFacturacion();
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
@@ -24,7 +27,7 @@ async function page({ params }) {
     }
   ).then(async (result) => {
     result=await result.json()
-    const tarifas = result.data?.map((item) => ({
+    const tarifas = result?.data?.map((item) => ({
       tcId: item.tcId,
       tcMoneda: item.moneda.monNombre,
       tcPerfilAsignado: item.perfil.prf_Nombre,
@@ -37,6 +40,7 @@ async function page({ params }) {
     }));
     return tarifas;
   });
+  data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
   return (
     <BasePages title={t.business.title}>
       <ServiceEdit

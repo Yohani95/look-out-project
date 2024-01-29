@@ -1,3 +1,4 @@
+"use client"
 import React, { useMemo } from 'react';
 import {
   MaterialReactTable,
@@ -6,7 +7,6 @@ import {
   MRT_TableInstance,
   MRT_Localization,
 } from 'material-react-table';
-import { FaCheck } from 'react-icons/fa';
 import { useLocale } from "next-intl";
 import { Box, Button } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -70,6 +70,7 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
       columns,
       data: data,
       localization,
+      initialState: { density: 'compact' },
       renderTopToolbarCustomActions: ({ table }) => (
         <Box
           sx={{
