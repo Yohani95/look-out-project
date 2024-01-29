@@ -70,6 +70,7 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
       columns,
       data: data,
       localization,
+      initialState: { density: 'compact' },
       renderTopToolbarCustomActions: ({ table }) => (
         <Box
           sx={{

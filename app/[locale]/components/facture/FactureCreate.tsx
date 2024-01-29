@@ -12,6 +12,8 @@ import { FaTrash } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import { ChangeEstado } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import { revalidateTag } from "next/cache";
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto, facturas: FacturaPeriodo[] }) {
     const columns = useMemo(() => FacturaPeriodo.createColumns(t), [t]);
@@ -34,12 +36,21 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                     type: t.notification.loading.type,
                     showLoading: true,
                 });
+                values.idEstado=FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
                 await createFacturaPeriodo(values).then((res) => {
-                    NotificationSweet({
-                        title: t.notification.success.title,
-                        text: t.notification.success.text,
-                        type: t.notification.success.type,
-                    });
+                    if(res.status==200){
+                        NotificationSweet({
+                            title: t.notification.success.title,
+                            text: t.notification.success.text,
+                            type: t.notification.success.type,
+                        });     
+                    }else{
+                        NotificationSweet({
+                            title: t.notification.error.title,
+                            text: t.notification.error.text,
+                            type: t.notification.error.type,
+                          });
+                    }
                 }).catch((err) => {
                     NotificationSweet({
                         title: t.notification.error.title,
@@ -95,12 +106,36 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                         variant="link"
                         type="button"
                         onClick={() => handleDelete(factura.id)}
+                        disabled={factura.idEstado != FacturaPeriodo.ESTADO_FACTURA.PENDIENTE}
                     ><FaTrash size={16} className="my-anchor-element" />
                     </Button>
                 </>
             )
         }));
     }, [facturas, t]);
+    const handleChangeEstado = async () => {
+        await NotificationSweet({
+            title: t.notification.loading.title,
+            text: "",
+            type: t.notification.loading.type,
+            showLoading: true,
+        });
+        await ChangeEstado(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
+        .then((res) => {
+            NotificationSweet({
+                title: t.notification.success.title,
+                text: t.notification.success.text,
+                type: t.notification.success.type,
+            });
+            router.back();
+        }).catch((err) => {
+            NotificationSweet({
+                title: t.notification.error.title,
+                text: t.notification.error.text,
+                type: t.notification.error.type,
+              });
+        });
+    }
     return (
         <>
             <h4>{t?.Nav.facture.requestBilling}</h4>
@@ -135,7 +170,7 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                         router.back();
                     }}
                 >{t.Common.goBack}</button>
-                <button className="m-2 btn btn-primary">{t?.Common.request}</button>
+                <button onClick={handleChangeEstado} className="m-2 btn btn-primary">{t?.Common.request}</button>
             </div>
         </>
     );

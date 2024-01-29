@@ -13,7 +13,8 @@ class FacturaPeriodo {
   idPeriodo: number | null;
   monto: number | null;
   fechaFactura: Date | null;
-
+  idEstado: number | null;
+  fechaVencimiento: Date | null;
   periodo: PeriodosProyecto | null;
 
   constructor(data?: any) {
@@ -29,7 +30,8 @@ class FacturaPeriodo {
     this.idPeriodo = data?.id_periodo || '';
     this.monto = data?.monto || 0;
     this.fechaFactura = data?.fecha_factura ? new Date(data.fecha_factura) : null;
-
+    this.idEstado = data?.id_estado || 1;
+    this.fechaVencimiento = data?.fecha_vencimiento ? new Date(data.fecha_vencimiento) : null;
     this.periodo = data?.periodo ? new PeriodosProyecto(data.periodo) : null;
   }
 
@@ -44,6 +46,7 @@ class FacturaPeriodo {
       _fechaHes: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaHes),
       _fechaOc: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaOc),
       _fechaFactura: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaFactura),
+      _fechaVencimiento: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaVencimiento),
     };
   }
 
@@ -105,6 +108,11 @@ class FacturaPeriodo {
         size: 100,
       },
       {
+        accessorKey: "estado.nombre",
+        header: `${t.Common.status} Fact.`,
+        size: 50,
+      },
+      {
         accessorKey: "actions",
         header: t.Common.actions,
         size: 100,
@@ -119,29 +127,29 @@ class FacturaPeriodo {
         size: 50,
       },
       {
-        accsessoryKey: "nombrenegocio",
+        accessorKey: "periodo.proyecto.pryNombre",
         header: t.Account.business_name,
-        size:100,
+        size: 50,
       },
       {
-        accsessoryKey: "hito",
+        accessorKey: "_hito",
         header:`${t.Common.milestone}/${t.Common.period}` ,
         size:100,
       },
       {
-        accsessoryKey: "kam",
+        accessorKey: "kam",
         header:t.Account.KAM,
         size:100,
       },
       {
-        accsessoryKey: "fechaVencimiento",
+        accessorKey: "_fechaVencimiento",
         header:t.Common.expiration,
         size:50,
       },
       {
-        accsessoryKey: "fechaVencimiento",
-        header:`${t.Common.status} Fact.`,
-        size:50,
+        accessorKey: "estado.nombre",
+        header: `${t.Common.status} Fact.`,
+        size: 50,
       },
       {
         accessorKey: "actions",
@@ -172,6 +180,12 @@ class FacturaPeriodo {
   static TIPO_FACTURA = {
     HES: 1,
     ORDEN_COMPRA: 2
+  };
+  static ESTADO_FACTURA = { 
+    PENDIENTE: 1,
+    SOLICITADA: 2,
+    FACTURADA: 3,
+    PAGADA:4,
   };
 }
 

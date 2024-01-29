@@ -25,15 +25,18 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
     }
   }
 
-  async update(item: T) {
+  async update(item: T, id: string | number) {
     try {
-      const response = await fetch(this.apiUrl, {
+      const response = await fetch(`${this.apiUrl}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(item)
       });
+      console.log(response)
+      const first = await response.json();
+      console.log(first)
       if(response.ok){
         revalidateTag(this.tag)
       }

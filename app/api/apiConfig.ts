@@ -131,3 +131,6 @@ export const facturaPeriodoApiUrl=`${apiBaseUrl}/FacturaPeriodo`;
 
 //Tipofacturacion
 export const tipoFacturacionApiUrl=`${apiBaseUrl}/TipoFacturacion`;
+
+//DocumentoFactura
+export const documentoFacturaApiUrl=`${apiBaseUrl}/documentoFactura`;

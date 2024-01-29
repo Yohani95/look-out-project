@@ -4,10 +4,11 @@ import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import { useFormik } from 'formik';
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import { Button } from 'react-bootstrap';
-import { FaLockOpen, FaEye } from 'react-icons/fa';
+import { FaLockOpen, FaEye, FaLock } from 'react-icons/fa';
 import { periodoCreateApiUrl, periodoGetByIdProyectoApiUrl } from '@/app/api/apiConfig';
 import { handleFormSubmit, fetchData } from '@/app/[locale]/utils/Form/UtilsForm';
 import { useRouter } from "next/navigation";
+import { Tooltip } from "react-tooltip";
 function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
   const validationSchema = PeriodosProyecto.getValidationSchema(t);
   const [periodos, setPeriodos] = useState([]);
@@ -45,22 +46,22 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
         fechaPeriodoDesde: new PeriodosProyecto(periodo).getPeriodoCompleto(),
         actions: (
           <>
-            <Button variant="link"  onClick={() =>
-                router.push(`/facture/create/${periodo.id}`)
-              }>
-              <FaLockOpen size={16} className="my-anchor-element" />
-              {/* <Tooltip anchorSelect=".my-anchor-element" place="top">
-              {t.Common.unassign}
-            </Tooltip> */}
+            <Button variant="link" onClick={() =>
+              router.push(`/facture/create/${periodo.id}`)
+            }>
+              {periodo.estado == 1 ? <FaLock size={16} className="candado" style={{ color: 'green' }} /> : <FaLockOpen size={16} className="candado" />}
+              <Tooltip anchorSelect=".candado" place="top">
+              {t.Nav.facture.requestBilling}
+              </Tooltip>
             </Button>
             <Button variant="link"
               onClick={() =>
                 router.push(`/business/closeServices/professionalsPeriod/${periodo.id}`)
               }>
               <FaEye size={16} className="my-anchor" />
-              {/* <Tooltip anchorSelect=".my-anchor" place="top">
-              {t.Common.unassign}
-            </Tooltip> */}
+              <Tooltip anchorSelect=".my-anchor" place="top">
+              {t.service.periodDetails}
+            </Tooltip>
             </Button>
           </>
         ),

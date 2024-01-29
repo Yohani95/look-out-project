@@ -18,6 +18,7 @@ export class Constantes {
     PERSONA_KAM: 2,
     PERSONA_PROFESIONAL: 4,
   };
+
   static generarOpcionesDeTiempo(t) {
     return [
       { value: 1, label: t.time.month },
