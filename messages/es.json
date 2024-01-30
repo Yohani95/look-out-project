@@ -420,6 +420,13 @@
       "type": "info",
       "buttonOk": "Sí, Descargar archivo",
       "buttonCancel": "Cancelar"
+    },
+    "bill": {
+      "title": "Información",
+      "text": "¿Estás seguro de pagar Factura?",
+      "type": "info",
+      "buttonOk": "Sí, Pagar",
+      "buttonCancel": "Cancelar"
     }
   },
   "time":{

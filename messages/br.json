@@ -420,6 +420,13 @@
       "type": "info",
       "buttonOk": "Sim, Baixar arquivo",
       "buttonCancel": "Cancelar"
+    },
+    "bill": {
+      "title": "Informação",
+      "text": "Tem certeza de que pagou a fatura?",
+      "type": "info",
+      "buttonOk": "Sim, Pagar faturamento",
+      "buttonCancel": "Cancelar"
     }
   },
   "time": {
