@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import PeriodosProyecto from "../proyecto/PeriodosProyecto";
+import { format } from 'date-fns';
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -36,7 +37,7 @@ class FacturaPeriodo {
   }
 
   public getFechaString(date: Date | null): string | null {
-    return date ? new Date(date).toLocaleDateString() : "N/A";
+    return date ? format(new Date(date), 'dd/MM/yyyy') : "N/A";
   }
 
   static transformFacturaPeriodoData(facturaPeriodo: any) {
@@ -136,11 +137,11 @@ class FacturaPeriodo {
         header:`${t.Common.milestone}/${t.Common.period}` ,
         size:100,
       },
-      {
-        accessorKey: "kam",
-        header:t.Account.KAM,
-        size:100,
-      },
+      // {
+      //   accessorKey: "kam",
+      //   header:t.Account.KAM,
+      //   size:100,
+      // },
       {
         accessorKey: "_fechaVencimiento",
         header:t.Common.expiration,
@@ -149,6 +150,11 @@ class FacturaPeriodo {
       {
         accessorKey: "estado.nombre",
         header: `${t.Common.status} Fact.`,
+        size: 50,
+      },
+      {
+        accessorKey: "_documento",
+        header: `Documento`,
         size: 50,
       },
       {

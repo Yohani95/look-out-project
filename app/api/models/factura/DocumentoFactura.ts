@@ -15,10 +15,12 @@ class DocumentoFactura {
       this.nombreDocumento = data?.nombreDocumento || "";
       this.contenidoDocumento = data?.contenidoDocumento || null;
       this.facturaPeriodo = data?.facturaPeriodo || null;
+      this.fecha = data?.fecha || '';
     }
   
     static getValidationSchema(t: any) {
       return Yup.object().shape({
+        fecha: Yup.date().required(t.ValidationMessages.required),
         nombreDocumento: Yup.string().required(t.ValidationMessages.required),
       });
     }

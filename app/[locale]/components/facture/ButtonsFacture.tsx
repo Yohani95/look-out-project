@@ -2,21 +2,20 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { FaCreditCard, FaCartPlus, FaDollarSign, FaEye } from "react-icons/fa";
+import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import { FaCartPlus, FaDollarSign, FaEye } from "react-icons/fa";
 import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "react-tooltip";
 import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
-import { AddDocumento } from "@/app/api/actions/factura/DocumentoFacturaActions";
 import { documentoFacturaApiUrl } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { revalidateTag } from "next/cache";
-import { ChangeEstado, updateFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import { revalidateDataFacturaPeriodo, updateFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
 const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
+  const validationSchema = DocumentoFactura.getValidationSchema(t);
   const formik = useFormik({
     initialValues: new DocumentoFactura(),
-    validationSchema: null,
+    validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         await NotificationSweet({
@@ -27,11 +26,8 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
         });
         // Lógica para manejar el envío del formulario
         values.idFactura = idFactura;
-        values.nombreDocumento = values.archivo.name;
-
         // Crear un nuevo FileReader
         let reader = new FileReader();
-
         // Crear una nueva Promise que se resuelve cuando el FileReader ha terminado de leer el archivo
         let arrayBuffer = await new Promise(resolve => {
           reader.onload = e => resolve(e.target.result);
@@ -43,27 +39,23 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
           new Uint8Array(arrayBuffer as ArrayBuffer)
             .reduce((data, byte) => data + String.fromCharCode(byte), '')
         );
-        delete values.archivo;
         values.contenidoDocumento = base64String;
-        const response = await fetch(
-          `${documentoFacturaApiUrl}/AddDocumento/${values.fecha}/${idFactura}`,
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values),
-            cache: "no-cache",
-            next: { tags: ["documentosFactura"] },
-          }
-        ).then((res) => {
-          if (res.status == 200) {
+        // Enviar el documento al servidor
+        delete values.archivo;
+        await fetch(`${documentoFacturaApiUrl}/AddDocumento/${values.fecha}/${idFactura}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values)
+        }).then((res) => {
+          if (res.ok) {
             NotificationSweet({
               title: t.notification.success.title,
               text: t.notification.success.text,
               type: t.notification.success.type,
             });
+            revalidateDataFacturaPeriodo()
           } else {
             NotificationSweet({
               title: t.notification.error.title,
@@ -72,18 +64,22 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
             });
           }
         }).catch((err) => {
+          console.error("Error en fetch:", err);
           NotificationSweet({
             title: t.notification.error.title,
             text: t.notification.error.text,
             type: t.notification.error.type,
           });
-        });;
+        });
       } catch (error) {
-        console.error("Error in createFORMIK:", error);
+        NotificationSweet({
+          title: t.notification.error.title,
+          text: t.notification.error.text,
+          type: t.notification.error.type,
+        });
       } finally {
         setSubmitting(false);
         handleClose();
-        revalidateTag("facturasPeriodo");
       }
     },
   });
@@ -96,39 +92,41 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="archivo">
-            <Form.Label>Archivo</Form.Label>
+            <Form.Label>{t.Common.uploadFile}</Form.Label>
             <Form.Control
               type="file"
+              accept=".pdf,.doc,.docx,.jpg,.jpeg"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const fileInput = event.currentTarget;
                 if (fileInput.files && fileInput.files.length > 0) {
                   formik.setFieldValue("archivo", fileInput.files[0]);
+                  formik.setFieldValue("nombreDocumento", fileInput.files[0].name);
                 }
               }}
-              isInvalid={formik.touched.contenidoDocumento && !!formik.errors.contenidoDocumento}
+              isInvalid={formik.touched.nombreDocumento && !!formik.errors.nombreDocumento}
             />
             <Form.Control.Feedback type="invalid">
-              {typeof formik.errors.contenidoDocumento === 'string' ? formik.errors.contenidoDocumento :
-                (formik.errors.contenidoDocumento as string[])?.join(', ')}
+              {formik.errors.nombreDocumento}
             </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="fecha">
-            <Form.Label>Fecha Vencimiento</Form.Label>
+            <Form.Label>{t.Common.date} {t.Common.expiration}</Form.Label>
             <Form.Control
               type="date"
-              value={formik.values.facturaPeriodo?.fechaVencimiento?.toISOString().split('T')[0]}
+              value={formik.values?.fecha ? new Date(formik.values.fecha).toISOString().split('T')[0] : ''}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.fecha && !!formik.errors.fecha}
             />
             <Form.Control.Feedback type="invalid">
-              test
+              {typeof formik.errors.fecha === 'string' ? formik.errors.fecha :
+                Array.isArray(formik.errors.fecha) ? formik.errors.fecha.join(', ') : ''}
             </Form.Control.Feedback>
           </Form.Group>
 
           <Button className="mt-2" variant="primary" type="submit">
-            Enviar
+            {t.Common.submit}
           </Button>
         </Form>
       </Modal.Body>
@@ -147,45 +145,41 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
     setShowModal(false);
   };
 
-  const handleFacturada = async () => {
-    // Lógica para el botón Facturada
-  };
-
   const handlePagada = async () => {
     try {
-      if (FacturaPeriodo.ESTADO_FACTURA.FACTURADA == periodoFactura?.idEstado) {
+      const result= await ConfirmationDialog(
+        t.Common.areYouSure,
+        "",
+        t.notification.deleting.type,
+        t.notification.deleting.buttonOk,
+        t.notification.deleting.buttonCancel
+      );
+      if (!result.isConfirmed) return;
+      const factura = periodoFactura;
+      if (FacturaPeriodo.ESTADO_FACTURA.FACTURADA == factura?.idEstado) {
         await NotificationSweet({
           title: t.notification.loading.title,
           text: "",
           type: t.notification.loading.type,
           showLoading: true,
         });
-  
-        periodoFactura.idEstado = FacturaPeriodo.ESTADO_FACTURA.PAGADA;
-        console.log("Factura actualizada:", periodoFactura);
-  
-        const res = await updateFacturaPeriodo(periodoFactura, idFactura);
-        console.log("Respuesta del servidor:", res);
-  
-        if (res.status == 200 || res.status == 204) {
-          NotificationSweet({
-            title: t.notification.success.title,
-            text: t.notification.success.text,
-            type: t.notification.success.type,
-          });
-        } else {
+
+        factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.PAGADA;
+        delete factura.periodo;
+        delete factura.estado;
+        const res = await updateFacturaPeriodo(factura, idFactura).then((res) => NotificationSweet({
+          title: t.notification.success.title,
+          text: t.notification.success.text,
+          type: t.notification.success.type,
+        })).catch((err) => {
           NotificationSweet({
             title: t.notification.error.title,
             text: t.notification.error.text,
             type: t.notification.error.type,
           });
-        }
-      } else {
-        NotificationSweet({
-          title: "La factura no se encuentra en estado FACTURADA",
-          text: t.notification.success.text,
-          type: t.notification.success.type,
         });
+        console.log("Respuesta del servidor:", res);
+
       }
     } catch (error) {
       console.error("Error en handlePagada:", error);
@@ -196,11 +190,11 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
       });
     }
   };
-  
+
 
   return (
     <>
-      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA  ?
+      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA ?
         <Button variant="link" onClick={handleAddDocument}>
           <FaCartPlus size={16} className="canasto" />
           <Tooltip anchorSelect=".canasto" place="top">
@@ -213,15 +207,15 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
             {t.Nav.facture.requestBilling}
           </Tooltip>
         </Button>}
-      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA ?
-       <Button variant="link" onClick={handlePagada}>
-        <FaDollarSign className="changeStatus" size={16} />
-        <Tooltip anchorSelect=".changeStatus" place="top">
-          {t.Common.pay}
-        </Tooltip>
-      </Button> :
-        <Button variant="link" disabled>
+      {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ?
+        <Button variant="link" onClick={handlePagada}>
           <FaDollarSign className="changeStatus" size={16} />
+          <Tooltip anchorSelect=".changeStatus" place="top">
+            {t.Common.pay}
+          </Tooltip>
+        </Button> :
+        <Button variant="link" disabled>
+          <FaDollarSign  className="changeStatus" size={16} />
           <Tooltip anchorSelect=".changeStatus" place="top">
             {t.Common.pay}
           </Tooltip>

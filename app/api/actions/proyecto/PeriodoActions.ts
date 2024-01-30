@@ -10,7 +10,7 @@ const tag = "tipoFacturacionActions";
 const periodosCrud = new CrudOperations<PeriodosProyecto>(periodoApiUrl, tag);
 
 export const createPeriodoProyecto = async (item: PeriodosProyecto) => periodosCrud.create(item);
-export const updatePeriodoProyecto = async (item: PeriodosProyecto) => periodosCrud.update(item);
+export const updatePeriodoProyecto = async (item: PeriodosProyecto,id:string| number) => periodosCrud.update(item, id);
 export const getPeriodoProyectoById = async (id: string | number) => periodosCrud.getById(id);
 export const getAllPeriodosProyecto = async () => periodosCrud.getAll();
 

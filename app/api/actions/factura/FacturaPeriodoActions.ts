@@ -20,7 +20,7 @@ export const getFacturaPeriodoById = async (id: string | number) =>
 export const deleteFacturaPeriodo = async (id: string | number) =>
   facturaPeriodoCrud.deleteById(id);
 export const getAllFacturaPeriodo = async () => facturaPeriodoCrud.getAll();
-
+export const revalidateDataFacturaPeriodo = async () => facturaPeriodoCrud.revalidateData();
 export async function getFacturaPeriodoByIdPeriodo(idPeriodo: number) {
   try {
     const response = await fetch(
