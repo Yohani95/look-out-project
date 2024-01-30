@@ -420,6 +420,13 @@
       "type": "info",
       "buttonOk": "Yes, Download File",
       "buttonCancel": "Cancel"
+    },
+    "bill": {
+      "title": "Information",
+      "text": "Are you sure you pay the billing??",
+      "type": "info",
+      "buttonOk": "Yes, Pay Billing",
+      "buttonCancel": "Cancel"
     }
   },
   "time": {

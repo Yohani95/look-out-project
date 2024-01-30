@@ -147,14 +147,17 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
 
   const handlePagada = async () => {
     try {
-      const result= await ConfirmationDialog(
-        t.Common.areYouSure,
-        "",
-        t.notification.deleting.type,
-        t.notification.deleting.buttonOk,
-        t.notification.deleting.buttonCancel
+      const result = await ConfirmationDialog(
+        t.notification.bill.title,
+        t.notification.bill.text,
+        t.notification.bill.type,
+        t.notification.bill.buttonOk,
+        t.notification.bill.buttonCancel
       );
-      if (!result.isConfirmed) return;
+      if (!result) 
+      {
+        return;
+      }
       const factura = periodoFactura;
       if (FacturaPeriodo.ESTADO_FACTURA.FACTURADA == factura?.idEstado) {
         await NotificationSweet({
@@ -215,7 +218,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
           </Tooltip>
         </Button> :
         <Button variant="link" disabled>
-          <FaDollarSign  className="changeStatus" size={16} />
+          <FaDollarSign className="changeStatus" size={16} />
           <Tooltip anchorSelect=".changeStatus" place="top">
             {t.Common.pay}
           </Tooltip>
