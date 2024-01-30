@@ -3,6 +3,7 @@
 import { documentoFacturaApiUrl} from "@/app/api/apiConfig";
 import { CrudOperations } from "@/app/api/models/common/CrudOperations";
 import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
+import { revalidateTag } from "next/cache";
 const tag = "DocumentoFactura";
 
 const DocumentoFacturaCrud = new CrudOperations<DocumentoFactura>(
@@ -12,8 +13,8 @@ const DocumentoFacturaCrud = new CrudOperations<DocumentoFactura>(
 
 export const createDocumentoFactura = async (item: DocumentoFactura) =>
   DocumentoFacturaCrud.create(item);
-export const updateDocumentoFactura = async (item: DocumentoFactura) =>
-  DocumentoFacturaCrud.update(item);
+export const updateDocumentoFactura = async (item: DocumentoFactura,id:string| number) =>
+  DocumentoFacturaCrud.update(item,id);
 export const getDocumentoFacturaById = async (id: string | number) =>
   DocumentoFacturaCrud.getById(id);
 export const deleteDocumentoFactura = async (id: string | number) =>
@@ -34,6 +35,7 @@ export async function AddDocumento(documento: DocumentoFactura) {
         next: { tags: [tag] },
       }
     );
+    revalidateTag("facturaPeriodo");
     return response.json();
   } catch (error) {
     console.error("Error fetching data:", error);

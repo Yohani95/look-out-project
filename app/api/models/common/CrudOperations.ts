@@ -34,13 +34,10 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
         },
         body: JSON.stringify(item)
       });
-      console.log(response)
-      const first = await response.json();
-      console.log(first)
       if(response.ok){
         revalidateTag(this.tag)
       }
-      return response.json();
+      return 200;
     } catch (error) {
       console.error("Error fetching data:", error);
       return [];
@@ -87,5 +84,8 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
       console.error("Error fetching data:", error);
       return [];
     }
+  }
+  async revalidateData(){
+    revalidateTag(this.tag);
   }
 }
