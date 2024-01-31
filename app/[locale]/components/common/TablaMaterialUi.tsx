@@ -12,6 +12,7 @@ import { Box, Button } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import LOGO from "@/public/images/logo.png";
 interface Props<T> {
   columns: MRT_ColumnDef<T>[];
   data: T[];
@@ -45,23 +46,48 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
   const handleExportRows = (rows: any[]) => {
     const doc = new jsPDF();
     const tableHeaders = columns.map((c) => c.header);
-
     const tableData = rows.map((row) =>
-      columns
-        .filter((column) => column.accessorKey !== 'actions') // Excluir la columna "actions"
-        .map((column) => {
-          const cellValue = row.original[column.accessorKey];
-          return typeof cellValue === 'object' ? JSON.stringify(cellValue) : cellValue;
-        })
-    );
-
-    const filteredHeaders = tableHeaders.filter((header, index) => columns[index].accessorKey !== 'actions');
-
+    columns
+      .filter((column) => {
+        // Excluir la columna "actions", las columnas que contienen objetos y las columnas '_documento'
+        const cellValue = row.original[column.accessorKey];
+        return column.accessorKey !== 'actions' && !(typeof cellValue === 'object');
+      })
+      .map((column) => row.original[column.accessorKey]) // No necesitas verificar si cellValue es un objeto aquí, ya que ya lo has excluido en el filtro
+  );
+  
+  const filteredHeaders = tableHeaders.filter((header, index) => {
+    const accessorKey = columns[index].accessorKey;
+    // Excluir si el accessorKey es 'actions' o '_documento'
+    if (accessorKey === 'actions') {
+      return false;
+    }
+    // Excluir si alguna de las filas contiene un objeto en esta columna
+    for (const row of rows) {
+      if (typeof row.original[accessorKey] === 'object') {
+        return false;
+      }
+    }
+    // Incluir la columna si no se excluyó por las razones anteriores
+    return true;
+  });
+    // Agregar el título de la empresa
+    doc.setFontSize(22);
+    //console.log(LOGO.src);
+    //doc.addImage(LOGO.src, 'PNG', 15, 15, 30, 30);
+    doc.text('KPAZ', 15, 15);
+  
+    // Agregar la fecha de emisión
+    doc.setFontSize(14);
+    const date = new Date();
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    doc.text(`Fecha de emisión: ${formattedDate}`, 15, 25);
+  
     autoTable(doc, {
+      startY: 30, // Asegúrate de que la tabla comienza debajo del encabezado y la fecha de emisión
       head: [filteredHeaders],
       body: tableData,
     });
-
     doc.save('my-table.pdf');
   };
 
