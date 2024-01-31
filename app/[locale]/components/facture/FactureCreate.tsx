@@ -38,19 +38,11 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                 });
                 values.idEstado=FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
                 await createFacturaPeriodo(values).then((res) => {
-                    if(res.status==200){
                         NotificationSweet({
                             title: t.notification.success.title,
                             text: t.notification.success.text,
                             type: t.notification.success.type,
                         });     
-                    }else{
-                        NotificationSweet({
-                            title: t.notification.error.title,
-                            text: t.notification.error.text,
-                            type: t.notification.error.type,
-                          });
-                    }
                 }).catch((err) => {
                     NotificationSweet({
                         title: t.notification.error.title,
