@@ -12,7 +12,6 @@ import { documentoFacturaApiUrl } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { revalidateDataFacturaPeriodo, updateFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
 const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFactura }) => {
-  console.log(periodoFactura.documentosFactura)
   const validationSchema = DocumentoFactura.getValidationSchema(t);
   let factura = periodoFactura as FacturaPeriodo
   const formik = useFormik({
@@ -152,8 +151,6 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
   const handleAddDocument = () => {
     setShowModal(true);
   };
-  console.log(periodoFactura);
-console.log(periodoFactura.documentosFactura);
 
   const handleClose = () => {
     setShowModal(false);
@@ -194,8 +191,6 @@ console.log(periodoFactura.documentosFactura);
             type: t.notification.error.type,
           });
         });
-        console.log("Respuesta del servidor:", res);
-
       }
     } catch (error) {
       console.error("Error en handlePagada:", error);
@@ -208,7 +203,6 @@ console.log(periodoFactura.documentosFactura);
   };
 
   const downloadDocumento = (documento) => {
-    console.log(documento.contenidoDocumento)
     const uint8Array = new Uint8Array(atob(documento.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
 
     const blob = new Blob([uint8Array], { type: 'application/pdf' });
