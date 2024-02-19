@@ -128,9 +128,19 @@ class FacturaPeriodo {
         size: 50,
       },
       {
-        accessorKey: "periodo.proyecto.pryNombre",
-        header: t.Account.business_name,
-        size: 50,
+        accessorKey: "rut",
+        header: t.Common.rut,
+        size: 80,
+      },
+      {
+        accessorKey: "razonSocial",
+        header: t.facture.businessName,
+        size: 150,
+      },
+      {
+        accessorKey: "monto",
+        header: t.Common.amount,
+        size: 80,
       },
       {
         accessorKey: "_hito",
@@ -153,10 +163,15 @@ class FacturaPeriodo {
         size: 50,
       },
       {
-        accessorKey: "_documento",
-        header: `Documento`,
+        accessorKey: "observaciones",
+        header: `observaciones`,
         size: 50,
       },
+      // {
+      //   accessorKey: "_documento",
+      //   header: `Documento`,
+      //   size: 50,
+      // },
       {
         accessorKey: "actions",
         header: t.Common.actions,

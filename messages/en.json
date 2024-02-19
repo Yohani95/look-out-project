@@ -1,5 +1,6 @@
 {
   "Common": {
+    "supports":"Supports",
     "pay": "Pay",
     "total": "Total",
     "absentDays": "Absent Days",
@@ -441,7 +442,13 @@
   "Export": {
     "exportAllRows": "Export all rows (PDF)",
     "exportPageRows": "Export only Page (PDF)"
-  }
+  },
+  "support": {
+    "contractSupport": "Contract Support",
+    "bagholder": "Bagholder Support",
+    "onDemandSupport": "On-Demand Support"
+}
+
 }
 
    

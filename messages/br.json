@@ -1,5 +1,6 @@
 {
   "Common": {
+    "supports":"Suporte",
     "pay": "Pagar",
     "total": "Total",
     "absentDays": "Dias ausentes",
@@ -441,6 +442,12 @@
   "Export": {
     "exportAllRows": "Exportar todas as linhas (PDF)",
     "exportPageRows": "Exportar apenas Página (PDF)"
-  }
+  },
+  "support": {
+    "contractSupport": "Suporte Contratual",
+    "bagholder": "Suporte para Titulares",
+    "onDemandSupport": "Suporte On-Demand"
+}
+
 }
 

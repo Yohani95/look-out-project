@@ -62,23 +62,6 @@ const Header = () => {
           // },
         },
       },
-      project: {
-        link: {
-          addProject: {
-            name: t("Nav.projects.addProject"),
-            link: "/project/create",
-          },
-          addKickOff: {
-            name: t("Nav.projects.addKickOff"),
-            link: "/project/kickOff",
-          },
-          search: {
-            name: t("Common.project"),
-            link: "/project/search",
-          },
-        },
-        title: t("Common.project"),
-      },
       service: {
         link: {
           search: {
@@ -134,6 +117,27 @@ const Header = () => {
         },
         title: t("Nav.administration.title"),
       },
+      supports:{
+        link: {
+          search: {
+            name: t("Common.supports"),
+            link: "/business/Support/search",
+          },
+          bag: {
+            name: t("support.contractSupport"),
+            link: "/business/Support/contract/create",
+          },
+          contract: {
+            name: t("support.bagholder"),
+            link: "/business/Support/bag/create",
+          },
+          onDemand:{
+            name:t("support.onDemandSupport"),
+            link: "/business/Support/onDemand/create"
+          }
+        },
+        title: t("Common.supports"),
+      }
     },
   };
 

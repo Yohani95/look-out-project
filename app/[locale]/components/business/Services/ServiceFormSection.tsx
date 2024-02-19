@@ -10,6 +10,7 @@ import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerso
 import { addMonths, set } from "date-fns";
 import { Button } from "react-bootstrap";
 import { FaFileDownload } from "react-icons/fa";
+import { Usuario } from "@/app/api/models/admin/Usuario";
 function ServiceFormSection({
   proyectoModel,
   setProyecto,
@@ -22,6 +23,7 @@ function ServiceFormSection({
   const [contactOptions, setContactOptions] = useState([]);
   const fileInputRefs = [useRef(null), useRef(null)];
   const { data: session, status } = useSession();
+  const user = session?.user as Usuario;
   const openFileDialog = (index) => {
     fileInputRefs[index].current.click();
   };
@@ -38,7 +40,7 @@ function ServiceFormSection({
     if (session) {
       setProyecto((prevData) => ({
         ...prevData,
-        kamId: session.user.persona.id,
+        kamId: user.persona.id,
       }));
     }
   }, [session]);
@@ -60,10 +62,7 @@ function ServiceFormSection({
      Seccion Funciones de componente
      =================================================================================
   */
-  const goContactCreate = () => {
-    router.push("/contact/create");
-  };
-  const handleFileChange = (event) => {
+  const handleFileChange = (event,fileindex) => {
     const { name, files } = event.target;
     setFormData({
       ...formData,
@@ -103,7 +102,7 @@ function ServiceFormSection({
         <div className="col-sm-3">
           <span className="form-control">
             {session
-              ? `${session.user.persona.perNombres} ${session.user.persona.perApellidoPaterno}`
+              ? `${user.persona.perNombres} ${user.persona.perApellidoPaterno}`
               : ""}
           </span>
         </div>
@@ -174,7 +173,7 @@ function ServiceFormSection({
           <button
             type="button"
             className="badge btn btn-primary"
-            onClick={goContactCreate}
+          //onClick={goContactCreate}
           >
             {t.Common.add} (+)
           </button>
@@ -220,21 +219,20 @@ function ServiceFormSection({
             <button
               type="button"
               className="badge btn btn-success"
-              onClick={() => openFileDialog(0)} // Abre el cuadro de diálogo del primer archivo
+              onClick={() => openFileDialog(0)}
             >
               {t.Common.uploadFile}
             </button>
             {formData.file1 && (
               <>
-                <Button
-                  className=""
-                  variant="link"
-                  href={formData.file1 && URL.createObjectURL(formData.file1)}
-                  download={formData.file1 && formData.file1.name}
+                <a
+                  className="btn btn-link"
+                  href={URL.createObjectURL(formData.file1)}
+                  download={formData.file1.name}
                 >
                   <span>{t.Common.downloadFile}</span>
-                  <FaFileDownload size={18} className="link" beat />
-                </Button>
+                  <FaFileDownload size={18} className="link" />
+                </a>
               </>
             )}
           </div>
@@ -265,24 +263,24 @@ function ServiceFormSection({
             <button
               type="button"
               className="badge btn btn-success"
-              onClick={() => openFileDialog(1)} // Abre el cuadro de diálogo del segundo archivo
+              onClick={() => openFileDialog(1)}
             >
               {t.Common.uploadFile}
             </button>
             {formData.file2 && (
               <>
-                <Button
-                  className=""
-                  variant="link"
-                  href={formData.file2 && URL.createObjectURL(formData.file2)}
-                  download={formData.file2 && formData.file2.name}
+                <a
+                  className="btn btn-link"
+                  href={URL.createObjectURL(formData.file2)}
+                  download={formData.file2.name}
                 >
                   <span>{t.Common.downloadFile}</span>
-                  <FaFileDownload size={18} className="link" beat />
-                </Button>
+                  <FaFileDownload size={18} className="link" />
+                </a>
               </>
             )}
           </div>
+
         </div>
       </div>
       <hr />
@@ -353,7 +351,7 @@ function ServiceFormSection({
           onChange={(e) => handleSelectChange(e, "monId", setProyecto)}
           selectedValue={proyectoModel.monId}
         />
-          <SelectField
+        <SelectField
           label={`${t.Ficha.type} ${t.Nav.facture.billing}`}
           options={data.tiposFacturas}
           preOption={t.Account.select}

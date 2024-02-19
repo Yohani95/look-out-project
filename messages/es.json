@@ -1,17 +1,18 @@
 {
   "Common": {
+    "supports": "Soporte",
     "pay": "Pagar",
     "total": "Total",
     "absentDays": "Días Ausentes",
     "workedDays": "Días Trabajados",
     "totalDays": "Total de días",
     "dailyAmount": "Monto Diario",
-    "billingType":"¿Facturación día hábil?",
-    "closed":"Cerrado",
-    "preclosed":"Pre-Cierre",
+    "billingType": "¿Facturación día hábil?",
+    "closed": "Cerrado",
+    "preclosed": "Pre-Cierre",
     "actions": "Acciones",
-    "yes":"Sí",
-    "no":"No",
+    "yes": "Sí",
+    "no": "No",
     "KPAZ": "KPAZ",
     "close": "Cierre",
     "welcomeMessage": "¡Bienvenido a mi aplicación de software!",
@@ -121,7 +122,7 @@
     "date": "Fecha",
     "milestone": "Hito",
     "reassign": "Reasignar",
-    "unassign":"Desasignar",
+    "unassign": "Desasignar",
     "services": "Servicios",
     "service": "Servicio",
     "coordinator": "Coordinador",
@@ -143,19 +144,19 @@
     "giro": "Giro",
     "lastName": "Apellido Paterno",
     "secondName": "Apellido Materno",
-    "lastNames":"Apellidos",
+    "lastNames": "Apellidos",
     "phones": "teléfonos",
     "emailExist": "El email ya existe.",
     "perfil": "Perfil",
     "correlative": "Correlativo",
-    "FieldsAreRequired":"Los campos son obligatorios.",
-    "phoneExist":"El Teléfono ya existe.",
-    "commune":"Comuna",
-    "number":"Número",
-    "blockAddress":"Block (opcional)",
-    "birthDay":"Fecha Nacimiento",
-    "dateAssignment":"Fecha Asignación",
-    "noDocument":"Sin documentos"
+    "FieldsAreRequired": "Los campos son obligatorios.",
+    "phoneExist": "El Teléfono ya existe.",
+    "commune": "Comuna",
+    "number": "Número",
+    "blockAddress": "Block (opcional)",
+    "birthDay": "Fecha Nacimiento",
+    "dateAssignment": "Fecha Asignación",
+    "noDocument": "Sin documentos"
   },
   "Index": {
     "title": "HOLA!"
@@ -324,7 +325,7 @@
     "projectList": "Lista de Proyectos",
     "dateStart": "Fecha Inicio",
     "dateEnd": "Fecha Término",
-    "datecut":"Fecha de Corte",
+    "datecut": "Fecha de Corte",
     "businessClosing": "Cierre Comercial",
     "estimatedTerm": "Plazo Estimado",
     "ClosingDate": "Fecha de Cierre",
@@ -349,7 +350,7 @@
     "dateTo": "Fecha Hasta",
     "dateFrom": "Fecha Desde",
     "historyNovelty": "Historial de Novedades",
-    "periodDetails":"Detalles Período"
+    "periodDetails": "Detalles Período"
   },
   "facture": {
     "billingDetails": "Detalles facturación",
@@ -429,17 +430,22 @@
       "buttonCancel": "Cancelar"
     }
   },
-  "time":{
-    "month":"Mes",
-    "week":"Semana",
-    "hour":"Hora"
+  "time": {
+    "month": "Mes",
+    "week": "Semana",
+    "hour": "Hora"
   },
   "ValidationMessages": {
     "required": "Este campo es obligatorio.",
     "maxLength": "El valor ingresado supera la longitud máxima permitida."
   },
-  "Export":{
+  "Export": {
     "exportAllRows": "Exportar todas las filas (PDF)",
     "exportPageRows": "Exportar solo Página (PDF)"
+  },
+  "support": {
+    "contractSupport": "Soporte Contrato",
+    "bagholder": "Soporte Bolsa",
+    "onDemandSupport": "Soporte On Demand"
   }
 }

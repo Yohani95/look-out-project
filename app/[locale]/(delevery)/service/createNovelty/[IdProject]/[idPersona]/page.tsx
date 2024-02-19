@@ -18,7 +18,6 @@ async function page({ params }) {
       fechaInicio:new Date(item.fechaInicio).toLocaleDateString("es-CL")|| 'N/A',
       IdPerfil: item.perfil?  item.perfil.nombre: 'N/A'
     }));
-    console.log(updatedData)
     return updatedData;
   });
   return (
