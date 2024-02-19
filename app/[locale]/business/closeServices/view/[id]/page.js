@@ -16,6 +16,7 @@ async function page({ params }) {
   const data = await GetData();
   const { proyecto, archivos } = await fetchServiceById(params.id, t);
   const tiposFacturas=await getAllTipoFacturacion();
+  const result=`${tarifarioGetByIdProyectoApiUrl}/${params.id}`;
   data.tarifarios = await fetch(
     `${tarifarioGetByIdProyectoApiUrl}/${params.id}`,
     {

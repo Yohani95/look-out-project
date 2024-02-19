@@ -14,7 +14,7 @@ const MyNav = ({ t, locale }) => {
   let translations;
   translations = require(`@/messages/${locale}.json`);
   const handleLogout = async () => {
-    await signOut({ redirect: false,callbackUrl: '/' }); // Redirigir a la página de inicio
+    await signOut({ callbackUrl: '/' }); // Redirigir a la página de inicio
   };
   return (
     <>
@@ -52,13 +52,13 @@ const MyNav = ({ t, locale }) => {
                     </Link>
                   </Nav.Item>
                   <CommonDropDown
-                    t={t.namesMenu.project}
-                    title={t.namesMenu.project.title}
+                    t={t.namesMenu.supports}
+                    title={t.namesMenu.supports.title}
                   />
-                  <CommonDropDown
+                  {/* <CommonDropDown
                     t={t.namesMenu.service}
                     title={t.namesMenu.service.title}
-                  />
+                  /> */}
                   <CommonDropDown
                     t={t.namesMenu.facture}
                     title={t.namesMenu.facture.title}

@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, ModalFooter } from "react-bootstrap";
 import { useFormik } from "formik";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import { FaCartPlus, FaDollarSign, FaEye } from "react-icons/fa";
+import { FaCartPlus, FaDollarSign, FaEye, FaFileDownload } from "react-icons/fa";
 import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "react-tooltip";
@@ -11,8 +11,10 @@ import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
 import { documentoFacturaApiUrl } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { revalidateDataFacturaPeriodo, updateFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
-const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
+const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFactura }) => {
+  console.log(periodoFactura.documentosFactura)
   const validationSchema = DocumentoFactura.getValidationSchema(t);
+  let factura = periodoFactura as FacturaPeriodo
   const formik = useFormik({
     initialValues: new DocumentoFactura(),
     validationSchema,
@@ -90,6 +92,16 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo }) => {
         <Modal.Title>Ingresa los datos</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <div>
+          <div>
+            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.rut}:</strong> {factura.rut}</p>
+            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.name}:</strong> {factura.razonSocial}</p>
+          </div>
+          <div>
+            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.amount}</strong>: {factura.monto}</p>
+          </div>
+        </div>
+        <hr />
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="archivo">
             <Form.Label>{t.Common.uploadFile}</Form.Label>
@@ -140,6 +152,8 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
   const handleAddDocument = () => {
     setShowModal(true);
   };
+  console.log(periodoFactura);
+console.log(periodoFactura.documentosFactura);
 
   const handleClose = () => {
     setShowModal(false);
@@ -154,8 +168,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
         t.notification.bill.buttonOk,
         t.notification.bill.buttonCancel
       );
-      if (!result) 
-      {
+      if (!result) {
         return;
       }
       const factura = periodoFactura;
@@ -194,7 +207,30 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
     }
   };
 
+  const downloadDocumento = (documento) => {
+    console.log(documento.contenidoDocumento)
+    const uint8Array = new Uint8Array(atob(documento.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
 
+    const blob = new Blob([uint8Array], { type: 'application/pdf' });
+
+    // Crea una URL de objeto para el Blob
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Crea un enlace (a) para descargar el Blob
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = documento.nombreDocumento; // Ajusta el nombre del archivo según tus necesidades
+
+    // Agrega el enlace al documento y simula un clic para iniciar la descarga
+    document.body.appendChild(link);
+    link.click();
+
+    // Elimina el enlace después de la descarga
+    document.body.removeChild(link);
+
+    // Liberar recursos
+    URL.revokeObjectURL(blobUrl);
+  };
   return (
     <>
       {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA ?
@@ -230,7 +266,23 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
           {t.facture.billingDetails}
         </Tooltip>
       </Button>
-      <ModalForm idPeriodo={idPeriodo} idFactura={idFactura} t={t} showModal={showModal} handleClose={handleClose} />
+
+      {periodoFactura.documentosFactura.length > 0 && (
+        <Button
+          variant="link"
+          onClick={() => downloadDocumento(periodoFactura.documentosFactura[0])}
+          //disabled={!periodoFactura.documentosFactura[0] || !periodoFactura.documentosFactura[0].contenidoDocumento}
+          style={{ fontSize: periodoFactura.documentosFactura[0] ? '14px' : '14px' }}
+          className='descargar'
+        >
+          <FaFileDownload  size={16}  />
+          <Tooltip anchorSelect='.descargar' >
+            {t.Common.downloadFile}
+          </Tooltip>
+        </Button>
+      )}
+
+      <ModalForm periodoFactura={periodoFactura} idPeriodo={idPeriodo} idFactura={idFactura} t={t} showModal={showModal} handleClose={handleClose} />
     </>
   );
 };

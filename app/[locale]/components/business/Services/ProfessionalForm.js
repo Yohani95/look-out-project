@@ -278,8 +278,6 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     return periods;
   };
   
-  
-  
   const handle = (selectedOption) => {
     if (selectedOption == ""|| selectedOption==null) {
       setTablaCommon(data); // Establecer la data completa
