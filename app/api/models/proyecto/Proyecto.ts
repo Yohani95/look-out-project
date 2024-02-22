@@ -29,6 +29,7 @@ class Proyecto {
   facturacionDiaHabil: number | null;
   idTipoFacturacion: number | null;
   tipoFacturacion: TipoFacturacion | null;
+  idDiaPago: number| null;
 
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
@@ -46,6 +47,7 @@ class Proyecto {
     this.months = data?.months || 1;
     this.facturacionDiaHabil = data?.facturacionDiaHabil || 0;
     this.idTipoFacturacion = data?.idTipoFacturacion || 0;
+    this.idDiaPago = data?.idDiaPago || 0;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;

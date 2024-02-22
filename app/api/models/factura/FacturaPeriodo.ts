@@ -164,7 +164,7 @@ class FacturaPeriodo {
       },
       {
         accessorKey: "observaciones",
-        header: `observaciones`,
+        header: t.Common.observations,
         size: 50,
       },
       // {

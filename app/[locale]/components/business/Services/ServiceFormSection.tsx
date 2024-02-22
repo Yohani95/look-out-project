@@ -374,6 +374,17 @@ function ServiceFormSection({
           />
         </div>
       </div>
+      <div className="mb-3 row align-items-center">
+      <SelectField
+          label={t.Common.payday}
+          options={data.diaPagos}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "idDiaPago", setProyecto)}
+          selectedValue={proyectoModel.idDiaPago}
+        />
+      </div>
     </>
   );
 }

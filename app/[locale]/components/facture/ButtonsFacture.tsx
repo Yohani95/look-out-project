@@ -97,6 +97,9 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
             <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.name}:</strong> {factura.razonSocial}</p>
           </div>
           <div>
+            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.observations}</strong>: {factura.observaciones}</p>
+          </div>
+          <div>
             <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.amount}</strong>: {factura.monto}</p>
           </div>
         </div>
@@ -122,7 +125,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
           </Form.Group>
 
           <Form.Group controlId="fecha">
-            <Form.Label>{t.Common.date} {t.Common.expiration}</Form.Label>
+            <Form.Label>{t.Common.date} Emisión</Form.Label>
             <Form.Control
               type="date"
               value={formik.values?.fecha ? new Date(formik.values.fecha).toISOString().split('T')[0] : ''}
