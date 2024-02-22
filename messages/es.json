@@ -1,5 +1,6 @@
 {
   "Common": {
+    "payday":"Dias a pago",
     "supports": "Soporte",
     "pay": "Pagar",
     "total": "Total",
@@ -439,7 +440,7 @@
     "required": "Este campo es obligatorio.",
     "maxLength": "El valor ingresado supera la longitud máxima permitida."
   },
-  "Export": {
+  "Export": { 
     "exportAllRows": "Exportar todas las filas (PDF)",
     "exportPageRows": "Exportar solo Página (PDF)"
   },

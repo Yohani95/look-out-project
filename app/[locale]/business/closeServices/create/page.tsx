@@ -5,12 +5,16 @@ import { GetData } from "@/app/[locale]/utils/business/UtilsService";
 import ServiceCreate from "../../../components/business/Services/ServiceCreate";
 import { getAllTipoFacturacion  } from "@/app/api/actions/factura/TipoFacturacionActions";
 import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
+import { getAllDiaPagos } from "@/app/api/actions/factura/DiaPagosActions";
+import DiaPagos from "@/app/api/models/factura/DiaPagos";
 async function page() {
   const locale = useLocale();
   const tiposFacturas=await getAllTipoFacturacion() as TipoFacturacion[];
+  const diaPagos=await getAllDiaPagos() as DiaPagos[];
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
+  data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
   return (
     <BasePages title={t.Nav.business.insertServices}>
       <ServiceCreate locale={locale} data={data} t={t}/>
