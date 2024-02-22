@@ -10,6 +10,8 @@ import ProfessionalForm from "@/app/[locale]//components/business/Services/Profe
 import Link from "next/link";
 import { getAllTipoFacturacion } from "@/app/api/actions/factura/TipoFacturacionActions";
 import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
+import { getAllDiaPagos } from "@/app/api/actions/factura/DiaPagosActions";
+import DiaPagos from "@/app/api/models/factura/DiaPagos";
 async function page({ params }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -40,7 +42,9 @@ async function page({ params }) {
     }));
     return tarifas;
   });
+  const diaPagos=await getAllDiaPagos() ;
   data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
+  data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
   return (
     <BasePages title={t.business.title}>
       <fieldset disabled>

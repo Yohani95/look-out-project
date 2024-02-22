@@ -11,6 +11,8 @@ import { tarifarioGetByIdProyectoApiUrl } from "@/app/api/apiConfig";
 import { Constantes } from "@/app/api/models/common/Constantes";
 import { getAllTipoFacturacion } from "@/app/api/actions/factura/TipoFacturacionActions";
 import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
+import { getAllDiaPagos } from "@/app/api/actions/factura/DiaPagosActions";
+import DiaPagos from "@/app/api/models/factura/DiaPagos";
 async function page({ params }) {
   const tiposFacturas=await getAllTipoFacturacion();
   const locale = useLocale();
@@ -40,7 +42,9 @@ async function page({ params }) {
     }));
     return tarifas;
   });
+  const diaPagos=await getAllDiaPagos();
   data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
+  data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
   return (
     <BasePages title={t.business.title}>
       <ServiceEdit
