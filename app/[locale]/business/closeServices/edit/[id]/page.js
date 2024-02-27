@@ -13,6 +13,8 @@ import { getAllTipoFacturacion } from "@/app/api/actions/factura/TipoFacturacion
 import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
 import { getAllDiaPagos } from "@/app/api/actions/factura/DiaPagosActions";
 import DiaPagos from "@/app/api/models/factura/DiaPagos";
+import { getAllEmpresaPrestadora } from "@/app/api/actions/proyecto/EmpresaPrestadoraActions";
+import EmpresaPrestadora from "@/app/api/models/proyecto/EmpresaPrestadora";
 async function page({ params }) {
   const tiposFacturas=await getAllTipoFacturacion();
   const locale = useLocale();
@@ -43,8 +45,10 @@ async function page({ params }) {
     return tarifas;
   });
   const diaPagos=await getAllDiaPagos();
+  const empresaPrestadora=await getAllEmpresaPrestadora();
   data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
   data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
+  data.empresaPrestadora=empresaPrestadora.map((empresa)=>{return new EmpresaPrestadora(empresa).getSelectOptions()});
   return (
     <BasePages title={t.business.title}>
       <ServiceEdit

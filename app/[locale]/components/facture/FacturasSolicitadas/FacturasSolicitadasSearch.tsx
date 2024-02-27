@@ -7,25 +7,20 @@ import ButtonsFacture from '../ButtonsFacture';
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import { Tooltip } from 'react-tooltip';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function FacturasSolicitadasSearch({ t, facturas }) {
+function FacturasSolicitadasSearch({ t, facturas,monedas }) {
   const columns = useMemo(() => FacturaPeriodo.createColumnsFacturas(t), [t]);
   const toggleObservaciones = (observaciones) => {
     setObservacionesModal(observaciones);
     setShowModal(!showModal);
   };
-  
-  
   const [showModal, setShowModal] = useState(false);
-const [observacionesModal, setObservacionesModal] = useState('');
-
-  
-
+  const [observacionesModal, setObservacionesModal] = useState('');
   const memoizedFacturaActions = useMemo(() => {
     return facturas.map((factura, index) => ({
       ...FacturaPeriodo.transformFacturaPeriodoData(factura),
       _hito: new PeriodosProyecto(factura.periodo).getPeriodoCompleto(),
       actions: (
-        <ButtonsFacture t={t} idFactura={factura.id} idPeriodo={factura.idPeriodo} periodoFactura={factura} />
+        <ButtonsFacture t={t} idFactura={factura.id} idPeriodo={factura.idPeriodo} periodoFactura={factura} monedas={monedas} />
       ),
       observaciones: (
         <div>
@@ -37,6 +32,7 @@ const [observacionesModal, setObservacionesModal] = useState('');
       )
     }));
   }, [facturas, t]);
+
   return (
     <>
       <h4 className='mb-3'>{t.Nav.facture.billing}</h4> 

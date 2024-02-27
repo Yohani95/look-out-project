@@ -11,7 +11,12 @@ import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
 import { documentoFacturaApiUrl } from "@/app/api/apiConfig";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { revalidateDataFacturaPeriodo, updateFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
-const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFactura }) => {
+import {
+  handleSelectChange,
+  handleInputChange,
+} from "@/app/[locale]/utils/Form/UtilsForm";
+import SelectField from "@/app/[locale]/components/common/SelectField";
+const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFactura, monedas }) => {
   const validationSchema = DocumentoFactura.getValidationSchema(t);
   let factura = periodoFactura as FacturaPeriodo
   const formik = useFormik({
@@ -84,7 +89,6 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
       }
     },
   });
-
   return (
     <Modal show={showModal} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -138,7 +142,48 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
                 Array.isArray(formik.errors.fecha) ? formik.errors.fecha.join(', ') : ''}
             </Form.Control.Feedback>
           </Form.Group>
-
+          <Form.Group controlId="moneda">
+          <div className=" row align-items-center">
+          <SelectField
+              label={`${t.Ficha.type} ${t.Common.currency}`}
+              options={monedas}
+              preOption={t.Account.select}
+              labelClassName="col-sm-2 col-form-label"
+              divClassName="col-sm-4"
+              onChange={(e) => handleSelectChange(e, "idTipoMoneda", formik.setValues)}
+              selectedValue={formik.values.idTipoMoneda}
+              isInvalid={formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda}
+            />
+          </div>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.idTipoMoneda}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="monto">
+          <Form.Label>{t.Common.amount}</Form.Label>
+          <Form.Control
+              type="text" // Cambiado a tipo "text" para permitir decimales
+              className="form-control"
+              name="monto"
+              id="monto"
+              value={formik.values.monto}
+              isInvalid={formik.touched.monto && !!formik.errors.monto}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                // Validar que el valor ingresado sea un número decimal
+                if (/^\d*\.?\d*$/.test(inputValue)) {
+                  // Actualizar el estado con el nuevo valor si es válido
+                  formik.setValues({
+                    ...formik.values,
+                    monto: parseFloat(inputValue),
+                  });
+                }
+              }}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.monto}
+            </Form.Control.Feedback>
+          </Form.Group>
           <Button className="mt-2" variant="primary" type="submit">
             {t.Common.submit}
           </Button>
@@ -148,7 +193,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
   );
 };
 
-const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
+const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const handleAddDocument = () => {
@@ -272,14 +317,14 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura }) => {
           style={{ fontSize: periodoFactura.documentosFactura[0] ? '14px' : '14px' }}
           className='descargar'
         >
-          <FaFileDownload  size={16}  />
+          <FaFileDownload size={16} />
           <Tooltip anchorSelect='.descargar' >
             {t.Common.downloadFile}
           </Tooltip>
         </Button>
       )}
 
-      <ModalForm periodoFactura={periodoFactura} idPeriodo={idPeriodo} idFactura={idFactura} t={t} showModal={showModal} handleClose={handleClose} />
+      <ModalForm periodoFactura={periodoFactura} idPeriodo={idPeriodo} idFactura={idFactura} t={t} showModal={showModal} handleClose={handleClose} monedas={monedas} />
     </>
   );
 };
