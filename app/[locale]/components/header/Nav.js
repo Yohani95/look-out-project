@@ -16,7 +16,7 @@ const MyNav = ({ t, locale }) => {
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/' }); // Redirigir a la página de inicio
   };
-  console.log(t.namesMenu.supports)
+
   return (
     <>
       <Navbar

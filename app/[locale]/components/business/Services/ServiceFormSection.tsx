@@ -62,7 +62,7 @@ function ServiceFormSection({
      Seccion Funciones de componente
      =================================================================================
   */
-  const handleFileChange = (event,fileindex) => {
+  const handleFileChange = (event, fileindex) => {
     const { name, files } = event.target;
     setFormData({
       ...formData,
@@ -375,7 +375,7 @@ function ServiceFormSection({
         </div>
       </div>
       <div className="mb-3 row align-items-center">
-      <SelectField
+        <SelectField
           label={t.Common.payday}
           options={data.diaPagos}
           preOption={t.Account.select}
@@ -383,6 +383,15 @@ function ServiceFormSection({
           divClassName="col-sm-2"
           onChange={(e) => handleSelectChange(e, "idDiaPago", setProyecto)}
           selectedValue={proyectoModel.idDiaPago}
+        />
+        <SelectField
+          label={"Empresa Prestadora"}
+          options={data.empresaPrestadora}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, "idEmpresaPrestadora", setProyecto)}
+          selectedValue={proyectoModel.idEmpresaPrestadora}
         />
       </div>
     </>

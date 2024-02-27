@@ -5,6 +5,7 @@ import Pais from "../world/Pais";
 import Persona from "../admin/Persona";
 import TipoFacturacion from "../factura/TipoFacturacion";
 import { format } from 'date-fns';
+import EmpresaPrestadora from "./EmpresaPrestadora";
 class Proyecto {
   pryId: number | null;
   pryNombre: string | null;
@@ -30,7 +31,8 @@ class Proyecto {
   idTipoFacturacion: number | null;
   tipoFacturacion: TipoFacturacion | null;
   idDiaPago: number| null;
-
+  idEmpresaPrestadora:number|null;
+  empresaPrestadora: EmpresaPrestadora | null;
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || "";
@@ -48,6 +50,8 @@ class Proyecto {
     this.facturacionDiaHabil = data?.facturacionDiaHabil || 0;
     this.idTipoFacturacion = data?.idTipoFacturacion || 0;
     this.idDiaPago = data?.idDiaPago || 0;
+    this.idEmpresaPrestadora= data?.idEmpresaPrestadora || 0;
+    this.empresaPrestadora=data?.empresaPrestadora|| null;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;

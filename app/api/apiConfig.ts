@@ -137,3 +137,6 @@ export const documentoFacturaApiUrl=`${apiBaseUrl}/documentoFactura`;
 
 //DiaPagos
 export const DiaPagosApiUrl=`${apiBaseUrl}/diaPagos`;
+
+
+export const EmpresaPrestadoraApiUrl=`${apiBaseUrl}/empresaPrestadora`;

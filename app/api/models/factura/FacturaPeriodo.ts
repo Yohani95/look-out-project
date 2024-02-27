@@ -163,6 +163,11 @@ class FacturaPeriodo {
         size: 50,
       },
       {
+        accessorKey: "periodo.proyecto.empresaPrestadora.nombre",
+        header: `EmpresaPrestadora`,
+        size: 50,
+      },
+      {
         accessorKey: "observaciones",
         header: t.Common.observations,
         size: 50,
