@@ -6,6 +6,7 @@ import Persona from "../admin/Persona";
 import TipoFacturacion from "../factura/TipoFacturacion";
 import { format } from 'date-fns';
 import EmpresaPrestadora from "./EmpresaPrestadora";
+import DiaPagos from "../factura/DiaPagos";
 class Proyecto {
   pryId: number | null;
   pryNombre: string | null;
@@ -33,6 +34,7 @@ class Proyecto {
   idDiaPago: number| null;
   idEmpresaPrestadora:number|null;
   empresaPrestadora: EmpresaPrestadora | null;
+  diaPagos:DiaPagos| null;
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || "";
@@ -58,6 +60,7 @@ class Proyecto {
     this.pais = data?.pais || null;
     this.contacto = data?.contacto || null;
     this.tipoFacturacion = data?.tipoFacturacion || null;
+    this.diaPagos=data?.diaPagos|| null;
     // Manejo de fechas
     this.pryFechaInicioEstimada = this.isValidDate(data?.pryFechaInicioEstimada)
       ? new Date(data.pryFechaInicioEstimada)

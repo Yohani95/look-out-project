@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import Proyecto from "./Proyecto";
 import { format } from 'date-fns';
+import DiaPagos from "../factura/DiaPagos";
 class PeriodosProyecto {
   id: number | null;
   pryId: number | null;
@@ -11,7 +12,6 @@ class PeriodosProyecto {
   numeroProfesionales: number | null;
   diasTotal : number | null;
   proyecto: Proyecto | null;
-
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.pryId = data?.pryId || null;

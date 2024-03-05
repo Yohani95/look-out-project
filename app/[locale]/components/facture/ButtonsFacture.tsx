@@ -30,6 +30,19 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
           type: t.notification.loading.type,
           showLoading: true,
         });
+        const addDias = factura.periodo.proyecto.diaPagos.dia;
+        const fecha = new Date(values.fecha);
+        fecha.setDate(fecha.getDate() + addDias);
+
+        const year = fecha.getFullYear();
+        const month = ('0' + (fecha.getMonth() + 1)).slice(-2);
+        const day = ('0' + fecha.getDate()).slice(-2);
+
+        const formattedFecha = `${year}-${month}-${day}`;
+
+        // Inyectar la fecha formateada en el objeto values
+        values.fecha = new Date(fecha);
+
         // Lógica para manejar el envío del formulario
         values.idFactura = idFactura;
         // Crear un nuevo FileReader
@@ -48,7 +61,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
         values.contenidoDocumento = base64String;
         // Enviar el documento al servidor
         delete values.archivo;
-        await fetch(`${documentoFacturaApiUrl}/AddDocumento/${values.fecha}/${idFactura}`, {
+        await fetch(`${documentoFacturaApiUrl}/AddDocumento/${formattedFecha}/${idFactura}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -105,6 +118,8 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
           </div>
           <div>
             <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.amount}</strong>: {factura.monto}</p>
+            <p style={{ display: 'inline', marginRight: '1em' }}><strong>OC</strong>: {factura.ocCodigo}</p>
+            <p style={{ display: 'inline', marginRight: '1em' }}><strong>HES</strong>: {factura.hesCodigo}</p>
           </div>
         </div>
         <hr />
@@ -143,25 +158,25 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="moneda">
-          <div className=" row align-items-center">
-          <SelectField
-              label={`${t.Ficha.type} ${t.Common.currency}`}
-              options={monedas}
-              preOption={t.Account.select}
-              labelClassName="col-sm-2 col-form-label"
-              divClassName="col-sm-4"
-              onChange={(e) => handleSelectChange(e, "idTipoMoneda", formik.setValues)}
-              selectedValue={formik.values.idTipoMoneda}
-              isInvalid={formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda}
-            />
-          </div>
+            <div className=" row align-items-center">
+              <SelectField
+                label={`${t.Ficha.type} ${t.Common.currency}`}
+                options={monedas}
+                preOption={t.Account.select}
+                labelClassName="col-sm-2 col-form-label"
+                divClassName="col-sm-4"
+                onChange={(e) => handleSelectChange(e, "idTipoMoneda", formik.setValues)}
+                selectedValue={formik.values.idTipoMoneda}
+                isInvalid={formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda}
+              />
+            </div>
             <Form.Control.Feedback type="invalid">
               {formik.errors.idTipoMoneda}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="monto">
-          <Form.Label>{t.Common.amount}</Form.Label>
-          <Form.Control
+            <Form.Label>{t.Common.amount}</Form.Label>
+            <Form.Control
               type="text" // Cambiado a tipo "text" para permitir decimales
               className="form-control"
               name="monto"
