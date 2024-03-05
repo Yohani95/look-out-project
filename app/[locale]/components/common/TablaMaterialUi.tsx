@@ -46,49 +46,75 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
   const handleExportRows = (rows: any[]) => {
     const doc = new jsPDF();
     const tableHeaders = columns.map((c) => c.header);
-    const tableData = rows.map((row) =>
-    columns
-      .filter((column) => {
-        // Excluir la columna "actions", las columnas que contienen objetos y las columnas '_documento'
-        const cellValue = row.original[column.accessorKey];
-        return column.accessorKey !== 'actions' && !(typeof cellValue === 'object');
-      })
-      .map((column) => row.original[column.accessorKey]) // No necesitas verificar si cellValue es un objeto aquí, ya que ya lo has excluido en el filtro
-  );
-  
-  const filteredHeaders = tableHeaders.filter((header, index) => {
-    const accessorKey = columns[index].accessorKey;
-    // Excluir si el accessorKey es 'actions' o '_documento'
-    if (accessorKey === 'actions') {
-      return false;
-    }
-    // Excluir si alguna de las filas contiene un objeto en esta columna
-    for (const row of rows) {
-      if (typeof row.original[accessorKey] === 'object') {
-        return false;
+    // Función auxiliar para acceder a propiedades anidadas de forma segura
+    const getNestedValue = (obj, accessorKey) => {
+      return accessorKey.split('.').reduce((acc, key) => acc && acc[key] !== 'undefined' ? acc[key] : '', obj);
+    };
+    
+    const getTextValue = (element) => {
+
+      if (typeof element != 'object') {
+        console.log(element)
+        return element;
       }
-    }
-    // Incluir la columna si no se excluyó por las razones anteriores
-    return true;
-  });
+      
+      if (element.props && element.props.children) {
+        const children = Array.isArray(element.props.children) ? element.props.children : [element.props.children];
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+          if (typeof child === 'string') {
+            console.log(child)
+            return child.replace(/\\n/g, '\n'); // Reemplazar '\n' con salto de línea
+          }
+        }
+      }
+    };
+    
+    
+    
+    const tableData = rows.map((row) =>
+      columns
+        .filter((column) => {
+          const cellValue = getNestedValue(row.original, column.accessorKey);
+          return !(typeof cellValue === 'object' && (cellValue.isButton || cellValue.isDocumento)) && column.accessorKey !== 'actions';
+        })
+        .map((column) => {
+          const cellValue = getNestedValue(row.original, column.accessorKey);
+          const textValue = getTextValue(cellValue);
+          return typeof cellValue === 'object' && !(cellValue.isButton || cellValue.isDocumento) ? (cellValue.girNombre || cellValue.eclNombre || '') : textValue;
+        })
+    );
+    
+    const filteredHeaders = tableHeaders.filter((header, index) => {
+      const accessorKey = columns[index].accessorKey;
+      return accessorKey !== 'actions' && !rows.some(row => typeof row.original[accessorKey] === 'object' && (row.original[accessorKey].isButton || row.original[accessorKey].isDocumento));
+    });
+    
+
+
+
+
     // Agregar el título de la empresa
     doc.setFontSize(22);
     //console.log(LOGO.src);
     //doc.addImage(LOGO.src, 'PNG', 15, 15, 30, 30);
+    doc.setTextColor(47, 75, 206); // Color #2f4bce en RGB
     doc.text('KPAZ', 15, 15);
-  
+    doc.setTextColor(0); // Restaurar el color por defecto (negro)
+
     // Agregar la fecha de emisión
     doc.setFontSize(14);
-    const date = new Date();
-    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
     doc.text(`Fecha de emisión: ${formattedDate}`, 15, 25);
-  
+
     autoTable(doc, {
       startY: 30, // Asegúrate de que la tabla comienza debajo del encabezado y la fecha de emisión
       head: [filteredHeaders],
       body: tableData,
     });
-    doc.save('my-table.pdf');
+    
+    doc.save(`Mi-Tabla-${formattedDate}.pdf`);
   };
 
   const Table = () => {
