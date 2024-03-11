@@ -13,6 +13,7 @@ async function page({params}) {
   const periodo = await getPeriodoProyecto(params.id) as PeriodosProyecto;
   //facturasPeriodo
   const facturas=await getFacturaPeriodoByIdPeriodo(periodo.id) as FacturaPeriodo[];
+  console.log(facturas)
   return (
     <>
       <BasePages title={t.Nav.facture.requestBilling} >

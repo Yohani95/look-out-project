@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form, ModalFooter } from "react-bootstrap";
 import { useFormik } from "formik";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import { FaCartPlus, FaDollarSign, FaEye, FaFileDownload } from "react-icons/fa";
+import { FaCartPlus, FaDollarSign, FaEye, FaFileDownload, FaFileUpload } from "react-icons/fa";
 import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "react-tooltip";
@@ -59,6 +59,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
             .reduce((data, byte) => data + String.fromCharCode(byte), '')
         );
         values.contenidoDocumento = base64String;
+        values.idTipoDocumento=DocumentoFactura.TIPO_DOCUMENTO.FACTURA;
         // Enviar el documento al servidor
         delete values.archivo;
         await fetch(`${documentoFacturaApiUrl}/AddDocumento/${formattedFecha}/${idFactura}`, {
@@ -232,7 +233,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
         return;
       }
       const factura = periodoFactura;
-      if (FacturaPeriodo.ESTADO_FACTURA.FACTURADA == factura?.idEstado) {
+      if (FacturaPeriodo.ESTADO_FACTURA.ENVIADA == factura?.idEstado) {
         await NotificationSweet({
           title: t.notification.loading.title,
           text: "",
@@ -264,7 +265,51 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
       });
     }
   };
+  const handleEnviada = async () => {
+    try {
+      const result = await ConfirmationDialog(
+        t.notification.sendBill.title,
+        t.notification.sendBill.text,
+        t.notification.sendBill.type,
+        t.notification.sendBill.buttonOk,
+        t.notification.sendBill.buttonCancel
+      );
+      if (!result) {
+        return;
+      }
+      const factura = periodoFactura;
+      if (FacturaPeriodo.ESTADO_FACTURA.FACTURADA == factura?.idEstado) {
+        await NotificationSweet({
+          title: t.notification.loading.title,
+          text: "",
+          type: t.notification.loading.type,
+          showLoading: true,
+        });
 
+        factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.ENVIADA;
+        delete factura.periodo;
+        delete factura.estado;
+        const res = await updateFacturaPeriodo(factura, idFactura).then((res) => NotificationSweet({
+          title: t.notification.success.title,
+          text: t.notification.success.text,
+          type: t.notification.success.type,
+        })).catch((err) => {
+          NotificationSweet({
+            title: t.notification.error.title,
+            text: t.notification.error.text,
+            type: t.notification.error.type,
+          });
+        });
+      }
+    } catch (error) {
+      console.error("Error en handlePagada:", error);
+      NotificationSweet({
+        title: t.notification.error.title,
+        text: t.notification.error.text,
+        type: t.notification.error.type,
+      });
+    }
+  };
   const downloadDocumento = (documento) => {
     const uint8Array = new Uint8Array(atob(documento.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
 
@@ -288,9 +333,13 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
     // Liberar recursos
     URL.revokeObjectURL(blobUrl);
   };
+  const documentoFactura = periodoFactura.documentosFactura.find((document) => {
+    return document.idTipoDocumento == DocumentoFactura.TIPO_DOCUMENTO.FACTURA;
+  });
   return (
     <>
-      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA ?
+      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA
+        && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.ENVIADA ?
         <Button variant="link" onClick={handleAddDocument}>
           <FaCartPlus size={16} className="canasto" />
           <Tooltip anchorSelect=".canasto" place="top">
@@ -304,18 +353,27 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
           </Tooltip>
         </Button>}
       {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ?
-        <Button variant="link" onClick={handlePagada}>
-          <FaDollarSign className="changeStatus" size={16} />
+        <Button variant="link" onClick={handleEnviada}>
+          <FaFileUpload className="changeStatus" size={16} />
           <Tooltip anchorSelect=".changeStatus" place="top">
-            {t.Common.pay}
+            {t.Common.submit} {t.Common.document}
           </Tooltip>
         </Button> :
-        <Button variant="link" disabled>
-          <FaDollarSign className="changeStatus" size={16} />
-          <Tooltip anchorSelect=".changeStatus" place="top">
-            {t.Common.pay}
-          </Tooltip>
-        </Button>
+
+        periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.ENVIADA ?
+          <Button variant="link" onClick={handlePagada}>
+            <FaDollarSign className="changeStatus" size={16} />
+            <Tooltip anchorSelect=".changeStatus" place="top">
+              {t.Common.pay}
+            </Tooltip>
+          </Button>
+          :
+          <Button variant="link" onClick={handlePagada} disabled>
+            <FaDollarSign className="changeStatus" size={16} />
+            <Tooltip anchorSelect=".changeStatus" place="top">
+              {t.Common.pay}
+            </Tooltip>
+          </Button>
       }
       <Button variant="link" onClick={(e) => router.push(`/facture/create/${idPeriodo}`)}>
         <FaEye size={16} className="detalles" />
@@ -324,12 +382,12 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
         </Tooltip>
       </Button>
 
-      {periodoFactura.documentosFactura.length > 0 && (
+      {documentoFactura && (
         <Button
           variant="link"
-          onClick={() => downloadDocumento(periodoFactura.documentosFactura[0])}
-          //disabled={!periodoFactura.documentosFactura[0] || !periodoFactura.documentosFactura[0].contenidoDocumento}
-          style={{ fontSize: periodoFactura.documentosFactura[0] ? '14px' : '14px' }}
+          onClick={() => downloadDocumento(documentoFactura)}
+          //disabled={!documentoFactura.contenidoDocumento}
+          style={{ fontSize: '14px' }}
           className='descargar'
         >
           <FaFileDownload size={16} />
@@ -338,6 +396,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
           </Tooltip>
         </Button>
       )}
+
 
       <ModalForm periodoFactura={periodoFactura} idPeriodo={idPeriodo} idFactura={idFactura} t={t} showModal={showModal} handleClose={handleClose} monedas={monedas} />
     </>

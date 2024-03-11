@@ -1,5 +1,6 @@
 {
   "Common": {
+    "document":"Documento",
     "payday":"dia do pagamento",
     "supports":"Suporte",
     "pay": "Pagar",
@@ -428,6 +429,13 @@
       "text": "Tem certeza de que pagou a fatura?",
       "type": "info",
       "buttonOk": "Sim, Pagar faturamento",
+      "buttonCancel": "Cancelar"
+    },
+    "sendBill": {
+      "title": "Informações",
+      "text": "Tem certeza que deseja enviar o documento",
+      "type": "info",
+      "buttonOk": "Sim, enviar",
       "buttonCancel": "Cancelar"
     }
   },

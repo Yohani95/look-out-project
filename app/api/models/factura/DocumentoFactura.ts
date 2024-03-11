@@ -12,6 +12,7 @@ class DocumentoFactura {
 
     monto : number  | null;
     idTipoMoneda:number | null;
+    idTipoDocumento:number|null;
     constructor(data?: any) {
       this.id = data?.id || 0;
       this.idFactura = data?.idFactura || 0;
@@ -21,6 +22,7 @@ class DocumentoFactura {
       this.fecha = data?.fecha || '';
       this.monto=data?.monto || null;
       this.idTipoMoneda=data?.idTipoMoneda|| null;
+      this.idTipoDocumento=data?.idTipoDocumento || null;
     }
   
     static getValidationSchema(t: any) {
@@ -31,6 +33,11 @@ class DocumentoFactura {
         idTipoMoneda: Yup.number().required(t.ValidationMessages.required),
       });
     }
+    static TIPO_DOCUMENTO = {
+      FACTURA: 1,
+      OC: 2,
+      HES:3
+    };
   }
   
   export default DocumentoFactura;
