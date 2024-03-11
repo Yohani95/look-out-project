@@ -8,12 +8,14 @@ import { useRouter } from "next/navigation";
 import PeriodosProyecto from "@/app/api/models/proyecto/PeriodosProyecto";
 import { createFacturaPeriodo, deleteFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
 import TableMaterialUI from "../common/TablaMaterialUi";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaFileDownload } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
 import { ChangeEstado } from "@/app/api/actions/factura/FacturaPeriodoActions";
 import { revalidateTag } from "next/cache";
+import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
+import { Tooltip } from "react-tooltip";
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto, facturas: FacturaPeriodo[] }) {
     const columns = useMemo(() => FacturaPeriodo.createColumns(t), [t]);
@@ -36,19 +38,20 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                     type: t.notification.loading.type,
                     showLoading: true,
                 });
-                values.idEstado=FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
+                values.idEstado = FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
+                console.log(values);
                 await createFacturaPeriodo(values).then((res) => {
-                        NotificationSweet({
-                            title: t.notification.success.title,
-                            text: t.notification.success.text,
-                            type: t.notification.success.type,
-                        });     
+                    NotificationSweet({
+                        title: t.notification.success.title,
+                        text: t.notification.success.text,
+                        type: t.notification.success.type,
+                    });
                 }).catch((err) => {
                     NotificationSweet({
                         title: t.notification.error.title,
                         text: t.notification.error.text,
                         type: t.notification.error.type,
-                      });
+                    });
                 });
                 // Utiliza una variable para almacenar la función handleFormSubmit
             } catch (error) {
@@ -58,6 +61,31 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
             }
         },
     });
+    const downloadDocumento = (documentos: DocumentoFactura[]) => {
+        documentos.forEach(documento => {
+            const uint8Array = new Uint8Array(atob(documento.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
+
+            const blob = new Blob([uint8Array], { type: 'application/pdf' });
+
+            // Crea una URL de objeto para el Blob
+            const blobUrl = URL.createObjectURL(blob);
+
+            // Crea un enlace (a) para descargar el Blob
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = documento.nombreDocumento; // Ajusta el nombre del archivo según tus necesidades
+
+            // Agrega el enlace al documento y simula un clic para iniciar la descarga
+            document.body.appendChild(link);
+            link.click();
+
+            // Elimina el enlace después de la descarga
+            document.body.removeChild(link);
+
+            // Liberar recursos
+            URL.revokeObjectURL(blobUrl);
+        });
+    };
     const memoizedFacturaActions = useMemo(() => {
         const handleDelete = async (facturaId: number) => {
             const confirmed = await ConfirmationDialog(
@@ -87,7 +115,7 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                     title: t.notification.error.title,
                     text: t.notification.error.text,
                     type: t.notification.error.type,
-                  });
+                });
             });
         };
         return facturas.map((factura) => ({
@@ -101,6 +129,15 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                         disabled={factura.idEstado != FacturaPeriodo.ESTADO_FACTURA.PENDIENTE}
                     ><FaTrash size={16} className="my-anchor-element" />
                     </Button>
+                    <Button
+                        variant="link"
+                        type="button"
+                        onClick={() => downloadDocumento(factura.documentosFactura)}
+                    ><FaFileDownload size={16} className="descargar" />
+                        <Tooltip anchorSelect='.descargar' >
+                            {t.Common.downloadFile}
+                        </Tooltip>
+                    </Button>
                 </>
             )
         }));
@@ -113,20 +150,20 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
             showLoading: true,
         });
         await ChangeEstado(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
-        .then((res) => {
-            NotificationSweet({
-                title: t.notification.success.title,
-                text: t.notification.success.text,
-                type: t.notification.success.type,
+            .then((res) => {
+                NotificationSweet({
+                    title: t.notification.success.title,
+                    text: t.notification.success.text,
+                    type: t.notification.success.type,
+                });
+                router.back();
+            }).catch((err) => {
+                NotificationSweet({
+                    title: t.notification.error.title,
+                    text: t.notification.error.text,
+                    type: t.notification.error.type,
+                });
             });
-            router.back();
-        }).catch((err) => {
-            NotificationSweet({
-                title: t.notification.error.title,
-                text: t.notification.error.text,
-                type: t.notification.error.type,
-              });
-        });
     }
     return (
         <>

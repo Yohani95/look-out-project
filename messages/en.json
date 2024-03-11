@@ -1,5 +1,6 @@
 {
   "Common": {
+    "document":"Document",
     "payday":"Pay Day",
     "supports":"Supports",
     "pay": "Pay",
@@ -428,6 +429,13 @@
       "text": "Are you sure you pay the billing?",
       "type": "info",
       "buttonOk": "Yes, Pay Billing",
+      "buttonCancel": "Cancel"
+    },
+    "sendBill": {
+      "title": "Information",
+      "text": "Are you sure to send Document",
+      "type": "info",
+      "buttonOk": "Yes, send",
       "buttonCancel": "Cancel"
     }
   },

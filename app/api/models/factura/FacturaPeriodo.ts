@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import PeriodosProyecto from "../proyecto/PeriodosProyecto";
 import { format } from 'date-fns';
+import DocumentoFactura from "./DocumentoFactura";
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -17,7 +18,7 @@ class FacturaPeriodo {
   idEstado: number | null;
   fechaVencimiento: Date | null;
   periodo: PeriodosProyecto | null;
-
+  documentosFactura: DocumentoFactura[] | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.rut = data?.rut || '';
@@ -34,6 +35,7 @@ class FacturaPeriodo {
     this.idEstado = data?.id_estado || 1;
     this.fechaVencimiento = data?.fecha_vencimiento ? new Date(data.fecha_vencimiento) : null;
     this.periodo = data?.periodo ? new PeriodosProyecto(data.periodo) : null;
+    this.documentosFactura = data?.documentosFactura || null;
   }
 
   public getFechaString(date: Date | null): string | null {
@@ -212,6 +214,7 @@ class FacturaPeriodo {
     SOLICITADA: 2,
     FACTURADA: 3,
     PAGADA:4,
+    ENVIADA:5,
   };
 }
 

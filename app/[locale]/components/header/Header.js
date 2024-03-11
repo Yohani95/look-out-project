@@ -140,7 +140,6 @@ const Header = () => {
       }
     },
   };
-  console.log(languages)
   return <Nav t={languages} locale={useLocale()} />;
 };
 export default Header;

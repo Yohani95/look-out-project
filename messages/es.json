@@ -1,5 +1,6 @@
 {
   "Common": {
+    "document":"Documento",
     "payday":"Dias a pago",
     "supports": "Soporte",
     "pay": "Pagar",
@@ -428,6 +429,13 @@
       "text": "¿Estás seguro de pagar Factura?",
       "type": "info",
       "buttonOk": "Sí, Pagar",
+      "buttonCancel": "Cancelar"
+    },
+    "sendBill": {
+      "title": "Información",
+      "text": "¿Estás seguro de enviar Documento?",
+      "type": "info",
+      "buttonOk": "Sí, Enviar",
       "buttonCancel": "Cancelar"
     }
   },
