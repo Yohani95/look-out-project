@@ -17,6 +17,7 @@ class FacturaPeriodo {
   fechaFactura: Date | null;
   idEstado: number | null;
   fechaVencimiento: Date | null;
+  idHorasUtilizadas:number| null;
   periodo: PeriodosProyecto | null;
   documentosFactura: DocumentoFactura[] | null;
   constructor(data?: any) {
@@ -36,6 +37,7 @@ class FacturaPeriodo {
     this.fechaVencimiento = data?.fecha_vencimiento ? new Date(data.fecha_vencimiento) : null;
     this.periodo = data?.periodo ? new PeriodosProyecto(data.periodo) : null;
     this.documentosFactura = data?.documentosFactura || null;
+    this.idHorasUtilizadas=data?.idHorasUtilizadas || null;
   }
 
   public getFechaString(date: Date | null): string | null {
@@ -45,11 +47,11 @@ class FacturaPeriodo {
   static transformFacturaPeriodoData(facturaPeriodo: any) {
     const facturaPeriodoInstance = new FacturaPeriodo(facturaPeriodo);
     return {
-      ...facturaPeriodo,
-      _fechaHes: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaHes),
-      _fechaOc: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaOc),
-      _fechaFactura: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaFactura),
-      _fechaVencimiento: facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaVencimiento),
+        ...facturaPeriodo,
+        _fechaHes: facturaPeriodo.fechaHes ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaHes) : 'N/A',
+        _fechaOc: facturaPeriodo.fechaOc ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaOc) : 'N/A',
+        _fechaFactura: facturaPeriodo.fechaFactura ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaFactura) : 'N/A',
+        _fechaVencimiento: facturaPeriodo.fechaVencimiento ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaVencimiento) : 'N/A',
     };
   }
 

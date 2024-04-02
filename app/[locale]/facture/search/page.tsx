@@ -9,9 +9,10 @@ import Moneda from "@/app/api/models/world/Moneda";
 async function page() {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
-  const facturas= await getAllPreSolicitadaFacturaPeriodo() as FacturaPeriodo[];
+  const facturas= await getAllPreSolicitadaFacturaPeriodo();
   const monedasresult=await getAllMoneda() as Moneda[];
   const monedas=monedasresult.map((moneda)=>{return new Moneda(moneda).getSelectOptions()});
+  console.log(facturas)
   return (
       <BasePages title={t.Nav.facture.billing}>
         <FacturasSolicitadasSearch t={t} facturas={facturas} monedas={monedas}/>

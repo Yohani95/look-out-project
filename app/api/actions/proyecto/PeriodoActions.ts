@@ -17,7 +17,11 @@ export const getAllPeriodosProyecto = async () => periodosCrud.getAll();
 export async function getPeriodoProyecto(idProyecto: number) {
   try {
     const response = await fetch(`${getPeriodoProyectoApiUrl}/${idProyecto}`);
-    return response.json();
+    console.log(response)
+    if(response.ok){
+      return response.json();
+    }
+    return [];
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];

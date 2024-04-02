@@ -16,8 +16,9 @@ import { ChangeEstado } from "@/app/api/actions/factura/FacturaPeriodoActions";
 import { revalidateTag } from "next/cache";
 import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
 import { Tooltip } from "react-tooltip";
+import HorasUtilizadas from "@/app/api/models/support/HorasUtilizadas";
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto, facturas: FacturaPeriodo[] }) {
+function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto | HorasUtilizadas, facturas: FacturaPeriodo[] }) {
     const columns = useMemo(() => FacturaPeriodo.createColumns(t), [t]);
     const router = useRouter();
 
@@ -30,7 +31,16 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
         //validateOnMount: true,
         onSubmit: async (values: FacturaPeriodo, { setSubmitting }) => {
             try {
-                values.idPeriodo = periodo.id;
+                //aqui al asignar estos valores uno de los 2 quedara null y essto 
+                //hara la diferencia entre si es soporte o proyecto, es una adaptacion al codigo 
+                //o un parche solicitado por Don RAUL ya que quiere o necesita ocupar la misma entidad para ahorrar tiempo
+                if ('numeroProfesionales' in periodo) {
+                    values.idPeriodo = periodo.id;
+                    values.idHorasUtilizadas = null;
+                } else {
+                    values.idPeriodo = null;
+                    values.idHorasUtilizadas = periodo.id;
+                }                
                 values.fechaFactura = new Date();
                 await NotificationSweet({
                     title: t.notification.loading.title,
@@ -39,7 +49,6 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                     showLoading: true,
                 });
                 values.idEstado = FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
-                console.log(values);
                 await createFacturaPeriodo(values).then((res) => {
                     NotificationSweet({
                         title: t.notification.success.title,

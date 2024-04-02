@@ -13,14 +13,17 @@ const facturaPeriodoCrud = new CrudOperations<FacturaPeriodo>(
 
 export const createFacturaPeriodo = async (item: FacturaPeriodo) =>
   facturaPeriodoCrud.create(item);
-export const updateFacturaPeriodo = async (item: FacturaPeriodo,id: string| number) =>
-  facturaPeriodoCrud.update(item, id);
+export const updateFacturaPeriodo = async (
+  item: FacturaPeriodo,
+  id: string | number
+) => facturaPeriodoCrud.update(item, id);
 export const getFacturaPeriodoById = async (id: string | number) =>
   facturaPeriodoCrud.getById(id);
 export const deleteFacturaPeriodo = async (id: string | number) =>
   facturaPeriodoCrud.deleteById(id);
 export const getAllFacturaPeriodo = async () => facturaPeriodoCrud.getAll();
-export const revalidateDataFacturaPeriodo = async () => facturaPeriodoCrud.revalidateData();
+export const revalidateDataFacturaPeriodo = async () =>
+  facturaPeriodoCrud.revalidateData();
 export async function getFacturaPeriodoByIdPeriodo(idPeriodo: number) {
   try {
     const response = await fetch(
@@ -34,6 +37,26 @@ export async function getFacturaPeriodoByIdPeriodo(idPeriodo: number) {
         next: { tags: [tag] },
       }
     );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+export async function getFacturaPeriodoByIdHoras(idHoras: number) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/GetAllEntitiesByIdHoras/${idHoras}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        next: { tags: [tag] },
+      }
+    );
+    console.log(response);
     return response.json();
   } catch (error) {
     console.error("Error fetching data:", error);

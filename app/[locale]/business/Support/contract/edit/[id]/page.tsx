@@ -1,15 +1,17 @@
 import React from 'react'
 import BasePages from "@/app/[locale]/components/common/BasePages";
 import { useLocale } from 'next-intl';
-import Contractcreate from '@/app/[locale]/components/support/contract/Contractcreate';
 import { GetData } from "@/app/[locale]/utils/business/UtilsService";
 import TipoFacturacion from "@/app/api/models/factura/TipoFacturacion";
 import { getAllTipoFacturacion } from '@/app/api/actions/factura/TipoFacturacionActions';
 import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
-import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
+import { getAllEmpresaPrestadora} from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import DiaPagos from '@/app/api/models/factura/DiaPagos';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
-async function page() {
+import Soporte from '@/app/api/models/support/Soporte';
+import { GetAllEntitiesById, getsoporteById } from '@/app/api/actions/soporte/SoporteActions';
+import ContractEdit from '@/app/[locale]/components/support/contract/ContractEdit';
+async function page({params}) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   const tiposFacturas = await getAllTipoFacturacion() as TipoFacturacion[];
@@ -19,9 +21,10 @@ async function page() {
   data.tiposFacturas = tiposFacturas.map((tipoFactura) => { return new TipoFacturacion(tipoFactura).getSelectOptions() });
   data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
   data.empresaPrestadora=empresaPrestadora.map((empresa)=>{return new EmpresaPrestadora(empresa).getSelectOptions()});
+  data.soporte= await GetAllEntitiesById(params.id) as Soporte;
   return (
     <BasePages title={t.Common.supports}>
-      <Contractcreate t={t} data={data} />
+      <ContractEdit t={t} data={data} />
     </BasePages>
   )
 }

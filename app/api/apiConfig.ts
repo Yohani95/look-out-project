@@ -1,5 +1,5 @@
-let apiBaseUrl="";
-if (process.env.NODE_ENV === 'development') {
+let apiBaseUrl = "";
+if (process.env.NODE_ENV === "development") {
   // Código específico para el entorno de desarrollo
   apiBaseUrl = "https://localhost:44318/api";
 } else {
@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export const apiHeaders = {
   "Content-Type": "application/json",
-  // Agrega cualquier otro encabezado 
+  // Agrega cualquier otro encabezado
   //que se necesite para todas las solicitudes
 };
 
@@ -27,12 +27,11 @@ export const clientUpdatepiUrl = `${apiBaseUrl}/Clientes/UpdateWithEntities`;
 export const clientWithContactApiUrl = `${apiBaseUrl}/Clientes/GetAllIdWithContact`;
 export const clientGetByIdApiUrl = `${apiBaseUrl}/Clientes/GetByIdWithKamAndContact`;
 
-
 //persona url
-export const kam=2;
-export const contacto=3;
+export const kam = 2;
+export const contacto = 3;
 export const personApiUrl = `${apiBaseUrl}/personas`;
-export const personContactGetAllApiUrl=`${apiBaseUrl}/personas/GetAllContactEnteties`;
+export const personContactGetAllApiUrl = `${apiBaseUrl}/personas/GetAllContactEnteties`;
 export const personTipoPersonaApiUrl = `${apiBaseUrl}/personas/tipoPersona`;
 export const personKamApiUrl = `${apiBaseUrl}/personas/tipoPersona/${kam}`;
 export const personContactApiUrl = `${apiBaseUrl}/personas/tipoPersona/${contacto}`;
@@ -44,14 +43,13 @@ export const personGetAllContactDTOClientApiUrl = `${apiBaseUrl}/Personas/GetAll
 /**
  * URL PARA PROFESIONALES
  **/
-export const professionalApiUrl=  `${apiBaseUrl}/personas`;
-export const professionalCreateApiUrl=  `${apiBaseUrl}/personas`;
-export const professionalEditApiUrl=  `${apiBaseUrl}/personas`;
+export const professionalApiUrl = `${apiBaseUrl}/personas`;
+export const professionalCreateApiUrl = `${apiBaseUrl}/personas`;
+export const professionalEditApiUrl = `${apiBaseUrl}/personas`;
 //ClientePersona
 export const ClientePersonaApiUrl = `${apiBaseUrl}/ClientePersona`;
 export const ClientePersonaEditApiUrl = `${apiBaseUrl}/ClientePersona/GetPersonaDTOById`;
 export const ClientePersonaGetAllApiUrl = `${apiBaseUrl}/ClientePersona/GetAllClientRelations`;
-
 
 //comuna url
 export const comunaApiUrl = `${apiBaseUrl}/comunas`;
@@ -80,7 +78,6 @@ export const addressEditApiUrl = `${apiBaseUrl}/email`;
 export const addressTypeApiUrl = `${apiBaseUrl}/tipoEmail`;
 export const addressByIdPersonApiUrl = `${apiBaseUrl}/direccion/getAllDireccionByIdPerson`;
 
-
 //comuna giros
 export const girosApiUrl = `${apiBaseUrl}/giros`;
 
@@ -88,55 +85,63 @@ export const girosApiUrl = `${apiBaseUrl}/giros`;
 export const estadoClienteApiUrl = `${apiBaseUrl}/estadoClientes`;
 
 //Tipo Servicio o Proyecto, ProyectoDocumento
-export const TipoServicioApiUrl=`${apiBaseUrl}/TipoServicio`;
-export const proyectoCreateAsyncApiUrl=`${apiBaseUrl}/proyecto/createAsync`;
-export const proyectoUpdateAsyncApiUrl=`${apiBaseUrl}/proyecto/UpdateWithEntities`;
-export const proyectoDeleteAsyncApiUrl=`${apiBaseUrl}/proyecto/DeleteWithEntities`;
-export const proyectoApiUrl=`${apiBaseUrl}/proyecto`;
-export const proyectoDocumentoByIdApiUrl=`${apiBaseUrl}/ProyectoDocumento/GetByIdProject`;
-export const proyectoLastIdApiUrl=`${apiBaseUrl}/proyecto/GetLastId`;
-export const proyectoByIdWithEntitiesApiUrl=`${apiBaseUrl}/proyecto/GetByIdWithEntities`;
-export const proyectoGeFileApiUrl=`${apiBaseUrl}/proyecto/GeFileByProject`;
-export const proyectoWithEntitiesApiUrl=`${apiBaseUrl}/proyecto/WithEntities`;
+export const TipoServicioApiUrl = `${apiBaseUrl}/TipoServicio`;
+export const proyectoCreateAsyncApiUrl = `${apiBaseUrl}/proyecto/createAsync`;
+export const proyectoUpdateAsyncApiUrl = `${apiBaseUrl}/proyecto/UpdateWithEntities`;
+export const proyectoDeleteAsyncApiUrl = `${apiBaseUrl}/proyecto/DeleteWithEntities`;
+export const proyectoApiUrl = `${apiBaseUrl}/proyecto`;
+export const proyectoDocumentoByIdApiUrl = `${apiBaseUrl}/ProyectoDocumento/GetByIdProject`;
+export const proyectoLastIdApiUrl = `${apiBaseUrl}/proyecto/GetLastId`;
+export const proyectoByIdWithEntitiesApiUrl = `${apiBaseUrl}/proyecto/GetByIdWithEntities`;
+export const proyectoGeFileApiUrl = `${apiBaseUrl}/proyecto/GeFileByProject`;
+export const proyectoWithEntitiesApiUrl = `${apiBaseUrl}/proyecto/WithEntities`;
 //tarifario convenido
-export const tarifarioApiUrl=`${apiBaseUrl}/TarifarioConvenio`
-export const tarifarioGetByIdProyectoApiUrl=`${apiBaseUrl}/TarifarioConvenio/GetByIdProyectoWithEntities`
+export const tarifarioApiUrl = `${apiBaseUrl}/TarifarioConvenio`;
+export const tarifarioGetByIdProyectoApiUrl = `${apiBaseUrl}/TarifarioConvenio/GetByIdProyectoWithEntities`;
 //Proyecto participantes
 
-export const participanteApiUrl=`${apiBaseUrl}/ProyectoParticipante`
-export const participanteCreateAsyncApiUrl=`${apiBaseUrl}/ProyectoParticipante/CreateAsync`
-export const participanteDeletedByRutApiUrl=`${apiBaseUrl}/ProyectoParticipante/deletedAsync`
-export const participanteGetByIdProyectoApiUrl=`${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`
+export const participanteApiUrl = `${apiBaseUrl}/ProyectoParticipante`;
+export const participanteCreateAsyncApiUrl = `${apiBaseUrl}/ProyectoParticipante/CreateAsync`;
+export const participanteDeletedByRutApiUrl = `${apiBaseUrl}/ProyectoParticipante/deletedAsync`;
+export const participanteGetByIdProyectoApiUrl = `${apiBaseUrl}/ProyectoParticipante/GetByIdProyecto`;
 //periodo proyecto GetPeriodoProyecto
-export const periodoApiUrl=`${apiBaseUrl}/PeriodoProyecto`
-export const periodoCreateApiUrl=`${apiBaseUrl}/PeriodoProyecto/createAsync`
-export const periodoGetByIdProyectoApiUrl=`${apiBaseUrl}/PeriodoProyecto/GetByIdProyecto`
-export const getPeriodoProyectoApiUrl=`${apiBaseUrl}/PeriodoProyecto/GetPeriodoProyecto`
+export const periodoApiUrl = `${apiBaseUrl}/PeriodoProyecto`;
+export const periodoCreateApiUrl = `${apiBaseUrl}/PeriodoProyecto/createAsync`;
+export const periodoGetByIdProyectoApiUrl = `${apiBaseUrl}/PeriodoProyecto/GetByIdProyecto`;
+export const getPeriodoProyectoApiUrl = `${apiBaseUrl}/PeriodoProyecto/GetPeriodoProyecto`;
 //Novedades
-export const novedadApiUrl=`${apiBaseUrl}/novedades`
-export const novedadWithEntetiesApiUrl=`${apiBaseUrl}/novedades/NovedadesWithEntities`
-export const novedadCreateAsyncApiUrl=`${apiBaseUrl}/novedades/CreateAsync`
+export const novedadApiUrl = `${apiBaseUrl}/novedades`;
+export const novedadWithEntetiesApiUrl = `${apiBaseUrl}/novedades/NovedadesWithEntities`;
+export const novedadCreateAsyncApiUrl = `${apiBaseUrl}/novedades/CreateAsync`;
 // Tipo de novedades
-export const tipoNovedadApiUrl=`${apiBaseUrl}/tipoNovedades`
+export const tipoNovedadApiUrl = `${apiBaseUrl}/tipoNovedades`;
 //perfil
-export const perfilApiUrl=`${apiBaseUrl}/perfil`;
+export const perfilApiUrl = `${apiBaseUrl}/perfil`;
 //moneda
-export const monedaApiUrl=`${apiBaseUrl}/Moneda`;
+export const monedaApiUrl = `${apiBaseUrl}/Moneda`;
 //periodoProfesional
-export const periodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales`;
-export const getPeriodoProfesionalApiUrl=`${apiBaseUrl}/PeriodoProfesionales/GetAllEntitiesByIdPeriod`;
+export const periodoProfesionalApiUrl = `${apiBaseUrl}/PeriodoProfesionales`;
+export const getPeriodoProfesionalApiUrl = `${apiBaseUrl}/PeriodoProfesionales/GetAllEntitiesByIdPeriod`;
 
 //facturaPeriodo
-export const facturaPeriodoApiUrl=`${apiBaseUrl}/FacturaPeriodo`;
+export const facturaPeriodoApiUrl = `${apiBaseUrl}/FacturaPeriodo`;
 
 //Tipofacturacion
-export const tipoFacturacionApiUrl=`${apiBaseUrl}/TipoFacturacion`;
+export const tipoFacturacionApiUrl = `${apiBaseUrl}/TipoFacturacion`;
 
 //DocumentoFactura
-export const documentoFacturaApiUrl=`${apiBaseUrl}/documentoFactura`;
+export const documentoFacturaApiUrl = `${apiBaseUrl}/documentoFactura`;
 
 //DiaPagos
-export const DiaPagosApiUrl=`${apiBaseUrl}/diaPagos`;
+export const DiaPagosApiUrl = `${apiBaseUrl}/diaPagos`;
 
+//Empresa prestadora
+export const EmpresaPrestadoraApiUrl = `${apiBaseUrl}/empresaPrestadora`;
 
-export const EmpresaPrestadoraApiUrl=`${apiBaseUrl}/empresaPrestadora`;
+//Soporte
+export const soporteApiUrl = `${apiBaseUrl}/soporte`;
+export const soporteWithEntitiesApiUrl = `${soporteApiUrl}/GetAllEntities`;
+export const soporteWithEntitiesByIdApiUrl = `${soporteApiUrl}/GetAllEntitiesById`;
+//horas utilizadas soporte
+export const horasUtilizadasApiUrl = `${apiBaseUrl}/horasUtilizadas`;
+export const getAllHorasByIdSoportepiUrl = `${horasUtilizadasApiUrl}/getAllHorasByIdSoporte`;
