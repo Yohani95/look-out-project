@@ -54,8 +54,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
         const { pryId, pryValor, numeroHoras, valorHoraAdicional } = soporte;
         const horasExtras = Math.max(values.horas - numeroHoras, 0);
         const montoHorasExtras = horasExtras * valorHoraAdicional;
-        console.log(soporte.acumularHoras)
-        const horasAcumuladas = soporte.acumularHoras = true ? Math.max(numeroHoras - values.horas, 0) : 0;
+        const horasAcumuladas = soporte.acumularHoras == true ? Math.max(numeroHoras - values.horas, 0) : 0;
         values = {
           ...values,
           idSoporte: pryId,

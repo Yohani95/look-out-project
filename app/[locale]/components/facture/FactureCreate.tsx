@@ -12,7 +12,7 @@ import { FaTrash, FaFileDownload } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import { ChangeEstado } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import { ChangeEstado, ChangeEstadoHoras } from "@/app/api/actions/factura/FacturaPeriodoActions";
 import { revalidateTag } from "next/cache";
 import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
 import { Tooltip } from "react-tooltip";
@@ -40,7 +40,7 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                 } else {
                     values.idPeriodo = null;
                     values.idHorasUtilizadas = periodo.id;
-                }                
+                }
                 values.fechaFactura = new Date();
                 await NotificationSweet({
                     title: t.notification.loading.title,
@@ -158,21 +158,39 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
             type: t.notification.loading.type,
             showLoading: true,
         });
-        await ChangeEstado(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
-            .then((res) => {
-                NotificationSweet({
-                    title: t.notification.success.title,
-                    text: t.notification.success.text,
-                    type: t.notification.success.type,
+        if ('numeroProfesionales' in periodo) {
+            await ChangeEstado(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
+                .then((res) => {
+                    NotificationSweet({
+                        title: t.notification.success.title,
+                        text: t.notification.success.text,
+                        type: t.notification.success.type,
+                    });
+                    router.back();
+                }).catch((err) => {
+                    NotificationSweet({
+                        title: t.notification.error.title,
+                        text: t.notification.error.text,
+                        type: t.notification.error.type,
+                    });
                 });
-                router.back();
-            }).catch((err) => {
-                NotificationSweet({
-                    title: t.notification.error.title,
-                    text: t.notification.error.text,
-                    type: t.notification.error.type,
+        } else {
+            await ChangeEstadoHoras(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
+                .then((res) => {
+                    NotificationSweet({
+                        title: t.notification.success.title,
+                        text: t.notification.success.text,
+                        type: t.notification.success.type,
+                    });
+                    router.back();
+                }).catch((err) => {
+                    NotificationSweet({
+                        title: t.notification.error.title,
+                        text: t.notification.error.text,
+                        type: t.notification.error.type,
+                    });
                 });
-            });
+        }
     }
     return (
         <>

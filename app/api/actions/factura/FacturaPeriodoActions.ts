@@ -101,3 +101,22 @@ export async function ChangeEstado(idPeriodo: number, estado: number) {
     return [];
   }
 }
+export async function ChangeEstadoHoras(idHoras: number, estado: number) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/ChangeEstadoHoras/${idHoras}/${estado}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        next: { tags: [tag] },
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}

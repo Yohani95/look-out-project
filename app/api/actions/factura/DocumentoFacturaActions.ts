@@ -25,7 +25,7 @@ export async function AddDocumento(documento: DocumentoFactura) {
     const response = await fetch(
       `${documentoFacturaApiUrl}/AddDocumento`,
       {
-        method: "POST",
+        method: "POST ",
         
         headers: {
           "Content-Type": "application/json",
