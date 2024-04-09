@@ -71,7 +71,7 @@ function ServiceFormSection({
   };
   const calculateEndDate = () => {
     const { months, pryFechaInicioEstimada } = proyectoModel;
-
+    console.log(months,pryFechaInicioEstimada,proyectoModel.months)
     if (!months || !pryFechaInicioEstimada) {
       return; // No calcular si no hay datos suficientes
     }

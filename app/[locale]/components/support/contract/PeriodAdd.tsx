@@ -42,7 +42,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
 
     return [year, month, day].join('-');
   };
-
+  const totalHorasAcumuladas = soporte.acumularHoras ? horasUtilizadas.reduce((total, horasUtilizada) => total + horasUtilizada.horasAcumuladas, 0) :0;
   const validationSchema = HorasUtilizadas.getValidationSchema(t);
   const initialValues = new HorasUtilizadas();
   const formik = useFormik({
@@ -52,7 +52,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         const { pryId, pryValor, numeroHoras, valorHoraAdicional } = soporte;
-        const horasExtras = Math.max(values.horas - numeroHoras, 0);
+        const horasExtras = Math.max(values.horas - numeroHoras, 0)-totalHorasAcumuladas;
         const montoHorasExtras = horasExtras * valorHoraAdicional;
         const horasAcumuladas = soporte.acumularHoras == true ? Math.max(numeroHoras - values.horas, 0) : 0;
         values = {
@@ -75,8 +75,8 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
         );
         if (existingHour) {
           values.id = existingHour.id;
+          values.horasExtras=values.horasExtras+existingHour.horasExtras
           await updatehorasUtilizadas(values, existingHour.id).then((res) => {
-            console.log(res)
             if (res != 400 && res != 500) {
               showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
             } else {

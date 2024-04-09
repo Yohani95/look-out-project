@@ -64,7 +64,7 @@ class Soporte {
     this.numeroHoras=data?.numeroHoras||null;
     //objetos
     this.cliente = data?.cliente || null;
-    this.tipoServicio = data?.tipoServicio || null;
+    this.tipoServicio = data?.tipoServicio || 1;
     this.pais = data?.pais || null;
     this.contacto = data?.contacto || null;
     this.tipoFacturacion = data?.tipoFacturacion || null;

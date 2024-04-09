@@ -57,7 +57,7 @@ function SupportForm({
     */
     const calculateEndDate = () => {
         const { months, pryFechaInicioEstimada } = soporteModel;
-
+        console.log(months,pryFechaInicioEstimada,soporteModel.months)
         if (!months || !pryFechaInicioEstimada) {
             return; // No calcular si no hay datos suficientes
         }
@@ -153,7 +153,7 @@ function SupportForm({
                         {t.Common.add} (+)
                     </button>
                 </div>
-                <SelectField
+                {/* <SelectField
                     label={`${t.Account.type} ${t.Account.business}`}
                     options={data.tipoServicios}
                     preOption={t.Account.select}
@@ -162,7 +162,7 @@ function SupportForm({
                     divClassName="col-sm-3"
                     onChange={(e) => handleSelectChange(e, "tseId", setSoporte)}
                     selectedValue={soporteModel.tseId}
-                />
+                /> */}
             </div>
 
             <div>

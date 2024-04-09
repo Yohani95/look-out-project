@@ -6,6 +6,8 @@ import {
   soporteWithEntitiesByIdApiUrl,
 } from "@/app/api/apiConfig";
 import Soporte from "../../models/support/Soporte";
+import { differenceInMonths } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 const tag = "soporteActions";
 
@@ -38,9 +40,20 @@ export async function GetAllEntitiesById(id:number) {
       cache: "no-cache",
       next: { tags: [tag] },
     });
-    return response.json();
+    var data=await response.json();
+    var soporte =new Soporte(data);
+    const monthsDifference = differenceInMonths(
+      soporte.pryFechaCierreEstimada,
+      soporte.pryFechaInicioEstimada
+    );
+    // Redondear el valor de meses a entero
+    soporte.months = Math.round(monthsDifference);
+    return soporte
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
   }
+}
+export async function EditAction() {
+  revalidatePath('/')
 }

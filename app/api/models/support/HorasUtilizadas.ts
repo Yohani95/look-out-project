@@ -23,8 +23,8 @@ class HorasUtilizadas {
     this.contenidoDocumento = data?.contenidoDocumento || null;
     this.horas = data?.horas || null;
     this.idSoporte = data?.idSoporte || null;
-    this.fechaPeriodoDesde = data?.fechaPeriodoDesde || null;
-    this.fechaPeriodoHasta = data?.fechaPeriodoHasta || null;
+    this.fechaPeriodoDesde = data? new Date(data.fechaPeriodoDesde) : null;
+    this.fechaPeriodoHasta = data? new Date(data.fechaPeriodoHasta) : null;
     this.estado = data?.estado || false;
     this.monto=data?.monto|| null;
     this.montoHorasExtras=data?.montoHorasExtras || null;
@@ -133,6 +133,8 @@ class HorasUtilizadas {
   }
   getPeriodoCompleto(): string {
     const formato = 'dd/MM/yyyy';
+    console.log(this.fechaPeriodoDesde);
+    console.log(this.fechaPeriodoHasta);
     return `${format(this.fechaPeriodoDesde, formato)} - ${format(this.fechaPeriodoHasta, formato)}`;
   }
 }

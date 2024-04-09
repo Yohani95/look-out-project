@@ -9,7 +9,7 @@ import { useFormik } from 'formik'
 import SupportForm from '../SupportForm'
 import Soporte from '@/app/api/models/support/Soporte'
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { createsoporte, revalidateDatasoporte, updatesoporte } from '@/app/api/actions/soporte/SoporteActions'
+import { EditAction, createsoporte, revalidateDatasoporte, updatesoporte } from '@/app/api/actions/soporte/SoporteActions'
 import DocumentosSoporte from '@/app/api/models/support/DocumentosSoporte'
 function ContractEdit({ t, data }) {
     const { data: session } = useSession();
@@ -66,6 +66,7 @@ function ContractEdit({ t, data }) {
                 });
             } finally {
                 revalidateDatasoporte();
+                EditAction();
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
             }
         },

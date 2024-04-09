@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import PeriodosProyecto from "../proyecto/PeriodosProyecto";
 import { format } from 'date-fns';
 import DocumentoFactura from "./DocumentoFactura";
+import HorasUtilizadas from "../support/HorasUtilizadas";
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -19,6 +20,7 @@ class FacturaPeriodo {
   fechaVencimiento: Date | null;
   idHorasUtilizadas:number| null;
   periodo: PeriodosProyecto | null;
+  horasUtilizadas:HorasUtilizadas | null;
   documentosFactura: DocumentoFactura[] | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
@@ -38,6 +40,7 @@ class FacturaPeriodo {
     this.periodo = data?.periodo ? new PeriodosProyecto(data.periodo) : null;
     this.documentosFactura = data?.documentosFactura || null;
     this.idHorasUtilizadas=data?.idHorasUtilizadas || null;
+    this.horasUtilizadas=data?.horasUtilizadas|| null;
   }
 
   public getFechaString(date: Date | null): string | null {
@@ -52,6 +55,7 @@ class FacturaPeriodo {
         _fechaOc: facturaPeriodo.fechaOc ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaOc) : 'N/A',
         _fechaFactura: facturaPeriodo.fechaFactura ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaFactura) : 'N/A',
         _fechaVencimiento: facturaPeriodo.fechaVencimiento ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaVencimiento) : 'N/A',
+        _empresaPrestadora: facturaPeriodo.periodo ? facturaPeriodoInstance.periodo.proyecto.empresaPrestadora.nombre : new HorasUtilizadas(facturaPeriodoInstance.horasUtilizadas).proyecto.empresaPrestadora.nombre
     };
   }
 
@@ -165,10 +169,10 @@ class FacturaPeriodo {
         accessorKey: "estado.nombre",
         header: `${t.Common.status} Fact.`,
         size: 50,
-      },
+      }, 
       {
-        accessorKey: "periodo.proyecto.empresaPrestadora.nombre",
-        header: `EmpresaPrestadora`,
+        accessorKey: "_empresaPrestadora" ,
+        header: `Empresa Prestadora`,
         size: 50,
       },
       {

@@ -19,7 +19,7 @@ function FacturasSolicitadasSearch({ t, facturas,monedas }) {
   const memoizedFacturaActions = useMemo(() => {
     return facturas.map((factura, index) => ({
       ...FacturaPeriodo.transformFacturaPeriodoData(factura),
-      //_hito: factura.periodo ? new PeriodosProyecto(factura.periodo).getPeriodoCompleto() : (factura.horasUtilizadas ? new HorasUtilizadas(factura.horasUtilizadas).getPeriodoCompleto() : 'N/A'),
+      _hito: factura?.periodo ? new PeriodosProyecto(factura.periodo).getPeriodoCompleto() : (factura.horasUtilizadas ? new HorasUtilizadas(factura.horasUtilizadas).getPeriodoCompleto() : 'N/A'),
       actions: (
         <ButtonsFacture t={t} idFactura={factura.id} idPeriodo={factura.idPeriodo} periodoFactura={factura} monedas={monedas} />
       ),
