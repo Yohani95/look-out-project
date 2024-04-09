@@ -6,15 +6,14 @@ import { Usuario } from '@/app/api/models/admin/Usuario'
 import ServiceFormSection from "@/app/[locale]/components/business/Services/ServiceFormSection"
 import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
-import Proyecto from '@/app/api/models/proyecto/Proyecto'
- function Contractcreate({ t, data }) {
+import SupportForm from '../SupportForm'
+import Soporte from '@/app/api/models/support/Soporte'
+import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
+import { createsoporte } from '@/app/api/actions/soporte/SoporteActions'
+function Contractcreate({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const [correlativo, setCorrelativo] = useState([]);
-    const [formData, setFormData] = useState({
-        file1: null,
-        file2: null,
-    });
     const router = useRouter();
     //========FIN DECLARACION DE VARIABLES ===============
 
@@ -26,25 +25,48 @@ import Proyecto from '@/app/api/models/proyecto/Proyecto'
        Seccion Funciones de componente
        =================================================================================
     */
-    const validationSchema = Proyecto.getValidationSchema(t);
+    const validationSchema = Soporte.getValidationSchema(t);
     const formik = useFormik({
-        initialValues: new Proyecto(null),
+        initialValues: new Soporte(null),
         validationSchema,
         //validateOnMount: true,
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 // Utiliza una variable para almacenar la función handleFormSubmit
-                const proyectoDTO = {
-                    proyecto: values,
-                };
-                const data = new FormData();
-                data.append("proyectoJson", JSON.stringify(proyectoDTO));
-                // Agrega los archivos
-                data.append("files", formData.file1);
-                data.append("files", formData.file2);
-                console.log(proyectoDTO)
+
+                await NotificationSweet({
+                    title: t.notification.loading.title,
+                    text: "",
+                    type: t.notification.loading.type,
+                    showLoading: true,
+                });
+
+                await createsoporte(values).then((res) => {
+                    NotificationSweet({
+                        title: t.notification.success.title,
+                        text: t.notification.success.text,
+                        type: t.notification.success.type,
+                        push: router.push,
+                        link: "/business/Support/search"
+                    });
+                }).catch((err) => {
+                    NotificationSweet({
+                        title: t.notification.error.title,
+                        text: t.notification.error.text,
+                        type: t.notification.error.type,
+                        push: router.push,
+                        link: "/business/Support/search"
+                    });
+                });
             } catch (error) {
                 console.error("Error in handleFormSubmit:", error);
+                NotificationSweet({
+                    title: t.notification.error.title,
+                    text: t.notification.error.text,
+                    type: t.notification.error.type,
+                    push: router.push,
+                    link: "/business/Support/search"
+                });
             } finally {
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
             }
@@ -66,12 +88,10 @@ import Proyecto from '@/app/api/models/proyecto/Proyecto'
                         </h6>
                     </div>
                 </div>
-                <ServiceFormSection
+                <SupportForm
                     t={t}
-                    proyectoModel={formik.values}
-                    setProyecto={formik.setValues}
-                    setFormData={setFormData}
-                    formData={formData}
+                    soporteModel={formik.values}
+                    setSoporte={formik.setValues}
                     data={data}
                 />
                 <div className="d-flex justify-content-end mb-3">

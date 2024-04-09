@@ -6,6 +6,7 @@ import { Button, Modal } from 'react-bootstrap';
 import ButtonsFacture from '../ButtonsFacture';
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import { Tooltip } from 'react-tooltip';
+import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function FacturasSolicitadasSearch({ t, facturas,monedas }) {
   const columns = useMemo(() => FacturaPeriodo.createColumnsFacturas(t), [t]);
@@ -18,7 +19,7 @@ function FacturasSolicitadasSearch({ t, facturas,monedas }) {
   const memoizedFacturaActions = useMemo(() => {
     return facturas.map((factura, index) => ({
       ...FacturaPeriodo.transformFacturaPeriodoData(factura),
-      _hito: new PeriodosProyecto(factura.periodo).getPeriodoCompleto(),
+      _hito: factura?.periodo ? new PeriodosProyecto(factura.periodo).getPeriodoCompleto() : (factura.horasUtilizadas ? new HorasUtilizadas(factura.horasUtilizadas).getPeriodoCompleto() : 'N/A'),
       actions: (
         <ButtonsFacture t={t} idFactura={factura.id} idPeriodo={factura.idPeriodo} periodoFactura={factura} monedas={monedas} />
       ),

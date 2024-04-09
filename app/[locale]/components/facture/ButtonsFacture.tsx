@@ -16,6 +16,7 @@ import {
   handleInputChange,
 } from "@/app/[locale]/utils/Form/UtilsForm";
 import SelectField from "@/app/[locale]/components/common/SelectField";
+import HorasUtilizadas from "@/app/api/models/support/HorasUtilizadas";
 const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFactura, monedas }) => {
   const validationSchema = DocumentoFactura.getValidationSchema(t);
   let factura = periodoFactura as FacturaPeriodo
@@ -30,7 +31,13 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
           type: t.notification.loading.type,
           showLoading: true,
         });
-        const addDias = factura.periodo.proyecto.diaPagos.dia;
+        let addDias;
+        if (factura.periodo) {
+          addDias = factura.periodo.proyecto.diaPagos.dia;
+        } else {
+          const horasUtilizadas=new HorasUtilizadas(factura.horasUtilizadas);
+          addDias = horasUtilizadas.proyecto.diaPagos.dia;
+        }
         const fecha = new Date(values.fecha);
         fecha.setDate(fecha.getDate() + addDias);
 
@@ -59,7 +66,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
             .reduce((data, byte) => data + String.fromCharCode(byte), '')
         );
         values.contenidoDocumento = base64String;
-        values.idTipoDocumento=DocumentoFactura.TIPO_DOCUMENTO.FACTURA;
+        values.idTipoDocumento = DocumentoFactura.TIPO_DOCUMENTO.FACTURA;
         // Enviar el documento al servidor
         delete values.archivo;
         await fetch(`${documentoFacturaApiUrl}/AddDocumento/${formattedFecha}/${idFactura}`, {
@@ -94,7 +101,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
       } catch (error) {
         NotificationSweet({
           title: t.notification.error.title,
-          text: t.notification.error.text,
+          text: error,
           type: t.notification.error.type,
         });
       } finally {

@@ -1,7 +1,8 @@
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto'
+import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas'
 import React from 'react'
 
-function PeriodoInfo({t, periodo}: {t: any, periodo: PeriodosProyecto}) {
+function PeriodoInfo({t, periodo}: {t: any, periodo: PeriodosProyecto | HorasUtilizadas}) {
   return (
     <>
       <div className="mb-3 row align-items-center">
