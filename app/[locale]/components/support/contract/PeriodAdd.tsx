@@ -51,17 +51,17 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        const { pryId, pryValor, numeroHoras, valorHoraAdicional } = soporte;
-        const horasExtras = Math.max(values.horas - numeroHoras, 0)-totalHorasAcumuladas;
-        const montoHorasExtras = horasExtras * valorHoraAdicional;
-        const horasAcumuladas = soporte.acumularHoras == true ? Math.max(numeroHoras - values.horas, 0) : 0;
+         const { pryId, pryValor, numeroHoras, valorHoraAdicional } = soporte;
+        // const horasExtras = Math.max(values.horas - numeroHoras, 0)-totalHorasAcumuladas;
+        // const montoHorasExtras = horasExtras * valorHoraAdicional;
+        // const horasAcumuladas = soporte.acumularHoras == true ? Math.max(numeroHoras - values.horas, 0) : 0;
         values = {
           ...values,
           idSoporte: pryId,
           monto: pryValor,
-          horasExtras,
-          montoHorasExtras,
-          horasAcumuladas
+          // horasExtras,
+          // montoHorasExtras,
+          // horasAcumuladas
         } as HorasUtilizadas;
         await NotificationSweet({
           title: t.notification.loading.title,

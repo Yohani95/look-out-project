@@ -80,7 +80,7 @@ function HoursForm({ t, formik, soporte }: { t: any, formik: FormikProps<HorasUt
                     // selectedValue={periodo}
                     />
                     <label htmlFor="horas" className="col-sm-1 col-form-label">
-                        {t.Common.hour}s
+                        {t.Common.hour}
                     </label>
                     <div className="col-sm-2">
                         <input

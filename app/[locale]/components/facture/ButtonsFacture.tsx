@@ -216,7 +216,7 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
   );
 };
 
-const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) => {
+const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactura, monedas }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const handleAddDocument = () => {
@@ -292,15 +292,18 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
           type: t.notification.loading.type,
           showLoading: true,
         });
-
+        console.log(factura.idEstado)
+        console.log(FacturaPeriodo.ESTADO_FACTURA.ENVIADA)
         factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.ENVIADA;
         delete factura.periodo;
         delete factura.estado;
-        const res = await updateFacturaPeriodo(factura, idFactura).then((res) => NotificationSweet({
+        const res = await updateFacturaPeriodo(factura, idFactura).then((res) => {
+          NotificationSweet({
           title: t.notification.success.title,
           text: t.notification.success.text,
           type: t.notification.success.type,
-        })).catch((err) => {
+        })
+      }).catch((err) => {
           NotificationSweet({
             title: t.notification.error.title,
             text: t.notification.error.text,
@@ -361,8 +364,8 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
         </Button>}
       {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ?
         <Button variant="link" onClick={handleEnviada}>
-          <FaFileUpload className="changeStatus" size={16} />
-          <Tooltip anchorSelect=".changeStatus" place="top">
+          <FaFileUpload className="document" size={16} />
+          <Tooltip anchorSelect=".document" place="top">
             {t.Common.submit} {t.Common.document}
           </Tooltip>
         </Button> :
@@ -382,7 +385,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo, periodoFactura, monedas }) =>
             </Tooltip>
           </Button>
       }
-      <Button variant="link" onClick={(e) => router.push(`/facture/create/${idPeriodo}`)}>
+      <Button variant="link" onClick={(e) => idPeriodo ? router.push(`/facture/create/${idPeriodo}`) : router.push(`/facture/createSupport/${idHoraUtilizada}`)}>
         <FaEye size={16} className="detalles" />
         <Tooltip anchorSelect=".detalles" place="top">
           {t.facture.billingDetails}

@@ -12,7 +12,6 @@ async function page() {
   const facturas= await getAllPreSolicitadaFacturaPeriodo();
   const monedasresult=await getAllMoneda() as Moneda[];
   const monedas=monedasresult.map((moneda)=>{return new Moneda(moneda).getSelectOptions()});
-  console.log(facturas)
   return (
       <BasePages title={t.Nav.facture.billing}>
         <FacturasSolicitadasSearch t={t} facturas={facturas} monedas={monedas}/>

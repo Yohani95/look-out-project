@@ -55,8 +55,12 @@ class FacturaPeriodo {
         _fechaOc: facturaPeriodo.fechaOc ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaOc) : 'N/A',
         _fechaFactura: facturaPeriodo.fechaFactura ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaFactura) : 'N/A',
         _fechaVencimiento: facturaPeriodo.fechaVencimiento ? facturaPeriodoInstance.getFechaString(facturaPeriodo.fechaVencimiento) : 'N/A',
-        _empresaPrestadora: facturaPeriodo.periodo ? facturaPeriodoInstance.periodo.proyecto.empresaPrestadora.nombre : new HorasUtilizadas(facturaPeriodoInstance.horasUtilizadas).proyecto.empresaPrestadora.nombre
-    };
+        _empresaPrestadora: 
+            facturaPeriodo.periodo?.proyecto?.empresaPrestadora?.nombre ??
+            new HorasUtilizadas(facturaPeriodo.horasUtilizadas)?.proyecto?.empresaPrestadora?.nombre ??
+            "N/A"
+
+      };
   }
 
   static createColumns(t?: any) {

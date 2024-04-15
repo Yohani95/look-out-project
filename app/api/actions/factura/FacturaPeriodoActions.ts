@@ -56,7 +56,6 @@ export async function getFacturaPeriodoByIdHoras(idHoras: number) {
         next: { tags: [tag] },
       }
     );
-    console.log(response);
     return response.json();
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -76,6 +75,7 @@ export async function getAllPreSolicitadaFacturaPeriodo() {
         next: { tags: [tag] },
       }
     );
+
     return response.json();
   } catch (error) {
     console.error("Error fetching data:", error);
