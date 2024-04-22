@@ -251,6 +251,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
         factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.PAGADA;
         delete factura.periodo;
         delete factura.estado;
+        delete factura.documentosFactura;
         const res = await updateFacturaPeriodo(factura, idFactura).then((res) => NotificationSweet({
           title: t.notification.success.title,
           text: t.notification.success.text,
@@ -292,11 +293,10 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
           type: t.notification.loading.type,
           showLoading: true,
         });
-        console.log(factura.idEstado)
-        console.log(FacturaPeriodo.ESTADO_FACTURA.ENVIADA)
         factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.ENVIADA;
         delete factura.periodo;
         delete factura.estado;
+        delete factura.documentosFactura;
         const res = await updateFacturaPeriodo(factura, idFactura).then((res) => {
           NotificationSweet({
           title: t.notification.success.title,
@@ -306,7 +306,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
       }).catch((err) => {
           NotificationSweet({
             title: t.notification.error.title,
-            text: t.notification.error.text,
+            text: err,
             type: t.notification.error.type,
           });
         });
