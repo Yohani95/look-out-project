@@ -21,7 +21,6 @@ const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto | HorasUtilizadas, facturas: FacturaPeriodo[] }) {
     const columns = useMemo(() => FacturaPeriodo.createColumns(t), [t]);
     const router = useRouter();
-
     const totalFacturas = facturas.reduce((total, factura) => total + factura.monto, 0);
     const maxMontoNextFactura = periodo.monto - totalFacturas;
     const validationSchema = FacturaPeriodo.getValidationSchema(t, maxMontoNextFactura);

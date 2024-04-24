@@ -123,18 +123,18 @@ const Header = () => {
             name: t("Common.supports"),
             link: "/business/Support/search",
           },
-          bag: {
-            name: t("support.contractSupport"),
-            link: "/business/Support/contract/create",
-          },
-          contract: {
-            name: t("support.bagholder"),
-            link: "/business/Support/bag/create",
-          },
-          onDemand:{
-            name:t("support.onDemandSupport"),
-            link: "/business/Support/onDemand/create"
-          }
+          // bag: {
+          //   name: t("support.contractSupport"),
+          //   link: "/business/Support/contract/create",
+          // },
+          // contract: {
+          //   name: t("support.bagholder"),
+          //   link: "/business/Support/bag/create",
+          // },
+          // onDemand:{
+          //   name:t("support.onDemandSupport"),
+          //   link: "/business/Support/onDemand/create"
+          // }
         },
         title: t("Common.supports"),
       }

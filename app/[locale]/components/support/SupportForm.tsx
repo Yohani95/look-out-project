@@ -57,7 +57,7 @@ function SupportForm({
     */
     const calculateEndDate = () => {
         const { months, pryFechaInicioEstimada } = soporteModel;
-        console.log(months,pryFechaInicioEstimada,soporteModel.months)
+        
         if (!months || !pryFechaInicioEstimada) {
             return; // No calcular si no hay datos suficientes
         }

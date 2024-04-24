@@ -21,7 +21,7 @@ function FacturasSolicitadasSearch({ t, facturas,monedas }) {
       ...FacturaPeriodo.transformFacturaPeriodoData(factura),
       _hito: factura?.periodo ? new PeriodosProyecto(factura.periodo).getPeriodoCompleto() : (factura.horasUtilizadas ? new HorasUtilizadas(factura.horasUtilizadas).getPeriodoCompleto() : 'N/A'),
       actions: (
-        <ButtonsFacture t={t} idFactura={factura.id} idPeriodo={factura.idPeriodo} periodoFactura={factura} monedas={monedas} />
+        <ButtonsFacture t={t} idFactura={factura.id} idPeriodo={factura.idPeriodo} idHoraUtilizada={factura.idHorasUtilizadas} periodoFactura={factura} monedas={monedas} />
       ),
       observaciones: (
         <div>

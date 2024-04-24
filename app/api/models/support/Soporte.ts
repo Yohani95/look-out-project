@@ -45,7 +45,7 @@ class Soporte {
     this.pryNombre = data?.pryNombre || "";
     this.prpId = data?.prpId || null;
     this.epyId = data?.epyId || null;
-    this.tseId = data?.tseId || 0;
+    this.tseId = data?.tseId || null;
     this.pryValor = data?.pryValor || 0;
     this.monId = data?.monId || 2;
     this.pryIdCliente = data?.pryIdCliente || 0;
@@ -64,7 +64,7 @@ class Soporte {
     this.numeroHoras=data?.numeroHoras||null;
     //objetos
     this.cliente = data?.cliente || null;
-    this.tipoServicio = data?.tipoServicio || 1;
+    this.tipoServicio = data?.tipoServicio || null;
     this.pais = data?.pais || null;
     this.contacto = data?.contacto || null;
     this.tipoFacturacion = data?.tipoFacturacion || null;
@@ -129,11 +129,11 @@ class Soporte {
         header: t.Common.account,
         size: 150,
       },
-      {
-        accessorKey: "tipoServicio.tseDescripcion",
-        header: t.Account.type + " " + t.Account.business,
-        size: 150,
-      },
+      // {
+      //   accessorKey: "tipoServicio.tseDescripcion",
+      //   header: t.Account.type + " " + t.Account.business,
+      //   size: 150,
+      // },
       {
         accessorKey: "_pryFechaInicioEstimada",
         header: t.business.estimatedStartDate,

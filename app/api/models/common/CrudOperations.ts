@@ -38,7 +38,6 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
         revalidateTag(this.tag)
         return response.status
       }
-      console.log(response)
       return response.status;
     } catch (error) {
       console.error("Error fetching data:", error);
