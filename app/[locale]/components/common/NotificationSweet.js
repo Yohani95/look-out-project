@@ -25,6 +25,19 @@ const NotificationSweet = async ({ title, text, type, showLoading,push,link }) =
     }
   });
 };
-
+/**
+ * notificacion de error
+ * @param {*} url direcion
+ * @param {*} error mensaje de error
+ */
+ export const NotificationSweetError=async({url="",error})=>{
+  NotificationSweet({
+    title: t.notification.error.title,
+    text: error,
+    type: t.notification.error.type,
+    push: router.push,
+    link: url
+  });
+}
 
 export default NotificationSweet;

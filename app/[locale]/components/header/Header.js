@@ -120,13 +120,13 @@ const Header = () => {
       supports:{
         link: {
           search: {
-            name: t("Common.supports"),
+            name: t("support.contractSupport"),
             link: "/business/Support/search",
           },
-          // bag: {
-          //   name: t("support.contractSupport"),
-          //   link: "/business/Support/contract/create",
-          // },
+          bag: {
+            name: t("support.bagholder"),
+            link: "/business/Support/bag/search",
+          },
           // contract: {
           //   name: t("support.bagholder"),
           //   link: "/business/Support/bag/create",

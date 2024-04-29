@@ -6,11 +6,11 @@ import { Usuario } from '@/app/api/models/admin/Usuario'
 import ServiceFormSection from "@/app/[locale]/components/business/Services/ServiceFormSection"
 import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
-import SupportForm from '../SupportForm'
-import Soporte from '@/app/api/models/support/Soporte'
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
+import {NotificationSweet,NotificationSweetError} from "@/app/[locale]/components/common/NotificationSweet";
 import { createsoporte } from '@/app/api/actions/soporte/SoporteActions'
-function Contractcreate({ t, data }) {
+import SoporteBolsa from '@/app/api/models/support/SoporteBolsa'
+import BagForm from './BagForm'
+function BagCreate({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const [correlativo, setCorrelativo] = useState([]);
@@ -25,9 +25,9 @@ function Contractcreate({ t, data }) {
        Seccion Funciones de componente
        =================================================================================
     */
-    const validationSchema = Soporte.getValidationSchema(t);
+    const validationSchema = SoporteBolsa.getValidationSchema(t);
     const formik = useFormik({
-        initialValues: new Soporte(null),
+        initialValues: new SoporteBolsa(null),
         validationSchema,
         //validateOnMount: true,
         onSubmit: async (values, { setSubmitting }) => {
@@ -41,25 +41,18 @@ function Contractcreate({ t, data }) {
                     showLoading: true,
                 });
 
-                await createsoporte(values).then((res) => {
-                    NotificationSweet({
-                        title: t.notification.success.title,
-                        text: t.notification.success.text,
-                        type: t.notification.success.type,
-                        push: router.push,
-                        link: "/business/Support/search"
-                    });
-                }).catch((err) => {
-                    NotificationSweet({
-                        title: t.notification.error.title,
-                        text: t.notification.error.text,
-                        type: t.notification.error.type,
-                        push: router.push,
-                        link: "/business/Support/search"
-                    });
-                });
+                // await createsoporte(values).then((res) => {
+                //     NotificationSweet({
+                //         title: t.notification.success.title,
+                //         text: t.notification.success.text,
+                //         type: t.notification.success.type,
+                //         push: router.push,
+                //         link: "/business/Support/search"
+                //     });
+                // }).catch((err) => {
+                //     NotificationSweetError("/business/Support/search",err)
+                // });
             } catch (error) {
-                console.error("Error in handleFormSubmit:", error);
                 NotificationSweet({
                     title: t.notification.error.title,
                     text: t.notification.error.text,
@@ -80,15 +73,15 @@ function Contractcreate({ t, data }) {
                 }}
             >
                 <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-                    <h4>{`${t.Common.create} ${t.Common.supports}`}</h4>
+                    <h4>{`${t.Common.create} ${t.support.bagholder}`}</h4>
                     <div className="col-sm-2 text-end">
                         <h6>
-                            {t.Common.correlative} {t.Common.supports}
-                            {correlativo ? "#" : correlativo}
+                            {t.Common.correlative} {t.support.bagholder}
+                            {correlativo ? " #" : correlativo}
                         </h6>
                     </div>
                 </div>
-                <SupportForm
+                <BagForm
                     t={t}
                     soporteModel={formik.values}
                     setSoporte={formik.setValues}
@@ -113,4 +106,4 @@ function Contractcreate({ t, data }) {
     );
 }
 
-export default Contractcreate
+export default BagCreate
