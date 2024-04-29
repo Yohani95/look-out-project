@@ -9,13 +9,16 @@ import { useSession, signOut } from "next-auth/react";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { FaUser, FaCog } from "react-icons/fa";
 import { red } from "@mui/material/colors";
+import { useRouter } from "next/navigation";
 const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
   let translations;
+  const router = useRouter();
   translations = require(`@/messages/${locale}.json`);
   const handleLogout = async () => {
-    await signOut({ callbackUrl: '/' }); // Redirigir a la página de inicio
-  };
+  await signOut({redirect:false}); // Redirigir a la página de inicio
+  router.push("/");   
+};
 
   return (
     <>

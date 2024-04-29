@@ -2,6 +2,7 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { userApiUrl,apiHeaders } from "@/app/api/apiConfig";
 import https from "https"; 
+import { signIn } from "next-auth/react";
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -63,7 +64,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
      signIn: "/",
-     signOut: "/",
+     signIn:'/'
   },
   callbacks: {
     async session({ session, token, user }) {
@@ -91,14 +92,7 @@ export const authOptions = {
         token.rol=user.rol
       }
       return token
-    },
-    // async signOut({ url, baseUrl }) {
-    //   // Redireccionar a la URL correspondiente según el entorno
-    //   const isProduction = process.env.NODE_ENV === 'production';
-    //   const logoutRoute = isProduction ? 'https://kpazserv0011.azurewebsites.net/' : 'https://localhost:3001/';
-    //   return logoutRoute;
-    // },
-    // ...
+    }
   },
 };
 

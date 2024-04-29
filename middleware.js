@@ -20,7 +20,7 @@ const authMiddleware = withAuth(
       
     },
     pages: {
-      signIn: '/'
+      signIn: '/',
     }
   }
 );

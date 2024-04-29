@@ -1,16 +1,15 @@
 "use client"
 import React, { useMemo } from 'react'
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
-import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 import SupportButtons from '@/app/[locale]/components/support/SupportButtons';
-import Soporte from '@/app/api/models/support/Soporte';
+import SoporteBolsa from '@/app/api/models/support/SoporteBolsa';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function ListSupport({ t, data }) {
-  const columns = useMemo(() => Soporte.createColumns(t), [t]);
+function BagList({ t, data }) {
+  const columns = useMemo(() => SoporteBolsa.createColumns(t), [t]);
   const memoizedSoporteActions = useMemo(() => {
     return data.map((soporte) => ({
-      ...Soporte.transformFacturaPeriodoData(soporte),
+      ...SoporteBolsa.transformFacturaPeriodoData(soporte),
       actions: (
         <SupportButtons t={t} proyecto={soporte}/>
       )
@@ -18,11 +17,11 @@ function ListSupport({ t, data }) {
   }, [data, t]);
   return (
     <>
-      <h4 className='mb-3'>{t.support.bagholder}</h4>
+      <h4 className='mb-3'>{t.Common.supports}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <Link href={"/business/Support/bag/create"}>
           <button type="button" className=" btn btn-primary ">
-            + {t.Account.add} {t.support.bagholder}
+            + {t.Account.add} {t.Common.supports}
           </button>
         </Link>
       </div>
@@ -31,4 +30,4 @@ function ListSupport({ t, data }) {
   )
 }
 
-export default ListSupport
+export default BagList
