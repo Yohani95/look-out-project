@@ -103,7 +103,47 @@ class HorasUtilizadas {
       },
       {
         accessorKey: "actions",
+        header: "acciones",
+        size: 150,
+      },
+      // Agregar más columnas según sea necesario
+    ];
+  }
+  static createColumnsBag(t: any) {
+    return [
+      {
+        accessorKey: "id",
+        header: "ID",
+        size: 50,
+      },
+      {
+        accessorKey: "_fechaPeriodoDesde",
+        header: "Fecha Periodo Desde",
+        size: 150,
+      },
+      {
+        accessorKey: "_fechaPeriodoHasta",
+        header: "Fecha Periodo Hasta",
+        size: 150,
+      },
+      {
+        accessorKey: "horas",
+        header: "Horas",
+        size: 150,
+      },
+      {
+        accessorKey: "monto",
+        header: "Monto",
+        size: 150,
+      },
+      {
+        accessorKey: "estado",
         header: "Estado",
+        size: 150,
+      },
+      {
+        accessorKey: "actions",
+        header: "Acciones",
         size: 150,
       },
       // Agregar más columnas según sea necesario

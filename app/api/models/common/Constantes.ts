@@ -24,6 +24,10 @@ export class Constantes {
     FINANZAS:3,
     DELEVERY:4
   }
+  static TipoSorpote={
+    CONTRATO:1,
+    BOLSA:2,
+  }
   static generarOpcionesDeTiempo(t) {
     return [
       { value: 1, label: t.time.month },

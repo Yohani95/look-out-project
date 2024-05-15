@@ -1,6 +1,7 @@
 "use server";
 import { CrudOperations } from "@/app/api/models/common/CrudOperations";
 import {
+  GetAllEntitiesByIdTipoSoporteApiUrl,
   soporteApiUrl,
   soporteWithEntitiesApiUrl,
   soporteWithEntitiesByIdApiUrl,
@@ -42,6 +43,26 @@ export async function GetAllEntitiesById(id:number) {
     });
     var data=await response.json();
     var soporte =new Soporte(data);
+    const monthsDifference = differenceInMonths(
+      soporte.pryFechaCierreEstimada,
+      soporte.pryFechaInicioEstimada
+    );
+    // Redondear el valor de meses a entero
+    soporte.months = Math.round(monthsDifference);
+    return soporte
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+export async function GetAllEntitiesByIdTipoSoporte(id:number) {
+  try {
+    const response = await fetch(`${GetAllEntitiesByIdTipoSoporteApiUrl}/${id}`, {
+      cache: "no-cache",
+      next: { tags: ['bag'] },
+    });
+    var data=await response.json();
+    var soporte =data as Soporte;
     const monthsDifference = differenceInMonths(
       soporte.pryFechaCierreEstimada,
       soporte.pryFechaInicioEstimada

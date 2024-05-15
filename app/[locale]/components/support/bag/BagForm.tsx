@@ -7,7 +7,7 @@ import SelectField from "@/app/[locale]/components/common/SelectField";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import { useSession } from "next-auth/react";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { addMonths} from "date-fns";
+import { addMonths } from "date-fns";
 import { Usuario } from "@/app/api/models/admin/Usuario";
 import DocumentosSoporte from "@/app/api/models/support/DocumentosSoporte";
 function BagForm({
@@ -57,7 +57,7 @@ function BagForm({
     */
     const calculateEndDate = () => {
         const { months, pryFechaInicioEstimada } = soporteModel;
-        
+
         if (!months || !pryFechaInicioEstimada) {
             return; // No calcular si no hay datos suficientes
         }
@@ -396,8 +396,6 @@ function BagForm({
                     onChange={(e) => handleSelectChange(e, "idEmpresaPrestadora", setSoporte)}
                     selectedValue={soporteModel.idEmpresaPrestadora}
                 />
-            </div>
-            <div className="mb-3 row align-items-center">
                 <label htmlFor="pryValor" className="col-sm-1 col-form-label">
                     Valor Bolsa
                 </label>
@@ -426,7 +424,9 @@ function BagForm({
                     />
                 </div>
             </div>
+            {/* <div className="mb-3 row align-items-center">
 
+            </div> */}
         </>
     );
 }

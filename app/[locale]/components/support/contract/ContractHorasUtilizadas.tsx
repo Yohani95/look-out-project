@@ -11,6 +11,7 @@ import NotificationSweet from "@/app/[locale]/components/common/NotificationSwee
 import { updatesoporte } from '@/app/api/actions/soporte/SoporteActions'
 import DocumentosSoporte from '@/app/api/models/support/DocumentosSoporte'
 import PeriodAdd from './PeriodAdd'
+import BagForm from '../bag/BagForm'
 function ContractHorasUtilizadas({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
@@ -86,12 +87,19 @@ function ContractHorasUtilizadas({ t, data }) {
                     </div>
                 </div>
                 <fieldset disabled>
-                    <SupportForm
+                    {data.soporte.idTipoSoporte == Constantes.TipoSorpote.CONTRATO ? <SupportForm
                         t={t}
                         soporteModel={formik.values}
                         setSoporte={formik.setValues}
                         data={data}
-                    />
+                    /> :
+                        <BagForm
+                            t={t}
+                            soporteModel={formik.values}
+                            setSoporte={formik.setValues}
+                            data={data}
+                        />
+                    }
                     <hr />
                     <div className="col-sm-5">
                         <label htmlFor="fileInput" className="col-sm-3 col-form-label">
@@ -162,6 +170,7 @@ function ContractHorasUtilizadas({ t, data }) {
                 <hr />
             </form>
             <PeriodAdd soporte={formik.values} t={t} horasUtilizadas={data.horasUtilizadas} />
+
             <div className="d-flex justify-content-end mb-2">
                 <button
                     type="button"

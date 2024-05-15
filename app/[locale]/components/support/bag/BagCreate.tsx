@@ -3,12 +3,11 @@ import React, { useState } from 'react'
 import { useSession } from "next-auth/react"
 import { Constantes } from '@/app/api/models/common/Constantes'
 import { Usuario } from '@/app/api/models/admin/Usuario'
-import ServiceFormSection from "@/app/[locale]/components/business/Services/ServiceFormSection"
 import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
-import {NotificationSweet,NotificationSweetError} from "@/app/[locale]/components/common/NotificationSweet";
+import Soporte from '@/app/api/models/support/Soporte'
+import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { createsoporte } from '@/app/api/actions/soporte/SoporteActions'
-import SoporteBolsa from '@/app/api/models/support/SoporteBolsa'
 import BagForm from './BagForm'
 function BagCreate({ t, data }) {
     const { data: session } = useSession();
@@ -25,15 +24,15 @@ function BagCreate({ t, data }) {
        Seccion Funciones de componente
        =================================================================================
     */
-    const validationSchema = SoporteBolsa.getValidationSchema(t);
+    const validationSchema = Soporte.getValidationSchema(t);
     const formik = useFormik({
-        initialValues: new SoporteBolsa(null),
+        initialValues: new Soporte(null),
         validationSchema,
         //validateOnMount: true,
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 // Utiliza una variable para almacenar la función handleFormSubmit
-
+                values.idTipoSoporte = Constantes.TipoSorpote.BOLSA;
                 await NotificationSweet({
                     title: t.notification.loading.title,
                     text: "",
@@ -41,17 +40,23 @@ function BagCreate({ t, data }) {
                     showLoading: true,
                 });
 
-                // await createsoporte(values).then((res) => {
-                //     NotificationSweet({
-                //         title: t.notification.success.title,
-                //         text: t.notification.success.text,
-                //         type: t.notification.success.type,
-                //         push: router.push,
-                //         link: "/business/Support/search"
-                //     });
-                // }).catch((err) => {
-                //     NotificationSweetError("/business/Support/search",err)
-                // });
+                await createsoporte(values).then((res) => {
+                    NotificationSweet({
+                        title: t.notification.success.title,
+                        text: t.notification.success.text,
+                        type: t.notification.success.type,
+                        push: router.push,
+                        link: "/business/Support/search"
+                    });
+                }).catch((err) => {
+                    NotificationSweet({
+                        title: t.notification.error.title,
+                        text: t.notification.error.text,
+                        type: t.notification.error.type,
+                        push: router.push,
+                        link: "/business/Support/search"
+                    });
+                });
             } catch (error) {
                 NotificationSweet({
                     title: t.notification.error.title,

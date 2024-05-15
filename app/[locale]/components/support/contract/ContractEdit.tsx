@@ -18,9 +18,9 @@ function ContractEdit({ t, data }) {
     const router = useRouter();
     //========FIN DECLARACION DE VARIABLES ===============
 
-    if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
-        return <p>You are not authorized to view this page!</p>;
-    }
+    // if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
+    //     return <p>You are not authorized to view this page!</p>;
+    // }
     /*
        =================================================================================
        Seccion Funciones de componente

@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useSession } from "next-auth/react"
 import { Constantes } from '@/app/api/models/common/Constantes'
 import { Usuario } from '@/app/api/models/admin/Usuario'
-import ServiceFormSection from "@/app/[locale]/components/business/Services/ServiceFormSection"
 import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
 import SupportForm from '../SupportForm'
@@ -33,7 +32,7 @@ function Contractcreate({ t, data }) {
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 // Utiliza una variable para almacenar la función handleFormSubmit
-
+                values.idTipoSoporte=Constantes.TipoSorpote.CONTRATO;
                 await NotificationSweet({
                     title: t.notification.loading.title,
                     text: "",

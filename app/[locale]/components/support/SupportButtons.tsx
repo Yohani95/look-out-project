@@ -12,6 +12,7 @@ import { Button } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { useRouter } from "next/navigation";
 import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import { Constantes } from "@/app/api/models/common/Constantes";
 function SupportButtons({ t,proyecto}) {
   const router = useRouter();
   const handleEdit = async (id, trans, push) => {
@@ -23,7 +24,16 @@ function SupportButtons({ t,proyecto}) {
       trans.notification.edit.buttonCancel
     );
     if (confirmed) {
-      push(`/business/Support/contract/edit/${id}`);
+      switch (proyecto.idTipoSoporte) {
+        case Constantes.TipoSorpote.CONTRATO:
+          push(`/business/Support/contract/edit/${id}`);
+          break;
+          case Constantes.TipoSorpote.BOLSA:
+            push(`/business/Support/bag/edit/${id}`);
+          break;
+        default:
+          break;
+      }
     }
   };
   return (

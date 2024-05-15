@@ -3,6 +3,8 @@ import { CrudOperations } from "@/app/api/models/common/CrudOperations";
 import {
   getAllHorasByIdSoportepiUrl,
   horasUtilizadasApiUrl,
+  horasUtilizadascreateBagApiUrl,
+  horasUtilizadasupdateBagApiUrl,
 } from "@/app/api/apiConfig";
 import HorasUtilizadas from "../../models/support/HorasUtilizadas";
 
@@ -26,6 +28,44 @@ export async function getAllHorasByIdSoporte(id:number) {
         next: { tags: [tag] },
       });
       return response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+  }
+  export async function createBagHorasUtilizadas( item : HorasUtilizadas) {
+    try {
+      const response = await fetch(horasUtilizadascreateBagApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(item)
+      });
+      if(response.ok){
+        revalidateDatahorasUtilizadas()
+      }
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+  }
+  export async function updateBagHorasUtilizadas( item : HorasUtilizadas,id:string | number) {
+    try {
+      const response = await fetch(`${horasUtilizadasupdateBagApiUrl}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(item)
+      });
+      if(response.ok){
+        revalidateDatahorasUtilizadas()
+      }
+      const result = await response.json();
+      return result;
     } catch (error) {
       console.error("Error fetching data:", error);
       return [];
