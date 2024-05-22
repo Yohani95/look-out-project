@@ -31,6 +31,9 @@ function SupportButtons({ t,proyecto}) {
           case Constantes.TipoSorpote.BOLSA:
             push(`/business/Support/bag/edit/${id}`);
           break;
+          case Constantes.TipoSorpote.ONDEMAND:
+            push(`/business/Support/onDemand/edit/${id}`);
+          break;
         default:
           break;
       }

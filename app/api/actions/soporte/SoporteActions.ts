@@ -59,7 +59,7 @@ export async function GetAllEntitiesByIdTipoSoporte(id:number) {
   try {
     const response = await fetch(`${GetAllEntitiesByIdTipoSoporteApiUrl}/${id}`, {
       cache: "no-cache",
-      next: { tags: ['bag'] },
+      next: { tags: [`${tag}${id}`] },
     });
     var data=await response.json();
     var soporte =data as Soporte;
@@ -77,4 +77,7 @@ export async function GetAllEntitiesByIdTipoSoporte(id:number) {
 }
 export async function EditAction() {
   revalidatePath('/')
+}
+export async function createAction(id:number) {
+  revalidatePath(`${tag}${id}`)
 }

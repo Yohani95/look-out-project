@@ -148,3 +148,5 @@ export const horasUtilizadasApiUrl = `${apiBaseUrl}/horasUtilizadas`;
 export const getAllHorasByIdSoportepiUrl = `${horasUtilizadasApiUrl}/getAllHorasByIdSoporte`;
 export const horasUtilizadascreateBagApiUrl = `${horasUtilizadasApiUrl}/createBag`;
 export const horasUtilizadasupdateBagApiUrl = `${horasUtilizadasApiUrl}/updateBag`;
+export const horasUtilizadascreateOnDemandApiUrl = `${horasUtilizadasApiUrl}/createOnDemand`;
+export const horasUtilizadasupdateOnDemandApiUrl = `${horasUtilizadasApiUrl}/updateOnDemand`;

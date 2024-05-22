@@ -5,7 +5,7 @@ import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import HoursForm from './HoursForm';
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { useRouter } from 'next/navigation'
-import { createBagHorasUtilizadas, createhorasUtilizadas, updateBagHorasUtilizadas, updatehorasUtilizadas } from '@/app/api/actions/soporte/HorasUtilizadasActions';
+import { createBagHorasUtilizadas, createOnDemandHorasUtilizadas, createhorasUtilizadas, updateBagHorasUtilizadas, updateOnDemandHorasUtilizadas, updatehorasUtilizadas } from '@/app/api/actions/soporte/HorasUtilizadasActions';
 import HoursList from './HoursList';
 import { Constantes } from '@/app/api/models/common/Constantes';
 
@@ -67,7 +67,6 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
           formatDate(h.fechaPeriodoDesde) === formatDate(values.fechaPeriodoDesde) &&
           formatDate(h.fechaPeriodoHasta) === formatDate(values.fechaPeriodoHasta)
         );
-        console.log(idTipoSoporte)
         switch (idTipoSoporte) {
           case Constantes.TipoSorpote.CONTRATO:
             if (existingHour) {
@@ -95,12 +94,10 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
             }
             break;
           case Constantes.TipoSorpote.BOLSA:
-            console.log("entro")
             if (existingHour) {
               values.id = existingHour.id;
               values.horasExtras = values.horasExtras + existingHour.horasExtras
               await updateBagHorasUtilizadas(values, existingHour.id).then((res) => {
-                console.log(res)
                 if (res.status != 400 && res.status != 500) {
                   showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
                 } else {
@@ -111,7 +108,6 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
               });
             } else {
               await createBagHorasUtilizadas(values).then((res) => {
-                console.log(res)
                 if (res.status != 400 && res.status != 500) {
                   showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
                 } else {
@@ -122,6 +118,31 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
               });
             }
             break;
+            case Constantes.TipoSorpote.ONDEMAND:
+              if (existingHour) {
+                values.id = existingHour.id;
+                values.horasExtras = values.horasExtras + existingHour.horasExtras
+                await updateOnDemandHorasUtilizadas(values, existingHour.id).then((res) => {
+                  if (res.status != 400 && res.status != 500) {
+                    showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                  } else {
+                    showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                  }
+                }).catch((err) => {
+                  showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+                });
+              } else {
+                await createOnDemandHorasUtilizadas(values).then((res) => {
+                  if (res.status != 400 && res.status != 500) {
+                    showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                  } else {
+                    showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                  }
+                }).catch((err) => {
+                  showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+                });
+              }
+              break;
 
           default:
             break;

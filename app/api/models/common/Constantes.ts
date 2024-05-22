@@ -27,6 +27,7 @@ export class Constantes {
   static TipoSorpote={
     CONTRATO:1,
     BOLSA:2,
+    ONDEMAND:3
   }
   static generarOpcionesDeTiempo(t) {
     return [

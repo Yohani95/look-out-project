@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
 import Soporte from '@/app/api/models/support/Soporte'
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { createsoporte } from '@/app/api/actions/soporte/SoporteActions'
-import BagForm from './BagForm'
-function BagCreate({ t, data }) {
+import { EditAction, createAction, createsoporte } from '@/app/api/actions/soporte/SoporteActions'
+import OnDemandForm from './OnDemandForm'
+function OnDemandCreate({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const [correlativo, setCorrelativo] = useState([]);
@@ -32,7 +32,7 @@ function BagCreate({ t, data }) {
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 // Utiliza una variable para almacenar la función handleFormSubmit
-                values.idTipoSoporte = Constantes.TipoSorpote.BOLSA;
+                values.idTipoSoporte = Constantes.TipoSorpote.ONDEMAND;
                 await NotificationSweet({
                     title: t.notification.loading.title,
                     text: "",
@@ -41,12 +41,14 @@ function BagCreate({ t, data }) {
                 });
 
                 await createsoporte(values).then((res) => {
+                    EditAction()
+                    createAction(Constantes.TipoSorpote.ONDEMAND);
                     NotificationSweet({
                         title: t.notification.success.title,
                         text: t.notification.success.text,
                         type: t.notification.success.type,
                         push: router.push,
-                        link: "/business/Support/bag/search"
+                        link: "/business/Support/onDemand/search"
                     });
                 }).catch((err) => {
                     NotificationSweet({
@@ -54,7 +56,7 @@ function BagCreate({ t, data }) {
                         text: t.notification.error.text,
                         type: t.notification.error.type,
                         push: router.push,
-                        link: "/business/Support/bag/search"
+                        link: "/business/Support/onDemand/search"
                     });
                 });
             } catch (error) {
@@ -63,7 +65,7 @@ function BagCreate({ t, data }) {
                     text: t.notification.error.text,
                     type: t.notification.error.type,
                     push: router.push,
-                    link: "/business/Support/bag/search"
+                    link: "/business/Support/onDemand/search"
                 });
             } finally {
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
@@ -78,15 +80,15 @@ function BagCreate({ t, data }) {
                 }}
             >
                 <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-                    <h4>{`${t.Common.create} ${t.support.bagholder}`}</h4>
+                    <h4>{`${t.Common.create} ${t.support.onDemandSupport}`}</h4>
                     <div className="col-sm-2 text-end">
                         <h6>
-                            {t.Common.correlative} {t.support.bagholder}
+                            {t.Common.correlative} {t.support.onDemandSupport}
                             {correlativo ? " #" : correlativo}
                         </h6>
                     </div>
                 </div>
-                <BagForm
+                <OnDemandForm
                     t={t}
                     soporteModel={formik.values}
                     setSoporte={formik.setValues}
@@ -111,4 +113,4 @@ function BagCreate({ t, data }) {
     );
 }
 
-export default BagCreate
+export default OnDemandCreate
