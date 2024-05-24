@@ -120,3 +120,44 @@ export async function ChangeEstadoHoras(idHoras: number, estado: number) {
     return [];
   }
 }
+export async function ChangeEstadoFacturaBySoporte(idSoporte: number, estado: number) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/ChangeEstadoSoporte/${idSoporte}/${estado}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        next: { tags: [tag] },
+      }
+    );
+   if(response.ok){
+    await revalidateDataFacturaPeriodo();
+   }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+export async function GetAllEntitiesByIdSoporte(idSoporte: number) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/GetAllEntitiesByIdSoporte/${idSoporte}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+        next: { tags: [tag] },
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}

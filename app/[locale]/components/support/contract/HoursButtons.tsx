@@ -3,7 +3,8 @@ import { Button } from 'react-bootstrap'
 import { Tooltip } from "react-tooltip";
 import { FaLockOpen, FaEye, FaLock, FaFileDownload } from 'react-icons/fa';
 import { useRouter } from "next/navigation";
-function HoursButtons({ t, periodo }) {
+import { Constantes } from '@/app/api/models/common/Constantes';
+function HoursButtons({ t, periodo, tipoSoporte = Constantes.TipoSorpote.CONTRATO }) {
   const router = useRouter();
   const handleDownload = () => {
     if (periodo.contenidoDocumento) {
@@ -32,14 +33,17 @@ function HoursButtons({ t, periodo }) {
   };
   return (
     <>
-      <Button variant="link" onClick={() =>
-        router.push(`/facture/createSupport/${periodo.id}`)
-      }>
-        {periodo.estado == 1 ? <FaLock size={16} className="candado" style={{ color: 'green' }} /> : <FaLockOpen size={16} className="candado" />}
-        <Tooltip anchorSelect=".candado" place="top">
-          {t.Nav.facture.requestBilling}
-        </Tooltip>
-      </Button>
+      {tipoSoporte != Constantes.TipoSorpote.BOLSA &&
+        <Button variant="link" onClick={() =>
+          router.push(`/facture/createSupport/${periodo.id}`)
+        }>
+
+          {periodo.estado == 1 ? <FaLock size={16} className="candado" style={{ color: 'green' }} /> : <FaLockOpen size={16} className="candado" />}
+          <Tooltip anchorSelect=".candado" place="top">
+            {t.Nav.facture.requestBilling}
+          </Tooltip>
+        </Button>
+      }
       {periodo.contenidoDocumento ? (
         <Button variant="link" onClick={handleDownload}>
           <FaFileDownload size={16} className={`document ${periodo.nombreDocumento}`} />

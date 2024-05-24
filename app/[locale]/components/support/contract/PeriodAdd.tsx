@@ -98,6 +98,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
               values.id = existingHour.id;
               values.horasExtras = values.horasExtras + existingHour.horasExtras
               await updateBagHorasUtilizadas(values, existingHour.id).then((res) => {
+                console.log(res)
                 if (res.status != 400 && res.status != 500) {
                   showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
                 } else {
@@ -108,6 +109,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
               });
             } else {
               await createBagHorasUtilizadas(values).then((res) => {
+                console.log(res)
                 if (res.status != 400 && res.status != 500) {
                   showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
                 } else {
@@ -118,32 +120,31 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
               });
             }
             break;
-            case Constantes.TipoSorpote.ONDEMAND:
-              if (existingHour) {
-                values.id = existingHour.id;
-                values.horasExtras = values.horasExtras + existingHour.horasExtras
-                await updateOnDemandHorasUtilizadas(values, existingHour.id).then((res) => {
-                  if (res.status != 400 && res.status != 500) {
-                    showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
-                  } else {
-                    showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
-                  }
-                }).catch((err) => {
-                  showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
-                });
-              } else {
-                await createOnDemandHorasUtilizadas(values).then((res) => {
-                  if (res.status != 400 && res.status != 500) {
-                    showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
-                  } else {
-                    showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
-                  }
-                }).catch((err) => {
-                  showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
-                });
-              }
-              break;
-
+          case Constantes.TipoSorpote.ONDEMAND:
+            if (existingHour) {
+              values.id = existingHour.id;
+              values.horasExtras = values.horasExtras + existingHour.horasExtras
+              await updateOnDemandHorasUtilizadas(values, existingHour.id).then((res) => {
+                if (res.status != 400 && res.status != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
+            } else {
+              await createOnDemandHorasUtilizadas(values).then((res) => {
+                if (res.status != 400 && res.status != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
+            }
+            break;
           default:
             break;
         }
@@ -160,7 +161,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
     },
   });
   return (
-    <BoxInfo title={t.Common.hour} startShow={true}>
+    <BoxInfo title={t.time.hour} startShow={true}>
       <form
         onSubmit={(e) => {
           formik.handleSubmit(e);

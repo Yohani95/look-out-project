@@ -132,6 +132,46 @@ class HorasUtilizadas {
         size: 150,
       },
       {
+        accessorKey: "horasAcumuladas",
+        header: "Horas Restantes",
+        size: 150,
+      },
+      // {
+      //   accessorKey: "estado",
+      //   header: "Estado",
+      //   size: 150,
+      // },
+      {
+        accessorKey: "actions",
+        header: "Acciones",
+        size: 150,
+      },
+      // Agregar más columnas según sea necesario
+    ];
+  }
+  static createColumnsOnDemand(t: any) {
+    return [
+      {
+        accessorKey: "id",
+        header: "ID",
+        size: 50,
+      },
+      {
+        accessorKey: "_fechaPeriodoDesde",
+        header: "Fecha Periodo Desde",
+        size: 150,
+      },
+      {
+        accessorKey: "_fechaPeriodoHasta",
+        header: "Fecha Periodo Hasta",
+        size: 150,
+      },
+      {
+        accessorKey: "horas",
+        header: "Horas",
+        size: 150,
+      },
+      {
         accessorKey: "monto",
         header: "Monto",
         size: 150,
@@ -173,8 +213,6 @@ class HorasUtilizadas {
   }
   getPeriodoCompleto(): string {
     const formato = 'dd/MM/yyyy';
-    console.log(this.fechaPeriodoDesde);
-    console.log(this.fechaPeriodoHasta);
     return `${format(this.fechaPeriodoDesde, formato)} - ${format(this.fechaPeriodoHasta, formato)}`;
   }
 }

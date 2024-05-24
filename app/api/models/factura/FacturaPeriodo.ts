@@ -3,6 +3,7 @@ import PeriodosProyecto from "../proyecto/PeriodosProyecto";
 import { format } from 'date-fns';
 import DocumentoFactura from "./DocumentoFactura";
 import HorasUtilizadas from "../support/HorasUtilizadas";
+import Soporte from "../support/Soporte";
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -19,6 +20,8 @@ class FacturaPeriodo {
   idEstado: number | null;
   fechaVencimiento: Date | null;
   idHorasUtilizadas:number| null;
+  idSoporteBolsa:number | null;
+  Soporte:Soporte|null;
   periodo: PeriodosProyecto | null;
   horasUtilizadas:HorasUtilizadas | null;
   documentosFactura: DocumentoFactura[] | null;
@@ -58,6 +61,7 @@ class FacturaPeriodo {
         _empresaPrestadora: 
             facturaPeriodo.periodo?.proyecto?.empresaPrestadora?.nombre ??
             new HorasUtilizadas(facturaPeriodo.horasUtilizadas)?.proyecto?.empresaPrestadora?.nombre ??
+            new Soporte(facturaPeriodo.soporte)?.empresaPrestadora?.nombre??
             "N/A"
 
       };

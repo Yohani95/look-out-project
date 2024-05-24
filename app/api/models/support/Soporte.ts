@@ -165,5 +165,10 @@ class Soporte {
       _pryFechaCierreEstimada: SoporteInstance.getFechaString(soporte.pryFechaCierreEstimada),
     };
   }
+  getPeriodoCompleto(): string {
+    const formato = 'dd/MM/yyyy';
+    return `${format(this.pryFechaInicioEstimada, formato)} - ${format(this.pryFechaCierreEstimada, formato)}`;
+  }
 }
+
 export default Soporte;

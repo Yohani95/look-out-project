@@ -5,14 +5,14 @@ import HoursButtons from './HoursButtons';
 import { Constantes } from '@/app/api/models/common/Constantes';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function HoursList({ t, data, tipoSoporte }) {
-    const columns = useMemo(() => tipoSoporte==Constantes.TipoSorpote.CONTRATO ? HorasUtilizadas.createColumns(t) : HorasUtilizadas.createColumnsBag(t), [t]);
+    const columns = useMemo(() => tipoSoporte==Constantes.TipoSorpote.CONTRATO ? HorasUtilizadas.createColumns(t) :tipoSoporte==Constantes.TipoSorpote.BOLSA ? HorasUtilizadas.createColumnsBag(t):HorasUtilizadas.createColumnsOnDemand(t), [t]);
     const memoizedSoporteActions = useMemo(() => {
         return data.map((horas) => ({
             ...HorasUtilizadas.transformHorasUtilizadasData(horas),
             estado: new HorasUtilizadas(horas).getEstados(t),
             actions: (
                 <>
-                <HoursButtons t={t} periodo={horas} />
+                <HoursButtons t={t} periodo={horas} tipoSoporte={tipoSoporte} />
                 </>
             )
         }));
