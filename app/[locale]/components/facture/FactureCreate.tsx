@@ -6,7 +6,7 @@ import FactureFormSection from "./FactureFormSection";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import PeriodosProyecto from "@/app/api/models/proyecto/PeriodosProyecto";
-import { createFacturaPeriodo, deleteFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
+import { ChangeEstadoFacturaBySoporte, createFacturaPeriodo, deleteFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
 import TableMaterialUI from "../common/TablaMaterialUi";
 import { FaTrash, FaFileDownload } from "react-icons/fa";
 import { Button } from "react-bootstrap";
@@ -18,11 +18,11 @@ import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
 import { Tooltip } from "react-tooltip";
 import HorasUtilizadas from "@/app/api/models/support/HorasUtilizadas";
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto | HorasUtilizadas, facturas: FacturaPeriodo[] }) {
+function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProyecto | HorasUtilizadas , facturas: FacturaPeriodo[] }) {
     const columns = useMemo(() => FacturaPeriodo.createColumns(t), [t]);
     const router = useRouter();
-    const totalFacturas = facturas.reduce((total, factura) => total + factura.monto, 0);
-    const maxMontoNextFactura = periodo.monto - totalFacturas;
+    const totalFacturas = facturas?.reduce((total, factura) => total + factura.monto, 0);
+    const maxMontoNextFactura = periodo?.monto - totalFacturas;
     const validationSchema = FacturaPeriodo.getValidationSchema(t, maxMontoNextFactura);
     const formik = useFormik({
         initialValues: new FacturaPeriodo(),
@@ -36,9 +36,13 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                 if ('numeroProfesionales' in periodo) {
                     values.idPeriodo = periodo.id;
                     values.idHorasUtilizadas = null;
-                } else {
+                } else if('horasExtras' in periodo && periodo.id!=0){
                     values.idPeriodo = null;
                     values.idHorasUtilizadas = periodo.id;
+                }
+                if(values.idPeriodo==null && values.idHorasUtilizadas==null){
+                    values.idHorasUtilizadas = null;
+                    values.idSoporteBolsa=periodo.proyecto.pryId;
                 }
                 values.fechaFactura = new Date();
                 await NotificationSweet({
@@ -157,9 +161,28 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
             type: t.notification.loading.type,
             showLoading: true,
         });
+        if(periodo.id==null || periodo.id==0){
+            await ChangeEstadoFacturaBySoporte(periodo.proyecto.pryId, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
+            .then((res) => {
+                NotificationSweet({
+                    title: t.notification.success.title,
+                    text: t.notification.success.text,
+                    type: t.notification.success.type,
+                });
+                router.back();
+            }).catch((err) => {
+                NotificationSweet({
+                    title: t.notification.error.title,
+                    text: t.notification.error.text,
+                    type: t.notification.error.type,
+                });
+            });
+            return;
+        }
         if ('numeroProfesionales' in periodo) {
             await ChangeEstado(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
                 .then((res) => {
+                    console.log(res)
                     NotificationSweet({
                         title: t.notification.success.title,
                         text: t.notification.success.text,
@@ -173,7 +196,7 @@ function FactureCreate({ t, periodo, facturas }: { t: any, periodo: PeriodosProy
                         type: t.notification.error.type,
                     });
                 });
-        } else {
+        } else if ('horasExtras' in periodo) {
             await ChangeEstadoHoras(periodo.id, FacturaPeriodo.ESTADO_FACTURA.SOLICITADA)
                 .then((res) => {
                     NotificationSweet({

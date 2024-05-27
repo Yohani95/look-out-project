@@ -40,6 +40,7 @@ class Soporte {
   acumularHoras: boolean|null;
   numeroHoras:number|null;
   documentosSoporte:DocumentosSoporte []| null;
+  idTipoSoporte: number| null;
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || "";
@@ -62,6 +63,7 @@ class Soporte {
     this.valorHora=data?.valorHora||null;
     this.acumularHoras=data?.acumularHoras||null;
     this.numeroHoras=data?.numeroHoras||null;
+    this.idTipoSoporte=data?.idTipoSoporte|| null;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;
@@ -163,5 +165,10 @@ class Soporte {
       _pryFechaCierreEstimada: SoporteInstance.getFechaString(soporte.pryFechaCierreEstimada),
     };
   }
+  getPeriodoCompleto(): string {
+    const formato = 'dd/MM/yyyy';
+    return `${format(this.pryFechaInicioEstimada, formato)} - ${format(this.pryFechaCierreEstimada, formato)}`;
+  }
 }
+
 export default Soporte;

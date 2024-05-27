@@ -142,6 +142,11 @@ export const EmpresaPrestadoraApiUrl = `${apiBaseUrl}/empresaPrestadora`;
 export const soporteApiUrl = `${apiBaseUrl}/soporte`;
 export const soporteWithEntitiesApiUrl = `${soporteApiUrl}/GetAllEntities`;
 export const soporteWithEntitiesByIdApiUrl = `${soporteApiUrl}/GetAllEntitiesById`;
+export const GetAllEntitiesByIdTipoSoporteApiUrl = `${soporteApiUrl}/GetAllEntitiesByIdTipoSoporte`;
 //horas utilizadas soporte
 export const horasUtilizadasApiUrl = `${apiBaseUrl}/horasUtilizadas`;
 export const getAllHorasByIdSoportepiUrl = `${horasUtilizadasApiUrl}/getAllHorasByIdSoporte`;
+export const horasUtilizadascreateBagApiUrl = `${horasUtilizadasApiUrl}/createBag`;
+export const horasUtilizadasupdateBagApiUrl = `${horasUtilizadasApiUrl}/updateBag`;
+export const horasUtilizadascreateOnDemandApiUrl = `${horasUtilizadasApiUrl}/createOnDemand`;
+export const horasUtilizadasupdateOnDemandApiUrl = `${horasUtilizadasApiUrl}/updateOnDemand`;

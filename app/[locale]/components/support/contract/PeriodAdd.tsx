@@ -5,8 +5,9 @@ import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import HoursForm from './HoursForm';
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { useRouter } from 'next/navigation'
-import { createhorasUtilizadas, updatehorasUtilizadas } from '@/app/api/actions/soporte/HorasUtilizadasActions';
+import { createBagHorasUtilizadas, createOnDemandHorasUtilizadas, createhorasUtilizadas, updateBagHorasUtilizadas, updateOnDemandHorasUtilizadas, updatehorasUtilizadas } from '@/app/api/actions/soporte/HorasUtilizadasActions';
 import HoursList from './HoursList';
+import { Constantes } from '@/app/api/models/common/Constantes';
 
 function PeriodAdd({ t, soporte, horasUtilizadas }) {
   //========FIN DECLARACION DE VARIABLES ===============
@@ -42,7 +43,6 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
 
     return [year, month, day].join('-');
   };
-  const totalHorasAcumuladas = soporte.acumularHoras ? horasUtilizadas.reduce((total, horasUtilizada) => total + horasUtilizada.horasAcumuladas, 0) :0;
   const validationSchema = HorasUtilizadas.getValidationSchema(t);
   const initialValues = new HorasUtilizadas();
   const formik = useFormik({
@@ -51,17 +51,11 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-         const { pryId, pryValor, numeroHoras, valorHoraAdicional } = soporte;
-        // const horasExtras = Math.max(values.horas - numeroHoras, 0)-totalHorasAcumuladas;
-        // const montoHorasExtras = horasExtras * valorHoraAdicional;
-        // const horasAcumuladas = soporte.acumularHoras == true ? Math.max(numeroHoras - values.horas, 0) : 0;
+        const { pryId, pryValor, idTipoSoporte } = soporte;
         values = {
           ...values,
           idSoporte: pryId,
           monto: pryValor,
-          // horasExtras,
-          // montoHorasExtras,
-          // horasAcumuladas
         } as HorasUtilizadas;
         await NotificationSweet({
           title: t.notification.loading.title,
@@ -73,28 +67,86 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
           formatDate(h.fechaPeriodoDesde) === formatDate(values.fechaPeriodoDesde) &&
           formatDate(h.fechaPeriodoHasta) === formatDate(values.fechaPeriodoHasta)
         );
-        if (existingHour) {
-          values.id = existingHour.id;
-          values.horasExtras=values.horasExtras+existingHour.horasExtras
-          await updatehorasUtilizadas(values, existingHour.id).then((res) => {
-            if (res != 400 && res != 500) {
-              showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+        switch (idTipoSoporte) {
+          case Constantes.TipoSorpote.CONTRATO:
+            if (existingHour) {
+              values.id = existingHour.id;
+              values.horasExtras = values.horasExtras + existingHour.horasExtras
+              await updatehorasUtilizadas(values, existingHour.id).then((res) => {
+                if (res != 400 && res != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
             } else {
-              showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+              await createhorasUtilizadas(values).then((res) => {
+                if (res != 400 && res != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
             }
-          }).catch((err) => {
-            showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
-          });
-        } else {
-          await createhorasUtilizadas(values).then((res) => {
-            if (res != 400 && res != 500) {
-              showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+            break;
+          case Constantes.TipoSorpote.BOLSA:
+            if (existingHour) {
+              values.id = existingHour.id;
+              values.horasExtras = values.horasExtras + existingHour.horasExtras
+              await updateBagHorasUtilizadas(values, existingHour.id).then((res) => {
+                console.log(res)
+                if (res.status != 400 && res.status != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
             } else {
-              showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+              await createBagHorasUtilizadas(values).then((res) => {
+                console.log(res)
+                if (res.status != 400 && res.status != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
             }
-          }).catch((err) => {
-            showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
-          });
+            break;
+          case Constantes.TipoSorpote.ONDEMAND:
+            if (existingHour) {
+              values.id = existingHour.id;
+              values.horasExtras = values.horasExtras + existingHour.horasExtras
+              await updateOnDemandHorasUtilizadas(values, existingHour.id).then((res) => {
+                if (res.status != 400 && res.status != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
+            } else {
+              await createOnDemandHorasUtilizadas(values).then((res) => {
+                if (res.status != 400 && res.status != 500) {
+                  showNotification(t.notification.success.type, t.notification.success.title, t.notification.success.text);
+                } else {
+                  showNotification(t.notification.warning.type, t.notification.warning.title, t.notification.warning.text);
+                }
+              }).catch((err) => {
+                showNotification(t.notification.error.type, t.notification.error.title, t.notification.error.text);
+              });
+            }
+            break;
+          default:
+            break;
         }
       } catch (error) {
         console.error("Error in handleFormSubmit:", error);
@@ -109,7 +161,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
     },
   });
   return (
-    <BoxInfo title={t.Common.hour} startShow={true}>
+    <BoxInfo title={t.time.hour} startShow={true}>
       <form
         onSubmit={(e) => {
           formik.handleSubmit(e);
@@ -122,7 +174,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
           </button>
         </div>
       </form>
-      <HoursList t={t} data={horasUtilizadas} />
+      <HoursList t={t} data={horasUtilizadas} tipoSoporte={soporte.idTipoSoporte} />
     </BoxInfo>
 
   )

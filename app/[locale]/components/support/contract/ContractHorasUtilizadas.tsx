@@ -11,15 +11,17 @@ import NotificationSweet from "@/app/[locale]/components/common/NotificationSwee
 import { updatesoporte } from '@/app/api/actions/soporte/SoporteActions'
 import DocumentosSoporte from '@/app/api/models/support/DocumentosSoporte'
 import PeriodAdd from './PeriodAdd'
+import BagForm from '../bag/BagForm'
+import OnDemandForm from '../onDemand/OnDemandForm'
 function ContractHorasUtilizadas({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const [correlativo, setCorrelativo] = useState([]);
     const router = useRouter();
     //========FIN DECLARACION DE VARIABLES ===============
-    if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
-        return <p>You are not authorized to view this page!</p>;
-    }
+    // if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
+    //     return <p>You are not authorized to view this page!</p>;
+    // }
     /*
        =================================================================================
        Seccion Funciones de componente
@@ -69,6 +71,39 @@ function ContractHorasUtilizadas({ t, data }) {
             }
         },
     });
+    const renderForm = () => {
+        switch (data.soporte.idTipoSoporte) {
+            case Constantes.TipoSorpote.CONTRATO:
+                return (
+                    <SupportForm
+                        t={t}
+                        soporteModel={formik.values}
+                        setSoporte={formik.setValues}
+                        data={data}
+                    />
+                );
+            case Constantes.TipoSorpote.BOLSA:
+                return (
+                    <BagForm
+                        t={t}
+                        soporteModel={formik.values}
+                        setSoporte={formik.setValues}
+                        data={data}
+                    />
+                );
+            case Constantes.TipoSorpote.ONDEMAND:
+                return (
+                    <OnDemandForm
+                        t={t}
+                        soporteModel={formik.values}
+                        setSoporte={formik.setValues}
+                        data={data}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
     return (
         <>
             <form
@@ -86,12 +121,7 @@ function ContractHorasUtilizadas({ t, data }) {
                     </div>
                 </div>
                 <fieldset disabled>
-                    <SupportForm
-                        t={t}
-                        soporteModel={formik.values}
-                        setSoporte={formik.setValues}
-                        data={data}
-                    />
+                    {renderForm()}
                     <hr />
                     <div className="col-sm-5">
                         <label htmlFor="fileInput" className="col-sm-3 col-form-label">
@@ -162,6 +192,7 @@ function ContractHorasUtilizadas({ t, data }) {
                 <hr />
             </form>
             <PeriodAdd soporte={formik.values} t={t} horasUtilizadas={data.horasUtilizadas} />
+
             <div className="d-flex justify-content-end mb-2">
                 <button
                     type="button"

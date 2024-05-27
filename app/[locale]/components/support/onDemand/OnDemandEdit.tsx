@@ -8,8 +8,8 @@ import Soporte from '@/app/api/models/support/Soporte'
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { EditAction, revalidateDatasoporte, updatesoporte } from '@/app/api/actions/soporte/SoporteActions'
 import DocumentosSoporte from '@/app/api/models/support/DocumentosSoporte'
-import BagForm from './BagForm'
-function BagEdit({ t, data }) {
+import OnDemandForm from './OnDemandForm'
+function OnDemandEdit({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const [correlativo, setCorrelativo] = useState([]);
@@ -87,7 +87,7 @@ function BagEdit({ t, data }) {
                         </h6>
                     </div>
                 </div>
-                <BagForm
+                <OnDemandForm
                     t={t}
                     soporteModel={formik.values}
                     setSoporte={formik.setValues}
@@ -178,4 +178,4 @@ function BagEdit({ t, data }) {
     );
 }
 
-export default BagEdit
+export default OnDemandEdit

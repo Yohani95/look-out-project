@@ -10,7 +10,7 @@ import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerso
 import { addMonths } from "date-fns";
 import { Usuario } from "@/app/api/models/admin/Usuario";
 import DocumentosSoporte from "@/app/api/models/support/DocumentosSoporte";
-function BagForm({
+function OnDemandForm({
     soporteModel,
     setSoporte,
     t,
@@ -397,7 +397,7 @@ function BagForm({
                     selectedValue={soporteModel.idEmpresaPrestadora}
                 />
                 <label htmlFor="pryValor" className="col-sm-1 col-form-label">
-                    Valor Bolsa
+                    Valor Hora
                 </label>
                 <div className="col-sm-2">
                     <input
@@ -409,26 +409,9 @@ function BagForm({
                         onChange={handleInputChange(soporteModel, setSoporte)}
                     />
                 </div>
-                <label htmlFor="numeroHoras" className="col-sm-1 col-form-label">
-                    Número de Horas
-                </label>
-                <div className="col-sm-2">
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="numeroHoras"
-                        name="numeroHoras"
-                        value={soporteModel.numeroHoras ?? ""}
-                        onChange={handleInputChange(soporteModel, setSoporte)}
-                        min="1"
-                    />
-                </div>
             </div>
-            {/* <div className="mb-3 row align-items-center">
-
-            </div> */}
         </>
     );
 }
 
-export default BagForm;
+export default OnDemandForm;

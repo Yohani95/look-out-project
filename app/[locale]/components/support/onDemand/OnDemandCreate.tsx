@@ -5,11 +5,11 @@ import { Constantes } from '@/app/api/models/common/Constantes'
 import { Usuario } from '@/app/api/models/admin/Usuario'
 import { useRouter } from 'next/navigation'
 import { useFormik } from 'formik'
-import SupportForm from '../SupportForm'
 import Soporte from '@/app/api/models/support/Soporte'
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { createsoporte } from '@/app/api/actions/soporte/SoporteActions'
-function Contractcreate({ t, data }) {
+import { EditAction, createAction, createsoporte } from '@/app/api/actions/soporte/SoporteActions'
+import OnDemandForm from './OnDemandForm'
+function OnDemandCreate({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const [correlativo, setCorrelativo] = useState([]);
@@ -32,7 +32,7 @@ function Contractcreate({ t, data }) {
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 // Utiliza una variable para almacenar la función handleFormSubmit
-                values.idTipoSoporte=Constantes.TipoSorpote.CONTRATO;
+                values.idTipoSoporte = Constantes.TipoSorpote.ONDEMAND;
                 await NotificationSweet({
                     title: t.notification.loading.title,
                     text: "",
@@ -41,12 +41,14 @@ function Contractcreate({ t, data }) {
                 });
 
                 await createsoporte(values).then((res) => {
+                    EditAction()
+                    createAction(Constantes.TipoSorpote.ONDEMAND);
                     NotificationSweet({
                         title: t.notification.success.title,
                         text: t.notification.success.text,
                         type: t.notification.success.type,
                         push: router.push,
-                        link: "/business/Support/search"
+                        link: "/business/Support/onDemand/search"
                     });
                 }).catch((err) => {
                     NotificationSweet({
@@ -54,17 +56,16 @@ function Contractcreate({ t, data }) {
                         text: t.notification.error.text,
                         type: t.notification.error.type,
                         push: router.push,
-                        link: "/business/Support/search"
+                        link: "/business/Support/onDemand/search"
                     });
                 });
             } catch (error) {
-                console.error("Error in handleFormSubmit:", error);
                 NotificationSweet({
                     title: t.notification.error.title,
                     text: t.notification.error.text,
                     type: t.notification.error.type,
                     push: router.push,
-                    link: "/business/Support/search"
+                    link: "/business/Support/onDemand/search"
                 });
             } finally {
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
@@ -79,15 +80,15 @@ function Contractcreate({ t, data }) {
                 }}
             >
                 <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-                    <h4>{`${t.Common.create} ${t.Common.supports}`}</h4>
+                    <h4>{`${t.Common.create} ${t.support.onDemandSupport}`}</h4>
                     <div className="col-sm-2 text-end">
                         <h6>
-                            {t.Common.correlative} {t.Common.supports}
-                            {correlativo ? "#" : correlativo}
+                            {t.Common.correlative} {t.support.onDemandSupport}
+                            {correlativo ? " #" : correlativo}
                         </h6>
                     </div>
                 </div>
-                <SupportForm
+                <OnDemandForm
                     t={t}
                     soporteModel={formik.values}
                     setSoporte={formik.setValues}
@@ -112,4 +113,4 @@ function Contractcreate({ t, data }) {
     );
 }
 
-export default Contractcreate
+export default OnDemandCreate

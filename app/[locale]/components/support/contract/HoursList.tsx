@@ -2,16 +2,17 @@ import React, { useMemo } from 'react'
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import HoursButtons from './HoursButtons';
+import { Constantes } from '@/app/api/models/common/Constantes';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function HoursList({ t, data }) {
-    const columns = useMemo(() => HorasUtilizadas.createColumns(t), [t]);
+function HoursList({ t, data, tipoSoporte }) {
+    const columns = useMemo(() => tipoSoporte==Constantes.TipoSorpote.CONTRATO ? HorasUtilizadas.createColumns(t) :tipoSoporte==Constantes.TipoSorpote.BOLSA ? HorasUtilizadas.createColumnsBag(t):HorasUtilizadas.createColumnsOnDemand(t), [t]);
     const memoizedSoporteActions = useMemo(() => {
         return data.map((horas) => ({
             ...HorasUtilizadas.transformHorasUtilizadasData(horas),
             estado: new HorasUtilizadas(horas).getEstados(t),
             actions: (
                 <>
-                <HoursButtons t={t} periodo={horas} />
+                <HoursButtons t={t} periodo={horas} tipoSoporte={tipoSoporte} />
                 </>
             )
         }));
