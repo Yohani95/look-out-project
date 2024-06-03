@@ -457,5 +457,9 @@
     "contractSupport": "Soporte Contrato",
     "bagholder": "Soporte Bolsa",
     "onDemandSupport": "Soporte On Demand"
+  },
+  "Opportunity":{
+    "opportunities":"Oportunidades",
+    "opportunity":"Oportunidad"
   }
 }

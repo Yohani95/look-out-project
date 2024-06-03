@@ -133,7 +133,16 @@ const Header = () => {
           }
         },
         title: t("Common.supports"),
-      }
+      },
+      oportunidad:{
+        link: {
+          search: {
+            name: t("Opportunity.opportunities"),
+            link: "/opportunities/search",
+          },
+        },
+        title: t("Opportunity.opportunities"),
+      },
     },
   };
   return <Nav t={languages} locale={useLocale()} />;

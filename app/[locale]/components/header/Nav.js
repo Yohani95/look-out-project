@@ -63,6 +63,14 @@ const MyNav = ({ t, locale }) => {
                     t={t.namesMenu.service}
                     title={t.namesMenu.service.title}
                   /> */}
+                    <CommonDropDown
+                    t={t.namesMenu.oportunidad}
+                    title={t.namesMenu.oportunidad.title}
+                  />
+                  {/* <CommonDropDown
+                    t={t.namesMenu.service}
+                    title={t.namesMenu.service.title}
+                  /> */}
                   <CommonDropDown
                     t={t.namesMenu.facture}
                     title={t.namesMenu.facture.title}

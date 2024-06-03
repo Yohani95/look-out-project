@@ -457,6 +457,10 @@
     "contractSupport": "Contract Support",
     "bagholder": "Bagholder Support",
     "onDemandSupport": "On-Demand Support"
+},
+"Opportunity":{
+  "opportunities":"Opportunities",
+  "opportunity":"Opportunity"
 }
 
 }
