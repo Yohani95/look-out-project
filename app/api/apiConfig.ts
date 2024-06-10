@@ -162,3 +162,6 @@ export const OportunidadApiUrl = `${apiBaseUrl}/oportunidad`;
   export const documentoOportunidadApiUrl = `${apiBaseUrl}/DocumentoOportunidad`;
   //novedad oportunidad
   export const NovedadOportunidadApiUrl = `${apiBaseUrl}/NovedadOportunidad`;
+
+//log
+ export const LogApiUrl = `${apiBaseUrl}/log`;

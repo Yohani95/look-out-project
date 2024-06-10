@@ -1,0 +1,11 @@
+
+.custom-modal .modal-dialog {
+    max-width: 100%; /* Ajusta esto según tus necesidades */
+  }
+  
+  .custom-modal .modal-body {
+    max-height: 50vh; /* Ajusta esto según tus necesidades */
+    overflow-y: auto;
+    color: #ee6255;
+  }
+  
