@@ -15,10 +15,8 @@ class DocumentoOportunidad {
 
   static getValidationSchema(t: any) {
     return Yup.object().shape({
-      fecha: Yup.date().required(t.ValidationMessages.required),
       nombreDocumento: Yup.string().required(t.ValidationMessages.required),
-      monto: Yup.number().required(t.ValidationMessages.required),
-      idTipoMoneda: Yup.number().required(t.ValidationMessages.required),
+      idOportunidad: Yup.number().required(t.ValidationMessages.required),
     });
   }
   static createColumns(t: any) {
@@ -29,19 +27,9 @@ class DocumentoOportunidad {
         size: 50,
       },
       {
-        accessorKey: "idOportunidad",
-        header: "ID Oportunidad",
-        size: 150,
-      },
-      {
         accessorKey: "nombreDocumento",
         header: "Nombre del Documento",
         size: 200,
-      },
-      {
-        accessorKey: "contenidoDocumento",
-        header: "Contenido del Documento",
-        size: 300,
       },
       {
         accessorKey: "actions",
@@ -51,11 +39,11 @@ class DocumentoOportunidad {
     ];
   }
 
-  getSelectOptions() {
-    return {
-      value: this.id,
-      label: this.nombreDocumento,
-    };
-  }
+  // getSelectOptions() {
+  //   return {
+  //     value: this.id,
+  //     label: this.nombreDocumento,
+  //   };
+  // }
 }
 export default DocumentoOportunidad;

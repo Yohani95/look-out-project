@@ -1,22 +1,20 @@
 
 import { revalidateTag,revalidatePath } from 'next/cache';
 import ICrudOperations  from '@/app/api/interfaces/ICrudOperations';
-export  class CrudOperations<T> implements ICrudOperations<T> {
-  
+export class CrudOperations<T> implements ICrudOperations<T> {
   constructor(private apiUrl: string, private tag: string) {}
 
   async create(item: T) {
+    "use server";
     try {
       const response = await fetch(this.apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify(item),
       });
-      if(response.ok){
-        revalidateTag(this.tag)
-      }
+      revalidateTag(this.tag)
       const result = await response.json();
       return result;
     } catch (error) {
@@ -26,6 +24,7 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
   }
 
   async update(item: T, id: string | number) {
+    "use server";
     try {
       const response = await fetch(`${this.apiUrl}/${id}`, {
         method: 'PUT',
@@ -46,8 +45,11 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
   }
 
   async getById(id: string | number) {
+    "use server";
     try {
-      const response = await fetch(`${this.apiUrl}/${id}`);
+      const response = await fetch(`${this.apiUrl}/${id}`,{
+        cache:"no-cache"
+      });
       return response.json();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -56,14 +58,15 @@ export  class CrudOperations<T> implements ICrudOperations<T> {
   }
 
   async getAll() {
+    "use server";
     try {
       const response = await fetch(this.apiUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        cache: 'no-cache',
-        next:{tags:[this.tag]}
+        next:{tags:[this.tag]},
+        cache:"no-cache"
       });
       return response.json();
     } catch (error) {

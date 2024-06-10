@@ -1,0 +1,11 @@
+.custom-nav-link {
+    color: #2f4bce !important;  /* Cambia el color de los enlaces */
+}
+
+.custom-nav-link:hover {
+    color: #2f4bce !important;  /* Mantiene el color cuando se pasa el mouse sobre el enlace */
+}
+
+.custom-nav-link:focus {
+    color: #2f4bce !important;  /* Mantiene el color cuando el enlace está enfocado */
+}

@@ -1,7 +1,5 @@
 import React from 'react'
-import BasePages from "@/app/[locale]/components/common/BasePages";
 import { useLocale } from 'next-intl';
-import OportunidadCreate from '../../components/oportunidad/OportunidadCreate';
 import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
 import fetchCountriest from "@/app/[locale]/utils/country/Countrylist";
 import { fechtClients } from "@/app/[locale]/utils/client/ClientFormLogic";
@@ -13,19 +11,19 @@ import { getAllEstadoOportunidad } from '@/app/actions/Oportunidad/EstadoOportun
 import EstadoOportunidad from '@/app/api/models/oportunidad/EstadoOportunidad';
 import { getAllAreaServicioOportunidad } from '@/app/actions/Oportunidad/AreaServicioOportunidadActions';
 import AreaServicioOportunidad from '@/app/api/models/oportunidad/AreaServicioOportunidad';
-async function page() {
-    const locale = useLocale();
-    const t = require(`@/messages/${locale}.json`);
-    const data= await GetData();
-    return (
-        <BasePages title={t.Opportunity.opportunity}>
-          <OportunidadCreate data={data} t={t}/>
-        </BasePages>
-    )
+import OportunidadEdit from '@/app/[locale]/components/oportunidad/OportunidadEdit';
+import { getOportunidadById } from '@/app/actions/Oportunidad/OportunidadActions';
+async function page({ params }) {
+  const locale = useLocale();
+  const t = require(`@/messages/${locale}.json`);
+  const data = await GetData(params.id);
+  return (
+        <OportunidadEdit data={data} t={t} />
+  )
 }
-const GetData = async () => {
+const GetData = async (id: number) => {
   try {
-    const [monedas, paises, clientes,empresaPrestadora,tipoOportunidad,estadoOportunidad,areaServicioOportunidad] =
+    const [monedas, paises, clientes, empresaPrestadora, tipoOportunidad, estadoOportunidad, areaServicioOportunidad, oportunidad] =
       await Promise.all([
         fetchMoneda(),
         fetchCountriest(),
@@ -33,7 +31,8 @@ const GetData = async () => {
         getAllEmpresaPrestadora(),
         getAllTipoOportunidad(),
         getAllEstadoOportunidad(),
-        getAllAreaServicioOportunidad()
+        getAllAreaServicioOportunidad(),
+        getOportunidadById(id)
       ]);
 
     const mappedMonedas = monedas.map((moneda) => ({
@@ -50,18 +49,19 @@ const GetData = async () => {
       value: item.cliId,
       label: item.cliNombre,
     }));
-    const mappedEmpresaEmprestadora=empresaPrestadora.map((empresa)=>{return new EmpresaPrestadora(empresa).getSelectOptions()});
-    const mappedtipoOportunidad=tipoOportunidad.map((tipo)=>{return new TipoOportunidad(tipo).getSelectOptions()});
-    const mappedEstadoOportunidad=estadoOportunidad.map((tipo)=>{return new EstadoOportunidad(tipo).getSelectOptions()});
-    const mappedareaOportunidad=areaServicioOportunidad.map((area)=>{return new AreaServicioOportunidad(area).getSelectOptions()});
+    const mappedEmpresaEmprestadora = empresaPrestadora.map((empresa) => { return new EmpresaPrestadora(empresa).getSelectOptions() });
+    const mappedtipoOportunidad = tipoOportunidad.map((tipo) => { return new TipoOportunidad(tipo).getSelectOptions() });
+    const mappedEstadoOportunidad = estadoOportunidad.map((tipo) => { return new EstadoOportunidad(tipo).getSelectOptions() });
+    const mappedareaOportunidad = areaServicioOportunidad.map((area) => { return new AreaServicioOportunidad(area).getSelectOptions() });
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
       clientes: mappedclientes,
-      empresaPrestadora:mappedEmpresaEmprestadora,
-      tipoOportunidad:mappedtipoOportunidad,
-      estadoOportunidad:mappedEstadoOportunidad,
-      areaServicio:mappedareaOportunidad
+      empresaPrestadora: mappedEmpresaEmprestadora,
+      tipoOportunidad: mappedtipoOportunidad,
+      estadoOportunidad: mappedEstadoOportunidad,
+      areaServicio: mappedareaOportunidad,
+      oportunidad
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla
@@ -69,4 +69,5 @@ const GetData = async () => {
     throw error;
   }
 };
+
 export default page

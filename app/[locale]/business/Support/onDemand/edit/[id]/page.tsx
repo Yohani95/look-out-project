@@ -11,6 +11,7 @@ import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
 import Soporte from '@/app/api/models/support/Soporte';
 import { GetAllEntitiesById, getsoporteById } from '@/app/api/actions/soporte/SoporteActions';
 import OnDemandEdit from '@/app/[locale]/components/support/onDemand/OnDemandEdit';
+import UnderLineNav from '@/app/[locale]/components/oportunidad/UnderLineNav';
 async function page({params}) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -24,6 +25,7 @@ async function page({params}) {
   data.soporte= await GetAllEntitiesById(params.id) as Soporte;
   return (
     <BasePages title={t.Common.supports}>
+      <UnderLineNav/>
       <OnDemandEdit t={t} data={data} />
     </BasePages>
   )

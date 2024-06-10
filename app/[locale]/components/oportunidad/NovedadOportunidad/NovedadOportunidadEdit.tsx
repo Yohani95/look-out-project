@@ -2,49 +2,48 @@
 import React from 'react'
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation'
-import DocumentoOportunidad from '@/app/api/models/oportunidad/DocumentoOportunidad';
-import DocumentoOportunidadForm from './DocumentoOportunidadForm';
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { revalidateDatadocumentoOportunidad, updatedocumentoOportunidad } from '@/app/actions/Oportunidad/DocumentoOportunidadActions';
-function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
+import NovedadOportunidadForm from './NovedadOportunidadForm';
+import NovedadOportunidad from '@/app/api/models/oportunidad/NovedadOportunidad';
+import { updateNovedadOportunidad } from '@/app/actions/Oportunidad/NovedadOportunidadActions';
+function NovedadOportunidadEdit({ t, idOportunidad,novedad }) {
     const router = useRouter();
-    const validationSchema = DocumentoOportunidad.getValidationSchema(t);
+    const validationSchema = NovedadOportunidad.getValidationSchema(t);
     const formik = useFormik({
-        initialValues: new DocumentoOportunidad(documento),
+        initialValues: new NovedadOportunidad(novedad),
         validationSchema,
         //validateOnMount: true,
         onSubmit: async (values, { setSubmitting }) => {
             try {
+                  values.idOportunidad=idOportunidad;
                 await NotificationSweet({
                     title: t.notification.loading.title,
                     text: "",
                     type: t.notification.loading.type,
                     showLoading: true,
                 });
-
-                await updatedocumentoOportunidad(values,values.id).then(async (res) => {
-                    router.refresh()
+  
+                await updateNovedadOportunidad(values,values.id).then(async (res) => {
                     if (res == 400) {
-                        NotificationSweet({
+                       await NotificationSweet({
                             title: t.notification.error.title,
                             text: t.notification.error.text,
                             type: t.notification.error.type,
                         });
                     } else {
-                        NotificationSweet({
+                        await NotificationSweet({
                             title: t.notification.success.title,
                             text: t.notification.success.text,
                             type: t.notification.success.type,
                         });
                     }
+                    router.refresh()
                     router.back()
                 }).catch((err) => {
                     NotificationSweet({
                         title: t.notification.error.title,
                         text: t.notification.error.text,
                         type: t.notification.error.type,
-                        push: router.push,
-                        link: `/opportunities/edit/${idOportunidad}/documents/search`
                     });
                 });
             } catch (error) {
@@ -53,11 +52,8 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
                     title: t.notification.error.title,
                     text: t.notification.error.text,
                     type: t.notification.error.type,
-                    push: router.push,
-                    link: `/opportunities/edit/${idOportunidad}/documents/search`
                 });
             } finally {
-                revalidateDatadocumentoOportunidad() 
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
             }
         },
@@ -70,12 +66,12 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
         }}
     >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-            <h4>{`${t.Common.create} ${t.Common.document} ${t.Opportunity.opportunity}`}</h4>
+            <h4>{`${t.Nav.services.editNovelty} ${t.Opportunity.opportunity}`}</h4>
         </div>
-        <DocumentoOportunidadForm
+        <NovedadOportunidadForm
             t={t}
-            documentoModel={formik.values}
-            setDocumentoOportunidad={formik.setValues}
+            novedadModel={formik.values}
+            setNovedadOportunidad={formik.setValues}
             formik={formik}
             idOportunidad={idOportunidad}
         />
@@ -98,4 +94,4 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
   )
 }
 
-export default DocumentoOportunidadEdit
+export default NovedadOportunidadEdit

@@ -1,15 +1,20 @@
+"use client"
 import Link from 'next/link'
 import React, { useMemo } from 'react'
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
+import OportunidadButtons from './OportunidadButtons';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function OportunidadSearch({ t, data}) {
   const columns= useMemo(() => Oportunidad.createColumns(t), [t]);
   const memoizedSoporteActions = useMemo(() => {
-    return data.map((oportunidad) => ({
-      //...Soporte.transformFacturaPeriodoData(soporte),
+    return data.map((oportunidad : Oportunidad) => ({
+      ...oportunidad,
+      fechaCierre: new Oportunidad(oportunidad).getFechaString(),
       actions: (
-       <></>
+       <>
+       <OportunidadButtons oportunidad={oportunidad} t={t}/>
+       </>
       )
     }));
   }, [data, t]);

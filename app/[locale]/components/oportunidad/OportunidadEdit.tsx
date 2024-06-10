@@ -4,27 +4,17 @@ import { useSession } from "next-auth/react"
 import { Usuario } from '@/app/api/models/admin/Usuario';
 import { useRouter } from 'next/navigation'
 import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
-import { createOportunidad } from '@/app/actions/Oportunidad/OportunidadActions';
 import { useFormik } from 'formik';
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import OportunidadForm from './OportunidadForm';
-function OportunidadCreate({ t, data }) {
+import { updateOportunidad } from '@/app/actions/Oportunidad/OportunidadActions';
+function OportunidadEdit({ t, data }) {
     const { data: session } = useSession();
     const user = session?.user as Usuario;
     const router = useRouter();
-    //========FIN DECLARACION DE VARIABLES ===============
-
-    // if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
-    //     return <p>You are not authorized to view this page!</p>;
-    // }
-    /*
-       =================================================================================
-       Seccion Funciones de componente
-       =================================================================================
-    */
     const validationSchema = Oportunidad.getValidationSchema(t);
     const formik = useFormik({
-        initialValues: new Oportunidad(null),
+        initialValues: new Oportunidad(data.oportunidad),
         validationSchema,
         //validateOnMount: true,
         onSubmit: async (values, { setSubmitting }) => {
@@ -35,18 +25,19 @@ function OportunidadCreate({ t, data }) {
                     type: t.notification.loading.type,
                     showLoading: true,
                 });
-
-                await createOportunidad(values).then((res) => {
-                    router.refresh();
-                    if(res.status == 400){
+                if (!values.renovable) {
+                    values.fechaRenovacion = null;
+                }
+                await updateOportunidad(values, data.oportunidad.id).then((res) => {
+                    if (res != 204) {
                         NotificationSweet({
-                            title: t.notification.error.title,
-                            text: t.notification.error.text,
-                            type: t.notification.error.type,
+                            title: t.notification.success.title,
+                            text: t.notification.success.text,
+                            type: t.notification.success.type,
                             push: router.push,
                             link: "/opportunities/search"
                         });
-                    }else{
+                    } else {
                         NotificationSweet({
                             title: t.notification.success.title,
                             text: t.notification.success.text,
@@ -56,6 +47,7 @@ function OportunidadCreate({ t, data }) {
                         });
                     }
                 }).catch((err) => {
+                    console.log(err)
                     NotificationSweet({
                         title: t.notification.error.title,
                         text: t.notification.error.text,
@@ -86,7 +78,7 @@ function OportunidadCreate({ t, data }) {
                 }}
             >
                 <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-                    <h4>{`${t.Common.create} ${t.Opportunity.opportunity}`}</h4>
+                    <h4>{`${t.Common.edit} ${t.Opportunity.opportunity}`}</h4>
                 </div>
                 <OportunidadForm
                     t={t}
@@ -102,7 +94,7 @@ function OportunidadCreate({ t, data }) {
                         type="button"
                         className="btn btn-danger m-2"
                         onClick={(e) => {
-                            router.back();
+                            router.push('/opportunities/search');
                         }}
                     >
                         {t.Common.cancel}
@@ -113,4 +105,4 @@ function OportunidadCreate({ t, data }) {
     )
 }
 
-export default OportunidadCreate
+export default OportunidadEdit

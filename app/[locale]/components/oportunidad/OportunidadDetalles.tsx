@@ -1,16 +1,20 @@
 "use client"
 import React from 'react'
-import { useFormik } from 'formik';
+import { useSession } from "next-auth/react"
+import { Usuario } from '@/app/api/models/admin/Usuario';
 import { useRouter } from 'next/navigation'
-import DocumentoOportunidad from '@/app/api/models/oportunidad/DocumentoOportunidad';
-import DocumentoOportunidadForm from './DocumentoOportunidadForm';
+import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
+import { useFormik } from 'formik';
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { revalidateDatadocumentoOportunidad, updatedocumentoOportunidad } from '@/app/actions/Oportunidad/DocumentoOportunidadActions';
-function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
+import OportunidadForm from './OportunidadForm';
+import { updateOportunidad } from '@/app/actions/Oportunidad/OportunidadActions';
+function OportunidadDetalles({ t, data }) {
+    const { data: session } = useSession();
+    const user = session?.user as Usuario;
     const router = useRouter();
-    const validationSchema = DocumentoOportunidad.getValidationSchema(t);
+    const validationSchema = Oportunidad.getValidationSchema(t);
     const formik = useFormik({
-        initialValues: new DocumentoOportunidad(documento),
+        initialValues: new Oportunidad(data.oportunidad),
         validationSchema,
         //validateOnMount: true,
         onSubmit: async (values, { setSubmitting }) => {
@@ -21,30 +25,35 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
                     type: t.notification.loading.type,
                     showLoading: true,
                 });
-
-                await updatedocumentoOportunidad(values,values.id).then(async (res) => {
-                    router.refresh()
-                    if (res == 400) {
+                if (!values.renovable) {
+                    values.fechaRenovacion = null;
+                }
+                await updateOportunidad(values, data.oportunidad.id).then((res) => {
+                    if (res != 204) {
                         NotificationSweet({
-                            title: t.notification.error.title,
-                            text: t.notification.error.text,
-                            type: t.notification.error.type,
+                            title: t.notification.success.title,
+                            text: t.notification.success.text,
+                            type: t.notification.success.type,
+                            push: router.push,
+                            link: "/opportunities/search"
                         });
                     } else {
                         NotificationSweet({
                             title: t.notification.success.title,
                             text: t.notification.success.text,
                             type: t.notification.success.type,
+                            push: router.push,
+                            link: "/opportunities/search"
                         });
                     }
-                    router.back()
                 }).catch((err) => {
+                    console.log(err)
                     NotificationSweet({
                         title: t.notification.error.title,
                         text: t.notification.error.text,
                         type: t.notification.error.type,
                         push: router.push,
-                        link: `/opportunities/edit/${idOportunidad}/documents/search`
+                        link: "/opportunities/search"
                     });
                 });
             } catch (error) {
@@ -54,10 +63,9 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
                     text: t.notification.error.text,
                     type: t.notification.error.type,
                     push: router.push,
-                    link: `/opportunities/edit/${idOportunidad}/documents/search`
+                    link: "/opportunities/search"
                 });
             } finally {
-                revalidateDatadocumentoOportunidad() 
                 setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
             }
         },
@@ -70,14 +78,13 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
         }}
     >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-            <h4>{`${t.Common.create} ${t.Common.document} ${t.Opportunity.opportunity}`}</h4>
+            <h4>{`${t.Common.edit} ${t.Opportunity.opportunity}`}</h4>
         </div>
-        <DocumentoOportunidadForm
+        <OportunidadForm
             t={t}
-            documentoModel={formik.values}
-            setDocumentoOportunidad={formik.setValues}
-            formik={formik}
-            idOportunidad={idOportunidad}
+            oportunidadModel={formik.values}
+            setOportunidad={formik.setValues}
+            data={data}
         />
         <div className="d-flex justify-content-end mb-3">
             <button type="submit" className="btn btn-primary m-2">
@@ -98,4 +105,4 @@ function DocumentoOportunidadEdit({t,documento,idOportunidad}) {
   )
 }
 
-export default DocumentoOportunidadEdit
+export default OportunidadDetalles
