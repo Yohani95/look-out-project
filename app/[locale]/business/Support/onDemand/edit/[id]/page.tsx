@@ -25,7 +25,6 @@ async function page({params}) {
   data.soporte= await GetAllEntitiesById(params.id) as Soporte;
   return (
     <BasePages title={t.Common.supports}>
-      <UnderLineNav/>
       <OnDemandEdit t={t} data={data} />
     </BasePages>
   )
