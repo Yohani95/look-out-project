@@ -89,7 +89,7 @@ export class CrudOperations<T> implements ICrudOperations<T> {
       return [];
     }
   }
-  async revalidateData(){
-    revalidateTag(this.tag);
+  async revalidateData(tag=this.tag){
+    revalidateTag(tag);
   }
 }

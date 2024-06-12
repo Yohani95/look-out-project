@@ -93,6 +93,7 @@ function OportunidadCreate({ t, data }) {
                     oportunidadModel={formik.values}
                     setOportunidad={formik.setValues}
                     data={data}
+                    formik={formik}
                 />
                 <div className="d-flex justify-content-end mb-3">
                     <button type="submit" className="btn btn-primary m-2">

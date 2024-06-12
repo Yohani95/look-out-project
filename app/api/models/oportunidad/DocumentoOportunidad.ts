@@ -5,18 +5,22 @@ class DocumentoOportunidad {
   idOportunidad: number | null;
   nombreDocumento: string | null;
   contenidoDocumento: string | null;
-
+  descripcion:string | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.idOportunidad = data?.idOportunidad || 0;
     this.nombreDocumento = data?.nombreDocumento || "";
     this.contenidoDocumento = data?.contenidoDocumento || null;
+    this.descripcion = data?.descripcion || null;
   }
 
   static getValidationSchema(t: any) {
     return Yup.object().shape({
       nombreDocumento: Yup.string().required(t.ValidationMessages.required),
       idOportunidad: Yup.number().required(t.ValidationMessages.required),
+      descripcion: Yup.string()
+      .required(t.ValidationMessages.required)
+      .max(255, t.ValidationMessages.maxLength),
     });
   }
   static createColumns(t: any) {
@@ -28,7 +32,12 @@ class DocumentoOportunidad {
       },
       {
         accessorKey: "nombreDocumento",
-        header: "Nombre del Documento",
+        header: t.Common.name,
+        size: 200,
+      },
+      {
+        accessorKey: "descripcion",
+        header: `${t.Common.description}`,
         size: 200,
       },
       {

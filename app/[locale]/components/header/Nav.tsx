@@ -14,7 +14,7 @@ import { Usuario } from "@/app/api/models/admin/Usuario";
 import { Constantes } from "@/app/api/models/common/Constantes";
 const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
-  const user=session.user as any
+  const user=session?.user as any | null;
   let translations;
   const router = useRouter();
   translations = require(`@/messages/${locale}.json`);

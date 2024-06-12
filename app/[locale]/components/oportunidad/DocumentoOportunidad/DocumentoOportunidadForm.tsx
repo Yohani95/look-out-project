@@ -1,7 +1,7 @@
 import DocumentoOportunidad from '@/app/api/models/oportunidad/DocumentoOportunidad';
 import React from 'react'
 import { Form } from 'react-bootstrap';
-
+import { handleInputChange } from "@/app/[locale]/utils/Form/UtilsForm";
 function DocumentoOportunidadForm({ idOportunidad, t, documentoModel, setDocumentoOportunidad, formik }) {
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const fileInput = event.currentTarget;
@@ -23,10 +23,11 @@ function DocumentoOportunidadForm({ idOportunidad, t, documentoModel, setDocumen
                 );
 
                 const documento: DocumentoOportunidad = {
+                    ...documentoModel,
                     id:documentoModel.id,
                     idOportunidad: idOportunidad,
                     nombreDocumento: file.name,
-                    contenidoDocumento: base64String
+                    contenidoDocumento: base64String,
                 };
 
                 setDocumentoOportunidad(documento);
@@ -59,6 +60,20 @@ function DocumentoOportunidadForm({ idOportunidad, t, documentoModel, setDocumen
             <Form.Control.Feedback type="invalid">
                 {formik.errors.nombreDocumento}
             </Form.Control.Feedback>
+            <Form.Group controlId="descripcion" className="mb-3">
+                <Form.Label>{t.Common.description}</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="descripcion"
+                    value={documentoModel.descripcion || ""}
+                    onChange={handleInputChange(documentoModel,setDocumentoOportunidad)}
+                    isInvalid={formik?.touched?.descripcion && !!formik.errors.descripcion}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formik.errors.descripcion}
+                </Form.Control.Feedback>
+            </Form.Group>
         </>
     )
 }

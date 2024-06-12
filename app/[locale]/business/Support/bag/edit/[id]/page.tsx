@@ -11,6 +11,9 @@ import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
 import Soporte from '@/app/api/models/support/Soporte';
 import { GetAllEntitiesById, getsoporteById } from '@/app/api/actions/soporte/SoporteActions';
 import BagEdit from '@/app/[locale]/components/support/bag/BagEdit';
+import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
+import { Constantes } from '@/app/api/models/common/Constantes';
+import Persona from '@/app/api/models/admin/Persona';
 async function page({params}) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -22,6 +25,8 @@ async function page({params}) {
   data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
   data.empresaPrestadora=empresaPrestadora.map((empresa)=>{return new EmpresaPrestadora(empresa).getSelectOptions()});
   data.soporte= await GetAllEntitiesById(params.id) as Soporte;
+  const personasKam=await getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM)
+  data.personasKam=personasKam.map((kam)=>{return new Persona(kam).getSelectOptions()})
   return (
     <BasePages title={t.Common.supports}>
       <BagEdit t={t} data={data} />

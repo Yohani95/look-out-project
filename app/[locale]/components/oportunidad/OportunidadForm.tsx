@@ -8,18 +8,20 @@ import SelectField from '@/app/[locale]/components/common/SelectField';
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
 import { set } from 'date-fns';
 import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
+import { Form } from 'react-bootstrap';
+import { FormikProps } from 'formik';
 interface OportunidadFormProps {
     oportunidadModel: Oportunidad;
     setOportunidad: React.Dispatch<React.SetStateAction<any>>;
     t: any;
     data: any;
+    formik: FormikProps<Oportunidad>;
 }
-const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, setOportunidad, t, data }) => {
+const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, setOportunidad, t, data, formik }) => {
     //========DECLARACION DE VARIABLES ===============
     const [contactOptions, setContactOptions] = useState([]);
     const { data: session, status } = useSession();
     const user = session?.user as Usuario;
-
     useEffect(() => {
         fetchPersonGetbyIdClient(oportunidadModel.idCliente).then((person) => {
             const options = person?.data?.map((item) => ({
@@ -29,18 +31,41 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
             setContactOptions(options);
         });
     }, [oportunidadModel.idCliente]);
-
+    useEffect(() => {
+        if (!oportunidadModel.idKam && user?.persona.id) {
+            setOportunidad(prev => ({ ...prev, idKam: user.persona.id }));
+        }
+    }, [oportunidadModel.idKam, user?.persona.id, setOportunidad])
     return (
         <>
             <div className="mb-3 row align-items-center">
-                <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
-                <div className="col-sm-3">
-                    <span className="form-control">
-                        {session
-                            ? `${user.persona.perNombres} ${user.persona.perApellidoPaterno}`
-                            : ""}
-                    </span>
-                </div>
+                {data.personasKam ?
+                    <SelectField
+                        label="KAM"
+                        options={data.personasKam}
+                        preOption={t.Account.select}
+                        labelClassName="col-sm-1 col-form-label"
+                        divClassName="col-sm-3"
+                        onChange={(e) => handleSelectChange(e, "idKam", setOportunidad)}
+                        selectedValue={oportunidadModel.idKam}
+                    /> :
+                    <>
+                        <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
+                        <div className="col-sm-3">
+                            <input
+                                type="hidden"
+                                name="idKam"
+                                id="idKam"
+                                value={oportunidadModel.idKam || (user?.persona.id ?? '')}
+                                onChange={handleInputChange(oportunidadModel, setOportunidad)}
+                            />
+                            <span className="form-control">
+                                {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
+                            </span>
+                        </div>
+                    </>
+                }
+
                 <label className="col-sm-2 col-form-label">
                     {t.Ficha.table.business.dateEnd}
                 </label>
@@ -173,7 +198,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
                     selectedValue={oportunidadModel.idAreaServicio}
                 />
             </div>
-            <hr />
             <div className="mb-3 row align-items-center">
                 <label htmlFor="licitacion" className="col-sm-1 col-form-label">
                     Licitación ?
@@ -211,6 +235,21 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
                     />
                 </div>
             </div>
+            <hr />
+            <Form.Group controlId="descripcion" className="mb-3">
+                <Form.Label>{t.Common.description}</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="descripcion"
+                    value={oportunidadModel.descripcion || ""}
+                    onChange={handleInputChange(oportunidadModel, setOportunidad)}
+                    isInvalid={formik?.touched?.descripcion && !!formik.errors.descripcion}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formik.errors.descripcion}
+                </Form.Control.Feedback>
+            </Form.Group>
 
         </>
     )

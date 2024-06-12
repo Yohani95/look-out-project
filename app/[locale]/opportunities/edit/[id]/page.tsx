@@ -13,6 +13,9 @@ import { getAllAreaServicioOportunidad } from '@/app/actions/Oportunidad/AreaSer
 import AreaServicioOportunidad from '@/app/api/models/oportunidad/AreaServicioOportunidad';
 import OportunidadEdit from '@/app/[locale]/components/oportunidad/OportunidadEdit';
 import { getOportunidadById } from '@/app/actions/Oportunidad/OportunidadActions';
+import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
+import { Constantes } from '@/app/api/models/common/Constantes';
+import Persona from '@/app/api/models/admin/Persona';
 async function page({ params }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -23,7 +26,9 @@ async function page({ params }) {
 }
 const GetData = async (id: number) => {
   try {
-    const [monedas, paises, clientes, empresaPrestadora, tipoOportunidad, estadoOportunidad, areaServicioOportunidad, oportunidad] =
+    const [monedas, paises, clientes, empresaPrestadora, 
+          tipoOportunidad, estadoOportunidad, areaServicioOportunidad,
+           oportunidad, personasKam] =
       await Promise.all([
         fetchMoneda(),
         fetchCountriest(),
@@ -32,7 +37,8 @@ const GetData = async (id: number) => {
         getAllTipoOportunidad(),
         getAllEstadoOportunidad(),
         getAllAreaServicioOportunidad(),
-        getOportunidadById(id)
+        getOportunidadById(id),
+        getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM)
       ]);
 
     const mappedMonedas = monedas.map((moneda) => ({
@@ -53,6 +59,7 @@ const GetData = async (id: number) => {
     const mappedtipoOportunidad = tipoOportunidad.map((tipo) => { return new TipoOportunidad(tipo).getSelectOptions() });
     const mappedEstadoOportunidad = estadoOportunidad.map((tipo) => { return new EstadoOportunidad(tipo).getSelectOptions() });
     const mappedareaOportunidad = areaServicioOportunidad.map((area) => { return new AreaServicioOportunidad(area).getSelectOptions() });
+    const mappedPersonaKam=personasKam.map((kam)=>{return new Persona(kam).getSelectOptions()})
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -61,7 +68,8 @@ const GetData = async (id: number) => {
       tipoOportunidad: mappedtipoOportunidad,
       estadoOportunidad: mappedEstadoOportunidad,
       areaServicio: mappedareaOportunidad,
-      oportunidad
+      oportunidad,
+      personasKam:mappedPersonaKam
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla
