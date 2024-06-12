@@ -40,6 +40,7 @@ function ContractEdit({ t, data }) {
                     showLoading: true,
                 });
                 await updatesoporte(values, values.pryId).then((res) => {
+                    router.refresh()
                     NotificationSweet({
                         title: t.notification.success.title,
                         text: t.notification.success.text,

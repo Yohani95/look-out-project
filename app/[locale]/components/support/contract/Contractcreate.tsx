@@ -41,6 +41,7 @@ function Contractcreate({ t, data }) {
                 });
 
                 await createsoporte(values).then((res) => {
+                    router.refresh()
                     NotificationSweet({
                         title: t.notification.success.title,
                         text: t.notification.success.text,

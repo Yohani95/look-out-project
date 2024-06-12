@@ -150,3 +150,18 @@ export const horasUtilizadascreateBagApiUrl = `${horasUtilizadasApiUrl}/createBa
 export const horasUtilizadasupdateBagApiUrl = `${horasUtilizadasApiUrl}/updateBag`;
 export const horasUtilizadascreateOnDemandApiUrl = `${horasUtilizadasApiUrl}/createOnDemand`;
 export const horasUtilizadasupdateOnDemandApiUrl = `${horasUtilizadasApiUrl}/updateOnDemand`;
+//Oportunidad
+export const OportunidadApiUrl = `${apiBaseUrl}/oportunidad`;
+  //tipo oportunidad
+  export const tipoOportunidadApiUrl = `${apiBaseUrl}/TipoOportunidad`;
+  //estado oportunidad
+  export const EstadoOportunidadApiUrl = `${apiBaseUrl}/EstadoOportunidad`;
+  //area servicio oportunidad
+  export const AreaServicioOportunidadApiUrl = `${apiBaseUrl}/AreaServicioOportunidad`;
+  //documento oportunidad
+  export const documentoOportunidadApiUrl = `${apiBaseUrl}/DocumentoOportunidad`;
+  //novedad oportunidad
+  export const NovedadOportunidadApiUrl = `${apiBaseUrl}/NovedadOportunidad`;
+
+//log
+ export const LogApiUrl = `${apiBaseUrl}/log`;

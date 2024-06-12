@@ -45,7 +45,7 @@ function OnDemandEdit({ t, data }) {
                         text: t.notification.success.text,
                         type: t.notification.success.type,
                         push: router.push,
-                        link: "/business/Support/bag/search"
+                        link: "/business/Support/onDemand/search"
                     });
                 }).catch((err) => {
                     NotificationSweet({
@@ -62,7 +62,7 @@ function OnDemandEdit({ t, data }) {
                     text: t.notification.error.text,
                     type: t.notification.error.type,
                     push: router.push,
-                    link: "/business/Support/bag/search"
+                    link: "/business/Support/onDemand/search"
                 });
             } finally {
                 revalidateDatasoporte();

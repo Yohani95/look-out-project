@@ -7,7 +7,7 @@ import SelectField from "../common/SelectField";
 import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
 import { useSession } from "next-auth/react";
 import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { addMonths} from "date-fns";
+import { addMonths } from "date-fns";
 import { Usuario } from "@/app/api/models/admin/Usuario";
 import DocumentosSoporte from "@/app/api/models/support/DocumentosSoporte";
 function SupportForm({
@@ -49,6 +49,11 @@ function SupportForm({
     useEffect(() => {
         calculateEndDate();
     }, [soporteModel.months, soporteModel.pryFechaInicioEstimada]);
+    useEffect(() => {
+        if (!soporteModel.kamId && user?.persona.id) {
+          setSoporte(prev => ({ ...prev, kamId: user.persona.id }));
+        }
+      }, [soporteModel.kamId, user?.persona.id, setSoporte])
     //=======FIN SECCION DE USSEFFECT===============
     /*
        =================================================================================
@@ -57,7 +62,7 @@ function SupportForm({
     */
     const calculateEndDate = () => {
         const { months, pryFechaInicioEstimada } = soporteModel;
-        
+
         if (!months || !pryFechaInicioEstimada) {
             return; // No calcular si no hay datos suficientes
         }
@@ -73,14 +78,32 @@ function SupportForm({
     return (
         <>
             <div className="mb-3 row align-items-center">
-                <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
-                <div className="col-sm-3">
-                    <span className="form-control">
-                        {session
-                            ? `${user.persona.perNombres} ${user.persona.perApellidoPaterno}`
-                            : ""}
-                    </span>
-                </div>
+                {data.personasKam ?
+                    <SelectField
+                        label="KAM"
+                        options={data.personasKam}
+                        preOption={t.Account.select}
+                        labelClassName="col-sm-1 col-form-label"
+                        divClassName="col-sm-3"
+                        onChange={(e) => handleSelectChange(e, "kamId", setSoporte)}
+                        selectedValue={soporteModel.kamId}
+                    /> :
+                    <>
+                        <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
+                        <div className="col-sm-3">
+                            <input
+                                type="hidden"
+                                name="kamId"
+                                id="kamId"
+                                value={soporteModel.idKam || (user?.persona.id ?? '')}
+                                onChange={handleInputChange(soporteModel, setSoporte)}
+                            />
+                            <span className="form-control">
+                                {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
+                            </span>
+                        </div>
+                    </>
+                }
                 <label className="col-sm-2 col-form-label">
                     {t.Ficha.table.business.dateEnd}
                 </label>

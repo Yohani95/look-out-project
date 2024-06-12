@@ -37,13 +37,10 @@ function ServiceFormSection({
      =================================================================================
   */
   useEffect(() => {
-    if (session) {
-      setProyecto((prevData) => ({
-        ...prevData,
-        kamId: user.persona.id,
-      }));
+    if (!proyectoModel.kamId && user?.persona.id) {
+      setProyecto(prev => ({ ...prev, kamId: user.persona.id }));
     }
-  }, [session]);
+  }, [proyectoModel.kamId, user?.persona.id, setProyecto])
   useEffect(() => {
     fetchPersonGetbyIdClient(proyectoModel.pryIdCliente).then((person) => {
       const options = person?.data?.map((item) => ({
@@ -71,7 +68,6 @@ function ServiceFormSection({
   };
   const calculateEndDate = () => {
     const { months, pryFechaInicioEstimada } = proyectoModel;
-    console.log(months,pryFechaInicioEstimada,proyectoModel.months)
     if (!months || !pryFechaInicioEstimada) {
       return; // No calcular si no hay datos suficientes
     }
@@ -98,14 +94,32 @@ function ServiceFormSection({
   return (
     <>
       <div className="mb-3 row align-items-center">
-        <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
-        <div className="col-sm-3">
-          <span className="form-control">
-            {session
-              ? `${user.persona.perNombres} ${user.persona.perApellidoPaterno}`
-              : ""}
-          </span>
-        </div>
+        {data.personasKam ?
+          <SelectField
+            label="KAM"
+            options={data.personasKam}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, "kamId", setProyecto)}
+            selectedValue={proyectoModel.kamId}
+          /> :
+          <>
+            <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
+            <div className="col-sm-3">
+              <input
+                type="hidden"
+                name="kamId"
+                id="kamId"
+                value={proyectoModel.idKam || (user?.persona.id ?? '')}
+                onChange={handleInputChange(proyectoModel, setProyecto)}
+              />
+              <span className="form-control">
+                {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
+              </span>
+            </div>
+          </>
+        }
         <label className="col-sm-2 col-form-label">
           {t.Ficha.table.business.dateEnd}
         </label>

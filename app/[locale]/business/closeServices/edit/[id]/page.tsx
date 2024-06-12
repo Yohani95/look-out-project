@@ -6,7 +6,7 @@ import {
   fetchServiceById,
 } from "@/app/[locale]/utils/business/UtilsService";
 import ServiceEdit from "@/app/[locale]/components/business/Services/ServiceEdit";
-import { fetchData } from "@/app/[locale]/utils/Form/UtilsForm";
+
 import { tarifarioGetByIdProyectoApiUrl } from "@/app/api/apiConfig";
 import { Constantes } from "@/app/api/models/common/Constantes";
 import { getAllTipoFacturacion } from "@/app/api/actions/factura/TipoFacturacionActions";
@@ -15,6 +15,8 @@ import { getAllDiaPagos } from "@/app/api/actions/factura/DiaPagosActions";
 import DiaPagos from "@/app/api/models/factura/DiaPagos";
 import { getAllEmpresaPrestadora } from "@/app/api/actions/proyecto/EmpresaPrestadoraActions";
 import EmpresaPrestadora from "@/app/api/models/proyecto/EmpresaPrestadora";
+import { getAllByIdTipoPersona } from "@/app/actions/admin/PersonaActions";
+import Persona from "@/app/api/models/admin/Persona";
 async function page({ params }) {
   const tiposFacturas=await getAllTipoFacturacion();
   const locale = useLocale();
@@ -30,8 +32,8 @@ async function page({ params }) {
       }
     }
   ).then(async (result) => {
-    result=await result.json()
-    const tarifas = result?.data?.map((item) => ({
+    const data=await result.json()
+    const tarifas = data?.data.map((item) => ({
       tcId: item.tcId,
       tcMoneda: item.moneda.monNombre,
       tcPerfilAsignado: item.perfil.prf_Nombre,
@@ -46,9 +48,11 @@ async function page({ params }) {
   });
   const diaPagos=await getAllDiaPagos();
   const empresaPrestadora=await getAllEmpresaPrestadora();
+  const personasKam=await getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM)
   data.tiposFacturas=tiposFacturas.map((tipoFactura)=>{return new TipoFacturacion(tipoFactura).getSelectOptions()}); 
   data.diaPagos=diaPagos.map((diaPagos)=>{return new DiaPagos(diaPagos).getSelectOptions()}); 
   data.empresaPrestadora=empresaPrestadora.map((empresa)=>{return new EmpresaPrestadora(empresa).getSelectOptions()});
+  data.personasKam=personasKam.map((kam)=>{return new Persona(kam).getSelectOptions()})
   return (
     <BasePages title={t.business.title}>
       <ServiceEdit

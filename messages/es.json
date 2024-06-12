@@ -2,6 +2,7 @@
   "Common": {
     "hour":"Hora",
     "document":"Documento",
+    "documents":"Documentos",
     "payday":"Dias a pago",
     "supports": "Soporte",
     "pay": "Pagar",
@@ -457,5 +458,9 @@
     "contractSupport": "Soporte Contrato",
     "bagholder": "Soporte Bolsa",
     "onDemandSupport": "Soporte On Demand"
+  },
+  "Opportunity":{
+    "opportunities":"Oportunidades",
+    "opportunity":"Oportunidad"
   }
 }

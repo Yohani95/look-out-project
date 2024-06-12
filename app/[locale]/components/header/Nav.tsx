@@ -7,18 +7,21 @@ import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
 import CommonDropDown from "@/app/[locale]/components/common/CommonDropDown";
 import { useSession, signOut } from "next-auth/react";
 import { FaArrowRightToBracket } from "react-icons/fa6";
-import { FaUser, FaCog } from "react-icons/fa";
+import { FaUser, FaCog,FaBug } from "react-icons/fa";
 import { red } from "@mui/material/colors";
 import { useRouter } from "next/navigation";
+import { Usuario } from "@/app/api/models/admin/Usuario";
+import { Constantes } from "@/app/api/models/common/Constantes";
 const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
+  const user=session?.user as any | null;
   let translations;
   const router = useRouter();
   translations = require(`@/messages/${locale}.json`);
   const handleLogout = async () => {
-  await signOut({redirect:false}); // Redirigir a la página de inicio
-  router.push("/");   
-};
+    await signOut({ redirect: false }); // Redirigir a la página de inicio
+    router.push("/");
+  };
 
   return (
     <>
@@ -51,13 +54,24 @@ const MyNav = ({ t, locale }) => {
                     title={t.namesMenu.contacts.title}
                   />
                   <Nav.Item>
-                    <Link className="nav-link" href={"/business/closeServices/search"}>
+                    <Link
+                      className="nav-link"
+                      href={"/business/closeServices/search"}
+                    >
                       {translations.Ficha.business}
                     </Link>
                   </Nav.Item>
                   <CommonDropDown
                     t={t.namesMenu.supports}
                     title={t.namesMenu.supports.title}
+                  />
+                  {/* <CommonDropDown
+                    t={t.namesMenu.service}
+                    title={t.namesMenu.service.title}
+                  /> */}
+                  <CommonDropDown
+                    t={t.namesMenu.oportunidad}
+                    title={t.namesMenu.oportunidad.title}
                   />
                   {/* <CommonDropDown
                     t={t.namesMenu.service}
@@ -87,7 +101,7 @@ const MyNav = ({ t, locale }) => {
                     className=""
                   >
                     <Link
-                      href={`/admin/user/edit/${session.user.id}`}
+                      href={`/admin/user/edit/${user.id}`}
                       className="dropdown-item"
                     >
                       <FaCog className="text-secondary" />
@@ -95,6 +109,7 @@ const MyNav = ({ t, locale }) => {
                         {translations.Common.profile}
                       </span>
                     </Link>
+                    {getLogComponent(user.rol.rolId)}
                     <button
                       className="btn btn-outline-primary btn-sm dropdown-item"
                       onClick={handleLogout}
@@ -129,5 +144,20 @@ const MyNav = ({ t, locale }) => {
     </>
   );
 };
+const getLogComponent=(idRol:number)=>{
+  if(idRol==Constantes.Roles.ADMIN){
+    return (
+      <Link
+      href={`/admin/logs/search`}
+      className="dropdown-item"
+    >
+      <FaBug className="text-secondary" />
+      <span style={{ marginLeft: "8px" }}>
+        Logs
+      </span>
+    </Link>
+    )
+  }
+}
 
 export default MyNav;
