@@ -16,6 +16,14 @@ import { getOportunidadById } from '@/app/actions/Oportunidad/OportunidadActions
 import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
 import { Constantes } from '@/app/api/models/common/Constantes';
 import Persona from '@/app/api/models/admin/Persona';
+import { getAllLicitacionOportunidad } from '@/app/actions/Oportunidad/LicitacionOportunidadActions';
+import { getAllTipoLicenciaOportunidad } from '@/app/actions/Oportunidad/TipoLicenciaOportunidadActions';
+import { getAllOrigenOportunidad } from '@/app/actions/Oportunidad/OrigenOportunidadActions';
+import LicitacionOportunidad from '@/app/api/models/oportunidad/LicitacionOportunidad';
+import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
+import OrigenOportunidad from '@/app/api/models/oportunidad/OrigenOportunidad';
+import TipoCerradaOportunidad from '@/app/api/models/oportunidad/TipoCerradaOportunidad';
+import { getAllTipoCerradaOportunidad } from '@/app/actions/Oportunidad/TipoCerradaOportunidadActions';
 async function page({ params }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -28,7 +36,8 @@ const GetData = async (id: number) => {
   try {
     const [monedas, paises, clientes, empresaPrestadora, 
           tipoOportunidad, estadoOportunidad, areaServicioOportunidad,
-           oportunidad, personasKam] =
+           oportunidad, personasKam,
+           licitacionOportunidad,tipoLicenciaOportunidad,origenOportunidad,tipoCerrada] =
       await Promise.all([
         fetchMoneda(),
         fetchCountriest(),
@@ -38,7 +47,11 @@ const GetData = async (id: number) => {
         getAllEstadoOportunidad(),
         getAllAreaServicioOportunidad(),
         getOportunidadById(id),
-        getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM)
+        getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM),
+        getAllLicitacionOportunidad(),
+        getAllTipoLicenciaOportunidad(),
+        getAllOrigenOportunidad(),
+        getAllTipoCerradaOportunidad(),
       ]);
 
     const mappedMonedas = monedas.map((moneda) => ({
@@ -60,6 +73,11 @@ const GetData = async (id: number) => {
     const mappedEstadoOportunidad = estadoOportunidad.map((tipo) => { return new EstadoOportunidad(tipo).getSelectOptions() });
     const mappedareaOportunidad = areaServicioOportunidad.map((area) => { return new AreaServicioOportunidad(area).getSelectOptions() });
     const mappedPersonaKam=personasKam.map((kam)=>{return new Persona(kam).getSelectOptions()})
+    const mappedLicitacion=licitacionOportunidad.map((licitacion)=>{return new LicitacionOportunidad(licitacion).getSelectOptions()});
+    const mappedTipoLicencia=tipoLicenciaOportunidad.map((tipo)=>{return new TipoLicenciaOportunidad(tipo).getSelectOptions()});
+    const mappedOrigen=origenOportunidad.map((origen)=>{return new OrigenOportunidad(origen).getSelectOptions()});
+    const mappedTipoCerrada=tipoCerrada.map((tipo)=>{return new TipoCerradaOportunidad(tipo).getSelectOptions()})
+  
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -69,7 +87,11 @@ const GetData = async (id: number) => {
       estadoOportunidad: mappedEstadoOportunidad,
       areaServicio: mappedareaOportunidad,
       oportunidad,
-      personasKam:mappedPersonaKam
+      personasKam:mappedPersonaKam,
+      licitacionOportunidad:mappedLicitacion,
+      tipoLicencia:mappedTipoLicencia,
+      origenOportunidad:mappedOrigen,
+      tipoCerrada:mappedTipoCerrada
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla

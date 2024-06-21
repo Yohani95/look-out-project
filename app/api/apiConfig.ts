@@ -162,6 +162,13 @@ export const OportunidadApiUrl = `${apiBaseUrl}/oportunidad`;
   export const documentoOportunidadApiUrl = `${apiBaseUrl}/DocumentoOportunidad`;
   //novedad oportunidad
   export const NovedadOportunidadApiUrl = `${apiBaseUrl}/NovedadOportunidad`;
-
+  //LicitacionOportunidadApiUrl
+  export const LicitacionOportunidadApiUrl = `${apiBaseUrl}/LicitacionOportunidad`;
+  //TipoLicenciaOportunidadApiUrl
+  export const TipoLicenciaOportunidadApiUrl = `${apiBaseUrl}/TipoLicenciaOportunidad`;
+  //OrigenOportunidadApiUrl
+  export const OrigenOportunidadApiUrl = `${apiBaseUrl}/OrigenOportunidad`;
+  //TipoCerradaOportunidadApiUrl
+  export const TipoCerradaOportunidadApiUrl = `${apiBaseUrl}/TipoCerradaOportunidad`;
 //log
  export const LogApiUrl = `${apiBaseUrl}/log`;

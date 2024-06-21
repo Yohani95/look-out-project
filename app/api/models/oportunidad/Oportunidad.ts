@@ -12,7 +12,7 @@ class Oportunidad {
   idTipoOportunidad: number | null;
   idPais: number | null;
   renovable: boolean | null;
-  licitacion: boolean | null;
+  idLicitacion: number | null;
   fechaRenovacion: Date | null;
   idEmpresaPrestadora: number | null;
   idContacto: number | null;
@@ -20,6 +20,10 @@ class Oportunidad {
   descripcion: string | null;
   idKam:number | null;
   personaKam:Persona| null;
+  fechaCreacion: Date| null;
+  idOrigen:number|null;
+  idTipoLicencia:number|null;
+  idTipoCerrada:number|null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -31,16 +35,20 @@ class Oportunidad {
     this.idTipoOportunidad = data?.idTipoOportunidad || null;
     this.idPais = data?.idPais || null;
     this.renovable = data?.renovable || false;
-    this.licitacion = data?.licitacion || null;
+    this.idLicitacion = data?.idLicitacion || null;
     this.fechaRenovacion = data?.fechaRenovacion
       ? new Date(data.fechaRenovacion)
       : null;
+    this.fechaCreacion = data?.fechaCreacion || null;
     this.idEmpresaPrestadora = data?.idEmpresaPrestadora || null;
     this.idContacto = data?.idContacto || null;
     this.idAreaServicio = data?.idAreaServicio || null;
     this.descripcion=data?.descripcion|| null;
     this.idKam=data?.idKam|| null;
     this.personaKam=data?.personaKam|| null;
+    this.idOrigen = data?.idOrigen || null;
+    this.idTipoLicencia = data?.idTipoLicencia || null;
+    this.idTipoCerrada=data?.idTipoCerrada|| null;
   }
 
   static getValidationSchema(t) {
@@ -55,7 +63,6 @@ class Oportunidad {
       idTipoOportunidad: Yup.number().nullable(),
       idPais: Yup.number().nullable(),
       renovable: Yup.boolean().nullable(),
-      licitacion: Yup.boolean().nullable(),
       fechaRenovacion: Yup.date().nullable(),
       idEmpresaPrestadora: Yup.number().nullable(),
       idContacto: Yup.number().nullable(),
@@ -77,6 +84,11 @@ class Oportunidad {
         accessorKey: "nombre",
         header: "Nombre",
         size: 100,
+      },
+      {
+        accessorKey: "fechaCreacion",
+        header: "Fecha Creación",
+        size: 50,
       },
       {
         accessorKey: "fechaCierre",
@@ -117,9 +129,9 @@ class Oportunidad {
       label: this.nombre,
     };
   }
-  getFechaString(): string | null {
-    return this.fechaCierre
-      ? format(new Date(this.fechaCierre), "dd/MM/yyyy")
+  getFechaString(fecha=this.fechaCierre): string | null {
+    return fecha
+      ? format(new Date(fecha), "dd/MM/yyyy")
       : "N/A";
   }
 }

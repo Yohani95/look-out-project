@@ -13,6 +13,14 @@ import { getAllEstadoOportunidad } from '@/app/actions/Oportunidad/EstadoOportun
 import EstadoOportunidad from '@/app/api/models/oportunidad/EstadoOportunidad';
 import { getAllAreaServicioOportunidad } from '@/app/actions/Oportunidad/AreaServicioOportunidadActions';
 import AreaServicioOportunidad from '@/app/api/models/oportunidad/AreaServicioOportunidad';
+import { getAllLicitacionOportunidad } from '@/app/actions/Oportunidad/LicitacionOportunidadActions';
+import { getAllTipoLicenciaOportunidad } from '@/app/actions/Oportunidad/TipoLicenciaOportunidadActions';
+import { getAllOrigenOportunidad } from '@/app/actions/Oportunidad/OrigenOportunidadActions';
+import LicitacionOportunidad from '@/app/api/models/oportunidad/LicitacionOportunidad';
+import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
+import OrigenOportunidad from '@/app/api/models/oportunidad/OrigenOportunidad';
+import { getAllTipoCerradaOportunidad } from '@/app/actions/Oportunidad/TipoCerradaOportunidadActions';
+import TipoCerradaOportunidad from '@/app/api/models/oportunidad/TipoCerradaOportunidad';
 async function page() {
     const locale = useLocale();
     const t = require(`@/messages/${locale}.json`);
@@ -25,7 +33,9 @@ async function page() {
 }
 const GetData = async () => {
   try {
-    const [monedas, paises, clientes,empresaPrestadora,tipoOportunidad,estadoOportunidad,areaServicioOportunidad] =
+    const [monedas, paises, clientes,empresaPrestadora,tipoOportunidad,estadoOportunidad
+      ,areaServicioOportunidad,licitacionOportunidad,tipoLicenciaOportunidad,origenOportunidad,
+      tipoCerrada] =
       await Promise.all([
         fetchMoneda(),
         fetchCountriest(),
@@ -33,7 +43,11 @@ const GetData = async () => {
         getAllEmpresaPrestadora(),
         getAllTipoOportunidad(),
         getAllEstadoOportunidad(),
-        getAllAreaServicioOportunidad()
+        getAllAreaServicioOportunidad(),
+        getAllLicitacionOportunidad(),
+        getAllTipoLicenciaOportunidad(),
+        getAllOrigenOportunidad(),
+        getAllTipoCerradaOportunidad(),
       ]);
 
     const mappedMonedas = monedas.map((moneda) => ({
@@ -54,6 +68,10 @@ const GetData = async () => {
     const mappedtipoOportunidad=tipoOportunidad.map((tipo)=>{return new TipoOportunidad(tipo).getSelectOptions()});
     const mappedEstadoOportunidad=estadoOportunidad.map((tipo)=>{return new EstadoOportunidad(tipo).getSelectOptions()});
     const mappedareaOportunidad=areaServicioOportunidad.map((area)=>{return new AreaServicioOportunidad(area).getSelectOptions()});
+    const mappedLicitacion=licitacionOportunidad.map((licitacion)=>{return new LicitacionOportunidad(licitacion).getSelectOptions()});
+    const mappedTipoLicencia=tipoLicenciaOportunidad.map((tipo)=>{return new TipoLicenciaOportunidad(tipo).getSelectOptions()});
+    const mappedOrigen=origenOportunidad.map((origen)=>{return new OrigenOportunidad(origen).getSelectOptions()});
+    const mappedTipoCerrada=tipoCerrada.map((tipo)=>{return new TipoCerradaOportunidad(tipo).getSelectOptions()})
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -61,7 +79,11 @@ const GetData = async () => {
       empresaPrestadora:mappedEmpresaEmprestadora,
       tipoOportunidad:mappedtipoOportunidad,
       estadoOportunidad:mappedEstadoOportunidad,
-      areaServicio:mappedareaOportunidad
+      areaServicio:mappedareaOportunidad,
+      licitacionOportunidad:mappedLicitacion,
+      tipoLicencia:mappedTipoLicencia,
+      origenOportunidad:mappedOrigen,
+      tipoCerrada:mappedTipoCerrada
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla

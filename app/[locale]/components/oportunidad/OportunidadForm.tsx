@@ -10,6 +10,8 @@ import { set } from 'date-fns';
 import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
 import { Form } from 'react-bootstrap';
 import { FormikProps } from 'formik';
+import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
+import EstadoOportunidad from '@/app/api/models/oportunidad/EstadoOportunidad';
 interface OportunidadFormProps {
     oportunidadModel: Oportunidad;
     setOportunidad: React.Dispatch<React.SetStateAction<any>>;
@@ -20,6 +22,8 @@ interface OportunidadFormProps {
 const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, setOportunidad, t, data, formik }) => {
     //========DECLARACION DE VARIABLES ===============
     const [contactOptions, setContactOptions] = useState([]);
+    const [statusTipo, setStatusTipo] = useState(false);
+    const [statusTipoCerrada, setStatusTipoCerrada] = useState(false);
     const { data: session, status } = useSession();
     const user = session?.user as Usuario;
     useEffect(() => {
@@ -36,6 +40,20 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
             setOportunidad(prev => ({ ...prev, idKam: user.persona.id }));
         }
     }, [oportunidadModel.idKam, user?.persona.id, setOportunidad])
+    useEffect(() => {
+        if (oportunidadModel.idTipoOportunidad == TipoLicenciaOportunidad.Constantes.LICENCIA) {
+            setStatusTipo(true);
+        } else {
+            setStatusTipo(false);
+        }
+    }, [oportunidadModel.idTipoOportunidad]);
+    useEffect(() => {
+        if (oportunidadModel.idEstadoOportunidad == EstadoOportunidad.Constantes.CERRADA_PERDIDA) {
+            setStatusTipoCerrada(true);
+        } else {
+            setStatusTipoCerrada(false);
+        }
+    }, [oportunidadModel.idEstadoOportunidad]);
     return (
         <>
             <div className="mb-3 row align-items-center">
@@ -127,34 +145,50 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
                     onChange={(e) => handleSelectChange(e, "idContacto", setOportunidad)}
                     selectedValue={oportunidadModel.idContacto}
                 />
-                {/* <div className="col-sm-2">
-                    <button
-                        type="button"
-                        className="badge btn btn-primary"
-                    //onClick={goContactCreate}
-                    >
-                        {t.Common.add} (+)
-                    </button>
-                </div> */}
                 <SelectField
                     label={`${t.Account.type} ${t.Opportunity.opportunity}`}
                     options={data.tipoOportunidad}
                     preOption={t.Account.select}
                     className="my-contacto"
-                    labelClassName="col-sm-1 col-form-label"
+                    labelClassName="col-sm-2 col-form-label"
                     divClassName="col-sm-3"
                     onChange={(e) => handleSelectChange(e, "idTipoOportunidad", setOportunidad)}
                     selectedValue={oportunidadModel.idTipoOportunidad}
                 />
+                {statusTipo &&
+
+                    <SelectField
+                        label={`Licencias`}
+                        options={data.tipoLicencia}
+                        preOption={t.Account.select}
+                        className="my-contacto"
+                        labelClassName="col-sm-1 col-form-label"
+                        divClassName="col-sm-2"
+                        onChange={(e) => handleSelectChange(e, "idTipoLicencia", setOportunidad)}
+                        selectedValue={oportunidadModel.idTipoLicencia}
+                    />
+                }
+            </div>
+            <div className=" mb-3 row align-items-center">
                 <SelectField
-                    label={`estado`}
-                    options={data.estadoOportunidad}
+                    label={`Origen`}
+                    options={data.origenOportunidad}
                     preOption={t.Account.select}
                     className="my-contacto"
                     labelClassName="col-sm-1 col-form-label"
                     divClassName="col-sm-3"
-                    onChange={(e) => handleSelectChange(e, "idEstadoOportunidad", setOportunidad)}
-                    selectedValue={oportunidadModel.idEstadoOportunidad}
+                    onChange={(e) => handleSelectChange(e, "idOrigen", setOportunidad)}
+                    selectedValue={oportunidadModel.idOrigen}
+                />
+                <SelectField
+                    label={`Licitacion`}
+                    options={data.licitacionOportunidad}
+                    preOption={t.Account.select}
+                    className="my-contacto"
+                    labelClassName="col-sm-1 col-form-label"
+                    divClassName="col-sm-3"
+                    onChange={(e) => handleSelectChange(e, "idLicitacion", setOportunidad)}
+                    selectedValue={oportunidadModel.idLicitacion}
                 />
             </div>
             <div className="mb-3 row align-items-center">
@@ -199,19 +233,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
                 />
             </div>
             <div className="mb-3 row align-items-center">
-                <label htmlFor="licitacion" className="col-sm-1 col-form-label">
-                    Licitación ?
-                </label>
-                <div className="col-sm-1 form-check">
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="licitacion"
-                        name="licitacion"
-                        checked={oportunidadModel.licitacion ?? false}
-                        onChange={(e) => setOportunidad({ ...oportunidadModel, licitacion: e.target.checked })}
-                    />
-                </div>
                 <SelectField
                     label={`${t.Ficha.type} ${t.Common.currency}`}
                     options={data.monedas}
@@ -234,6 +255,31 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({ oportunidadModel, set
                         onChange={handleInputChange(oportunidadModel, setOportunidad)}
                     />
                 </div>
+            </div>
+            <hr />
+            <div className=" mb-3 row align-items-center">
+                <SelectField
+                    label={`Estado`}
+                    options={data.estadoOportunidad}
+                    preOption={t.Account.select}
+                    className="my-contacto"
+                    labelClassName="col-sm-1 col-form-label"
+                    divClassName="col-sm-3"
+                    onChange={(e) => handleSelectChange(e, "idEstadoOportunidad", setOportunidad)}
+                    selectedValue={oportunidadModel.idEstadoOportunidad}
+                />
+                {statusTipoCerrada&&
+                    <SelectField
+                        label={`Tipo Cerrada`}
+                        options={data.tipoCerrada}
+                        preOption={t.Account.select}
+                        className="my-contacto"
+                        labelClassName="col-sm-1 col-form-label"
+                        divClassName="col-sm-3"
+                        onChange={(e) => handleSelectChange(e, "idTipoCerrada", setOportunidad)}
+                        selectedValue={oportunidadModel.idTipoCerrada}
+                    />
+                }
             </div>
             <hr />
             <Form.Group controlId="descripcion" className="mb-3">

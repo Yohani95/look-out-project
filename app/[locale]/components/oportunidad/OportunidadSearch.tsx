@@ -12,6 +12,7 @@ function OportunidadSearch({ t, data }) {
     return data.map((oportunidad: Oportunidad) => ({
       ...oportunidad,
       fechaCierre: new Oportunidad(oportunidad).getFechaString(),
+      fechaCreacion: new Oportunidad(oportunidad).getFechaString(oportunidad.fechaCreacion),
       personaKam: oportunidad.personaKam ? new Persona(oportunidad.personaKam).getNombreCompleto() : "N/A",
       actions: (
         <>
