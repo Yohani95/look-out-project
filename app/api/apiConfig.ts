@@ -4,7 +4,7 @@ if (process.env.NODE_ENV === "development") {
   apiBaseUrl = "https://localhost:44318/api";
 } else {
   // Código específico para el entorno de producción
-  apiBaseUrl = "https://kpazserv0008.azurewebsites.net/api";
+  apiBaseUrl = "https://kpazserv0005.azurewebsites.net/api";
 }
 
 export const apiHeaders = {
@@ -162,6 +162,13 @@ export const OportunidadApiUrl = `${apiBaseUrl}/oportunidad`;
   export const documentoOportunidadApiUrl = `${apiBaseUrl}/DocumentoOportunidad`;
   //novedad oportunidad
   export const NovedadOportunidadApiUrl = `${apiBaseUrl}/NovedadOportunidad`;
-
+  //LicitacionOportunidadApiUrl
+  export const LicitacionOportunidadApiUrl = `${apiBaseUrl}/LicitacionOportunidad`;
+  //TipoLicenciaOportunidadApiUrl
+  export const TipoLicenciaOportunidadApiUrl = `${apiBaseUrl}/TipoLicenciaOportunidad`;
+  //OrigenOportunidadApiUrl
+  export const OrigenOportunidadApiUrl = `${apiBaseUrl}/OrigenOportunidad`;
+  //TipoCerradaOportunidadApiUrl
+  export const TipoCerradaOportunidadApiUrl = `${apiBaseUrl}/TipoCerradaOportunidad`;
 //log
  export const LogApiUrl = `${apiBaseUrl}/log`;

@@ -49,5 +49,15 @@ class EstadoOportunidad{
         label: this.nombre,
       };
     }
+    static Constantes = {
+      CALIFICACION: 1,
+      REUNION_PROGRAMADA: 2,
+      PROPUESTA_EN_PREPARACION: 3,
+      PROPUESTA_ENTREGADA_A_COMERCIAL: 4,
+      PROPUESTA_ENVIADA_A_CLIENTE: 5,
+      COMPROMETIDO: 6,
+      CERRADA_PERDIDA: 7,
+      CERRADA_GANADA: 8,
+  };
 }
 export default EstadoOportunidad;
