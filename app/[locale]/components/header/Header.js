@@ -143,6 +143,15 @@ const Header = () => {
         },
         title: t("Opportunity.opportunities"),
       },
+      licencia:{
+        link: {
+          search: {
+            name: t("Common.licenses"),
+            link: "/licenses/search",
+          },
+        },
+        title: t("Common.licenses"),
+      },
     },
   };
   return <Nav t={languages} locale={useLocale()} />;

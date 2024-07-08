@@ -161,6 +161,7 @@ function ContactInfoSection({ t, formData, setFormData, idPerson,setLoading}) {
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) => handleSelectChange(e, "idCliente", setFormData)}
+          isRequired={false}
           selectedValue={formData.idCliente}
         />
       </div>

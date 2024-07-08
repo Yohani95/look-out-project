@@ -1,15 +1,21 @@
 {
   "Common": {
-    "hour":"Hour",
-    "document":"Document",
-    "documents":"Documents",
-    "payday":"Pay Day",
-    "supports":"Supports",
+    "discount":"Descuento",
+    "creationDate": "Creation date",
+    "renewalDate": "Renewal date",
+    "deadline": "Closing date",
+    "license": "License",
+    "licenses": "Licenses",
+    "hour": "Hour",
+    "document": "Document",
+    "documents": "Documents",
+    "payday": "Pay Day",
+    "supports": "Supports",
     "pay": "Pay",
     "total": "Total",
     "absentDays": "Absent Days",
     "workedDays": "Worked Days",
-    "totalDays": "Total Days", 
+    "totalDays": "Total Days",
     "dailyAmount": "Daily Amount",
     "billingType": "Business Day Billing?",
     "closed": "Closed",
@@ -354,7 +360,7 @@
     "dateTo": "Date To",
     "dateFrom": "Date From",
     "historyNovelty": "Novelty History",
-    "periodDetails":"Period Details"
+    "periodDetails": "Period Details"
   },
   "facture": {
     "billingDetails": "Billing Details",
@@ -448,7 +454,9 @@
   },
   "ValidationMessages": {
     "required": "This field is required.",
-    "maxLength": "The entered value exceeds the maximum allowed length."
+    "maxLength": "The entered value exceeds the maximum allowed length.",
+    "discountMin": "Discount must be at least 1%",
+    "discountMax": "Discount cannot be greater than 100%"
   },
   "Export": {
     "exportAllRows": "Export all rows (PDF)",
@@ -458,12 +466,9 @@
     "contractSupport": "Contract Support",
     "bagholder": "Bagholder Support",
     "onDemandSupport": "On-Demand Support"
-},
-"Opportunity":{
-  "opportunities":"Opportunities",
-  "opportunity":"Opportunity"
+  },
+  "Opportunity": {
+    "opportunities": "Opportunities",
+    "opportunity": "Opportunity"
+  }
 }
-
-}
-
-   

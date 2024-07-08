@@ -181,6 +181,7 @@ function ServiceFormSection({
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) => handleSelectChange(e, "pryIdContacto", setProyecto)}
+          isRequired={false}
           selectedValue={proyectoModel.pryIdContacto}
         />
         <div className="col-sm-2">

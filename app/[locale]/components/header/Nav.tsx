@@ -77,9 +77,13 @@ const MyNav = ({ t, locale }) => {
                     t={t.namesMenu.service}
                     title={t.namesMenu.service.title}
                   /> */}
-                  <CommonDropDown
+                    <CommonDropDown
                     t={t.namesMenu.facture}
                     title={t.namesMenu.facture.title}
+                  />
+                  <CommonDropDown
+                    t={t.namesMenu.licencia}
+                    title={t.namesMenu.licencia.title}
                   />
                   <CommonDropDown
                     t={t.namesMenu.admin}
@@ -109,7 +113,7 @@ const MyNav = ({ t, locale }) => {
                         {translations.Common.profile}
                       </span>
                     </Link>
-                    {getLogComponent(user.rol.rolId)}
+                    {getLogComponent(user.rol?.rolId)}
                     <button
                       className="btn btn-outline-primary btn-sm dropdown-item"
                       onClick={handleLogout}
