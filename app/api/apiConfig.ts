@@ -172,3 +172,8 @@ export const OportunidadApiUrl = `${apiBaseUrl}/oportunidad`;
   export const TipoCerradaOportunidadApiUrl = `${apiBaseUrl}/TipoCerradaOportunidad`;
 //log
  export const LogApiUrl = `${apiBaseUrl}/log`;
+
+ //Licencia venta
+ export const VentaLicenciaApiUrl = `${apiBaseUrl}/VentaLicencia`;
+ //estado venta licencia
+ export const EstadoVentaLicenciaApiUrl = `${apiBaseUrl}/EstadoVentaLicencia`;

@@ -1,10 +1,16 @@
 {
   "Common": {
-    "hour":"Hora",
-    "document":"Documento",
-    "documents":"Documentos",
-    "payday":"dia do pagamento",
-    "supports":"Suporte",
+    "discount": "Desconto",
+    "creationDate": "Data de criação",
+    "renewalDate": "Data de renovação",
+    "deadline": "Data de fechamento",
+    "license": "Licença",
+    "licenses": "Licenças",
+    "hour": "Hora",
+    "document": "Documento",
+    "documents": "Documentos",
+    "payday": "dia do pagamento",
+    "supports": "Suporte",
     "pay": "Pagar",
     "total": "Total",
     "absentDays": "Dias ausentes",
@@ -339,8 +345,8 @@
     "newMilestone": "Novo Marco",
     "closeProject": "Fechar Projeto",
     "kickOffProject": "Kick Off do Projeto"
-  }, 
-   "service": {
+  },
+  "service": {
     "docKickOff": "Doc. Início",
     "assignedProfile": "Perfil atribuído",
     "assignedProfessionals": "Profissionais atribuídos",
@@ -448,7 +454,9 @@
   },
   "ValidationMessages": {
     "required": "Este campo é obrigatório.",
-    "maxLength": "O valor inserido excede o comprimento máximo permitido."
+    "maxLength": "O valor inserido excede o comprimento máximo permitido.",
+    "discountMin": "Desconto deve ser pelo menos 1%",
+    "discountMax": "Desconto não pode ser maior que 100%"
   },
   "Export": {
     "exportAllRows": "Exportar todas as linhas (PDF)",
@@ -458,11 +466,9 @@
     "contractSupport": "Suporte Contratual",
     "bagholder": "Suporte para Titulares",
     "onDemandSupport": "Suporte On-Demand"
-},
-"Opportunity":{
-  "opportunities":"Oportunidades",
-  "opportunity":"Oportunidade"
+  },
+  "Opportunity": {
+    "opportunities": "Oportunidades",
+    "opportunity": "Oportunidade"
+  }
 }
-
-}
-

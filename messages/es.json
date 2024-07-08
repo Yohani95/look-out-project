@@ -1,9 +1,15 @@
 {
   "Common": {
-    "hour":"Hora",
-    "document":"Documento",
-    "documents":"Documentos",
-    "payday":"Dias a pago",
+    "discount": "Descuento",
+    "creationDate": "Fecha de creación",
+    "renewalDate": "Fecha de renovación",
+    "deadline": "Fecha cierre",
+    "license": "Licencia",
+    "licenses": "Licencias",
+    "hour": "Hora",
+    "document": "Documento",
+    "documents": "Documentos",
+    "payday": "Dias a pago",
     "supports": "Soporte",
     "pay": "Pagar",
     "total": "Total",
@@ -448,9 +454,11 @@
   },
   "ValidationMessages": {
     "required": "Este campo es obligatorio.",
-    "maxLength": "El valor ingresado supera la longitud máxima permitida."
+    "maxLength": "El valor ingresado supera la longitud máxima permitida.",
+    "discountMin": "Descuento debe ser al menos 1%",
+    "discountMax": "Descuento no puede ser mayor a 100%"
   },
-  "Export": { 
+  "Export": {
     "exportAllRows": "Exportar todas las filas (PDF)",
     "exportPageRows": "Exportar solo Página (PDF)"
   },
@@ -459,8 +467,8 @@
     "bagholder": "Soporte Bolsa",
     "onDemandSupport": "Soporte On Demand"
   },
-  "Opportunity":{
-    "opportunities":"Oportunidades",
-    "opportunity":"Oportunidad"
+  "Opportunity": {
+    "opportunities": "Oportunidades",
+    "opportunity": "Oportunidad"
   }
 }
