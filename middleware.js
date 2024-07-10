@@ -1,9 +1,8 @@
 import { withAuth } from 'next-auth/middleware';
 import createIntlMiddleware from 'next-intl/middleware';
-import { NextRequest } from 'next/server';
 
-const locales = ['en', 'es','br'];
-const publicPages = ['/login']; // Solo la página de inicio de sesión está disponible para usuarios no autenticados
+const locales = ['en', 'es', 'br'];
+const publicPages = ['/login']; // Páginas públicas accesibles sin autenticación
 
 const intlMiddleware = createIntlMiddleware({
   locales,
@@ -17,7 +16,6 @@ const authMiddleware = withAuth(
   {
     callbacks: {
       authorized: ({ token }) => token != null
-      
     },
     pages: {
       signIn: '/',
@@ -25,6 +23,7 @@ const authMiddleware = withAuth(
   }
 );
 
+// Middleware principal que maneja la lógica de autenticación e internacionalización
 export default async function middleware(req, res, next) {
   const publicPathnameRegex = RegExp(
     `^(/(${locales.join('|')}))?(${publicPages.join('|')})?/?$`,
@@ -32,6 +31,17 @@ export default async function middleware(req, res, next) {
   );
   const isPublicPage = publicPathnameRegex.test(req.nextUrl.pathname);
 
+  // Verificar el tamaño del cuerpo de la solicitud
+  if (req.headers.has('content-length')) {
+    const contentLength = parseInt(req.headers.get('content-length'), 10);
+    const maxBodySize = 10 * 1024 * 1024; // 10 MB
+
+    if (contentLength > maxBodySize) {
+      return res.status(413).json({ error: 'Body exceeded 10mb limit' });
+    }
+  }
+
+  // Procesar solicitudes públicas y privadas
   if (isPublicPage) {
     return intlMiddleware(req, res, next);
   } else {
@@ -40,6 +50,7 @@ export default async function middleware(req, res, next) {
   }
 }
 
+// Configuración opcional para el matcher
 export const config = {
   matcher: ['/((?!api|_next|.*\\..*).*)']
 };

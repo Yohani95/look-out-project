@@ -21,7 +21,7 @@ class Persona {
       this.perFechaNacimiento = data.perFechaNacimiento || null;
     } else {
       this.id = 0;
-      this.perIdNacional = "";
+      this.perIdNacional = null;
       this.perNombres = null;
       this.perApellidoPaterno = "";
       this.perApellidoMaterno = "";
