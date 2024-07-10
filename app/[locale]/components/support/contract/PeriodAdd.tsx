@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
 import { useFormik } from 'formik';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
@@ -12,6 +13,8 @@ import { Constantes } from '@/app/api/models/common/Constantes';
 function PeriodAdd({ t, soporte, horasUtilizadas }) {
   //========FIN DECLARACION DE VARIABLES ===============
   const router = useRouter();
+  const [periodo, setPeriodo] = useState("");
+  const [horasData, setHorasData] = useState(horasUtilizadas);
   const showNotification = (type: string, title: string, text: string) => {
     NotificationSweet({
       title: title,
@@ -160,6 +163,24 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
       }
     },
   });
+  useEffect(() => {
+    const { fechaPeriodoDesde, fechaPeriodoHasta } = formik.values;
+    if (!fechaPeriodoDesde || !fechaPeriodoHasta) {
+      setHorasData(horasUtilizadas); // Establecer la data completa
+      return;
+    }
+
+    const from = new Date(fechaPeriodoDesde);
+    const to = new Date(fechaPeriodoHasta);
+
+    const horasSelected = horasUtilizadas.filter(hora => {
+      const desdeDate = new Date(hora.fechaPeriodoDesde);
+      const hastaDate = new Date(hora.fechaPeriodoHasta);
+      return (desdeDate >= from && desdeDate <= to) || (hastaDate >= from && hastaDate <= to);
+    });
+
+    setHorasData(horasSelected);
+  }, [formik.values.fechaPeriodoDesde, formik.values.fechaPeriodoHasta]);
   return (
     <BoxInfo title={t.time.hour} startShow={true}>
       <form
@@ -174,7 +195,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
           </button>
         </div>
       </form>
-      <HoursList t={t} data={horasUtilizadas} tipoSoporte={soporte.idTipoSoporte} />
+      <HoursList t={t} data={horasData} tipoSoporte={soporte.idTipoSoporte} />
     </BoxInfo>
 
   )

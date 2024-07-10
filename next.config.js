@@ -12,9 +12,12 @@ const withNextIntl = require("next-intl/plugin")(
   "./i18n.js"
 );
 module.exports = withNextIntl({
-  nextConfig,
+  // Configuración específica de Next.js incluyendo serverActions y límite de tamaño del cuerpo
   experimental: {
-    serverActions: true,
+    serverActions: {
+      bodySizeLimit: '10mb', // Ajusta el límite de tamaño del cuerpo según sea necesario
+    },
+    serverActions: true, // Habilita serverActions
   },
 });
 const path = require("path");

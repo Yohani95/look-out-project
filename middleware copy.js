@@ -1,48 +1,53 @@
-import { createIntlMiddleware } from 'next-intl/middleware';
 import { withAuth } from 'next-auth/middleware';
-import { NextRequest } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
+import { NextRequest, NextResponse } from 'next/server';
 
-const locales = ['en', 'de'];
-const publicPages = [
-  '/'
-  // (/secret requires auth)
-];
+const locales = ['en', 'es', 'br'];
+const publicPages = ['/login']; // Solo la página de inicio de sesión está disponible para usuarios no autenticados
 
 const intlMiddleware = createIntlMiddleware({
   locales,
-  defaultLocale: 'en'
+  defaultLocale: 'en',
 });
 
 const authMiddleware = withAuth(
-  // Note that this callback is only invoked if
-  // the `authorized` callback has returned `true`
-  // and not for pages listed in `pages`.
-  (req) => intlMiddleware(req),
+  function onSuccess(req) {
+    return intlMiddleware(req);
+  },
   {
     callbacks: {
-      authorized: ({ token }) => token != null
+      authorized: ({ token }) => token != null,
     },
     pages: {
       signIn: '/',
-    }
+    },
   }
 );
 
-export default function middleware(req) {
+export default async function middleware(req, res, next) {
   const publicPathnameRegex = RegExp(
     `^(/(${locales.join('|')}))?(${publicPages.join('|')})?/?$`,
     'i'
   );
   const isPublicPage = publicPathnameRegex.test(req.nextUrl.pathname);
 
+  if (req.headers.has('content-length')) {
+    const contentLength = parseInt(req.headers.get('content-length'), 10);
+    const maxBodySize = 10 * 1024 * 1024; // 10 MB
+
+    if (contentLength > maxBodySize) {
+      return NextResponse.json({ error: 'Body exceeded 10mb limit' }, { status: 413 });
+    }
+  }
+
   if (isPublicPage) {
-    return intlMiddleware(req);
+    return intlMiddleware(req, res, next);
   } else {
-    return authMiddleware(req);
+    const authResult = await authMiddleware(req, res);
+    return authResult;
   }
 }
 
 export const config = {
-  // Skip all paths that should not be internationalized
-  matcher: ['/((?!api|_next|.*\\..*).*)']
+  matcher: ['/((?!api|_next|.*\\..*).*)'],
 };

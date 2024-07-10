@@ -6,6 +6,7 @@ import DocumentoOportunidad from '@/app/api/models/oportunidad/DocumentoOportuni
 import DocumentoOportunidadForm from './DocumentoOportunidadForm';
 import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
 import { createdocumentoOportunidad,  revalidateDatadocumentoOportunidad } from '@/app/actions/Oportunidad/DocumentoOportunidadActions';
+import { documentoOportunidadApiUrl } from '@/app/api/apiConfig';
 function DocumentoOportunidadCreate({ t, idOportunidad }) {
     const router = useRouter();
     const validationSchema = DocumentoOportunidad.getValidationSchema(t);
@@ -22,9 +23,15 @@ function DocumentoOportunidadCreate({ t, idOportunidad }) {
                     type: t.notification.loading.type,
                     showLoading: true,
                 });
-
-                await createdocumentoOportunidad(values).then(async (res) => {
+                 await fetch(documentoOportunidadApiUrl, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(values),
+                  }).then(async (res) => {
                     router.refresh()
+                    console.log(res)
                     if (res.status == 400) {
                         NotificationSweet({
                             title: t.notification.error.title,
@@ -38,8 +45,9 @@ function DocumentoOportunidadCreate({ t, idOportunidad }) {
                             type: t.notification.success.type,
                         });
                     }
-                    router.back()
+                    //router.back()
                 }).catch((err) => {
+                    console.log(err)
                     NotificationSweet({
                         title: t.notification.error.title,
                         text: t.notification.error.text,
@@ -47,7 +55,7 @@ function DocumentoOportunidadCreate({ t, idOportunidad }) {
                         push: router.push,
                         link: `/opportunities/edit/${idOportunidad}/documents/search`
                     });
-                });
+                });;
             } catch (error) {
                 console.error("Error in handleFormSubmit:", error);
                 NotificationSweet({

@@ -1,21 +1,31 @@
-import React from 'react'
+"use client";
+import React, { useEffect, useState } from 'react'
 import { FormikProps } from 'formik';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import SelectField from "../../common/SelectField";
 import Soporte from '@/app/api/models/support/Soporte';
 function HoursForm({ t, formik, soporte }: { t: any, formik: FormikProps<HorasUtilizadas>, soporte: any }) {
+    const [periodo, setPeriodo] = useState("");
     const handlePeriod = (selectedOption) => {
-        const [startDateStr, endDateStr] = selectedOption.split(" - ");
-        const startDate = new Date(startDateStr);
-        const endDate = new Date(endDateStr);
-        formik.setFieldValue("fechaPeriodoDesde", startDate);
-        formik.setFieldValue("fechaPeriodoHasta", endDate);
+        try {
+            if (!selectedOption || selectedOption.trim() === "") {
+                formik.setFieldValue("fechaPeriodoDesde", null);
+                formik.setFieldValue("fechaPeriodoHasta", null);
+                return;
+              }
+            const [startDateStr, endDateStr] = selectedOption.split(" - ");
+            const startDate = new Date(startDateStr);
+            const endDate = new Date(endDateStr);
+            formik.setFieldValue("fechaPeriodoDesde", startDate);
+            formik.setFieldValue("fechaPeriodoHasta", endDate);   
+        } catch (error) {
+            console.log(error)
+        }
     };
     const calculatePeriods = () => {
         const startDate = new Date(soporte.pryFechaInicioEstimada);
         const endDate = new Date(soporte.pryFechaCierreEstimada);
         const cutoffDate = parseInt(soporte.fechaCorte, 10);
-
         const periods = [];
         let currentDate = new Date(startDate);
 
@@ -64,6 +74,9 @@ function HoursForm({ t, formik, soporte }: { t: any, formik: FormikProps<HorasUt
         }
         return periods;
     };
+    useEffect(() => {
+        handlePeriod(periodo); // Llamar a handle cuando periodo cambie
+      }, [periodo]);
     return (
         <>
             <div>
@@ -75,9 +88,9 @@ function HoursForm({ t, formik, soporte }: { t: any, formik: FormikProps<HorasUt
                         labelClassName="col-sm-1 col-form-label"
                         divClassName="col-sm-2"
                         onChange={
-                            (e) => handlePeriod(e.target.value) // Actualizar el estado del periodo seleccionado
+                            (e) => setPeriodo(e.target.value) // Actualizar el estado del periodo seleccionado
                         }
-                    // selectedValue={periodo}
+                    selectedValue={periodo}
                     />
                     <label htmlFor="horas" className="col-sm-1 col-form-label">
                         {t.time.hour}
