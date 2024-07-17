@@ -4,7 +4,6 @@ import React, { useMemo } from 'react'
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 import Utils from '@/app/api/models/common/Utils';
-import Persona from '@/app/api/models/admin/Persona';
 import VentaLicenciaButtons from './VentaLicenciaButtons';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function VentaLicenciaSearch({ t, data }) {
