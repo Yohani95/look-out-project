@@ -1,5 +1,7 @@
 {
   "Common": {
+    "brand": "Marca",
+    "wholesaler": "Mayorista",
     "discount": "Descuento",
     "creationDate": "Fecha de creación",
     "renewalDate": "Fecha de renovación",

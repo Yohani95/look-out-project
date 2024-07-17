@@ -1,6 +1,8 @@
 {
   "Common": {
-    "discount":"Descuento",
+    "brand": "Brand",
+    "wholesaler": "Wholesaler",
+    "discount": "Descuento",
     "creationDate": "Creation date",
     "renewalDate": "Renewal date",
     "deadline": "Closing date",

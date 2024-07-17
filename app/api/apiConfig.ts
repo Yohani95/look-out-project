@@ -1,14 +1,14 @@
-let apiBaseUrl = "";
-if (process.env.NODE_ENV === "development") {
+let apiBaseUrl = '';
+if (process.env.NODE_ENV === 'development') {
   // Código específico para el entorno de desarrollo
-  apiBaseUrl = "https://localhost:44318/api";
+  apiBaseUrl = 'https://localhost:44318/api';
 } else {
   // Código específico para el entorno de producción
-  apiBaseUrl = "https://kpazserv0008.azurewebsites.net/api";
+  apiBaseUrl = 'https://kpazserv0008.azurewebsites.net/api';
 }
 
 export const apiHeaders = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
   // Agrega cualquier otro encabezado
   //que se necesite para todas las solicitudes
 };
@@ -152,28 +152,34 @@ export const horasUtilizadascreateOnDemandApiUrl = `${horasUtilizadasApiUrl}/cre
 export const horasUtilizadasupdateOnDemandApiUrl = `${horasUtilizadasApiUrl}/updateOnDemand`;
 //Oportunidad
 export const OportunidadApiUrl = `${apiBaseUrl}/oportunidad`;
-  //tipo oportunidad
-  export const tipoOportunidadApiUrl = `${apiBaseUrl}/TipoOportunidad`;
-  //estado oportunidad
-  export const EstadoOportunidadApiUrl = `${apiBaseUrl}/EstadoOportunidad`;
-  //area servicio oportunidad
-  export const AreaServicioOportunidadApiUrl = `${apiBaseUrl}/AreaServicioOportunidad`;
-  //documento oportunidad
-  export const documentoOportunidadApiUrl = `${apiBaseUrl}/DocumentoOportunidad`;
-  //novedad oportunidad
-  export const NovedadOportunidadApiUrl = `${apiBaseUrl}/NovedadOportunidad`;
-  //LicitacionOportunidadApiUrl
-  export const LicitacionOportunidadApiUrl = `${apiBaseUrl}/LicitacionOportunidad`;
-  //TipoLicenciaOportunidadApiUrl
-  export const TipoLicenciaOportunidadApiUrl = `${apiBaseUrl}/TipoLicenciaOportunidad`;
-  //OrigenOportunidadApiUrl
-  export const OrigenOportunidadApiUrl = `${apiBaseUrl}/OrigenOportunidad`;
-  //TipoCerradaOportunidadApiUrl
-  export const TipoCerradaOportunidadApiUrl = `${apiBaseUrl}/TipoCerradaOportunidad`;
+//tipo oportunidad
+export const tipoOportunidadApiUrl = `${apiBaseUrl}/TipoOportunidad`;
+//estado oportunidad
+export const EstadoOportunidadApiUrl = `${apiBaseUrl}/EstadoOportunidad`;
+//area servicio oportunidad
+export const AreaServicioOportunidadApiUrl = `${apiBaseUrl}/AreaServicioOportunidad`;
+//documento oportunidad
+export const documentoOportunidadApiUrl = `${apiBaseUrl}/DocumentoOportunidad`;
+//novedad oportunidad
+export const NovedadOportunidadApiUrl = `${apiBaseUrl}/NovedadOportunidad`;
+//LicitacionOportunidadApiUrl
+export const LicitacionOportunidadApiUrl = `${apiBaseUrl}/LicitacionOportunidad`;
+//TipoLicenciaOportunidadApiUrl
+export const TipoLicenciaOportunidadApiUrl = `${apiBaseUrl}/TipoLicenciaOportunidad`;
+//OrigenOportunidadApiUrl
+export const OrigenOportunidadApiUrl = `${apiBaseUrl}/OrigenOportunidad`;
+//TipoCerradaOportunidadApiUrl
+export const TipoCerradaOportunidadApiUrl = `${apiBaseUrl}/TipoCerradaOportunidad`;
 //log
- export const LogApiUrl = `${apiBaseUrl}/log`;
+export const LogApiUrl = `${apiBaseUrl}/log`;
 
- //Licencia venta
- export const VentaLicenciaApiUrl = `${apiBaseUrl}/VentaLicencia`;
- //estado venta licencia
- export const EstadoVentaLicenciaApiUrl = `${apiBaseUrl}/EstadoVentaLicencia`;
+//Licencia venta
+export const VentaLicenciaApiUrl = `${apiBaseUrl}/VentaLicencia`;
+//estado venta licencia
+export const EstadoVentaLicenciaApiUrl = `${apiBaseUrl}/EstadoVentaLicencia`;
+//MarcaLicenciaApiUrl
+export const MarcaLicenciaApiUrl = `${apiBaseUrl}/MarcaLicencia`;
+//MayoristaLicenciaApiUrl
+export const MayoristaLicenciaApiUrl = `${apiBaseUrl}/MayoristaLicencia`;
+//TarifarioVentaLicenciaApiUrl
+export const TarifarioVentaLicenciaApiUrl = `${apiBaseUrl}/TarifarioVentaLicencia`;
