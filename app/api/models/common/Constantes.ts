@@ -18,17 +18,23 @@ export class Constantes {
     PERSONA_KAM: 2,
     PERSONA_PROFESIONAL: 4,
   };
-  static Roles={
-    ADMIN:1,
-    COMERCIAL:2,
-    FINANZAS:3,
-    DELEVERY:4
-  }
-  static TipoSorpote={
-    CONTRATO:1,
-    BOLSA:2,
-    ONDEMAND:3
-  }
+  static Roles = {
+    ADMIN: 1,
+    COMERCIAL: 2,
+    FINANZAS: 3,
+    DELEVERY: 4,
+  };
+  static TipoSorpote = {
+    CONTRATO: 1,
+    BOLSA: 2,
+    ONDEMAND: 3,
+  };
+  static EstadoVentaLicencia = {
+    PROPUESTA_PREPARACION: 1,
+    ENVIADA_A_CLIENTE: 2,
+    PERDIDA: 3,
+    GANADA: 4,
+  };
   static generarOpcionesDeTiempo(t) {
     return [
       { value: 1, label: t.time.month },

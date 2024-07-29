@@ -1,12 +1,12 @@
-"use client";
-import React, { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+'use client';
+import React, { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-function Login({translations}) {
-  const [usu_nombre, setEmail] = useState("");
-  const [usu_contraseña, setPassword] = useState("");
-  const [error, setError] = useState("");
+function Login({ translations }) {
+  const [usu_nombre, setEmail] = useState('');
+  const [usu_contraseña, setPassword] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const handleEmailChange = (event) => {
@@ -19,17 +19,17 @@ function Login({translations}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsProcessing(true); // Activar el spinner y bloquear el botón
-    const result = await signIn("credentials", {
+    const result = await signIn('credentials', {
       usu_contraseña,
       usu_nombre,
       redirect: false,
-      callbackUrl: "/",
+      callbackUrl: '/',
     });
     setIsProcessing(false);
     if (result.error) {
       setError(translations.Common.InvalidCredentials);
     } else {
-      router.push("/"); // Redirige a la página principal si la autenticación es exitosa
+      router.push('/'); // Redirige a la página principal si la autenticación es exitosa
     }
   };
 
@@ -41,7 +41,7 @@ function Login({translations}) {
           <form>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">
-              {translations.Common.userName}
+                {translations.Common.userName}
               </label>
               <input
                 type="text"
@@ -55,7 +55,7 @@ function Login({translations}) {
             </div>
             <div className="mb-3">
               <label htmlFor="usu_contraseña" className="form-label">
-              {translations.Common.password}
+                {translations.Common.password}
               </label>
               <input
                 type="password"
@@ -75,24 +75,17 @@ function Login({translations}) {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="btn btn-primary"
-              disabled={isProcessing} // Deshabilitar el botón mientras se procesa la autenticación
+              className="btn btn-primary w-100 mt-3"
+              disabled={isProcessing}
             >
               {isProcessing ? (
                 <>
-                  {/* <div
-                    className="spinner-grow spinner-grow-sm"
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
                     role="status"
-                  ></div>
-                  <div
-                    className="spinner-grow spinner-grow-sm"
-                    role="status"
-                  ></div>
-                  <div
-                    className="spinner-grow spinner-grow-sm"
-                    role="status"
-                  ></div> */}
-                  <span className=" m-2">{translations.Common.loading}</span>
+                    aria-hidden="true"
+                  ></span>
+                  {translations.Common.loading}
                 </>
               ) : (
                 translations.Common.submit

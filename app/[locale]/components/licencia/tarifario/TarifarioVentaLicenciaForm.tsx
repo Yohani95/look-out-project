@@ -95,7 +95,7 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
             type="number"
             name="valor"
             id="valor"
-            value={tarifarioModel.valor}
+            value={tarifarioModel.valor || ''}
             onChange={handleInputChange(tarifarioModel, setTarifario)}
             isInvalid={formik.touched.valor && !!formik.errors.valor}
           />

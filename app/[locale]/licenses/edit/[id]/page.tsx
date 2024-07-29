@@ -6,7 +6,6 @@ import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrest
 import { useLocale } from 'next-intl';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
-import VentaLicenciaCreate from '../../../components/licencia/VentaLicenciaCreate';
 import { getAllEstadoVentaLicencia } from '@/app/actions/licencia/EstadoLicenciaVentaActions';
 import EstadoVentaLicencia from '@/app/api/models/licencia/EstadoVentaLicencia';
 import { getAllTipoFacturacion } from '@/app/api/actions/factura/TipoFacturacionActions';
@@ -20,7 +19,7 @@ import { getAllMarcaLicencia } from '@/app/actions/licencia/MarcaLicenciaActions
 import { getAllMayoristaLicencia } from '@/app/actions/licencia/MayoristaLicencia';
 import MarcaLicencia from '@/app/api/models/licencia/MarcaLicencia';
 import MayoristaLicencia from '@/app/api/models/licencia/MayoristaLicencia';
-import { getAllTarifarioVentaLicencia } from '@/app/actions/licencia/TarifarioVentaLicencia';
+import { getAllTarifarioVentaLicenciaByIdLicencia } from '@/app/actions/licencia/TarifarioVentaLicencia';
 import { getAllTipoLicenciaOportunidad } from '@/app/actions/Oportunidad/TipoLicenciaOportunidadActions';
 import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
 
@@ -60,10 +59,9 @@ const GetData = async (id: number) => {
       getVentaLicenciaById(id),
       getAllMarcaLicencia(),
       getAllMayoristaLicencia(),
-      getAllTarifarioVentaLicencia(),
+      getAllTarifarioVentaLicenciaByIdLicencia(id),
       getAllTipoLicenciaOportunidad(),
     ]);
-
     const mappedMonedas = monedas.map((moneda) => ({
       value: moneda.monId,
       label: moneda.monNombre,
