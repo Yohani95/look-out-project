@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { facturaPeriodoApiUrl } from "@/app/api/apiConfig";
-import { CrudOperations } from "@/app/api/models/common/CrudOperations";
-import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
+import { facturaPeriodoApiUrl } from '@/app/api/apiConfig';
+import { CrudOperations } from '@/app/api/models/common/CrudOperations';
+import FacturaPeriodo from '@/app/api/models/factura/FacturaPeriodo';
 
-const tag = "facturaPeriodo";
+const tag = 'facturaPeriodo';
 
 const facturaPeriodoCrud = new CrudOperations<FacturaPeriodo>(
   facturaPeriodoApiUrl,
@@ -29,17 +29,17 @@ export async function getFacturaPeriodoByIdPeriodo(idPeriodo: number) {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/GetAllEntitiesByIdPeriod/${idPeriodo}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 }
@@ -48,17 +48,17 @@ export async function getFacturaPeriodoByIdHoras(idHoras: number) {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/GetAllEntitiesByIdHoras/${idHoras}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 }
@@ -67,18 +67,18 @@ export async function getAllPreSolicitadaFacturaPeriodo() {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/GetAllByPreSolicitada`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
 
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 }
@@ -87,17 +87,17 @@ export async function ChangeEstado(idPeriodo: number, estado: number) {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/ChangeEstado/${idPeriodo}/${estado}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 }
@@ -106,39 +106,42 @@ export async function ChangeEstadoHoras(idHoras: number, estado: number) {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/ChangeEstadoHoras/${idHoras}/${estado}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 }
-export async function ChangeEstadoFacturaBySoporte(idSoporte: number, estado: number) {
+export async function ChangeEstadoFacturaBySoporte(
+  idSoporte: number,
+  estado: number
+) {
   try {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/ChangeEstadoSoporte/${idSoporte}/${estado}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
-   if(response.ok){
-    await revalidateDataFacturaPeriodo();
-   }
+    if (response.ok) {
+      await revalidateDataFacturaPeriodo();
+    }
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 }
@@ -147,17 +150,61 @@ export async function GetAllEntitiesByIdSoporte(idSoporte: number) {
     const response = await fetch(
       `${facturaPeriodoApiUrl}/GetAllEntitiesByIdSoporte/${idSoporte}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        cache: "no-cache",
+        cache: 'no-cache',
         next: { tags: [tag] },
       }
     );
     return response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+export async function ChangeEstadoFacturaByLicencia(
+  idLicencia: number,
+  estado: number
+) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/ChangeEstadoLicencia/${idLicencia}/${estado}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-cache',
+        next: { tags: [tag] },
+      }
+    );
+    if (response.ok) {
+      await revalidateDataFacturaPeriodo();
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+export async function GetAllEntitiesByIdLicense(idLicense: number) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/GetAllEntitiesByIdLicense/${idLicense}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-cache',
+        next: { tags: [tag] },
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
     return [];
   }
 }

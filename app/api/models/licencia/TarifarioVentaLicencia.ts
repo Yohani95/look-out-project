@@ -8,6 +8,7 @@ class TarifarioVentaLicencia {
   fechaVigencia: Date | null;
   valor: number | null;
   idLicencia: number | null;
+  idVentaLicencia: number | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.idMarcaLicencia = data?.idMarcaLicencia || null;
@@ -18,6 +19,7 @@ class TarifarioVentaLicencia {
       : null;
     this.valor = data?.valor || null;
     this.idLicencia = data?.idLicencia || null;
+    this.idVentaLicencia = data?.idVentaLicencia || null;
   }
 
   static getValidationSchema(t: any) {

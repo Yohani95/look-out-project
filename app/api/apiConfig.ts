@@ -126,6 +126,10 @@ export const getPeriodoProfesionalApiUrl = `${apiBaseUrl}/PeriodoProfesionales/G
 //facturaPeriodo
 export const facturaPeriodoApiUrl = `${apiBaseUrl}/FacturaPeriodo`;
 
+//FacturaAdaptacionApiUrl
+
+export const FacturaAdaptacionApiUrl = `${apiBaseUrl}/FacturaAdaptacion`;
+
 //Tipofacturacion
 export const tipoFacturacionApiUrl = `${apiBaseUrl}/TipoFacturacion`;
 

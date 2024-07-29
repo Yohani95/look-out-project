@@ -7,6 +7,7 @@ import NotificationSweet from '@/app/[locale]/components/common/NotificationSwee
 import TarifarioVentaLicencia from '@/app/api/models/licencia/TarifarioVentaLicencia';
 import TarifarioVentaLicenciaForm from './TarifarioVentaLicenciaForm';
 import { createTarifarioVentaLicencia } from '@/app/actions/licencia/TarifarioVentaLicencia';
+import { Constantes } from '@/app/api/models/common/Constantes';
 
 function TarifarioVentaLicenciaCreate({ data, t }) {
   const { data: session } = useSession();
@@ -18,14 +19,13 @@ function TarifarioVentaLicenciaCreate({ data, t }) {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log(values);
         await NotificationSweet({
           title: t.notification.loading.title,
           text: '',
           type: t.notification.loading.type,
           showLoading: true,
         });
-
+        values.idVentaLicencia = data.ventaLicencia.id;
         await createTarifarioVentaLicencia(values)
           .then((res) => {
             if (res.status === 400) {
@@ -68,9 +68,6 @@ function TarifarioVentaLicenciaCreate({ data, t }) {
           formik.handleSubmit(e);
         }}
       >
-        {/* <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-          <h4>{`${t.Common.create}`}</h4>
-        </div> */}
         <TarifarioVentaLicenciaForm
           t={t}
           tarifarioModel={formik.values}
@@ -79,6 +76,20 @@ function TarifarioVentaLicenciaCreate({ data, t }) {
           formik={formik}
         />
         <div className="d-flex justify-content-end mb-2">
+          <button
+            disabled={
+              data.ventaLicencia.idEstado !=
+                Constantes.EstadoVentaLicencia.GANADA &&
+              data.tarifario.length > 0
+            }
+            type="button"
+            className="btn btn-secondary m-2"
+            onClick={() =>
+              router.push(`/facture/createLicense/${data.ventaLicencia.id}`)
+            }
+          >
+            {t.Nav.facture.requestBilling}
+          </button>
           <button type="submit" className="btn btn-primary m-2">
             {t.Common.saveButton}
           </button>
