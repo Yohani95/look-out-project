@@ -40,9 +40,13 @@ export const GetAllFacturaAdaptacionEntitiesByIdLicense = async (
       }
     );
     if (response.ok) {
-      await revalidateDataFacturaAdaptacion();
+      if (response.status === 204) {
+        return null; // Devuelve un array vacío si no hay contenido
+      }
     }
-    return await response.json();
+    const data = await response.json();
+    await revalidateDataFacturaAdaptacion();
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     return [];
@@ -63,9 +67,13 @@ export const GetAllFacturaAdaptacionEntitiesByIdPeriod = async (id: number) => {
       }
     );
     if (response.ok) {
-      await revalidateDataFacturaAdaptacion();
+      if (response.status === 204) {
+        return null; // Devuelve un array vacío si no hay contenido
+      }
     }
-    return await response.json();
+    const data = await response.json();
+    await revalidateDataFacturaAdaptacion();
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     return [];
@@ -85,9 +93,13 @@ export const GetAllFacturaAdaptacionEntitiesByIdHoras = async (id: number) => {
       }
     );
     if (response.ok) {
-      await revalidateDataFacturaAdaptacion();
+      if (response.status === 204) {
+        return null; // Devuelve un array vacío si no hay contenido
+      }
     }
-    return await response.json();
+    const data = await response.json();
+    await revalidateDataFacturaAdaptacion();
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     return [];
@@ -110,9 +122,13 @@ export const GetAllFacturaAdaptacionEntitiesByIdSoporte = async (
       }
     );
     if (response.ok) {
-      await revalidateDataFacturaAdaptacion();
+      if (response.status === 204) {
+        return null; // Devuelve un array vacío si no hay contenido
+      }
     }
-    return await response.json();
+    const data = await response.json();
+    await revalidateDataFacturaAdaptacion();
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     return [];

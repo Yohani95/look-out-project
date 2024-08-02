@@ -78,9 +78,11 @@ function TarifarioVentaLicenciaCreate({ data, t }) {
         <div className="d-flex justify-content-end mb-2">
           <button
             disabled={
-              data.ventaLicencia.idEstado !=
-                Constantes.EstadoVentaLicencia.GANADA &&
-              data.tarifario.length > 0
+              !(
+                data.ventaLicencia.idEstado ===
+                  Constantes.EstadoVentaLicencia.GANADA &&
+                data.tarifario.length > 0
+              )
             }
             type="button"
             className="btn btn-secondary m-2"

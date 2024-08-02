@@ -52,7 +52,7 @@ function PeriodoInfo({
           </span>
         </div>
       </div>
-      {facturaAdaptacion ? (
+      {facturaAdaptacion && (
         <>
           <hr />
           <h4>Factura Adaptación</h4>
@@ -94,8 +94,6 @@ function PeriodoInfo({
             </div>
           </div>
         </>
-      ) : (
-        <></>
       )}
     </>
   );

@@ -97,7 +97,6 @@ const GetData = async (id: number) => {
     const mappedLicencias = licencias.map((licencia) => {
       return new TipoLicenciaOportunidad(licencia).getSelectOptions();
     });
-
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
