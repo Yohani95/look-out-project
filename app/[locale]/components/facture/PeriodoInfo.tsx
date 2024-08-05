@@ -58,8 +58,7 @@ function PeriodoInfo({
           <h4>Factura Adaptación</h4>
           <div className="mb-3 row align-items-center">
             <div className="col-sm-1 col-form-label">
-              {' '}
-              Nuevo {t.Common.amount}
+              {t.Common.newTotalAmount}
             </div>
             <div className="col-sm-5">
               <span className="form-control" id="amount">
@@ -67,7 +66,7 @@ function PeriodoInfo({
               </span>
             </div>
             <div className="col-sm-1 col-form-label">
-              {t.Common.amount} diferencia
+              {t.Common.differenceAmount}
             </div>
             <div className="col-sm-5">
               <span className="form-control" id="amount">

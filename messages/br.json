@@ -1,5 +1,7 @@
 {
   "Common": {
+    "differenceAmount": "valor da diferença",
+    "newTotalAmount": "Novo valor total",
     "brand": "Marca",
     "wholesaler": "grossista",
     "discount": "Desconto",

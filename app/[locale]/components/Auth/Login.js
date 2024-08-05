@@ -34,18 +34,23 @@ function Login({ translations }) {
   };
 
   return (
-    <div className="d-flex mt-4 justify-content-center align-items-center">
-      <div className="card col-lg-4 shadow">
+    <div className="d-flex mt-5 justify-content-center align-items-center">
+      <div className="card col-lg-3 shadow">
         <div className="container mt-4 mb-4">
           <h4 className="text-center">{translations.Common.signIn}</h4>
-          <form>
+          <form className="text-center">
+            {' '}
+            {/* Añadido text-center aquí */}
             <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label">
+              <label
+                htmlFor="usu_nombre"
+                className="form-label d-block text-center"
+              >
                 {translations.Common.userName}
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control text-center mx-auto"
                 id="usu_nombre"
                 aria-describedby="emailHelp"
                 onChange={handleEmailChange}
@@ -54,13 +59,15 @@ function Login({ translations }) {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="usu_contraseña" className="form-label">
+              <label
+                htmlFor="usu_contraseña"
+                className="form-label d-block text-center"
+              >
                 {translations.Common.password}
               </label>
               <input
                 type="password"
-                className="form-control"
-                name="usu_contraseña"
+                className="form-control text-center mx-auto"
                 id="usu_contraseña"
                 onChange={handlePasswordChange}
                 value={usu_contraseña}

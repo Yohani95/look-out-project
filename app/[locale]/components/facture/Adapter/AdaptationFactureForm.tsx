@@ -11,7 +11,7 @@ const AdaptationFactureForm: React.FC<FacturaAdaptacionProps> = ({ t }) => {
     <>
       <div className="">
         <div className="form-group">
-          <label htmlFor="monto">{t.Common.amount}</label>
+          <label htmlFor="monto">{t.Common.newTotalAmount}</label>
           <Field type="number" name="monto" className="form-control" />
           <ErrorMessage name="monto" component="div" className="text-danger" />
         </div>
