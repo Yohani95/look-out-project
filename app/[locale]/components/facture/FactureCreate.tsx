@@ -210,6 +210,7 @@ const FactureCreate: React.FC<FactureProps> = ({
       );
     } else if ('horasExtras' in periodo) {
       await Utils.handleOnSubmit(
+        t,
         ChangeEstadoHoras,
         periodo.id,
         FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
