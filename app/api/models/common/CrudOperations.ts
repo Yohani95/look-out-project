@@ -1,11 +1,10 @@
-
-import { revalidateTag,revalidatePath } from 'next/cache';
-import ICrudOperations  from '@/app/api/interfaces/ICrudOperations';
+import { revalidateTag, revalidatePath } from 'next/cache';
+import ICrudOperations from '@/app/api/interfaces/ICrudOperations';
 export class CrudOperations<T> implements ICrudOperations<T> {
   constructor(private apiUrl: string, private tag: string) {}
 
   async create(item: T) {
-    "use server";
+    'use server';
     try {
       const response = await fetch(this.apiUrl, {
         method: 'POST',
@@ -14,63 +13,63 @@ export class CrudOperations<T> implements ICrudOperations<T> {
         },
         body: JSON.stringify(item),
       });
-      revalidateTag(this.tag)
+      revalidateTag(this.tag);
       const result = await response.json();
       return result;
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       return [];
     }
   }
 
   async update(item: T, id: string | number) {
-    "use server";
+    'use server';
     try {
       const response = await fetch(`${this.apiUrl}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify(item),
       });
-      if(response.ok){
-        revalidateTag(this.tag)
-        return response.status
+      if (response.ok) {
+        revalidateTag(this.tag);
+        return response.status;
       }
       return response.status;
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       return [];
     }
   }
 
   async getById(id: string | number) {
-    "use server";
+    'use server';
     try {
-      const response = await fetch(`${this.apiUrl}/${id}`,{
-        cache:"no-cache"
+      const response = await fetch(`${this.apiUrl}/${id}`, {
+        cache: 'no-cache',
       });
       return response.json();
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       return [];
     }
   }
 
   async getAll() {
-    "use server";
+    'use server';
     try {
       const response = await fetch(this.apiUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        next:{tags:[this.tag]},
-        cache:"no-cache"
+        next: { tags: [this.tag] },
+        cache: 'no-cache',
       });
       return response.json();
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       return [];
     }
   }
@@ -78,18 +77,18 @@ export class CrudOperations<T> implements ICrudOperations<T> {
   async deleteById(id: string | number) {
     try {
       const response = await fetch(`${this.apiUrl}/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-      if(response.ok){
-        revalidateTag(this.tag)
+      if (response.ok) {
+        revalidateTag(this.tag);
         return response.ok;
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       return [];
     }
   }
-  async revalidateData(tag=this.tag){
+  async revalidateData(tag = this.tag) {
     revalidateTag(tag);
   }
 }

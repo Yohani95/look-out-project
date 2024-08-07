@@ -2,6 +2,9 @@ import * as Yup from 'yup';
 import EstadoVentaLicencia from './EstadoVentaLicencia';
 import Persona from '../admin/Persona';
 import Cliente from '../cuenta/Cliente';
+import DiaPagos from '../factura/DiaPagos';
+import { format } from 'date-fns';
+import EmpresaPrestadora from '../proyecto/EmpresaPrestadora';
 
 class VentaLicencia {
   id: number | null;
@@ -18,15 +21,21 @@ class VentaLicencia {
   idPais: number | null;
   idTipoFacturacion: number | null;
   idTipoLicencia: number | null;
+  idEmpresaPrestadora: number | null;
   descuento: number | null;
+  idDiaPago: number | null;
   estadoVentaLicencia: EstadoVentaLicencia | null;
   kam: Persona | null;
   cliente: Cliente | null;
+  diaPagos: DiaPagos | null;
+  empresaPrestadora: EmpresaPrestadora | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || '';
     this.fechaCierre = data?.fechaCierre ? new Date(data.fechaCierre) : null;
-    this.fechaCreacion = data?.fechaCreacion || null;
+    this.fechaCreacion = data?.fechaCreacion
+      ? new Date(data.fechaCreacion)
+      : null;
     this.fechaRenovacion = data?.fechaRenovacion
       ? new Date(data.fechaRenovacion)
       : null;
@@ -40,11 +49,14 @@ class VentaLicencia {
     this.idTipoFacturacion = data?.idTipoFacturacion || null;
     this.idTipoLicencia = data?.idTipoLicencia || null;
     this.descuento = data?.descuento || null;
-
+    this.idEmpresaPrestadora = data?.idEmpresaPrestadora || null;
     //relaciones
     this.estadoVentaLicencia = data?.estadoVentaLicencia || null;
     this.kam = data?.kam || null;
     this.cliente = data?.cliente || null;
+    this.idDiaPago = data?.idDiaPago || null;
+    this.diaPagos = data?.diaPagos || null;
+    this.empresaPrestadora = data?.empresaPrestadora || null;
   }
 
   static getValidationSchema(t: any) {
@@ -120,6 +132,13 @@ class VentaLicencia {
       value: this.id,
       label: this.nombre,
     };
+  }
+  getPeriodoCompleto(): string {
+    const formato = 'dd/MM/yyyy';
+    return `${format(this.fechaCreacion, formato)} - ${format(
+      this.fechaRenovacion,
+      formato
+    )}`;
   }
 }
 

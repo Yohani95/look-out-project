@@ -114,6 +114,9 @@ export async function ChangeEstadoHoras(idHoras: number, estado: number) {
         next: { tags: [tag] },
       }
     );
+    if (response.ok) {
+      await revalidateDataFacturaPeriodo();
+    }
     return response.json();
   } catch (error) {
     console.error('Error fetching data:', error);

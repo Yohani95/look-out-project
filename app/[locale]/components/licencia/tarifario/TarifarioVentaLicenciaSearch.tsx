@@ -10,7 +10,7 @@ const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function TarifarioVentaLicenciaSearch({ t, data }) {
   const columns = useMemo(() => TarifarioVentaLicencia.createColumns(t), [t]);
   const memoizedSoporteActions = useMemo(() => {
-    return data.map((tarifario: TarifarioVentaLicencia) => ({
+    return data?.map((tarifario: TarifarioVentaLicencia) => ({
       ...tarifario,
       fechaVigencia: Utils.getFechaString(tarifario.fechaVigencia),
       fechaTermino: Utils.getFechaString(tarifario.fechaTermino),

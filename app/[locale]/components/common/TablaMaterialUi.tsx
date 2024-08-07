@@ -1,129 +1,206 @@
-"use client"
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
   MRT_ColumnDef,
-  MRT_TableInstance,
   MRT_Localization,
+  MRT_TableInstance,
 } from 'material-react-table';
-import { useLocale } from "next-intl";
+import { useLocale } from 'next-intl';
 import { Box, Button } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
-import LOGO from "@/public/images/logo.png";
+import LOGO from '@/public/images/logo.png';
+import { usePathname } from 'next/navigation';
 interface Props<T> {
   columns: MRT_ColumnDef<T>[];
   data: T[];
 }
-
+const generateTableId = (columns) => {
+  return columns.map((col) => col.accessorKey || col.header).join('-');
+};
 function TableMaterialUI<T>({ columns, data }: Props<T>) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   const localization = useMemo<MRT_Localization>(() => {
-    let chosenLocalization;
-
     switch (locale) {
       case 'es':
-        chosenLocalization = require('material-react-table/locales/es').MRT_Localization_ES;
-        break;
+        return require('material-react-table/locales/es').MRT_Localization_ES;
       case 'en':
-        chosenLocalization = require('material-react-table/locales/en').MRT_Localization_EN;
-        break;
+        return require('material-react-table/locales/en').MRT_Localization_EN;
       case 'br':
-        chosenLocalization = require('material-react-table/locales/pt-BR').MRT_Localization_BR;
-        break;
+        return require('material-react-table/locales/pt-BR')
+          .MRT_Localization_BR;
       default:
-        // Default to English or another default language if needed
-        chosenLocalization = require('material-react-table/locales/en').MRT_Localization_EN;
-        break;
+        return require('material-react-table/locales/en').MRT_Localization_EN;
     }
-
-    return chosenLocalization;
   }, [locale]);
+  const pathName = usePathname();
+  const tableId = generateTableId(columns); // Genera un ID único basado en las columnas
+  const filterKey = `${pathName}-${tableId}-table-filters`;
+  const globalFilterKey = `${pathName}-${tableId}-global-filter`;
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState('');
+
+  // Cargar filtros iniciales desde localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedColumnFilters = localStorage.getItem(filterKey);
+      const savedGlobalFilter = localStorage.getItem(globalFilterKey);
+      try {
+        setColumnFilters(
+          savedColumnFilters ? JSON.parse(savedColumnFilters) : []
+        );
+        setGlobalFilter(savedGlobalFilter || '');
+      } catch (error) {
+        console.error('Error parsing saved filters:', error);
+      }
+    }
+  }, [filterKey, globalFilterKey]);
+
+  // Guardar filtros en localStorage cuando cambian
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(globalFilterKey, globalFilter ? globalFilter : '');
+      } catch (error) {
+        console.error('Error saving global filter to localStorage:', error);
+      }
+    }
+  }, [globalFilter, globalFilterKey]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(filterKey, JSON.stringify(columnFilters));
+      } catch (error) {
+        console.error('Error saving filters to localStorage:', error);
+      }
+    }
+  }, [columnFilters, filterKey]);
 
   const handleExportRows = (rows: any[]) => {
     const doc = new jsPDF();
     const tableHeaders = columns.map((c) => c.header);
-    // Función auxiliar para acceder a propiedades anidadas de forma segura
-    const getNestedValue = (obj, accessorKey) => {
-      return accessorKey.split('.').reduce((acc, key) => acc && acc[key] !== 'undefined' ? acc[key] : '', obj);
-    };
-    
-    const getTextValue = (element) => {
 
-      if (typeof element != 'object') {
-        console.log(element)
+    const getNestedValue = (obj, accessorKey) => {
+      return accessorKey
+        .split('.')
+        .reduce(
+          (acc, key) => (acc && acc[key] !== 'undefined' ? acc[key] : ''),
+          obj
+        );
+    };
+
+    const getTextValue = (element) => {
+      if (typeof element !== 'object') {
         return element;
       }
-      
+
       if (element.props && element.props.children) {
-        const children = Array.isArray(element.props.children) ? element.props.children : [element.props.children];
+        const children = Array.isArray(element.props.children)
+          ? element.props.children
+          : [element.props.children];
         for (let i = 0; i < children.length; i++) {
           const child = children[i];
           if (typeof child === 'string') {
-            console.log(child)
-            return child.replace(/\\n/g, '\n'); // Reemplazar '\n' con salto de línea
+            return child.replace(/\\n/g, '\n');
           }
         }
       }
     };
-    
-    
-    
+
     const tableData = rows.map((row) =>
       columns
         .filter((column) => {
           const cellValue = getNestedValue(row.original, column.accessorKey);
-          return !(typeof cellValue === 'object' && (cellValue.isButton || cellValue.isDocumento)) && column.accessorKey !== 'actions';
+          return (
+            !(
+              typeof cellValue === 'object' &&
+              (cellValue.isButton || cellValue.isDocumento)
+            ) && column.accessorKey !== 'actions'
+          );
         })
         .map((column) => {
           const cellValue = getNestedValue(row.original, column.accessorKey);
           const textValue = getTextValue(cellValue);
-          return typeof cellValue === 'object' && !(cellValue.isButton || cellValue.isDocumento) ? (cellValue.girNombre || cellValue.eclNombre || '') : textValue;
+          return typeof cellValue === 'object' &&
+            !(cellValue.isButton || cellValue.isDocumento)
+            ? cellValue.girNombre || cellValue.eclNombre || ''
+            : textValue;
         })
     );
-    
+
     const filteredHeaders = tableHeaders.filter((header, index) => {
       const accessorKey = columns[index].accessorKey;
-      return accessorKey !== 'actions' && !rows.some(row => typeof row.original[accessorKey] === 'object' && (row.original[accessorKey].isButton || row.original[accessorKey].isDocumento));
+      return (
+        accessorKey !== 'actions' &&
+        !rows.some(
+          (row) =>
+            typeof row.original[accessorKey] === 'object' &&
+            (row.original[accessorKey].isButton ||
+              row.original[accessorKey].isDocumento)
+        )
+      );
     });
-    
 
-
-
-
-    // Agregar el título de la empresa
     doc.setFontSize(22);
-    //console.log(LOGO.src);
-    //doc.addImage(LOGO.src, 'PNG', 15, 15, 30, 30);
-    doc.setTextColor(47, 75, 206); // Color #2f4bce en RGB
+    doc.setTextColor(47, 75, 206);
     doc.text('KPAZ', 15, 15);
-    doc.setTextColor(0); // Restaurar el color por defecto (negro)
+    doc.setTextColor(0);
 
-    // Agregar la fecha de emisión
     doc.setFontSize(14);
     const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+    const formattedDate = currentDate
+      .toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+      .replace(/\//g, '-');
     doc.text(`Fecha de emisión: ${formattedDate}`, 15, 25);
 
     autoTable(doc, {
-      startY: 30, // Asegúrate de que la tabla comienza debajo del encabezado y la fecha de emisión
+      startY: 30,
       head: [filteredHeaders],
       body: tableData,
     });
-    
+
     doc.save(`Mi-Tabla-${formattedDate}.pdf`);
   };
 
   const Table = () => {
     const table = useMaterialReactTable<T>({
       columns,
-      data: data,
+      data,
       localization,
-      initialState: { density: 'compact' },
-      renderTopToolbarCustomActions: ({ table }) => (
+      initialState: {
+        density: 'compact',
+        columnFilters,
+        globalFilter,
+        showColumnFilters: columnFilters.length > 0 ? true : false,
+        showGlobalFilter: true,
+      },
+      state: {
+        columnFilters,
+        globalFilter,
+      },
+      onGlobalFilterChange: (newFilter) => setGlobalFilter(newFilter),
+      onColumnFiltersChange: (newFilters) => setColumnFilters(newFilters),
+    });
+
+    // Use useCallback to avoid unnecessary re-renders
+    const handleExportPageRows = useCallback(() => {
+      handleExportRows(table.getRowModel().rows);
+    }, [table]);
+
+    const handleExportAllRows = useCallback(() => {
+      handleExportRows(table.getPrePaginationRowModel().rows);
+    }, [table]);
+
+    return (
+      <>
         <Box
           sx={{
             display: 'flex',
@@ -134,36 +211,27 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
         >
           <Button
             disabled={table.getPrePaginationRowModel().rows.length === 0}
-            onClick={() =>
-              handleExportRows(table.getPrePaginationRowModel().rows)
-            }
+            onClick={handleExportAllRows}
             startIcon={<FileDownloadIcon />}
           >
             {t.Export.exportAllRows}
           </Button>
           <Button
             disabled={table.getRowModel().rows.length === 0}
-            onClick={() => handleExportRows(table.getRowModel().rows)}
+            onClick={handleExportPageRows}
             startIcon={<FileDownloadIcon />}
           >
             {t.Export.exportPageRows}
           </Button>
-          {/* <Button
-                disabled={
-                  !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-                }
-                onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-                startIcon={<FileDownloadIcon />}
-              >
-                Export Selected Rows
-              </Button> */}
         </Box>
-      ),
-    });
-
-    return <MaterialReactTable table={table} />;
+        <Box sx={{ position: 'relative', zIndex: 0 }}>
+          <MaterialReactTable table={table} />
+        </Box>
+      </>
+    );
   };
 
   return <Table />;
 }
+
 export default TableMaterialUI;

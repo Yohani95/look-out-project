@@ -93,21 +93,16 @@ const FactureCreate: React.FC<FactureProps> = ({
         await showLoadingNotification();
         if ('numeroProfesionales' in periodo) {
           values.idPeriodo = periodo.id;
-          values.idHorasUtilizadas = null;
-        } else if ('horasExtras' in periodo && periodo.id != 0) {
-          values.idPeriodo = null;
+        } else if (pathname.includes('createSupport')) {
           values.idHorasUtilizadas = periodo.id;
         } else if (pathname.includes('createLicense')) {
-          values.idPeriodo = null;
-          values.idHorasUtilizadas = null;
           values.idLicencia = periodo.id;
-        }
-        if (values.idPeriodo == null && values.idHorasUtilizadas == null) {
-          values.idHorasUtilizadas = null;
+        } else if (pathname.includes('createBagSupport')) {
           values.idSoporteBolsa = periodo.proyecto.pryId;
         }
         values.fechaFactura = new Date();
         values.idEstado = FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
+        console.log(values);
         await Utils.handleOnSubmit(t, createFacturaPeriodo, values);
         // Utiliza una variable para almacenar la función handleFormSubmit
       } catch (error) {
@@ -210,6 +205,7 @@ const FactureCreate: React.FC<FactureProps> = ({
       );
     } else if ('horasExtras' in periodo) {
       await Utils.handleOnSubmit(
+        t,
         ChangeEstadoHoras,
         periodo.id,
         FacturaPeriodo.ESTADO_FACTURA.SOLICITADA

@@ -28,7 +28,10 @@ function VentaLicenciaEdit({ data, t }) {
           type: t.notification.loading.type,
           showLoading: true,
         });
-
+        delete values.estadoVentaLicencia;
+        delete values.kam;
+        delete values.cliente;
+        delete values.empresaPrestadora;
         await updateVentaLicencia(values, data.ventaLicencia.id)
           .then((res) => {
             router.refresh();

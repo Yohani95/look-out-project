@@ -27,9 +27,7 @@ async function page({ params }) {
           t={t}
           periodo={horas}
           facturas={facturas}
-          facturaAdaptacionData={
-            facturaAdaptacion.length === 0 ? null : facturaAdaptacion
-          }
+          facturaAdaptacionData={facturaAdaptacion}
         />
       </BasePages>
     </>

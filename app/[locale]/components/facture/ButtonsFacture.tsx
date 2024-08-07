@@ -1,25 +1,42 @@
-"use client";
-import React, { useState } from "react";
-import { Modal, Button, Form, ModalFooter } from "react-bootstrap";
-import { useFormik } from "formik";
-import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import { FaCartPlus, FaDollarSign, FaEye, FaFileDownload, FaFileUpload } from "react-icons/fa";
-import FacturaPeriodo from "@/app/api/models/factura/FacturaPeriodo";
-import { useRouter } from "next/navigation";
-import { Tooltip } from "react-tooltip";
-import DocumentoFactura from "@/app/api/models/factura/DocumentoFactura";
-import { documentoFacturaApiUrl } from "@/app/api/apiConfig";
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { revalidateDataFacturaPeriodo, updateFacturaPeriodo } from "@/app/api/actions/factura/FacturaPeriodoActions";
+'use client';
+import React, { useState } from 'react';
+import { Modal, Button, Form, ModalFooter } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
+import {
+  FaCartPlus,
+  FaDollarSign,
+  FaEye,
+  FaFileDownload,
+  FaFileUpload,
+} from 'react-icons/fa';
+import FacturaPeriodo from '@/app/api/models/factura/FacturaPeriodo';
+import { useRouter } from 'next/navigation';
+import { Tooltip } from 'react-tooltip';
+import DocumentoFactura from '@/app/api/models/factura/DocumentoFactura';
+import { documentoFacturaApiUrl } from '@/app/api/apiConfig';
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+import {
+  revalidateDataFacturaPeriodo,
+  updateFacturaPeriodo,
+} from '@/app/api/actions/factura/FacturaPeriodoActions';
 import {
   handleSelectChange,
   handleInputChange,
-} from "@/app/[locale]/utils/Form/UtilsForm";
-import SelectField from "@/app/[locale]/components/common/SelectField";
-import HorasUtilizadas from "@/app/api/models/support/HorasUtilizadas";
-const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFactura, monedas }) => {
+} from '@/app/[locale]/utils/Form/UtilsForm';
+import SelectField from '@/app/[locale]/components/common/SelectField';
+import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
+const ModalForm = ({
+  t,
+  showModal,
+  handleClose,
+  idFactura,
+  idPeriodo,
+  periodoFactura,
+  monedas,
+}) => {
   const validationSchema = DocumentoFactura.getValidationSchema(t);
-  let factura = periodoFactura as FacturaPeriodo
+  let factura = periodoFactura as FacturaPeriodo;
   const formik = useFormik({
     initialValues: new DocumentoFactura(),
     validationSchema,
@@ -27,16 +44,20 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
       try {
         await NotificationSweet({
           title: t.notification.loading.title,
-          text: "",
+          text: '',
           type: t.notification.loading.type,
           showLoading: true,
         });
         let addDias;
         if (factura.periodo) {
           addDias = factura.periodo.proyecto.diaPagos.dia;
-        } else {
-          const horasUtilizadas=new HorasUtilizadas(factura.horasUtilizadas);
+        } else if (factura.horasUtilizadas) {
+          const horasUtilizadas = new HorasUtilizadas(factura.horasUtilizadas);
           addDias = horasUtilizadas.proyecto.diaPagos.dia;
+        } else if (factura.Soporte) {
+          addDias = factura.Soporte.diaPagos.dia;
+        } else if (factura.ventaLicencia) {
+          addDias = factura.ventaLicencia.diaPagos.dia;
         }
         const fecha = new Date(values.fecha);
         fecha.setDate(fecha.getDate() + addDias);
@@ -55,49 +76,56 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
         // Crear un nuevo FileReader
         let reader = new FileReader();
         // Crear una nueva Promise que se resuelve cuando el FileReader ha terminado de leer el archivo
-        let arrayBuffer = await new Promise(resolve => {
-          reader.onload = e => resolve(e.target.result);
+        let arrayBuffer = await new Promise((resolve) => {
+          reader.onload = (e) => resolve(e.target.result);
           reader.readAsArrayBuffer(values.archivo);
         });
 
         // Convertir el ArrayBuffer a una cadena base64
         let base64String = btoa(
-          new Uint8Array(arrayBuffer as ArrayBuffer)
-            .reduce((data, byte) => data + String.fromCharCode(byte), '')
+          new Uint8Array(arrayBuffer as ArrayBuffer).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ''
+          )
         );
         values.contenidoDocumento = base64String;
         values.idTipoDocumento = DocumentoFactura.TIPO_DOCUMENTO.FACTURA;
         // Enviar el documento al servidor
         delete values.archivo;
-        await fetch(`${documentoFacturaApiUrl}/AddDocumento/${formattedFecha}/${idFactura}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values)
-        }).then((res) => {
-          if (res.ok) {
-            NotificationSweet({
-              title: t.notification.success.title,
-              text: t.notification.success.text,
-              type: t.notification.success.type,
-            });
-            revalidateDataFacturaPeriodo()
-          } else {
+        await fetch(
+          `${documentoFacturaApiUrl}/AddDocumento/${formattedFecha}/${idFactura}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+          }
+        )
+          .then((res) => {
+            if (res.ok) {
+              NotificationSweet({
+                title: t.notification.success.title,
+                text: t.notification.success.text,
+                type: t.notification.success.type,
+              });
+              revalidateDataFacturaPeriodo();
+            } else {
+              NotificationSweet({
+                title: t.notification.error.title,
+                text: t.notification.error.text,
+                type: t.notification.error.type,
+              });
+            }
+          })
+          .catch((err) => {
+            console.error('Error en fetch:', err);
             NotificationSweet({
               title: t.notification.error.title,
               text: t.notification.error.text,
               type: t.notification.error.type,
             });
-          }
-        }).catch((err) => {
-          console.error("Error en fetch:", err);
-          NotificationSweet({
-            title: t.notification.error.title,
-            text: t.notification.error.text,
-            type: t.notification.error.type,
           });
-        });
       } catch (error) {
         NotificationSweet({
           title: t.notification.error.title,
@@ -118,16 +146,28 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
       <Modal.Body>
         <div>
           <div>
-            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.rut}:</strong> {factura.rut}</p>
-            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.name}:</strong> {factura.razonSocial}</p>
+            <p style={{ display: 'inline', marginRight: '1em' }}>
+              <strong>{t.Common.rut}:</strong> {factura.rut}
+            </p>
+            <p style={{ display: 'inline', marginRight: '1em' }}>
+              <strong>{t.Common.name}:</strong> {factura.razonSocial}
+            </p>
           </div>
           <div>
-            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.observations}</strong>: {factura.observaciones}</p>
+            <p style={{ display: 'inline', marginRight: '1em' }}>
+              <strong>{t.Common.observations}</strong>: {factura.observaciones}
+            </p>
           </div>
           <div>
-            <p style={{ display: 'inline', marginRight: '1em' }}><strong>{t.Common.amount}</strong>: {factura.monto}</p>
-            <p style={{ display: 'inline', marginRight: '1em' }}><strong>OC</strong>: {factura.ocCodigo}</p>
-            <p style={{ display: 'inline', marginRight: '1em' }}><strong>HES</strong>: {factura.hesCodigo}</p>
+            <p style={{ display: 'inline', marginRight: '1em' }}>
+              <strong>{t.Common.amount}</strong>: {factura.monto}
+            </p>
+            <p style={{ display: 'inline', marginRight: '1em' }}>
+              <strong>OC</strong>: {factura.ocCodigo}
+            </p>
+            <p style={{ display: 'inline', marginRight: '1em' }}>
+              <strong>HES</strong>: {factura.hesCodigo}
+            </p>
           </div>
         </div>
         <hr />
@@ -140,11 +180,17 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const fileInput = event.currentTarget;
                 if (fileInput.files && fileInput.files.length > 0) {
-                  formik.setFieldValue("archivo", fileInput.files[0]);
-                  formik.setFieldValue("nombreDocumento", fileInput.files[0].name);
+                  formik.setFieldValue('archivo', fileInput.files[0]);
+                  formik.setFieldValue(
+                    'nombreDocumento',
+                    fileInput.files[0].name
+                  );
                 }
               }}
-              isInvalid={formik.touched.nombreDocumento && !!formik.errors.nombreDocumento}
+              isInvalid={
+                formik.touched.nombreDocumento &&
+                !!formik.errors.nombreDocumento
+              }
             />
             <Form.Control.Feedback type="invalid">
               {formik.errors.nombreDocumento}
@@ -155,14 +201,21 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
             <Form.Label>{t.Common.date} Emisión</Form.Label>
             <Form.Control
               type="date"
-              value={formik.values?.fecha ? new Date(formik.values.fecha).toISOString().split('T')[0] : ''}
+              value={
+                formik.values?.fecha
+                  ? new Date(formik.values.fecha).toISOString().split('T')[0]
+                  : ''
+              }
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               isInvalid={formik.touched.fecha && !!formik.errors.fecha}
             />
             <Form.Control.Feedback type="invalid">
-              {typeof formik.errors.fecha === 'string' ? formik.errors.fecha :
-                Array.isArray(formik.errors.fecha) ? formik.errors.fecha.join(', ') : ''}
+              {typeof formik.errors.fecha === 'string'
+                ? formik.errors.fecha
+                : Array.isArray(formik.errors.fecha)
+                ? formik.errors.fecha.join(', ')
+                : ''}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="moneda">
@@ -173,9 +226,13 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
                 preOption={t.Account.select}
                 labelClassName="col-sm-2 col-form-label"
                 divClassName="col-sm-4"
-                onChange={(e) => handleSelectChange(e, "idTipoMoneda", formik.setValues)}
+                onChange={(e) =>
+                  handleSelectChange(e, 'idTipoMoneda', formik.setValues)
+                }
                 selectedValue={formik.values.idTipoMoneda}
-                isInvalid={formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda}
+                isInvalid={
+                  formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda
+                }
               />
             </div>
             <Form.Control.Feedback type="invalid">
@@ -216,7 +273,14 @@ const ModalForm = ({ t, showModal, handleClose, idFactura, idPeriodo, periodoFac
   );
 };
 
-const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactura, monedas }) => {
+const ButtonsFacture = ({
+  t,
+  idFactura,
+  idPeriodo,
+  idHoraUtilizada,
+  periodoFactura,
+  monedas,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const handleAddDocument = () => {
@@ -243,7 +307,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
       if (FacturaPeriodo.ESTADO_FACTURA.ENVIADA == factura?.idEstado) {
         await NotificationSweet({
           title: t.notification.loading.title,
-          text: "",
+          text: '',
           type: t.notification.loading.type,
           showLoading: true,
         });
@@ -252,20 +316,24 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
         delete factura.periodo;
         delete factura.estado;
         delete factura.documentosFactura;
-        const res = await updateFacturaPeriodo(factura, idFactura).then((res) => NotificationSweet({
-          title: t.notification.success.title,
-          text: t.notification.success.text,
-          type: t.notification.success.type,
-        })).catch((err) => {
-          NotificationSweet({
-            title: t.notification.error.title,
-            text: t.notification.error.text,
-            type: t.notification.error.type,
+        const res = await updateFacturaPeriodo(factura, idFactura)
+          .then((res) =>
+            NotificationSweet({
+              title: t.notification.success.title,
+              text: t.notification.success.text,
+              type: t.notification.success.type,
+            })
+          )
+          .catch((err) => {
+            NotificationSweet({
+              title: t.notification.error.title,
+              text: t.notification.error.text,
+              type: t.notification.error.type,
+            });
           });
-        });
       }
     } catch (error) {
-      console.error("Error en handlePagada:", error);
+      console.error('Error en handlePagada:', error);
       NotificationSweet({
         title: t.notification.error.title,
         text: t.notification.error.text,
@@ -289,7 +357,7 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
       if (FacturaPeriodo.ESTADO_FACTURA.FACTURADA == factura?.idEstado) {
         await NotificationSweet({
           title: t.notification.loading.title,
-          text: "",
+          text: '',
           type: t.notification.loading.type,
           showLoading: true,
         });
@@ -297,22 +365,24 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
         delete factura.periodo;
         delete factura.estado;
         delete factura.documentosFactura;
-        const res = await updateFacturaPeriodo(factura, idFactura).then((res) => {
-          NotificationSweet({
-          title: t.notification.success.title,
-          text: t.notification.success.text,
-          type: t.notification.success.type,
-        })
-      }).catch((err) => {
-          NotificationSweet({
-            title: t.notification.error.title,
-            text: err,
-            type: t.notification.error.type,
+        const res = await updateFacturaPeriodo(factura, idFactura)
+          .then((res) => {
+            NotificationSweet({
+              title: t.notification.success.title,
+              text: t.notification.success.text,
+              type: t.notification.success.type,
+            });
+          })
+          .catch((err) => {
+            NotificationSweet({
+              title: t.notification.error.title,
+              text: err,
+              type: t.notification.error.type,
+            });
           });
-        });
       }
     } catch (error) {
-      console.error("Error en handlePagada:", error);
+      console.error('Error en handlePagada:', error);
       NotificationSweet({
         title: t.notification.error.title,
         text: t.notification.error.text,
@@ -321,7 +391,11 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
     }
   };
   const downloadDocumento = (documento) => {
-    const uint8Array = new Uint8Array(atob(documento.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
+    const uint8Array = new Uint8Array(
+      atob(documento.contenidoDocumento)
+        .split('')
+        .map((char) => char.charCodeAt(0))
+    );
 
     const blob = new Blob([uint8Array], { type: 'application/pdf' });
 
@@ -348,44 +422,53 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
   });
   return (
     <>
-      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA
-        && periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.ENVIADA ?
+      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA &&
+      periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA &&
+      periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
         <Button variant="link" onClick={handleAddDocument}>
           <FaCartPlus size={16} className="canasto" />
           <Tooltip anchorSelect=".canasto" place="top">
             {t.Nav.facture.requestBilling}
           </Tooltip>
         </Button>
-        : <Button variant="link" disabled>
+      ) : (
+        <Button variant="link" disabled>
           <FaCartPlus size={16} className="canasto" />
           <Tooltip anchorSelect=".canasto" place="top">
             {t.Nav.facture.requestBilling}
           </Tooltip>
-        </Button>}
-      {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ?
+        </Button>
+      )}
+      {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ? (
         <Button variant="link" onClick={handleEnviada}>
           <FaFileUpload className="document" size={16} />
           <Tooltip anchorSelect=".document" place="top">
             {t.Common.submit} {t.Common.document}
           </Tooltip>
-        </Button> :
-
-        periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.ENVIADA ?
-          <Button variant="link" onClick={handlePagada}>
-            <FaDollarSign className="changeStatus" size={16} />
-            <Tooltip anchorSelect=".changeStatus" place="top">
-              {t.Common.pay}
-            </Tooltip>
-          </Button>
-          :
-          <Button variant="link" onClick={handlePagada} disabled>
-            <FaDollarSign className="changeStatus" size={16} />
-            <Tooltip anchorSelect=".changeStatus" place="top">
-              {t.Common.pay}
-            </Tooltip>
-          </Button>
-      }
-      <Button variant="link" onClick={(e) => idPeriodo ? router.push(`/facture/create/${idPeriodo}`) : router.push(`/facture/createSupport/${idHoraUtilizada}`)}>
+        </Button>
+      ) : periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
+        <Button variant="link" onClick={handlePagada}>
+          <FaDollarSign className="changeStatus" size={16} />
+          <Tooltip anchorSelect=".changeStatus" place="top">
+            {t.Common.pay}
+          </Tooltip>
+        </Button>
+      ) : (
+        <Button variant="link" onClick={handlePagada} disabled>
+          <FaDollarSign className="changeStatus" size={16} />
+          <Tooltip anchorSelect=".changeStatus" place="top">
+            {t.Common.pay}
+          </Tooltip>
+        </Button>
+      )}
+      <Button
+        variant="link"
+        onClick={(e) =>
+          idPeriodo
+            ? router.push(`/facture/create/${idPeriodo}`)
+            : router.push(`/facture/createSupport/${idHoraUtilizada}`)
+        }
+      >
         <FaEye size={16} className="detalles" />
         <Tooltip anchorSelect=".detalles" place="top">
           {t.facture.billingDetails}
@@ -398,17 +481,22 @@ const ButtonsFacture = ({ t, idFactura, idPeriodo,idHoraUtilizada, periodoFactur
           onClick={() => downloadDocumento(documentoFactura)}
           //disabled={!documentoFactura.contenidoDocumento}
           style={{ fontSize: '14px' }}
-          className='descargar'
+          className="descargar"
         >
           <FaFileDownload size={16} />
-          <Tooltip anchorSelect='.descargar' >
-            {t.Common.downloadFile}
-          </Tooltip>
+          <Tooltip anchorSelect=".descargar">{t.Common.downloadFile}</Tooltip>
         </Button>
       )}
 
-
-      <ModalForm periodoFactura={periodoFactura} idPeriodo={idPeriodo} idFactura={idFactura} t={t} showModal={showModal} handleClose={handleClose} monedas={monedas} />
+      <ModalForm
+        periodoFactura={periodoFactura}
+        idPeriodo={idPeriodo}
+        idFactura={idFactura}
+        t={t}
+        showModal={showModal}
+        handleClose={handleClose}
+        monedas={monedas}
+      />
     </>
   );
 };

@@ -1,5 +1,7 @@
 {
   "Common": {
+    "differenceAmount": "Difference Amount",
+    "newTotalAmount": "New Total Amount",
     "brand": "Brand",
     "wholesaler": "Wholesaler",
     "discount": "Descuento",

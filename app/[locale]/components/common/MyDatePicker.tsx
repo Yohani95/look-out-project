@@ -20,18 +20,16 @@ function MyDatePicker({
   const idioma = useLocale();
   const selectedLocale = locales[idioma];
   return (
-    <div style={{ position: 'relative', zIndex: 1000 }}>
-      <DatePicker
-        className="form-control form-select"
-        selected={selectedDate}
-        onChange={onChange}
-        placeholderText={title || 'Date'}
-        dateFormat="dd/MM/yyyy"
-        required={shouldBeRequired}
-        readOnly={isRead}
-        locale={selectedLocale}
-      />
-    </div>
+    <DatePicker
+      className="form-control form-select"
+      selected={selectedDate}
+      onChange={onChange}
+      placeholderText={title || 'Date'}
+      dateFormat="dd/MM/yyyy"
+      required={shouldBeRequired}
+      readOnly={isRead}
+      locale={selectedLocale}
+    />
   );
 }
 

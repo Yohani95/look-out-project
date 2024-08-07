@@ -22,6 +22,8 @@ import MayoristaLicencia from '@/app/api/models/licencia/MayoristaLicencia';
 import { getAllTarifarioVentaLicenciaByIdLicencia } from '@/app/actions/licencia/TarifarioVentaLicencia';
 import { getAllTipoLicenciaOportunidad } from '@/app/actions/Oportunidad/TipoLicenciaOportunidadActions';
 import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
+import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
+import DiaPagos from '@/app/api/models/factura/DiaPagos';
 
 async function page({ params }) {
   const locale = useLocale();
@@ -48,6 +50,7 @@ const GetData = async (id: number) => {
       mayorista,
       tarifario,
       licencias,
+      diaPagos,
     ] = await Promise.all([
       fetchMoneda(),
       fetchCountriest(),
@@ -61,6 +64,7 @@ const GetData = async (id: number) => {
       getAllMayoristaLicencia(),
       getAllTarifarioVentaLicenciaByIdLicencia(id),
       getAllTipoLicenciaOportunidad(),
+      getAllDiaPagos(),
     ]);
     const mappedMonedas = monedas.map((moneda) => ({
       value: moneda.monId,
@@ -97,7 +101,9 @@ const GetData = async (id: number) => {
     const mappedLicencias = licencias.map((licencia) => {
       return new TipoLicenciaOportunidad(licencia).getSelectOptions();
     });
-
+    const mappedDiaPagos = diaPagos.map((diaPagos) => {
+      return new DiaPagos(diaPagos).getSelectOptions();
+    });
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -111,6 +117,7 @@ const GetData = async (id: number) => {
       mayorista: mappedMayorista,
       tarifario,
       licencias: mappedLicencias,
+      diaPagos: mappedDiaPagos,
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla
