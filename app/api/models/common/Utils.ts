@@ -30,13 +30,10 @@ class Utils {
     });
   }
 
-  static async handleOnSubmit(
-    t: any,
-    changeFunction: Function,
-    ...args: any[]
-  ) {
+  static async handleOnSubmit(t: any, action: Function, ...args: any[]) {
     try {
-      await changeFunction(...args);
+      const result = await action(...args);
+      console.log('RESULT API' + result);
       await Utils.handleSuccessNotification(t);
     } catch {
       await Utils.handleErrorNotification(t);

@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import DocumentoFactura from './DocumentoFactura';
 import HorasUtilizadas from '../support/HorasUtilizadas';
 import Soporte from '../support/Soporte';
+import VentaLicencia from '../licencia/VentaLicencia';
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -25,6 +26,7 @@ class FacturaPeriodo {
   Soporte: Soporte | null;
   periodo: PeriodosProyecto | null;
   horasUtilizadas: HorasUtilizadas | null;
+  ventaLicencia: VentaLicencia | null;
   documentosFactura: DocumentoFactura[] | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
@@ -36,7 +38,7 @@ class FacturaPeriodo {
     this.fechaOc = data?.fecha_oc ? new Date(data.fecha_oc) : null;
     this.ordenPeriodo = data?.orden_periodo || 0;
     this.observaciones = data?.observaciones || '';
-    this.idPeriodo = data?.id_periodo || '';
+    this.idPeriodo = data?.id_periodo || null;
     this.monto = data?.monto || 0;
     this.fechaFactura = data?.fecha_factura
       ? new Date(data.fecha_factura)
@@ -50,6 +52,7 @@ class FacturaPeriodo {
     this.idHorasUtilizadas = data?.idHorasUtilizadas || null;
     this.horasUtilizadas = data?.horasUtilizadas || null;
     this.idLicencia = data?.idLicencia || null;
+    this.ventaLicencia = data?.ventaLicencia || null;
   }
 
   public getFechaString(date: Date | null): string | null {
@@ -77,6 +80,8 @@ class FacturaPeriodo {
         new HorasUtilizadas(facturaPeriodo.horasUtilizadas)?.proyecto
           ?.empresaPrestadora?.nombre ??
         new Soporte(facturaPeriodo.soporte)?.empresaPrestadora?.nombre ??
+        new VentaLicencia(facturaPeriodo.ventaLicencia)?.empresaPrestadora
+          ?.nombre ??
         'N/A',
     };
   }

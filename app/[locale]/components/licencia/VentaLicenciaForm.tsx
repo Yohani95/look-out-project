@@ -143,10 +143,10 @@ const VentaLicenciaForm: React.FC<VentaLicenciaFormProps> = ({
           }
           selectedValue={ventaLicenciaModel.idContacto}
         />
-        <label className="col-sm-2 col-form-label">
+        <label className="col-sm-1 col-form-label">
           {t.Common.renewalDate}
         </label>
-        <div className="col-sm-3">
+        <div className="col-sm-2">
           <MyDatePicker
             selectedDate={ventaLicenciaModel.fechaRenovacion}
             onChange={(date) =>
@@ -164,6 +164,17 @@ const VentaLicenciaForm: React.FC<VentaLicenciaFormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idEstado', setVentaLicencia)}
           selectedValue={ventaLicenciaModel.idEstado}
         />
+        <SelectField
+          label={'Empresa Prestadora'}
+          options={data.empresaPrestadora}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) =>
+            handleSelectChange(e, 'idEmpresaPrestadora', setVentaLicencia)
+          }
+          selectedValue={ventaLicenciaModel.idEmpresaPrestadora}
+        />
       </div>
       <hr />
       <div className="mb-3 row align-items-center">
@@ -176,21 +187,6 @@ const VentaLicenciaForm: React.FC<VentaLicenciaFormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idMoneda', setVentaLicencia)}
           selectedValue={ventaLicenciaModel.idMoneda}
         />
-        {/* <label htmlFor="monto" className="col-sm-1 col-form-label">
-          {t.Common.amount}
-        </label>
-        <div className="col-sm-2">
-          <Form.Control
-            type="number"
-            name="monto"
-            value={ventaLicenciaModel.monto ?? ""}
-            onChange={handleInputChange(ventaLicenciaModel, setVentaLicencia)}
-            isInvalid={formik?.touched?.monto && !!formik.errors.monto}
-          />
-          <Form.Control.Feedback type="invalid">
-            {formik.errors.monto}
-          </Form.Control.Feedback>
-        </div> */}
         <SelectField
           label={`${t.Ficha.type} ${t.Nav.facture.billing}`}
           options={data.tipofacturacion}
@@ -201,6 +197,15 @@ const VentaLicenciaForm: React.FC<VentaLicenciaFormProps> = ({
             handleSelectChange(e, 'idTipoFacturacion', setVentaLicencia)
           }
           selectedValue={ventaLicenciaModel.idTipoFacturacion}
+        />
+        <SelectField
+          label={t.Common.payday}
+          options={data.diaPagos}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, 'idDiaPago', setVentaLicencia)}
+          selectedValue={ventaLicenciaModel.idDiaPago}
         />
         <div className="col-sm-1">
           <label>{t.Common.discount}</label>
