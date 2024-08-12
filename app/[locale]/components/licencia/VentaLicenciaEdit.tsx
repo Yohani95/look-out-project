@@ -4,13 +4,14 @@ import { useSession } from 'next-auth/react';
 import { Usuario } from '@/app/api/models/admin/Usuario';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
-import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+// import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 import { updateVentaLicencia } from '@/app/actions/licencia/VentaLicenciaActions';
 import VentaLicenciaForm from './VentaLicenciaForm';
 import BoxInfo from '@/app/[locale]/components/common/BoxInfo';
 import TarifarioVentaLicenciaCreate from './tarifario/TarifarioVentaLicenciaCreate';
 import TarifarioVentaLicenciaSearch from './tarifario/TarifarioVentaLicenciaSearch';
+import NotificationSweet from '../common/NotificationSweet';
 function VentaLicenciaEdit({ data, t }) {
   const { data: session } = useSession();
   const user = session?.user as Usuario;
