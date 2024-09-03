@@ -1,6 +1,6 @@
-import React from "react";
-import MyTitle from "@/app/[locale]/components/common/MyTitle";
-function BasePages({ children,additionalContent,title }) {
+import React from 'react';
+import MyTitle from '@/app/[locale]/components/common/MyTitle';
+function BasePages({ children, additionalContent = null, title }) {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center m-4">

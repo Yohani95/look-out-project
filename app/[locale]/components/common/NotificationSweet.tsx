@@ -23,7 +23,7 @@ const NotificationSweet = async ({
     title,
     text,
     icon: type,
-    showCancelButton: !showLoading && link !== undefined, // Mostrar botón "Volver atrás" si no está cargando y link no es undefined
+    showCancelButton: !showLoading && (link !== undefined || goBack !== null), // Mostrar botón "Volver atrás" si no está cargando y link no es undefined
     cancelButtonText: 'Volver atrás',
     confirmButtonColor: '#2F4BCE',
     cancelButtonColor: '#d33',
@@ -38,7 +38,6 @@ const NotificationSweet = async ({
 
   Swal.fire(options).then((result) => {
     if (result.isDismissed) {
-      console.log('entro a volver');
       if (push && link) {
         // Si el usuario presiona el botón "OK" (cuando esté disponible) y link no está vacío, realizar la redirección
         push(link);
@@ -46,7 +45,6 @@ const NotificationSweet = async ({
         if (goBack) goBack();
       }
     } else if (result.isConfirmed) {
-      console.log('entro a confirm');
     }
   });
 };

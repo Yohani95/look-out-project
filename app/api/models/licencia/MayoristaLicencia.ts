@@ -1,4 +1,4 @@
-import * as Yup from "yup";
+import * as Yup from 'yup';
 
 class MayoristaLicencia {
   id: number | null;
@@ -8,7 +8,7 @@ class MayoristaLicencia {
 
   constructor(data?: any) {
     this.id = data?.id || null;
-    this.nombre = data?.nombre || "";
+    this.nombre = data?.nombre || '';
     this.telefono = data?.telefono || null;
     this.estado = data?.estado ?? true;
   }
@@ -17,10 +17,10 @@ class MayoristaLicencia {
     return Yup.object().shape({
       id: Yup.number().nullable(),
       nombre: Yup.string()
-        .max(50, t.validationMessages.maxLength(50))
+        .max(50, `${t.validationMessages.maxLength}, 50 max`)
         .required(t.validationMessages.required),
       telefono: Yup.string()
-        .max(15, t.validationMessages.maxLength(15))
+        .max(15, `${t.validationMessages.maxLength}, 15 max`)
         .nullable(),
       estado: Yup.boolean().required(t.validationMessages.required),
     });
@@ -29,28 +29,28 @@ class MayoristaLicencia {
   static createColumns(t: any) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "nombre",
-        header: "Nombre",
+        accessorKey: 'nombre',
+        header: 'Nombre',
         size: 200,
       },
       {
-        accessorKey: "telefono",
-        header: "Teléfono",
+        accessorKey: 'telefono',
+        header: 'Teléfono',
         size: 100,
       },
       {
-        accessorKey: "estado",
-        header: "Estado",
+        accessorKey: 'estado',
+        header: 'Estado',
         size: 50,
-        Cell: ({ row }) => (row.original.estado ? "Activo" : "Inactivo"),
+        Cell: ({ row }) => (row.original.estado ? 'Activo' : 'Inactivo'),
       },
       {
-        accessorKey: "actions",
+        accessorKey: 'actions',
         header: t.Common.actions,
         size: 100,
       },

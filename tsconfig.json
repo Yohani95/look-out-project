@@ -35,7 +35,7 @@
     "**/*.tsx",
     "**/*.js", // Incluye archivos JavaScript
     "**/*.jsx" //
-  ],
+, "app/[locale]/components/common/BasePages.txs"  ],
   "exclude": [
     "node_modules"
   ]

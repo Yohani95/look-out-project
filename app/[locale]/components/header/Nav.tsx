@@ -1,41 +1,41 @@
-"use client";
-import Link from "next-intl/link";
-import Image from "next/image";
-import LOGO from "@/public/images/logo.svg";
-import LanguageDropdown from "./LanguageDropdown";
-import { Nav, Navbar, NavDropdown, Container } from "react-bootstrap";
-import CommonDropDown from "@/app/[locale]/components/common/CommonDropDown";
-import { useSession, signOut } from "next-auth/react";
-import { FaArrowRightToBracket } from "react-icons/fa6";
-import { FaUser, FaCog,FaBug } from "react-icons/fa";
-import { red } from "@mui/material/colors";
-import { useRouter } from "next/navigation";
-import { Usuario } from "@/app/api/models/admin/Usuario";
-import { Constantes } from "@/app/api/models/common/Constantes";
+'use client';
+import Link from 'next-intl/link';
+import Image from 'next/image';
+import LOGO from '@/public/images/logo.svg';
+import LanguageDropdown from './LanguageDropdown';
+import { Nav, Navbar, NavDropdown, Container } from 'react-bootstrap';
+import CommonDropDown from '@/app/[locale]/components/common/CommonDropDown';
+import { useSession, signOut } from 'next-auth/react';
+import { FaArrowRightToBracket } from 'react-icons/fa6';
+import { FaUser, FaCog, FaBug } from 'react-icons/fa';
+import { red } from '@mui/material/colors';
+import { useRouter } from 'next/navigation';
+import { Usuario } from '@/app/api/models/admin/Usuario';
+import { Constantes } from '@/app/api/models/common/Constantes';
 const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
-  const user=session?.user as any | null;
+  const user = session?.user as any | null;
   let translations;
   const router = useRouter();
   translations = require(`@/messages/${locale}.json`);
   const handleLogout = async () => {
     await signOut({ redirect: false }); // Redirigir a la página de inicio
-    router.push("/");
+    router.push('/');
   };
 
   return (
     <>
       <Navbar
-        style={{ backgroundColor: "#2F4BCE" }}
+        style={{ backgroundColor: '#2F4BCE' }}
         className="navbar-custom navbar-dark "
         expand="lg"
       >
         {/* Agrega las clases "navbar-dark bg-primary" */}
         <Container className="d-flex justify-content-center align-items-center">
-          {" "}
+          {' '}
           {/* Utilizamos el componente Container para centrar el contenido */}
           <Navbar.Brand>
-            <Link href={"/"} className="navbar-brand">
+            <Link href={'/'} className="navbar-brand">
               <Image src={LOGO} width={120} height={40} title="logo" alt="" />
             </Link>
           </Navbar.Brand>
@@ -45,7 +45,7 @@ const MyNav = ({ t, locale }) => {
               <Navbar.Collapse id="navbarSupportedContent">
                 <Nav className="me-auto">
                   <Nav.Item>
-                    <Link className="nav-link" href={"/account/search"}>
+                    <Link className="nav-link" href={'/account/search'}>
                       {translations.Common.accounts}
                     </Link>
                   </Nav.Item>
@@ -56,7 +56,7 @@ const MyNav = ({ t, locale }) => {
                   <Nav.Item>
                     <Link
                       className="nav-link"
-                      href={"/business/closeServices/search"}
+                      href={'/business/closeServices/search'}
                     >
                       {translations.Ficha.business}
                     </Link>
@@ -77,13 +77,17 @@ const MyNav = ({ t, locale }) => {
                     t={t.namesMenu.service}
                     title={t.namesMenu.service.title}
                   /> */}
-                    <CommonDropDown
-                    t={t.namesMenu.facture}
-                    title={t.namesMenu.facture.title}
+                  <CommonDropDown
+                    t={t.namesMenu.prospecto}
+                    title={t.namesMenu.prospecto.title}
                   />
                   <CommonDropDown
                     t={t.namesMenu.licencia}
                     title={t.namesMenu.licencia.title}
+                  />
+                  <CommonDropDown
+                    t={t.namesMenu.facture}
+                    title={t.namesMenu.facture.title}
                   />
                   <CommonDropDown
                     t={t.namesMenu.admin}
@@ -96,7 +100,7 @@ const MyNav = ({ t, locale }) => {
                     title={
                       <>
                         <FaUser
-                          style={{ marginRight: "8px", fontSize: "20px" }}
+                          style={{ marginRight: '8px', fontSize: '20px' }}
                         />
                         {session.user.name}
                       </>
@@ -109,7 +113,7 @@ const MyNav = ({ t, locale }) => {
                       className="dropdown-item"
                     >
                       <FaCog className="text-secondary" />
-                      <span style={{ marginLeft: "8px" }}>
+                      <span style={{ marginLeft: '8px' }}>
                         {translations.Common.profile}
                       </span>
                     </Link>
@@ -119,7 +123,7 @@ const MyNav = ({ t, locale }) => {
                       onClick={handleLogout}
                     >
                       <FaArrowRightToBracket className="text-secondary" />
-                      <span style={{ marginLeft: "8px" }}>
+                      <span style={{ marginLeft: '8px' }}>
                         {translations.Common.logout}
                       </span>
                     </button>
@@ -128,7 +132,7 @@ const MyNav = ({ t, locale }) => {
               </Navbar.Collapse>
             </>
           )}
-          {status === "loading" && (
+          {status === 'loading' && (
             <>
               <Navbar.Toggle aria-controls="navbarSupportedContent" />
               <Navbar.Collapse id="navbarSupportedContent">
@@ -148,20 +152,15 @@ const MyNav = ({ t, locale }) => {
     </>
   );
 };
-const getLogComponent=(idRol:number)=>{
-  if(idRol==Constantes.Roles.ADMIN){
+const getLogComponent = (idRol: number) => {
+  if (idRol == Constantes.Roles.ADMIN) {
     return (
-      <Link
-      href={`/admin/logs/search`}
-      className="dropdown-item"
-    >
-      <FaBug className="text-secondary" />
-      <span style={{ marginLeft: "8px" }}>
-        Logs
-      </span>
-    </Link>
-    )
+      <Link href={`/admin/logs/search`} className="dropdown-item">
+        <FaBug className="text-secondary" />
+        <span style={{ marginLeft: '8px' }}>Logs</span>
+      </Link>
+    );
   }
-}
+};
 
 export default MyNav;

@@ -1,5 +1,15 @@
 {
   "Common": {
+    "activity": "Atividade",
+    "activities": "Atividades",
+    "meeting": "reunião",
+    "respondsCall": "atender chamada",
+    "call": "chamada",
+    "calls": "chamadas",
+    "industries": "Indústrias",
+    "industry": "Indústria",
+    "prospectContact": "Contato do cliente potencial",
+    "prospect": "cliente potencial",
     "differenceAmount": "valor da diferença",
     "newTotalAmount": "Novo valor total",
     "brand": "Marca",
@@ -448,6 +458,13 @@
       "text": "Tem certeza que deseja enviar o documento",
       "type": "info",
       "buttonOk": "Sim, enviar",
+      "buttonCancel": "Cancelar"
+    },
+    "call": {
+      "title": "Informações",
+      "text": "Adicionar chamada?",
+      "type": "info",
+      "buttonOk": "Sim",
       "buttonCancel": "Cancelar"
     }
   },

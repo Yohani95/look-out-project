@@ -187,3 +187,14 @@ export const MarcaLicenciaApiUrl = `${apiBaseUrl}/MarcaLicencia`;
 export const MayoristaLicenciaApiUrl = `${apiBaseUrl}/MayoristaLicencia`;
 //TarifarioVentaLicenciaApiUrl
 export const TarifarioVentaLicenciaApiUrl = `${apiBaseUrl}/TarifarioVentaLicencia`;
+
+//Prospectos
+export const ProspectoApiUrl = `${apiBaseUrl}/Prospecto`;
+export const EstadoProspectoApiUrl = `${apiBaseUrl}/EstadoProspecto`;
+export const ContactoProspectoApiUrl = `${apiBaseUrl}/ContactoProspecto`;
+export const IndustriaApiUrl = `${apiBaseUrl}/Industria`;
+export const EmpresaApiUrl = `${apiBaseUrl}/Empresa`;
+export const LlamadaProspectoApiUrl = `${apiBaseUrl}/LlamadaProspecto`;
+export const ReunionProspectoApiUrl = `${apiBaseUrl}/ReunionProspecto`;
+export const TipoContactoProspectoApiUrl = `${apiBaseUrl}/TipoContactoProspecto`;
+export const MedioLlamadaProspectoApiUrl = `${apiBaseUrl}/MedioLlamadaProspecto`;

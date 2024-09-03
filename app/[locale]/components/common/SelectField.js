@@ -1,22 +1,42 @@
 import React from 'react';
+import Select from 'react-select';
 
-const SelectField = ({ label, options, labelClassName, divClassName,preOption,action,onChange,selectedValue,isRequired=true }) => {
+const SelectField = ({
+  label,
+  options,
+  labelClassName,
+  divClassName,
+  preOption,
+  onChange,
+  selectedValue,
+  isRequired = true,
+}) => {
+  // Convierte las opciones en el formato que acepta react-select
+  const formattedOptions = options.map((option) => ({
+    value: option.value,
+    label: option.label,
+  }));
+
+  // Encuentra el valor seleccionado actual
+  const currentValue =
+    formattedOptions.find((option) => option.value === selectedValue) || null;
+
   return (
     <>
-      <label className={`${labelClassName}`}>
-        {label}
-      </label>
+      <label className={`${labelClassName}`}>{label}</label>
       <div className={`${divClassName}`}>
-        <select className="form-control form-select" disabled={action} onChange={onChange} required={isRequired} value={selectedValue|| ''}>
-        <option value="">{preOption}</option>
-          {options?.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={formattedOptions}
+          value={currentValue}
+          onChange={(selectedOption) =>
+            onChange({ target: { value: selectedOption?.value } })
+          }
+          placeholder={preOption}
+          isClearable={!isRequired}
+          isSearchable
+        />
       </div>
-      </>
+    </>
   );
 };
 

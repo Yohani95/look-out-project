@@ -1,26 +1,32 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import SelectField from "../common/SelectField";
-import fetchCountriest from "@/app/[locale]/utils/country/Countrylist";
-import { fechtClients } from "@/app/[locale]/utils/client/ClientFormLogic";
+'use client';
+import React, { useState, useEffect } from 'react';
+import SelectField from '../common/SelectField';
+import fetchCountriest from '@/app/[locale]/utils/country/Countrylist';
+import { fechtClients } from '@/app/[locale]/utils/client/ClientFormLogic';
 import {
   handleInputChange,
   handleFormSubmit,
   fetchPersonById,
-} from "@/app/[locale]/utils/person/UtilsPerson";
-import FormEmailCommon from "../admin/email/FormEmailCommon";
-import { useRouter } from "next/navigation";
-import FormPhoneCommon from "../admin/phone/FormPhoneCommon";
-import FormAddressCommon from "@/app/[locale]/components/world/address/FormAddressCommon";
-import MyDatePicker from "../common/MyDatePicker";
-import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
-import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import ErroData from "@/app/[locale]/components/common/ErroData";
-import Persona from "@/app/api/models/admin/Persona";
-import ClientePersona from "@/app/api/models/cuenta/ClientePersona";
-import { ClientePersonaApiUrl } from "@/app/api/apiConfig";
-import { handleSelectChange } from "../../utils/Form/UtilsForm";
-function ContactInfoSection({ t, formData, setFormData, idPerson,setLoading}) {
+} from '@/app/[locale]/utils/person/UtilsPerson';
+import FormEmailCommon from '../admin/email/FormEmailCommon';
+import { useRouter } from 'next/navigation';
+import FormPhoneCommon from '../admin/phone/FormPhoneCommon';
+import FormAddressCommon from '@/app/[locale]/components/world/address/FormAddressCommon';
+import MyDatePicker from '../common/MyDatePicker';
+import BoxInfo from '@/app/[locale]/components/common/BoxInfo';
+import LoadingData from '@/app/[locale]/components/common/LoadingData';
+import ErroData from '@/app/[locale]/components/common/ErroData';
+import Persona from '@/app/api/models/admin/Persona';
+import ClientePersona from '@/app/api/models/cuenta/ClientePersona';
+import { ClientePersonaApiUrl } from '@/app/api/apiConfig';
+import { handleSelectChange } from '../../utils/Form/UtilsForm';
+function ContactInfoSection({
+  t,
+  formData,
+  setFormData,
+  idPerson,
+  setLoading,
+}) {
   const [clientOptions, setClientOptions] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
   const FillClient = async () => {
@@ -32,7 +38,7 @@ function ContactInfoSection({ t, formData, setFormData, idPerson,setLoading}) {
       }));
       setClientOptions(options);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error('Error fetching user data:', error);
     }
   };
   useEffect(() => {
@@ -160,7 +166,7 @@ function ContactInfoSection({ t, formData, setFormData, idPerson,setLoading}) {
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "idCliente", setFormData)}
+          onChange={(e) => handleSelectChange(e, 'idCliente', setFormData)}
           isRequired={false}
           selectedValue={formData.idCliente}
         />
@@ -269,7 +275,10 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
         {isCreate || isEdit ? (
           <h4>{isEdit ? t.Common.contacts : t.Nav.contacts.create}</h4>
         ) : (
-          <h4>{t.Common.edit}{t.Common.contact}</h4>
+          <h4>
+            {t.Common.edit}
+            {t.Common.contact}
+          </h4>
         )}
         <ContactInfoSection
           t={t}
