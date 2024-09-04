@@ -5,11 +5,13 @@ import ProspectoCreate from '../../components/prospecto/ProspectoCreate';
 import { getAllEstadoProspecto } from '@/app/actions/prospecto/EstadoProspectoActions';
 import EstadoProspecto from '@/app/api/models/prospecto/EstadoProspecto';
 import { fechtClients } from '@/app/[locale]/utils/client/ClientFormLogic';
-import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
-import { Constantes } from '@/app/api/models/common/Constantes';
-import Persona from '@/app/api/models/admin/Persona';
 import { getAllContactoProspecto } from '@/app/actions/prospecto/ContactoProspectoActions';
 import ContactosProspecto from '@/app/api/models/prospecto/ContactoProspecto';
+import { getAllTipoContactoProspecto } from '@/app/actions/prospecto/TipoContactoProspecto';
+import { getAllPerfil } from '@/app/actions/admin/PerfilActions';
+import fetchCountriest from '@/app/[locale]/utils/country/Countrylist';
+import Perfil from '@/app/api/models/admin/Perfil';
+import TipoContactoProspecto from '@/app/api/models/prospecto/TipoContactoProspecto';
 async function page() {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -21,11 +23,15 @@ async function page() {
   );
 }
 const GetData = async () => {
-  const [estados, clientes, contactos] = await Promise.all([
-    getAllEstadoProspecto(),
-    fechtClients(),
-    getAllContactoProspecto(),
-  ]);
+  const [estados, clientes, contactos, tipos, paises, perfiles] =
+    await Promise.all([
+      getAllEstadoProspecto(),
+      fechtClients(),
+      getAllContactoProspecto(),
+      getAllTipoContactoProspecto(),
+      fetchCountriest(),
+      getAllPerfil(),
+    ]);
   try {
     const mappedClientes = clientes.map((item) => ({
       value: item.cliId,
@@ -38,10 +44,23 @@ const GetData = async () => {
     const mappedContactos = contactos.map((contacto) => {
       return new ContactosProspecto(contacto).getSelectOptions();
     });
+    const mappedTipos = tipos.map((tipo) => {
+      return new TipoContactoProspecto(tipo).getSelectOptions();
+    });
+    const mappedPaises = paises.map((country) => ({
+      value: country.paiId,
+      label: country.paiNombre,
+    }));
+    const mappedPerfiles = perfiles.map((perfil) => {
+      return new Perfil(perfil).getSelectOptions();
+    });
     return {
       estados: mappedEstados,
       clientes: mappedClientes,
       contactos: mappedContactos,
+      tipos: mappedTipos,
+      paises: mappedPaises,
+      perfiles: mappedPerfiles,
     };
   } catch (error) {
     console.error(error);

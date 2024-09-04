@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
 function Footer() {
   return (
-    <footer className="font-small pt-4 mt-4 text-white" >
+    <footer className="font-small pt-4 mt-4 text-white">
       <div className="container-fluid text-center text-md-left">
         <div className="row">
-            <div className="col-lg-">
+          <div className="col-lg-">
             <img
-            src="https://kpaz.la/wp-content/themes/kpaz/img/logo-footer.svg"
-            className="img-fluid mx-auto mr d-table "
-            width="240px"
-          />
-            </div>
+              src="https://kpaz.la/wp-content/themes/kpaz/img/logo-footer.svg"
+              className="img-fluid mx-auto mr d-table "
+              width="240px"
+            />
+          </div>
           {/* <div className="col-md-6 mt-md-0 mt-3">
                 <h5 className="text-uppercase">Footer Content</h5>
                 <p></p>
@@ -36,14 +36,15 @@ function Footer() {
       </div>
 
       <div className="text-center py-3">
-        © 2020 Copyright
+        © 2023 Copyright
+        <br />
         <a
           href="https://kpaz.la/"
           target="https://kpaz.la/"
-          className="nav-link"
+          // className="nav-link"
         >
-          {" "}
-          KPAZ.cl
+          {' '}
+          KPAZ.la
         </a>
       </div>
     </footer>

@@ -23,7 +23,7 @@ const NotificationSweet = async ({
     title,
     text,
     icon: type,
-    showCancelButton: !showLoading && (link !== undefined || goBack !== null), // Mostrar botón "Volver atrás" si no está cargando y link no es undefined
+    showCancelButton: false, //!showLoading && (link !== undefined), // Mostrar botón "Volver atrás" si no está cargando y link no es undefined
     cancelButtonText: 'Volver atrás',
     confirmButtonColor: '#2F4BCE',
     cancelButtonColor: '#d33',
@@ -45,6 +45,7 @@ const NotificationSweet = async ({
         if (goBack) goBack();
       }
     } else if (result.isConfirmed) {
+      if (goBack) goBack();
     }
   });
 };

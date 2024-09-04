@@ -3,7 +3,6 @@ import { useLocale } from 'next-intl';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import ContactoPropsectoCreate from '@/app/[locale]/components/prospecto/ProspectoContacto/ContactoPropsectoCreate';
 import { getAllTipoContactoProspecto } from '@/app/actions/prospecto/TipoContactoProspecto';
-import ContactosProspecto from '@/app/api/models/prospecto/ContactoProspecto';
 import TipoContactoProspecto from '@/app/api/models/prospecto/TipoContactoProspecto';
 import fetchCountriest from '@/app/[locale]/utils/country/Countrylist';
 import { getAllPerfil } from '@/app/actions/admin/PerfilActions';
@@ -13,7 +12,7 @@ async function page() {
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   return (
-    <BasePages title={t.Common.prospect}>
+    <BasePages title={t.Common.prospectContact}>
       <ContactoPropsectoCreate t={t} data={data} />
     </BasePages>
   );

@@ -5,10 +5,10 @@ import {
   handleSelectChange,
   handleInputChange,
 } from '@/app/[locale]/utils/Form/UtilsForm';
-import { Form } from 'react-bootstrap';
 import { FormikProps } from 'formik';
 import { Usuario } from '@/app/api/models/admin/Usuario';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 interface FormProps {
   prospectoModel: Prospecto;
   setProspecto: React.Dispatch<React.SetStateAction<any>>;
@@ -26,6 +26,7 @@ const ProspectoForm: React.FC<FormProps> = ({
 }) => {
   const { data: session, status } = useSession();
   const user = session?.user as Usuario;
+  const pathname = usePathname();
   useEffect(() => {
     if (!prospectoModel.idKam && user?.persona.id) {
       setProspecto((prev) => ({
@@ -72,15 +73,17 @@ const ProspectoForm: React.FC<FormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idCliente', setProspecto)}
           selectedValue={prospectoModel.idCliente}
         />
-        <SelectField
-          label={t.Common.contact}
-          options={data.contactos}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'idContacto', setProspecto)}
-          selectedValue={prospectoModel.idContacto}
-        />
+        {!pathname.includes('prospect/create') && (
+          <SelectField
+            label={t.Common.contact}
+            options={data.contactos}
+            preOption={t.Account.select}
+            labelClassName="col-sm-1 col-form-label"
+            divClassName="col-sm-3"
+            onChange={(e) => handleSelectChange(e, 'idContacto', setProspecto)}
+            selectedValue={prospectoModel.idContacto}
+          />
+        )}
       </div>
       <div className="mb-3 row align-items-center">
         <SelectField
