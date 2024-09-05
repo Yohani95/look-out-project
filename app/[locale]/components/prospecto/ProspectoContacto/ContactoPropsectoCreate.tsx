@@ -44,11 +44,11 @@ const ContactoPropsectoCreate: React.FC<FormProps> = ({
           })
           .catch((err) => {
             console.log(err);
-            Utils.handleErrorNotification(t, router.back());
+            Utils.handleErrorNotification(t);
           });
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        Utils.handleErrorNotification(t, router.back);
+        Utils.handleErrorNotification(t);
       } finally {
         setSubmitting(false);
       }

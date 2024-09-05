@@ -462,7 +462,7 @@
     },
     "call": {
       "title": "Información",
-      "text": "¿Agregar Contacto?",
+      "text": "¿Agregar Actividad?",
       "type": "info",
       "buttonOk": "Sí",
       "buttonCancel": "Cancelar"

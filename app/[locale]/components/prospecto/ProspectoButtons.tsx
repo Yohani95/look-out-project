@@ -61,7 +61,7 @@ function ProspectoButtons({ t, prospecto }) {
       <Button size="sm" variant="link" onClick={() => handleCall()}>
         <FaHeadset size={18} className="my-anchor-call" />
         <Tooltip anchorSelect=".my-anchor-call" place="top">
-          {t?.Common.contact}
+          {t?.Common.activity}
         </Tooltip>
       </Button>
       <Button size="sm" variant="link" onClick={() => handleMeeting()}>

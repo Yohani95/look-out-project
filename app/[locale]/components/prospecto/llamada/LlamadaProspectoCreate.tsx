@@ -30,17 +30,17 @@ const LlamadaProspectoCreate: React.FC<FormProps> = ({
         await createLlamadaProspecto(values)
           .then((res) => {
             if (res.status === 400) {
-              Utils.handleErrorNotification(t, router.back);
+              Utils.handleErrorNotification(t);
             } else {
-              Utils.handleSuccessNotification(t, router.back);
+              Utils.handleSuccessNotification(t);
             }
           })
           .catch((err) => {
-            Utils.handleErrorNotification(t, router.back);
+            Utils.handleErrorNotification(t);
           });
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        Utils.handleErrorNotification(t, router.back);
+        Utils.handleErrorNotification(t);
       } finally {
         setSubmitting(false);
       }

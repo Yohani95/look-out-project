@@ -41,8 +41,8 @@ class ContactosProspecto {
         .max(150, t.ValidationMessages.maxLength), // Longitud máxima de 150 caracteres
       numero: Yup.string()
         .nullable()
-        .min(9, t.Common.invalidNumber)
-        .max(20, t.ValidationMessages.maxLength), // Longitud máxima de 20 caracteres
+        .min(9, `${t.Common.invalidPhoneNumber}, 9 min.`)
+        .max(20, `${t.Common.invalidPhoneNumber}, 20 max.`), // Longitud máxima de 20 caracteres
       perfilLinkedin: Yup.string()
         .nullable()
         .max(200, t.ValidationMessages.maxLength), // Longitud máxima de 200 caracteres

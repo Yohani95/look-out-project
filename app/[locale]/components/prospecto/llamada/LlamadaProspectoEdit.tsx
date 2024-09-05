@@ -46,7 +46,7 @@ const LlamadaProspectoEdit: React.FC<FormProps> = ({ t, data }) => {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-        <h4>{`${t.Common.edit} ${t.Common.call}`}</h4>
+        <h4>{`${t.Common.edit} ${t.Common.activity}`}</h4>
       </div>
       <form
         onSubmit={(e) => {

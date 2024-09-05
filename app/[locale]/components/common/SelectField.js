@@ -13,10 +13,11 @@ const SelectField = ({
   isRequired = true,
 }) => {
   // Convierte las opciones en el formato que acepta react-select
-  const formattedOptions = options.map((option) => ({
-    value: option.value,
-    label: option.label,
-  }));
+  const formattedOptions =
+    options?.map((option) => ({
+      value: option.value,
+      label: option.label,
+    })) || [];
 
   // Encuentra el valor seleccionado actual
   const currentValue =

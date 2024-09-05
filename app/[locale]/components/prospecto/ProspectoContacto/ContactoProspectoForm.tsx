@@ -131,7 +131,7 @@ const ContactoProspectoForm: React.FC<FormProps> = ({
       </div>
       <div className="mb-3 row align-items-center">
         <SelectField
-          label={`${t.Common.profile}`}
+          label={`${t.Ficha.position}`}
           options={data.perfiles}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"

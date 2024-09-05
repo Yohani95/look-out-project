@@ -1,4 +1,5 @@
-import * as Yup from "yup";
+import * as Yup from 'yup';
+import Pais from '../world/Pais';
 
 class Cliente {
   cliId: number | null;
@@ -10,7 +11,7 @@ class Cliente {
   girId: number | null;
   cliSitioWeb: string | null;
   cliNif: string | null;
-
+  pais: Pais | null;
   constructor(data: any) {
     this.cliId = data?.cli_id || null;
     this.cliNombre = data?.cli_nombre || null;
@@ -21,6 +22,7 @@ class Cliente {
     this.girId = data?.gir_id || null;
     this.cliSitioWeb = data?.cli_sitio_web || null;
     this.cliNif = data?.cli_nif || 'rut empresa';
+    this.pais = data?.pais;
   }
 
   static getValidationSchema(t: any) {
@@ -35,6 +37,47 @@ class Cliente {
       cliSitioWeb: Yup.string().nullable(),
       cliNif: Yup.string().nullable(),
     });
+  }
+  static createColumns(t: any) {
+    return [
+      {
+        accessorKey: 'cliId',
+        header: 'ID',
+        size: 50,
+      },
+      {
+        accessorKey: 'cliNombre',
+        header: 'Nombre',
+        size: 100,
+      },
+      {
+        accessorKey: 'pais',
+        header: t.Ficha.country,
+        size: 100,
+      },
+      {
+        accessorKey: 'sectorComercial',
+        header: t.Ficha.place,
+        size: 100,
+      },
+      {
+        accessorKey: 'email',
+        header: t.Ficha.Email,
+        size: 100,
+      },
+      {
+        accessorKey: 'actions',
+        header: t.Common.actions,
+        size: 100,
+      },
+    ];
+  }
+
+  getSelectOptions() {
+    return {
+      value: this.cliId,
+      label: this.cliNombre,
+    };
   }
 }
 
