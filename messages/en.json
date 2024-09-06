@@ -1,5 +1,7 @@
 {
   "Common": {
+    "bank": "Bank",
+    "payDate": "Payment Date",
     "differenceAmount": "Difference Amount",
     "newTotalAmount": "New Total Amount",
     "brand": "Brand",

@@ -23,6 +23,8 @@ class FacturaPeriodo {
   idHorasUtilizadas: number | null;
   idSoporteBolsa: number | null;
   idLicencia: number | null;
+  idBanco: number | null;
+  fechaPago: Date | null;
   Soporte: Soporte | null;
   periodo: PeriodosProyecto | null;
   horasUtilizadas: HorasUtilizadas | null;
@@ -53,6 +55,8 @@ class FacturaPeriodo {
     this.horasUtilizadas = data?.horasUtilizadas || null;
     this.idLicencia = data?.idLicencia || null;
     this.ventaLicencia = data?.ventaLicencia || null;
+    this.idBanco = data?.idBanco || null;
+    this.fechaPago = data?.fecha_pago ? new Date(data.fecha_pago) : null;
   }
 
   public getFechaString(date: Date | null): string | null {

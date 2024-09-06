@@ -1,5 +1,7 @@
 {
   "Common": {
+    "bank": "Banco",
+    "payDate": "Data de Pagamento",
     "differenceAmount": "valor da diferença",
     "newTotalAmount": "Novo valor total",
     "brand": "Marca",

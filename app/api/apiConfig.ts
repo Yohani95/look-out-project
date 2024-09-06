@@ -16,7 +16,7 @@ export const apiHeaders = {
 export const userApiUrl = `${apiBaseUrl}/usuarios`;
 export const paisApiUrl = `${apiBaseUrl}/pais`;
 export const placeApiUrl = `${apiBaseUrl}/SectorComercial`;
-
+export const BancoApiUrl = `${apiBaseUrl}/Banco`;
 //clientes
 export const clientApiUrl = `${apiBaseUrl}/clientes`;
 export const clientWithEntitiesApiUrl = `${apiBaseUrl}/clientes/WithEntities`;
