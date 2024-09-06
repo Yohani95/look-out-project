@@ -6,6 +6,8 @@ import FacturaPeriodo from '@/app/api/models/factura/FacturaPeriodo';
 import { getAllPreSolicitadaFacturaPeriodo } from '@/app/api/actions/factura/FacturaPeriodoActions';
 import { getAllMoneda } from '@/app/api/actions/world/Moneda';
 import Moneda from '@/app/api/models/world/Moneda';
+import { getAllBanco } from '@/app/api/actions/factura/BancoActions';
+import Banco from '@/app/api/models/factura/Banco';
 async function page() {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -14,9 +16,16 @@ async function page() {
   const monedas = monedasresult.map((moneda) => {
     return new Moneda(moneda).getSelectOptions();
   });
+  const bancos = await getAllBanco();
+  const bancosOptions = bancos.map((b) => new Banco(b).getSelectOptions());
   return (
     <BasePages title={t.Nav.facture.billing}>
-      <FacturasSolicitadasSearch t={t} facturas={facturas} monedas={monedas} />
+      <FacturasSolicitadasSearch
+        t={t}
+        facturas={facturas}
+        monedas={monedas}
+        bancos={bancosOptions}
+      />
     </BasePages>
   );
 }

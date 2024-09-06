@@ -10,7 +10,7 @@ import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import Soporte from '@/app/api/models/support/Soporte';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function FacturasSolicitadasSearch({ t, facturas, monedas }) {
+function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
   const columns = useMemo(() => FacturaPeriodo.createColumnsFacturas(t), [t]);
   const toggleObservaciones = (observaciones) => {
     setObservacionesModal(observaciones);
@@ -38,6 +38,7 @@ function FacturasSolicitadasSearch({ t, facturas, monedas }) {
           idHoraUtilizada={factura.idHorasUtilizadas}
           periodoFactura={factura}
           monedas={monedas}
+          bancos={bancos}
         />
       ),
       observaciones: (

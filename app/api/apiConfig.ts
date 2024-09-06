@@ -4,7 +4,7 @@ if (process.env.NODE_ENV === 'development') {
   apiBaseUrl = 'https://localhost:44318/api';
 } else {
   // Código específico para el entorno de producción
-  apiBaseUrl = 'https://kpazserv0005.azurewebsites.net/api';
+  apiBaseUrl = 'https://kpazserv0008.azurewebsites.net/api';
 }
 
 export const apiHeaders = {
@@ -16,7 +16,7 @@ export const apiHeaders = {
 export const userApiUrl = `${apiBaseUrl}/usuarios`;
 export const paisApiUrl = `${apiBaseUrl}/pais`;
 export const placeApiUrl = `${apiBaseUrl}/SectorComercial`;
-
+export const BancoApiUrl = `${apiBaseUrl}/Banco`;
 //clientes
 export const clientApiUrl = `${apiBaseUrl}/clientes`;
 export const clientWithEntitiesApiUrl = `${apiBaseUrl}/clientes/WithEntities`;
