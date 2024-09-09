@@ -38,7 +38,7 @@ function MyDatePicker({
       showTimeSelect={withTime} // Muestra la selección de hora si withTime es true
       timeFormat="HH:mm" // Formato de la hora (solo si withTime es true)
       timeIntervals={15} // Intervalos de 15 minutos (solo si withTime es true)
-      required={shouldBeRequired}
+      //required={shouldBeRequired}
       timeCaption={selectedTimeCaption} // Texto dinámico según el idioma
       readOnly={isRead}
       locale={selectedLocale}

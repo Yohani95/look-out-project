@@ -11,10 +11,9 @@ class ContactosProspecto {
   perfilLinkedin: string | null;
   idTipo: number | null;
   idPais: number | null;
-  idPerfil: number | null;
   pais: Pais | null;
   tipoContactoProspecto: TipoContactoProspecto | null;
-  perfil: Perfil | null;
+  cargo: string | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombreCompleto = data?.nombreCompleto || null;
@@ -25,8 +24,7 @@ class ContactosProspecto {
     this.idPais = data?.idPais || null;
     this.pais = data?.pais || null;
     this.tipoContactoProspecto = data?.tipoContactoProspecto || null;
-    this.idPerfil = data?.idPerfil || null;
-    this.perfil = data?.perfil || null;
+    this.cargo = data?.cargo || null;
   }
 
   static getValidationSchema(t: any) {
@@ -59,6 +57,11 @@ class ContactosProspecto {
       {
         accessorKey: 'nombreCompleto',
         header: 'Nombre Completo',
+        size: 100,
+      },
+      {
+        accessorKey: 'cargo',
+        header: `${t.Ficha.position}`,
         size: 100,
       },
       {

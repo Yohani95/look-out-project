@@ -103,7 +103,7 @@ function ContactInfoSection({
         </div>
       </div>
       <div className=" mb-3 row align-items-center">
-        <label
+        {/* <label
           htmlFor="persona.perIdNacional"
           className="col-sm-1 col-form-label"
         >
@@ -118,7 +118,7 @@ function ContactInfoSection({
             value={formData.persona.perIdNacional}
             onChange={handleInputChange(formData, setFormData)}
           />
-        </div>
+        </div> */}
         <label htmlFor="perApellidoMaterno" className="col-sm-1 col-form-label">
           {t.Common.birthDay}
         </label>
@@ -139,6 +139,7 @@ function ContactInfoSection({
               }));
             }}
             title={t.Common.date}
+            shouldBeRequired={false}
           />
         </div>
         <SelectField

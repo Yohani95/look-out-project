@@ -130,17 +130,25 @@ const ContactoProspectoForm: React.FC<FormProps> = ({
         />
       </div>
       <div className="mb-3 row align-items-center">
-        <SelectField
-          label={`${t.Ficha.position}`}
-          options={data.perfiles}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) =>
-            handleSelectChange(e, 'idPerfil', setContactoProspecto)
-          }
-          selectedValue={contactoProspectoModel.idPerfil}
-        />
+        <label htmlFor="cargo" className="col-sm-1 col-form-label">
+          {`${t.Ficha.position}`}
+        </label>
+        <div className="col-sm-3">
+          <Form.Control
+            type="string"
+            name="cargo"
+            id="cargo"
+            value={contactoProspectoModel.cargo || ''}
+            onChange={handleInputChange(
+              contactoProspectoModel,
+              setContactoProspecto
+            )}
+            isInvalid={formik.touched.cargo && !!formik.errors.cargo}
+          />
+          <Form.Control.Feedback type="invalid">
+            {formik.touched.cargo && formik.errors.cargo}
+          </Form.Control.Feedback>
+        </div>
       </div>
     </>
   );
