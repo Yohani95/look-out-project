@@ -1,4 +1,4 @@
-import * as Yup from "yup";
+import * as Yup from 'yup';
 class Persona {
   id: number;
   perIdNacional: string;
@@ -8,26 +8,28 @@ class Persona {
   paiId: number | null;
   tpeId: number | null;
   perFechaNacimiento: string | null = null;
-
-  constructor(data: any) {
+  cargo: string | null;
+  constructor(data?: any) {
     if (data) {
       this.id = data.id || 0;
-      this.perIdNacional = data.perIdNacional || "N/A";
-      this.perNombres = data.perNombres || "N/A";
-      this.perApellidoPaterno = data.perApellidoPaterno || "N/A";
-      this.perApellidoMaterno = data.perApellidoMaterno || "N/A";
+      this.perIdNacional = data.perIdNacional || 'N/A';
+      this.perNombres = data.perNombres || 'N/A';
+      this.perApellidoPaterno = data.perApellidoPaterno || 'N/A';
+      this.perApellidoMaterno = data.perApellidoMaterno || 'N/A';
       this.paiId = data.paiId || null;
       this.tpeId = data.tpeId || null;
       this.perFechaNacimiento = data.perFechaNacimiento || null;
+      this.cargo = data.cargo || null;
     } else {
       this.id = 0;
       this.perIdNacional = null;
       this.perNombres = null;
-      this.perApellidoPaterno = "";
-      this.perApellidoMaterno = "";
+      this.perApellidoPaterno = '';
+      this.perApellidoMaterno = '';
       this.paiId = null;
       this.tpeId = null;
       this.perFechaNacimiento = null;
+      this.cargo = null;
     }
   }
 
@@ -56,10 +58,9 @@ class Persona {
   getSelectOptions(): { value: number; label: string } {
     return {
       value: this.id,
-      label: this.getNombreCompleto()
+      label: this.getNombreCompleto(),
     };
   }
-  
 }
 
 export default Persona;

@@ -2,18 +2,16 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import DocumentoOportunidad from '@/app/api/models/oportunidad/DocumentoOportunidad';
-import DocumentoOportunidadForm from './DocumentoOportunidadForm';
+import DocumentoLicencia from '@/app/api/models/licencia/DocumentoLicencia';
+import DocumentoLicenciaForm from './DocumentoLicenciaForm';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
-import {
-  revalidateDatadocumentoOportunidad,
-  updatedocumentoOportunidad,
-} from '@/app/actions/Oportunidad/DocumentoOportunidadActions';
-function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
+import { documentoLicenciaApiUrl } from '@/app/api/apiConfig';
+import { createdocumentoLicencia } from '@/app/actions/licencia/DocumentoLicenciaActions';
+function DocumentoLicenciaCreate({ t, idLicencia }) {
   const router = useRouter();
-  const validationSchema = DocumentoOportunidad.getValidationSchema(t);
+  const validationSchema = DocumentoLicencia.getValidationSchema(t);
   const formik = useFormik({
-    initialValues: new DocumentoOportunidad(documento),
+    initialValues: new DocumentoLicencia(null),
     validationSchema,
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
@@ -24,11 +22,11 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
           type: t.notification.loading.type,
           showLoading: true,
         });
-
-        await updatedocumentoOportunidad(values, values.id)
+        await createdocumentoLicencia(values)
           .then(async (res) => {
             router.refresh();
-            if (res == 400) {
+            console.log(res);
+            if (res.status == 400) {
               NotificationSweet({
                 title: t.notification.error.title,
                 text: t.notification.error.text,
@@ -41,15 +39,16 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
                 type: t.notification.success.type,
               });
             }
-            router.back();
+            router.refresh();
           })
           .catch((err) => {
+            console.log(err);
             NotificationSweet({
               title: t.notification.error.title,
               text: t.notification.error.text,
               type: t.notification.error.type,
               push: router.push,
-              link: `/opportunities/edit/${idOportunidad}/documents/search`,
+              link: `/licenses/edit/${idLicencia}/documents/search`,
             });
           });
       } catch (error) {
@@ -59,10 +58,9 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
           text: t.notification.error.text,
           type: t.notification.error.type,
           push: router.push,
-          link: `/opportunities/edit/${idOportunidad}/documents/search`,
+          link: `/licenses/edit/${idLicencia}/documents/search`,
         });
       } finally {
-        revalidateDatadocumentoOportunidad();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
     },
@@ -77,12 +75,12 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
           <h4>{`${t.Common.create} ${t.Common.document} ${t.Opportunity.opportunity}`}</h4>
         </div>
-        <DocumentoOportunidadForm
+        <DocumentoLicenciaForm
           t={t}
           documentoModel={formik.values}
-          setDocumentoOportunidad={formik.setValues}
+          setDocumentoLicencia={formik.setValues}
           formik={formik}
-          idOportunidad={idOportunidad}
+          idLicencia={idLicencia}
         />
         <div className="d-flex justify-content-end mb-3">
           <button type="submit" className="btn btn-primary m-2">
@@ -92,7 +90,7 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
             type="button"
             className="btn btn-danger m-2"
             onClick={(e) => {
-              router.push('/licenses/search');
+              router.back();
             }}
           >
             {t.Common.cancel}
@@ -103,4 +101,4 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
   );
 }
 
-export default DocumentoOportunidadEdit;
+export default DocumentoLicenciaCreate;

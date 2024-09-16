@@ -1,21 +1,21 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import SelectField from "@/app/[locale]/components/common/SelectField";
-import fetchCountriest from "../../utils/country/Countrylist";
-import fetchSectorComerciales from "../../utils/CommercialPlace/list";
-import { fetchPerson } from "@/app/[locale]/utils/person/UtilsPerson";
-import { fetchComuna } from "@/app/[locale]/utils/comuna/utilsComuna";
-import { fetchGiro } from "@/app/[locale]/utils/giro/UtilsGiro";
-import { fetchEstadoCliente } from "@/app/[locale]/utils/EstadoCliente/UtilsEstadoCliente";
-import ContactList from "@/app/[locale]/components/contact/ContactList";
-import { useRouter } from "next/navigation";
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import { clientGetByIdApiUrl } from "@/app/api/apiConfig";
+'use client';
+import React, { useState, useEffect } from 'react';
+import SelectField from '@/app/[locale]/components/common/SelectField';
+import fetchCountriest from '../../utils/country/Countrylist';
+import fetchSectorComerciales from '../../utils/CommercialPlace/list';
+import { fetchPerson } from '@/app/[locale]/utils/person/UtilsPerson';
+import { fetchComuna } from '@/app/[locale]/utils/comuna/utilsComuna';
+import { fetchGiro } from '@/app/[locale]/utils/giro/UtilsGiro';
+import { fetchEstadoCliente } from '@/app/[locale]/utils/EstadoCliente/UtilsEstadoCliente';
+import ContactList from '@/app/[locale]/components/contact/ContactList';
+import { useRouter } from 'next/navigation';
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+import { clientGetByIdApiUrl } from '@/app/api/apiConfig';
 import {
   handleClientInputChange,
   handleClientFormSubmit,
   fetchGetbyId,
-} from "../../utils/client/ClientFormLogic";
+} from '../../utils/client/ClientFormLogic';
 function Form({ locale, isEdit, idPerson, isCreate }) {
   let t;
   t = require(`@/messages/${locale}.json`);
@@ -27,14 +27,14 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
   const [selectedItemId, setSelectedItemId] = useState([]); // Estado para el ID seleccionado
   const [selectedIds, setSelectedIds] = useState([]);
   const [formData, setFormData] = useState({
-    cliNombre: "",
-    cliDescripcion: "",
+    cliNombre: '',
+    cliDescripcion: '',
     eclId: 0,
     paiId: 0,
     secId: 0,
     girId: 0,
-    cliSitioWeb: "",
-    cliNif: "",
+    cliSitioWeb: '',
+    cliNif: '',
     idPerson: [],
     kamId: 0,
   });
@@ -71,7 +71,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
     fetchPerson().then((data) => {
       const options = data.map((kam) => ({
         value: kam.id,
-        label: kam.perNombres + " " + kam.perApellidoPaterno,
+        label: kam.perNombres + ' ' + kam.perApellidoPaterno,
       }));
       setKamOptions(options);
     });
@@ -131,17 +131,17 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
           text: t.Common.notExist,
           type: t.notification.warning.type,
           push: router.push,
-          link: "/account/search",
+          link: '/account/search',
         });
       }
     } catch (error) {
-      console.error("Error fetching client data:", error);
+      console.error('Error fetching client data:', error);
       NotificationSweet({
         title: t.notification.warning.title,
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: router.push,
-        link: "/account/search",
+        link: '/account/search',
       });
     }
   };
@@ -158,7 +158,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
     setFormData
   );
   const cancel = () => {
-    router.push("/account/search");
+    router.push('/account/search');
   };
   return (
     <>
@@ -226,7 +226,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                   id="cliNif"
                   value={formData.cliNif}
                   onChange={handleClientInputChange(formData, setFormData)}
-                  required
                 />
               </div>
             </div>
@@ -237,7 +236,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                 preOption={t.Account.select}
                 labelClassName="col-sm-1 col-form-label"
                 divClassName="col-sm-3"
-                onChange={(e) => handleSelectChange(e, "girId")}
+                onChange={(e) => handleSelectChange(e, 'girId')}
                 selectedValue={formData.girId}
               />
               <SelectField
@@ -246,7 +245,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                 labelClassName="col-sm-1 col-form-label"
                 preOption={t.Account.select}
                 divClassName="col-sm-3"
-                onChange={(e) => handleSelectChange(e, "secId")}
+                onChange={(e) => handleSelectChange(e, 'secId')}
                 selectedValue={formData.secId}
               />
               <SelectField
@@ -255,7 +254,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                 preOption={t.Account.select}
                 labelClassName="col-sm-1 col-form-label"
                 divClassName="col-sm-3"
-                onChange={(e) => handleSelectChange(e, "kamId")}
+                onChange={(e) => handleSelectChange(e, 'kamId')}
                 selectedValue={formData.kamId}
               />
             </div>
@@ -266,7 +265,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                 preOption={t.Account.select}
                 labelClassName="col-sm-1 col-form-label"
                 divClassName="col-sm-3"
-                onChange={(e) => handleSelectChange(e, "eclId")}
+                onChange={(e) => handleSelectChange(e, 'eclId')}
                 selectedValue={formData.eclId}
               />
               <SelectField
@@ -275,7 +274,7 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                 preOption={t.Account.select}
                 labelClassName="col-sm-1 col-form-label"
                 divClassName="col-sm-3"
-                onChange={(e) => handleSelectChange(e, "paiId")}
+                onChange={(e) => handleSelectChange(e, 'paiId')}
                 selectedValue={formData.paiId}
               />
               <label htmlFor="cliSitioWeb" className="col-sm-1 col-form-label">

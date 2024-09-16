@@ -104,6 +104,17 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
           </Form.Control.Feedback>
         </div>
       </div>
+      <div className="mb-3 row align-items-center">
+        <SelectField
+          label={`${t.Ficha.type} ${t.Common.currency}`}
+          options={data.monedas}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-2"
+          onChange={(e) => handleSelectChange(e, 'idMoneda', setTarifario)}
+          selectedValue={tarifarioModel.idMoneda}
+        />
+      </div>
     </>
   );
 };

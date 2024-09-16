@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
 import { deleteTarifarioVentaLicencia } from '@/app/actions/licencia/TarifarioVentaLicencia';
+import { Tooltip } from 'react-tooltip';
 function TarifarioVentaLicenciaButtons({ t, tarifario }) {
   const router = useRouter();
   const handleEdit = async (id, trans, push) => {
@@ -16,7 +17,7 @@ function TarifarioVentaLicenciaButtons({ t, tarifario }) {
       trans.notification.edit.buttonCancel
     );
     if (confirmed) {
-      push(`/licenses/edit/${tarifario.id}`);
+      push(`/licenses/fee/edit/${tarifario.id}`);
     }
   };
   const handleDelete = async (id, trans) => {
@@ -53,10 +54,10 @@ function TarifarioVentaLicenciaButtons({ t, tarifario }) {
         variant="link"
         onClick={() => handleEdit(tarifario.id, t, router.push)}
       >
-        {/* <FaEdit size={16} className="my-anchor-element" />
+        <FaEdit size={16} className="my-anchor-element" />
         <Tooltip anchorSelect=".my-anchor-element" place="top">
           {t?.Common.edit}
-        </Tooltip> */}
+        </Tooltip>
       </Button>
       <Button
         size="sm"

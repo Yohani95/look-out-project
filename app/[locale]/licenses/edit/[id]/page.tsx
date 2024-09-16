@@ -29,11 +29,7 @@ async function page({ params }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData(params.id);
-  return (
-    <BasePages title={t.Common.licenses}>
-      <VentaLicenciaEdit data={data} t={t} />
-    </BasePages>
-  );
+  return <VentaLicenciaEdit data={data} t={t} />;
 }
 const GetData = async (id: number) => {
   try {

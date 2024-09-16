@@ -227,7 +227,22 @@ const VentaLicenciaForm: React.FC<VentaLicenciaFormProps> = ({
           </Form.Group>
         </div>
       </div>
-      {/* Render other fields with similar structure */}
+      <Form.Group controlId="descripcion" className="mb-3">
+        <Form.Label>{t.Common.description}</Form.Label>
+        <Form.Control
+          as="textarea"
+          rows={6}
+          name="descripcion"
+          value={ventaLicenciaModel.descripcion || ''}
+          onChange={handleInputChange(ventaLicenciaModel, setVentaLicencia)}
+          // isInvalid={
+          //   formik?.touched?.descripcion && !!formik.errors.descripcion
+          // }
+        />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.descripcion}
+        </Form.Control.Feedback>
+      </Form.Group>
     </>
   );
 };
