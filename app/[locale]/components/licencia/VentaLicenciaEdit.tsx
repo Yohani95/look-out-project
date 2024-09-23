@@ -102,7 +102,7 @@ function VentaLicenciaEdit({ data, t }) {
             type="button"
             className="btn btn-danger m-2"
             onClick={(e) => {
-              router.back();
+              router.push('/licenses/search');
             }}
           >
             {t.Common.cancel}

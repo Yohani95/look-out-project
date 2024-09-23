@@ -19,6 +19,7 @@ interface DatePickerFieldProps {
   preOption?: string;
   isRequired?: boolean;
   withTime?: boolean;
+  isRead?: boolean;
 }
 
 const locales = {
@@ -36,12 +37,11 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
   preOption = 'Select Date',
   isRequired = true,
   withTime = false,
+  isRead = false,
 }) => {
   const idioma = useLocale();
   const selectedLocale = locales[idioma] || enUS;
-  useEffect(() => {
-    console.log(selectedDate);
-  }, [selectedDate]);
+  useEffect(() => {}, [selectedDate]);
   const popperSx: PopperProps['sx'] = {
     '& .MuiPaper-root': {
       minWidth: '300px', // Ancho mínimo del cuadro del selector
@@ -62,6 +62,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
               label={title} // Usa el título proporcionado
               value={selectedDate}
               onChange={(date) => onChange(date)}
+              readOnly={isRead}
               slotProps={{
                 textField: {
                   fullWidth: true,
