@@ -18,3 +18,25 @@ export const deleteProspecto = async (id: string | number) =>
 export const getAllProspecto = async () => ProspectoCrud.getAll();
 export const revalidateDataProspecto = async () =>
   ProspectoCrud.revalidateData();
+export const uploadProspectoFile = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await fetch(`${ProspectoApiUrl}/CargaMasiva`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    // Verificar si la respuesta fue exitosa
+    if (response.ok) {
+      return { success: true }; // Devolvemos un indicador de éxito
+    } else {
+      const data = await response.json(); // Obtener los errores
+      return { success: false, errors: data.errors }; // Devolvemos los errores
+    }
+  } catch (error) {
+    console.error('Error al cargar el archivo:', error);
+    return { success: false, errors: [error.message] }; // Devolver el error capturado
+  }
+};

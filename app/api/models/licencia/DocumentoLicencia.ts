@@ -20,7 +20,7 @@ class DocumentoLicencia {
       idLicencia: Yup.number().required(t.ValidationMessages.required),
       descripcion: Yup.string()
         .required(t.ValidationMessages.required)
-        .max(255, t.ValidationMessages.maxLength),
+        .max(255, `${t.ValidationMessages.maxLength} 200 max`),
     });
   }
   static createColumns(t: any) {

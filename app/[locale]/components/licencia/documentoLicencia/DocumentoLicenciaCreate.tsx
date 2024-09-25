@@ -25,7 +25,6 @@ function DocumentoLicenciaCreate({ t, idLicencia }) {
         await createdocumentoLicencia(values)
           .then(async (res) => {
             router.refresh();
-            console.log(res);
             if (res.status == 400) {
               NotificationSweet({
                 title: t.notification.error.title,
@@ -40,6 +39,7 @@ function DocumentoLicenciaCreate({ t, idLicencia }) {
               });
             }
             router.refresh();
+            router.back();
           })
           .catch((err) => {
             console.log(err);

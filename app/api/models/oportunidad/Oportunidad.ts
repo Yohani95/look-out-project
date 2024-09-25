@@ -1,6 +1,6 @@
-import * as Yup from "yup";
-import { format } from "date-fns";
-import Persona from "../admin/Persona";
+import * as Yup from 'yup';
+import { format } from 'date-fns';
+import Persona from '../admin/Persona';
 class Oportunidad {
   id: number | null;
   nombre: string | null;
@@ -18,12 +18,12 @@ class Oportunidad {
   idContacto: number | null;
   idAreaServicio: number | null;
   descripcion: string | null;
-  idKam:number | null;
-  personaKam:Persona| null;
-  fechaCreacion: Date| null;
-  idOrigen:number|null;
-  idTipoLicencia:number|null;
-  idTipoCerrada:number|null;
+  idKam: number | null;
+  personaKam: Persona | null;
+  fechaCreacion: Date | null;
+  idOrigen: number | null;
+  idTipoLicencia: number | null;
+  idTipoCerrada: number | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -43,12 +43,12 @@ class Oportunidad {
     this.idEmpresaPrestadora = data?.idEmpresaPrestadora || null;
     this.idContacto = data?.idContacto || null;
     this.idAreaServicio = data?.idAreaServicio || null;
-    this.descripcion=data?.descripcion|| null;
-    this.idKam=data?.idKam|| null;
-    this.personaKam=data?.personaKam|| null;
+    this.descripcion = data?.descripcion || null;
+    this.idKam = data?.idKam || null;
+    this.personaKam = data?.personaKam || null;
     this.idOrigen = data?.idOrigen || null;
     this.idTipoLicencia = data?.idTipoLicencia || null;
-    this.idTipoCerrada=data?.idTipoCerrada|| null;
+    this.idTipoCerrada = data?.idTipoCerrada || null;
   }
 
   static getValidationSchema(t) {
@@ -69,54 +69,54 @@ class Oportunidad {
       idAreaSerivicio: Yup.number().nullable(),
       descripcion: Yup.string()
         .required(t.ValidationMessages.required)
-        .max(255, t.ValidationMessages.maxLength),
+        .max(255, `${t.ValidationMessages.maxLength} 250 max`),
     });
   }
 
   static createColumns(t) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "nombre",
-        header: "Nombre",
+        accessorKey: 'nombre',
+        header: 'Nombre',
         size: 100,
       },
       {
-        accessorKey: "fechaCreacion",
-        header: "Fecha Creación",
+        accessorKey: 'fechaCreacion',
+        header: 'Fecha Creación',
         size: 50,
       },
       {
-        accessorKey: "fechaCierre",
-        header: "Fecha Cierre",
+        accessorKey: 'fechaCierre',
+        header: 'Fecha Cierre',
         size: 50,
       },
       {
-        accessorKey: "estadoOportunidad.nombre",
-        header: "Estado Oportunidad",
+        accessorKey: 'estadoOportunidad.nombre',
+        header: 'Estado Oportunidad',
         size: 100,
       },
       {
-        accessorKey: "cliente.cliNombre",
-        header: "Cliente",
+        accessorKey: 'cliente.cliNombre',
+        header: 'Cliente',
         size: 100,
       },
       {
-        accessorKey: "tipoOportunidad.nombre",
-        header: "Tipo Oportunidad",
+        accessorKey: 'tipoOportunidad.nombre',
+        header: 'Tipo Oportunidad',
         size: 100,
       },
       {
-        accessorKey: "personaKam",
+        accessorKey: 'personaKam',
         header: t.Account.KAM,
         size: 100,
       },
       {
-        accessorKey: "actions",
+        accessorKey: 'actions',
         header: t.Common.actions,
         size: 100,
       },
@@ -129,10 +129,8 @@ class Oportunidad {
       label: this.nombre,
     };
   }
-  getFechaString(fecha=this.fechaCierre): string | null {
-    return fecha
-      ? format(new Date(fecha), "dd/MM/yyyy")
-      : "N/A";
+  getFechaString(fecha = this.fechaCierre): string | null {
+    return fecha ? format(new Date(fecha), 'dd/MM/yyyy') : 'N/A';
   }
 }
 

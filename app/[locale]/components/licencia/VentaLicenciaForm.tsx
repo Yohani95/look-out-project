@@ -235,9 +235,9 @@ const VentaLicenciaForm: React.FC<VentaLicenciaFormProps> = ({
           name="descripcion"
           value={ventaLicenciaModel.descripcion || ''}
           onChange={handleInputChange(ventaLicenciaModel, setVentaLicencia)}
-          // isInvalid={
-          //   formik?.touched?.descripcion && !!formik.errors.descripcion
-          // }
+          isInvalid={
+            formik?.touched?.descripcion && !!formik.errors.descripcion
+          }
         />
         <Form.Control.Feedback type="invalid">
           {formik.errors.descripcion}

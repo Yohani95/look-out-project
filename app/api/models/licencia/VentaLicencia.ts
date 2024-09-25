@@ -81,6 +81,9 @@ class VentaLicencia {
         .nullable()
         .min(1, t.ValidationMessages.discountMin)
         .max(100, t.ValidationMessages.discountMax),
+      descripcion: Yup.string()
+        .nullable()
+        .max(500, `${t.ValidationMessages.maxLength} 500 max`),
     });
   }
 
