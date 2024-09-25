@@ -1,20 +1,25 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import { useFormik } from 'formik';
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import { Button } from 'react-bootstrap';
 import { FaLockOpen, FaEye, FaLock } from 'react-icons/fa';
-import { periodoCreateApiUrl, periodoGetByIdProyectoApiUrl } from '@/app/api/apiConfig';
-import { handleFormSubmit, fetchData } from '@/app/[locale]/utils/Form/UtilsForm';
-import { useRouter } from "next/navigation";
-import { Tooltip } from "react-tooltip";
+import {
+  periodoCreateApiUrl,
+  periodoGetByIdProyectoApiUrl,
+} from '@/app/api/apiConfig';
+import {
+  handleFormSubmit,
+  fetchData,
+} from '@/app/[locale]/utils/Form/UtilsForm';
+import { useRouter } from 'next/navigation';
+import { Tooltip } from 'react-tooltip';
 function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
   const validationSchema = PeriodosProyecto.getValidationSchema(t);
   const [periodos, setPeriodos] = useState([]);
   const router = useRouter();
   const apiurl = {
-    edit: "",
+    edit: '',
     create: periodoCreateApiUrl,
   };
   const formik = useFormik({
@@ -27,18 +32,20 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
         await handleFormSubmit(periodo, t, null, false, null, apiurl);
         await fetchPeriodo();
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
     },
   });
   /**
- * @returns {Promise<Array>} Retorna un arreglo de periodoproyecto
- */
+   * @returns {Promise<Array>} Retorna un arreglo de periodoproyecto
+   */
   const fetchPeriodo = async () => {
     try {
-      const data = await fetchData(`${periodoGetByIdProyectoApiUrl}/${idService}`);
+      const data = await fetchData(
+        `${periodoGetByIdProyectoApiUrl}/${idService}`
+      );
       const periodos = data as PeriodosProyecto[];
 
       const dataWithActions = periodos.map((periodo) => ({
@@ -46,26 +53,39 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
         fechaPeriodoDesde: new PeriodosProyecto(periodo).getPeriodoCompleto(),
         actions: (
           <>
-            <Button variant="link" onClick={() =>
-              router.push(`/facture/create/${periodo.id}`)
-            }>
-              {periodo.estado == 1 ? <FaLock size={16} className="candado" style={{ color: 'green' }} /> : <FaLockOpen size={16} className="candado" />}
+            <Button
+              variant="link"
+              onClick={() => router.push(`/facture/create/${periodo.id}`)}
+            >
+              {periodo.estado == 1 ? (
+                <FaLock
+                  size={16}
+                  className="candado"
+                  style={{ color: 'green' }}
+                />
+              ) : (
+                <FaLockOpen size={16} className="candado" />
+              )}
               <Tooltip anchorSelect=".candado" place="top">
-              {t.Nav.facture.requestBilling}
+                {t.Nav.facture.requestBilling}
               </Tooltip>
             </Button>
-            <Button variant="link"
+            <Button
+              variant="link"
               onClick={() =>
-                router.push(`/business/closeServices/professionalsPeriod/${periodo.id}`)
-              }>
+                router.push(
+                  `/business/closeServices/professionalsPeriod/${periodo.id}`
+                )
+              }
+            >
               <FaEye size={16} className="my-anchor" />
               <Tooltip anchorSelect=".my-anchor" place="top">
-              {t.service.periodDetails}
-            </Tooltip>
+                {t.service.periodDetails}
+              </Tooltip>
             </Button>
           </>
         ),
-        estado: new PeriodosProyecto(periodo).getEstados(t)
+        estado: new PeriodosProyecto(periodo).getEstados(t),
       }));
       setPeriodos(dataWithActions);
     } catch (error) {
@@ -75,7 +95,7 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
   };
   useEffect(() => {
     fetchPeriodo();
-  }, [])
+  }, []);
 
   // const dataWithActions = periodos
   //   ? periodos.map((periodo) => ({
@@ -93,18 +113,27 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
 
   return (
     <>
-      <form onSubmit={(e) => {
-        formik.handleSubmit(e);
-      }}>
-        <div className="d-flex justify-content-end mb-3">
-          <button type="submit" className="text-end  btn btn-primary" disabled={isButtonDisabled()}>
+      <form
+        onSubmit={(e) => {
+          formik.handleSubmit(e);
+        }}
+      >
+        <div className="d-flex justify-content-end mb-3 mt-3">
+          <button
+            type="submit"
+            className="text-end  btn btn-primary"
+            disabled={isButtonDisabled()}
+          >
             {t.Common.preclosed}
           </button>
         </div>
       </form>
-      <TableMaterialUI columns={PeriodosProyecto.createColumns(t)} data={periodos} />
+      <TableMaterialUI
+        columns={PeriodosProyecto.createColumns(t)}
+        data={periodos}
+      />
     </>
-  )
+  );
 }
 
-export default PeriodosCreate
+export default PeriodosCreate;

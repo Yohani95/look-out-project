@@ -1,60 +1,112 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import ErroData from "@/app/[locale]/components/common/ErroData";
-import TableCommon from "@/app/[locale]/components/common/TableCommon";
-import Novedad from "@/app/api/models/proyecto/Novedad";
-import { fetchData,handleDelete } from "@/app/[locale]/utils/Form/UtilsForm";
-import { novedadApiUrl,novedadWithEntetiesApiUrl } from "@/app/api/apiConfig";
-import { FaTrash, FaEdit } from "react-icons/fa";
-import { Button } from "react-bootstrap";
-import { relative } from "path";
-import { revalidatePath } from "next/cache";
-import { useRouter } from "next/navigation";
-import { RefreshList } from "@/app/api/models/common/ActionsCommon";
-function ListNovelty({ locale, idPersona,idProyecto ,listaNovedades}) {
+'use client';
+import React, { useState, useEffect, useMemo } from 'react';
+import LoadingData from '@/app/[locale]/components/common/LoadingData';
+import ErroData from '@/app/[locale]/components/common/ErroData';
+import TableCommon from '@/app/[locale]/components/common/TableCommon';
+import Novedad from '@/app/api/models/proyecto/Novedad';
+import { fetchData, handleDelete } from '@/app/[locale]/utils/Form/UtilsForm';
+import { novedadApiUrl } from '@/app/api/apiConfig';
+import { FaTrash, FaEdit } from 'react-icons/fa';
+import { Button } from 'react-bootstrap';
+
+import { useRouter } from 'next/navigation';
+import { RefreshList } from '@/app/api/models/common/ActionsCommon';
+import TableMaterialUI from '../../common/TablaMaterialUi';
+const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
+function ListNovelty({ locale, idPersona, idProyecto, listaNovedades }) {
   //========DECLARACION DE VARIABLES ===============
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([new Novedad()]);
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
-  const columns = [
-    { title: "ID", key: "id" },
-    { title: t.user.idPerson, key: "idPersona" },
-    { title: t.facture.project, key: "idProyecto" },
-    { title: t.service.noveltyDate, key: "fechaInicio" },
-    { title: t.service.dateTo, key: "fechaHasta" },
-    { title: t.Common.profile, key: "IdPerfil" },
-    { title: t.service.noveltyType, key: "idTipoNovedad" },
-    { title: t.Common.observations, key: "observaciones" },
-    {
-      title: t.Account.action,
-      key: "actions",
-      render: (item) => (
-        <>
-          <Button size="sm" variant="link">
-            <FaEdit size={16} onClick={()=>{router.push(`/service/editNovelty/${idProyecto}/${idPersona}/${item.id}`)}} />
-          </Button>
-          <Button size="sm" variant="link">
-            <FaTrash size={16} className="" onClick={()=>{handleDelete(item.id,t,RefreshList,`${novedadApiUrl}`)}} />
-          </Button>
-        </>
-      ),
-    },
-  ];
   //========FIN DECLARACION DE VARIABLES ===============
 
   //=======SECCION DE USSEFFECT===============
-  const fillData=()=>{
-      setData(listaNovedades);
-  }
+  const fillData = () => {
+    setData(listaNovedades);
+  };
   useEffect(() => {
-  fillData();
-  setLoading(false);
+    fillData();
+    setLoading(false);
   }, [listaNovedades]);
   //=======FIN SECCION DE USSEFFECT===============
-
+  const columns = useMemo(() => {
+    return [
+      {
+        accessorKey: 'id',
+        header: 'ID',
+        size: 50,
+      },
+      {
+        accessorKey: 'idPersona',
+        header: t.user.idPerson,
+        size: 100,
+      },
+      {
+        accessorKey: 'idProyecto',
+        header: t.facture.project,
+        size: 100,
+      },
+      {
+        accessorKey: 'fechaInicio',
+        header: t.service.noveltyDate,
+        size: 100,
+      },
+      {
+        accessorKey: 'fechaHasta',
+        header: t.service.dateTo,
+        size: 100,
+      },
+      {
+        accessorKey: 'IdPerfil',
+        header: t.Common.profile,
+        size: 100,
+      },
+      {
+        accessorKey: 'idTipoNovedad',
+        header: t.service.noveltyType,
+        size: 100,
+      },
+      {
+        accessorKey: 'observaciones',
+        header: t.Common.observations,
+        size: 150,
+      },
+      {
+        accessorKey: 'actions',
+        header: t.Account.action,
+        size: 100,
+      },
+    ];
+  }, [t]);
+  const memoizedSoporteActions = useMemo(() => {
+    return data.map((item) => ({
+      ...item,
+      actions: (
+        <>
+          <Button size="sm" variant="link">
+            <FaEdit
+              size={16}
+              onClick={() => {
+                router.push(
+                  `/service/editNovelty/${item.idProyecto}/${item.idPersona}/${item.id}`
+                );
+              }}
+            />
+          </Button>
+          <Button size="sm" variant="link">
+            <FaTrash
+              size={16}
+              onClick={() => {
+                handleDelete(item.id, t, RefreshList, `${novedadApiUrl}`);
+              }}
+            />
+          </Button>
+        </>
+      ),
+    }));
+  }, [data, t]);
   if (isLoading) return <LoadingData loadingMessage={t.Common.loadingData} />;
   if (error) return <ErroData message={t.Common.errorMsg} />;
   if (data.length === 0)
@@ -65,12 +117,9 @@ function ListNovelty({ locale, idPersona,idProyecto ,listaNovedades}) {
     );
   return (
     <>
-      <TableCommon
+      <MemoizedTableMaterialUI
         columns={columns}
-        noResultsFound={t.Common.noResultsFound}
-        data={data}
-        title={""}
-        search={t.Account.table.search}
+        data={memoizedSoporteActions}
       />
     </>
   );
