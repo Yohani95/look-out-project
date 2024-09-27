@@ -35,7 +35,7 @@ class Proyecto {
   idEmpresaPrestadora: number | null;
   empresaPrestadora: EmpresaPrestadora | null;
   diaPagos: DiaPagos | null;
-  constructor(data: any) {
+  constructor(data?: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || '';
     this.prpId = data?.prpId || null;

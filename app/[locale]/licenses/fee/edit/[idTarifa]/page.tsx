@@ -5,7 +5,7 @@ import { getAllMayoristaLicencia } from '@/app/actions/licencia/MayoristaLicenci
 import { getTarifarioVentaLicenciaById } from '@/app/actions/licencia/TarifarioVentaLicencia';
 import MarcaLicencia from '@/app/api/models/licencia/MarcaLicencia';
 import MayoristaLicencia from '@/app/api/models/licencia/MayoristaLicencia';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import { fetchMoneda } from '@/app/[locale]/utils/country/moneda/UtilsMoneda';
 import React from 'react';
 import BasePages from '@/app/[locale]/components/common/BasePages';
@@ -13,7 +13,7 @@ import { getAllTipoLicenciaOportunidad } from '@/app/actions/Oportunidad/TipoLic
 import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
 
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData(params.idTarifa);
   return (

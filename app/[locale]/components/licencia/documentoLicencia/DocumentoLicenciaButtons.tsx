@@ -85,33 +85,42 @@ function DocumentoLicenciaButtons({ t, documento }) {
   };
   return (
     <>
+      {/* Genera un ID único para el botón de editar */}
       <Button
         size="sm"
         variant="link"
         onClick={() => handleEdit(documento.id, t, router.push)}
       >
-        <FaEdit size={16} className="my-anchor-element" />
-        <Tooltip anchorSelect=".my-anchor-element" place="top">
+        <FaEdit size={16} id={`edit-${documento.id}`} />
+        <Tooltip anchorSelect={`#edit-${documento.id}`} place="top">
           {t?.Common.edit}
         </Tooltip>
       </Button>
+
+      {/* Genera un ID único para el botón de descargar */}
       <Button
         variant="link"
         onClick={() => downloadDocumento(documento)}
-        //disabled={!documentoFactura.contenidoDocumento}
         style={{ fontSize: '14px' }}
-        className="descargar"
+        id={`download-${documento.id}`} // Usa un ID único
       >
         <FaFileDownload size={16} />
-        <Tooltip anchorSelect=".descargar">{t.Common.downloadFile}</Tooltip>
+        <Tooltip anchorSelect={`#download-${documento.id}`}>
+          {t.Common.downloadFile}
+        </Tooltip>
       </Button>
+
+      {/* Botón para eliminar, con un ID único */}
       <Button
         size="sm"
-        className=""
         variant="link"
         onClick={() => handleDelete()}
+        id={`delete-${documento.id}`} // Usa un ID único
       >
-        <FaTrash size={16} className="" />
+        <FaTrash size={16} />
+        <Tooltip anchorSelect={`#delete-${documento.id}`} place="top">
+          {t?.Common.delete}
+        </Tooltip>
       </Button>
     </>
   );

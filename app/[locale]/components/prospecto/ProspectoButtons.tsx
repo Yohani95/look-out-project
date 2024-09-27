@@ -50,28 +50,36 @@ function ProspectoButtons({ t, prospecto }) {
       router.push(`/prospect/meeting/${prospecto.id}`);
     }
   };
+  // Genera IDs únicos para cada fila en función del id del prospecto
+  const editId = `edit-tooltip-${prospecto.id}`;
+  const callId = `call-tooltip-${prospecto.id}`;
+  const meetingId = `meeting-tooltip-${prospecto.id}`;
+
   return (
     <>
       <Button size="sm" variant="link" onClick={() => handleEdit()}>
-        <FaEdit size={16} className="my-anchor-element" />
-        <Tooltip anchorSelect=".my-anchor-element" place="top">
+        <FaEdit size={16} id={editId} />
+        <Tooltip anchorSelect={`#${editId}`} place="left">
           {t?.Common.edit}
         </Tooltip>
       </Button>
+
       <Button size="sm" variant="link" onClick={() => handleCall()}>
-        <FaHeadset size={18} className="my-anchor-call" />
-        <Tooltip anchorSelect=".my-anchor-call" place="top">
+        <FaHeadset size={18} id={callId} />
+        <Tooltip anchorSelect={`#${callId}`} place="right">
           {t?.Common.activity}
         </Tooltip>
       </Button>
+
       <Button size="sm" variant="link" onClick={() => handleMeeting()}>
-        <FaUsers size={18} className="my-anchor-meeting" />
-        <Tooltip anchorSelect=".my-anchor-meeting" place="top">
+        <FaUsers size={18} id={meetingId} />
+        <Tooltip anchorSelect={`#${meetingId}`} place="left">
           {t?.Common.meeting}
         </Tooltip>
       </Button>
+
       <Button size="sm" variant="link" onClick={() => handleDelete()}>
-        <FaTrash size={16} className="" />
+        <FaTrash size={16} />
       </Button>
     </>
   );

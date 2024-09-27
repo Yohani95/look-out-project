@@ -1,16 +1,18 @@
 import React from 'react';
-import { useTranslations, useLocale } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import { GetData } from '@/app/[locale]/utils/business/UtilsService';
-import ServiceCreate from '../../../components/business/Services/ServiceCreate';
 import { getAllTipoFacturacion } from '@/app/api/actions/factura/TipoFacturacionActions';
 import TipoFacturacion from '@/app/api/models/factura/TipoFacturacion';
 import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
 import DiaPagos from '@/app/api/models/factura/DiaPagos';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
+import ServiceCreate from '@/app/[locale]/components/business/Services/ServiceCreate';
 async function page() {
-  const locale = useLocale();
+  const locale = await getLocale(); // Usa getLocale en Server Components
+  //const t = await getTranslations(locale);        // Usa getTranslations para cargar las traducciones
+
   const tiposFacturas = (await getAllTipoFacturacion()) as TipoFacturacion[];
   const diaPagos = (await getAllDiaPagos()) as DiaPagos[];
   const empresaPrestadora =
@@ -28,7 +30,7 @@ async function page() {
   });
   return (
     <BasePages title={t.Nav.business.insertServices}>
-      <ServiceCreate locale={locale} data={data} t={t} />
+      <ServiceCreate data={data} t={t} />
     </BasePages>
   );
 }

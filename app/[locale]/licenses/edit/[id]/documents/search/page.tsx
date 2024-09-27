@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import { getAllDocumentoLicenciaByIdLicencia } from '@/app/actions/licencia/DocumentoLicenciaActions';
 import DocumentoLicencia from '@/app/api/models/licencia/DocumentoLicencia';
 import DocumentoLicenciaSearch from '@/app/[locale]/components/licencia/documentoLicencia/DocumentoLicenciaSearch';
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = (await getAllDocumentoLicenciaByIdLicencia(
     params.id

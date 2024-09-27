@@ -1,14 +1,22 @@
-import React from 'react'
-import { Button } from 'react-bootstrap'
-import { Tooltip } from "react-tooltip";
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { Tooltip } from 'react-tooltip';
 import { FaLockOpen, FaEye, FaLock, FaFileDownload } from 'react-icons/fa';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { Constantes } from '@/app/api/models/common/Constantes';
-function HoursButtons({ t, periodo, tipoSoporte = Constantes.TipoSorpote.CONTRATO }) {
+function HoursButtons({
+  t,
+  periodo,
+  tipoSoporte = Constantes.TipoSorpote.CONTRATO,
+}) {
   const router = useRouter();
   const handleDownload = () => {
     if (periodo.contenidoDocumento) {
-      const uint8Array = new Uint8Array(atob(periodo.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
+      const uint8Array = new Uint8Array(
+        atob(periodo.contenidoDocumento)
+          .split('')
+          .map((char) => char.charCodeAt(0))
+      );
 
       const blob = new Blob([uint8Array], { type: 'application/pdf' });
 
@@ -33,31 +41,43 @@ function HoursButtons({ t, periodo, tipoSoporte = Constantes.TipoSorpote.CONTRAT
   };
   return (
     <>
-      {tipoSoporte != Constantes.TipoSorpote.BOLSA &&
-        <Button variant="link" onClick={() =>
-          router.push(`/facture/createSupport/${periodo.id}`)
-        }>
-
-          {periodo.estado == 1 ? <FaLock size={16} className="candado" style={{ color: 'green' }} /> : <FaLockOpen size={16} className="candado" />}
-          <Tooltip anchorSelect=".candado" place="top">
+      {tipoSoporte !== Constantes.TipoSorpote.BOLSA && (
+        <Button
+          variant="link"
+          onClick={() => router.push(`/facture/createSupport/${periodo.id}`)}
+        >
+          {periodo.estado === 1 ? (
+            <FaLock
+              size={16}
+              id={`candado-${periodo.id}`}
+              style={{ color: 'green' }}
+            />
+          ) : (
+            <FaLockOpen size={16} id={`candado-${periodo.id}`} />
+          )}
+          <Tooltip anchorSelect={`#candado-${periodo.id}`} place="top">
             {t.Nav.facture.requestBilling}
           </Tooltip>
         </Button>
-      }
+      )}
+
       {periodo.contenidoDocumento ? (
         <Button variant="link" onClick={handleDownload}>
-          <FaFileDownload size={16} className={`document ${periodo.nombreDocumento}`} />
-          <Tooltip anchorSelect={`.document.${periodo.nombreDocumento}`} place="top">
+          <FaFileDownload size={16} id={`document-${periodo.id}`} />
+          <Tooltip anchorSelect={`#document-${periodo.id}`} place="top">
             {t.Common.downloadFile} {periodo.nombreDocumento}
           </Tooltip>
         </Button>
       ) : (
         <Button variant="link" disabled>
-          <FaFileDownload size={16} className="document" />
+          <FaFileDownload size={16} id={`document-${periodo.id}`} />
+          <Tooltip anchorSelect={`#document-${periodo.id}`} place="top">
+            {t.Common.downloadFile} {periodo.nombreDocumento}
+          </Tooltip>
         </Button>
       )}
     </>
-  )
+  );
 }
 
-export default HoursButtons
+export default HoursButtons;

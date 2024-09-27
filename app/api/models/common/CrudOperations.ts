@@ -13,7 +13,9 @@ export class CrudOperations<T> implements ICrudOperations<T> {
         },
         body: JSON.stringify(item),
       });
-      revalidateTag(this.tag);
+      if (response.ok) {
+        revalidateTag(this.tag); // Revalida solo si la operación fue exitosa
+      }
       const result = await response.json();
       return result;
     } catch (error) {

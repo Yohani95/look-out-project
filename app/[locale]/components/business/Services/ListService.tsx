@@ -7,12 +7,12 @@ import {
   handleView,
   downloadFiles,
 } from '@/app/[locale]/utils/business/UtilsService';
-import ServiceButtons from '@/app/[locale]/components/business/ServiceButtons';
 import ErroData from '@/app/[locale]/components/common/ErroData';
 import LoadingData from '@/app/[locale]/components/common/LoadingData';
 import { useRouter } from 'next/navigation';
 import TableMaterialUI from '../../common/TablaMaterialUi';
 import Proyecto from '@/app/api/models/proyecto/Proyecto';
+import ServiceButtons from '../ServiceButtons';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function ListService({ locale }) {
   const [isLoading, setIsLoading] = useState(true);

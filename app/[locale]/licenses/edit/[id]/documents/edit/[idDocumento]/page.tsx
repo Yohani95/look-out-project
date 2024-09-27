@@ -1,11 +1,11 @@
 import DocumentoLicenciaEdit from '@/app/[locale]/components/licencia/documentoLicencia/DocumentoLicenciaEdit';
 import { getdocumentoLicenciaById } from '@/app/actions/licencia/DocumentoLicenciaActions';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import React from 'react';
 
 async function page({ params }) {
   const documento = await getdocumentoLicenciaById(params.idDocumento);
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   return (
     <>

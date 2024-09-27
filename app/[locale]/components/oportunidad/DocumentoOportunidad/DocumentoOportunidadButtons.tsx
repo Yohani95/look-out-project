@@ -1,16 +1,11 @@
-import React from 'react'
-import {
-  FaTrash,
-  FaEdit,
-  FaEye,
-  FaFileDownload,
-} from "react-icons/fa";
-import { Button } from "react-bootstrap";
-import { Tooltip } from "react-tooltip";
-import { useRouter } from "next/navigation";
-import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import React from 'react';
+import { FaTrash, FaEdit, FaEye, FaFileDownload } from 'react-icons/fa';
+import { Button } from 'react-bootstrap';
+import { Tooltip } from 'react-tooltip';
+import { useRouter } from 'next/navigation';
+import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import { deletedocumentoOportunidad } from '@/app/actions/Oportunidad/DocumentoOportunidadActions';
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
 
 function DocumentoOportunidadButtons({ t, documento }) {
   const router = useRouter();
@@ -23,7 +18,9 @@ function DocumentoOportunidadButtons({ t, documento }) {
       trans.notification.edit.buttonCancel
     );
     if (confirmed) {
-      push(`/opportunities/edit/${documento.idOportunidad}/documents/edit/${documento.id}`)
+      push(
+        `/opportunities/edit/${documento.idOportunidad}/documents/edit/${documento.id}`
+      );
     }
   };
   const handleDelete = async () => {
@@ -37,28 +34,34 @@ function DocumentoOportunidadButtons({ t, documento }) {
     if (confirmed) {
       await NotificationSweet({
         title: t.notification.loading.title,
-        text: "",
+        text: '',
         type: t.notification.loading.type,
         showLoading: true,
       });
 
-      await deletedocumentoOportunidad(documento.id).then(async (res) => {
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
+      await deletedocumentoOportunidad(documento.id)
+        .then(async (res) => {
+          NotificationSweet({
+            title: t.notification.error.title,
+            text: t.notification.error.text,
+            type: t.notification.error.type,
+          });
+        })
+        .catch((err) => {
+          NotificationSweet({
+            title: t.notification.error.title,
+            text: t.notification.error.text,
+            type: t.notification.error.type,
+          });
         });
-      }).catch((err) => {
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
-        });
-      });
     }
   };
   const downloadDocumento = (documento) => {
-    const uint8Array = new Uint8Array(atob(documento.contenidoDocumento).split('').map((char) => char.charCodeAt(0)));
+    const uint8Array = new Uint8Array(
+      atob(documento.contenidoDocumento)
+        .split('')
+        .map((char) => char.charCodeAt(0))
+    );
 
     const blob = new Blob([uint8Array], { type: 'application/pdf' });
 
@@ -82,29 +85,40 @@ function DocumentoOportunidadButtons({ t, documento }) {
   };
   return (
     <>
-      <Button size="sm" variant="link" onClick={() => handleEdit(documento.id, t, router.push)}>
-        <FaEdit size={16} className="my-anchor-element" />
-        <Tooltip anchorSelect=".my-anchor-element" place="top">
+      {/* Botón de editar con ID único */}
+      <Button
+        size="sm"
+        variant="link"
+        onClick={() => handleEdit(documento.id, t, router.push)}
+      >
+        <FaEdit size={16} id={`edit-${documento.id}`} />
+        <Tooltip anchorSelect={`#edit-${documento.id}`} place="top">
           {t?.Common.edit}
         </Tooltip>
       </Button>
+
+      {/* Botón de descargar con ID único */}
       <Button
         variant="link"
         onClick={() => downloadDocumento(documento)}
-        //disabled={!documentoFactura.contenidoDocumento}
         style={{ fontSize: '14px' }}
-        className='descargar'
+        id={`download-${documento.id}`} // Usa un ID único
       >
         <FaFileDownload size={16} />
-        <Tooltip anchorSelect='.descargar' >
+        <Tooltip anchorSelect={`#download-${documento.id}`} place="top">
           {t.Common.downloadFile}
         </Tooltip>
       </Button>
-      <Button size="sm" className='' variant="link" onClick={() => handleDelete()}>
-        <FaTrash size={16} className="" />
+
+      {/* Botón de eliminar con ID único */}
+      <Button size="sm" variant="link" onClick={() => handleDelete()}>
+        <FaTrash size={16} id={`delete-${documento.id}`} />
+        <Tooltip anchorSelect={`#delete-${documento.id}`} place="top">
+          {t?.Common.delete}
+        </Tooltip>
       </Button>
     </>
-  )
+  );
 }
 
-export default DocumentoOportunidadButtons
+export default DocumentoOportunidadButtons;

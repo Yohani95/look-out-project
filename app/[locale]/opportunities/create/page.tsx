@@ -1,6 +1,6 @@
 import React from 'react';
 import BasePages from '@/app/[locale]/components/common/BasePages';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import OportunidadCreate from '../../components/oportunidad/OportunidadCreate';
 import { fetchMoneda } from '@/app/[locale]/utils/country/moneda/UtilsMoneda';
 import fetchCountriest from '@/app/[locale]/utils/country/Countrylist';
@@ -22,7 +22,7 @@ import OrigenOportunidad from '@/app/api/models/oportunidad/OrigenOportunidad';
 import { getAllTipoCerradaOportunidad } from '@/app/actions/Oportunidad/TipoCerradaOportunidadActions';
 import TipoCerradaOportunidad from '@/app/api/models/oportunidad/TipoCerradaOportunidad';
 async function page() {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import { GetData } from '@/app/[locale]/utils/business/UtilsService';
 import ServiceEdit from '@/app/[locale]/components/business/Services/ServiceEdit';
@@ -15,7 +15,7 @@ import DiaPagos from '@/app/api/models/factura/DiaPagos';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   const { proyecto, archivos } = await fetchServiceById(params.id, t);
@@ -56,6 +56,8 @@ async function page({ params }) {
   data.empresaPrestadora = empresaPrestadora.map((empresa) => {
     return new EmpresaPrestadora(empresa).getSelectOptions();
   });
+  // Convertir `proyecto` y `archivos` a objetos planos
+  const plainProyecto = proyecto ? { ...proyecto } : null;
   return (
     <BasePages title={t.business.title}>
       <fieldset disabled>
@@ -63,13 +65,13 @@ async function page({ params }) {
           t={t}
           idService={params.id}
           data={data}
-          proyecto={proyecto}
+          proyecto={plainProyecto}
           files={archivos}
         />
       </fieldset>
       <ProfessionalForm
         t={t}
-        proyecto={proyecto}
+        proyecto={plainProyecto}
         idService={proyecto.pryId}
         perfiles={data.tarifarios}
       />

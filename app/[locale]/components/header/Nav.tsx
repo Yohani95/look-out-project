@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next-intl/link';
+import Link from 'next/link';
 import Image from 'next/image';
 import LOGO from '@/public/images/logo.svg';
 import LanguageDropdown from './LanguageDropdown';

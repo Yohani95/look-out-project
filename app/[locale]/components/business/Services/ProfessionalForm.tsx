@@ -339,51 +339,58 @@ function ProfessionalForm({ idService, t, perfiles, proyecto }) {
     //return compararFechasPeriodo(); // Si ninguna condición se cumple, el botón se deja habilitado
   }
   const memoizedActions = useMemo(() => {
-    return tablaCommon.map((item) => ({
-      ...item,
-      actions: (
-        <>
-          <Button size="sm" variant="link" disabled={compararFechasPeriodo()}>
-            {item.status === true ? (
-              <>
-                <FaToggleOff
-                  size={16}
-                  className="my-anchor-element"
-                  onClick={() => handleUnAssing(item.data, t)}
-                />
-                <Tooltip anchorSelect=".my-anchor-element" place="top">
-                  {t.Common.unassign}
-                </Tooltip>
-              </>
-            ) : (
-              <>
-                <FaToggleOn
-                  size={16}
-                  className="my-anchor"
-                  onClick={() => handleUnAssing(item.data, t, false)}
-                />
-                <Tooltip anchorSelect=".my-anchor" place="top">
-                  {t.Common.reassign}
-                </Tooltip>
-              </>
-            )}
-          </Button>
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() =>
-              router.push(`/service/createNovelty/${idService}/${item.id}`)
-            }
-          >
-            <FaPlus size={16} className="my-novedad" />
-            <Tooltip anchorSelect=".my-novedad" place="top">
-              {t.Nav.services.createNovelty}
-            </Tooltip>
-          </Button>
-        </>
-      ),
-    }));
+    return tablaCommon.map((item) => {
+      const unassignId = `unassign-tooltip-${item.id}`;
+      const reassignId = `reassign-tooltip-${item.id}`;
+      const noveltyId = `novelty-tooltip-${item.id}`;
+
+      return {
+        ...item,
+        actions: (
+          <>
+            <Button size="sm" variant="link" disabled={compararFechasPeriodo()}>
+              {item.status === true ? (
+                <>
+                  <FaToggleOff
+                    size={16}
+                    id={unassignId} // Usamos un ID único
+                    onClick={() => handleUnAssing(item.data, t)}
+                  />
+                  <Tooltip anchorSelect={`#${unassignId}`} place="top">
+                    {t.Common.unassign}
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <FaToggleOn
+                    size={16}
+                    id={reassignId} // Usamos un ID único
+                    onClick={() => handleUnAssing(item.data, t, false)}
+                  />
+                  <Tooltip anchorSelect={`#${reassignId}`} place="top">
+                    {t.Common.reassign}
+                  </Tooltip>
+                </>
+              )}
+            </Button>
+            <Button
+              size="sm"
+              variant="link"
+              onClick={() =>
+                router.push(`/service/createNovelty/${idService}/${item.id}`)
+              }
+            >
+              <FaPlus size={16} id={noveltyId} />
+              <Tooltip anchorSelect={`#${noveltyId}`} place="top">
+                {t.Nav.services.createNovelty}
+              </Tooltip>
+            </Button>
+          </>
+        ),
+      };
+    });
   }, [tablaCommon, t]);
+
   return (
     <>
       <BoxInfo title={t.Common.professionals} startShow={true}>

@@ -5,7 +5,6 @@ import FacturaPeriodo from '@/app/api/models/factura/FacturaPeriodo';
 import { Button, Modal } from 'react-bootstrap';
 import ButtonsFacture from '../ButtonsFacture';
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
-import { Tooltip } from 'react-tooltip';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import Soporte from '@/app/api/models/support/Soporte';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';

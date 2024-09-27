@@ -32,16 +32,26 @@ function ContactoProspectoButtons({ t, contacto }) {
         });
     }
   };
+  // Genera IDs únicos para los tooltips basados en contacto.id
+  const editTooltipId = `edit-tooltip-${contacto.id}`;
+  const deleteTooltipId = `delete-tooltip-${contacto.id}`;
+
   return (
     <>
-      <Button size="sm" variant="link" onClick={() => handleEdit()}>
-        <FaEdit size={16} className="my-anchor-element" />
-        <Tooltip anchorSelect=".my-anchor-element" place="top">
+      {/* Botón de Editar con ID único */}
+      <Button size="sm" variant="link" onClick={handleEdit}>
+        <FaEdit size={16} id={editTooltipId} />
+        <Tooltip anchorSelect={`#${editTooltipId}`} place="top">
           {t?.Common.edit}
         </Tooltip>
       </Button>
-      <Button size="sm" variant="link" onClick={() => handleDelete()}>
-        <FaTrash size={16} className="" />
+
+      {/* Botón de Eliminar con ID único */}
+      <Button size="sm" variant="link" onClick={handleDelete}>
+        <FaTrash size={16} id={deleteTooltipId} />
+        <Tooltip anchorSelect={`#${deleteTooltipId}`} place="top">
+          {t?.Common.delete}
+        </Tooltip>
       </Button>
     </>
   );

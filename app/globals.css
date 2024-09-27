@@ -39,7 +39,7 @@ button {
 h4,
 h6,
 h5 {
-  color: #2f4bce;
+  color: #2f4bce !important;
 }
 .form-check-input {
   border: 1px solid #2f4bce;
@@ -58,16 +58,14 @@ footer {
 .main-content {
   flex: 1;
 }
-.page-container{
+.page-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-
-
 .placeholder {
- /* Color de fondo del esqueleto */
+  /* Color de fondo del esqueleto */
   display: block;
   margin: 6px 0;
   animation: loading 1s infinite;
@@ -75,14 +73,14 @@ footer {
 }
 
 @keyframes loading {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.2;
   }
   50% {
     opacity: 0.5;
   }
 }
-
 
 .custom-checkbox {
   cursor: pointer;
@@ -98,7 +96,7 @@ footer {
 }
 
 .custom-checkbox.disabled {
-   /* Ajusta la opacidad para cuando está deshabilitado */
+  /* Ajusta la opacidad para cuando está deshabilitado */
   pointer-events: none; /* Evita eventos de puntero cuando está deshabilitado */
 }
 /* CSS para el esqueleto */

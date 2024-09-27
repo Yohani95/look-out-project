@@ -48,51 +48,58 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
       );
       const periodos = data as PeriodosProyecto[];
 
-      const dataWithActions = periodos.map((periodo) => ({
-        ...periodo,
-        fechaPeriodoDesde: new PeriodosProyecto(periodo).getPeriodoCompleto(),
-        actions: (
-          <>
-            <Button
-              variant="link"
-              onClick={() => router.push(`/facture/create/${periodo.id}`)}
-            >
-              {periodo.estado == 1 ? (
-                <FaLock
-                  size={16}
-                  className="candado"
-                  style={{ color: 'green' }}
-                />
-              ) : (
-                <FaLockOpen size={16} className="candado" />
-              )}
-              <Tooltip anchorSelect=".candado" place="top">
-                {t.Nav.facture.requestBilling}
-              </Tooltip>
-            </Button>
-            <Button
-              variant="link"
-              onClick={() =>
-                router.push(
-                  `/business/closeServices/professionalsPeriod/${periodo.id}`
-                )
-              }
-            >
-              <FaEye size={16} className="my-anchor" />
-              <Tooltip anchorSelect=".my-anchor" place="top">
-                {t.service.periodDetails}
-              </Tooltip>
-            </Button>
-          </>
-        ),
-        estado: new PeriodosProyecto(periodo).getEstados(t),
-      }));
+      const dataWithActions = periodos.map((periodo) => {
+        // Generamos IDs únicos para cada acción en la fila
+        const lockId = `lock-${periodo.id}`;
+        const detailsId = `details-${periodo.id}`;
+
+        return {
+          ...periodo,
+          fechaPeriodoDesde: new PeriodosProyecto(periodo).getPeriodoCompleto(),
+          actions: (
+            <>
+              <Button
+                variant="link"
+                onClick={() => router.push(`/facture/create/${periodo.id}`)}
+              >
+                {periodo.estado == 1 ? (
+                  <FaLock
+                    size={16}
+                    id={lockId} // Usamos un ID único
+                    style={{ color: 'green' }}
+                  />
+                ) : (
+                  <FaLockOpen size={16} id={lockId} />
+                )}
+                <Tooltip anchorSelect={`#${lockId}`} place="top">
+                  {t.Nav.facture.requestBilling}
+                </Tooltip>
+              </Button>
+              <Button
+                variant="link"
+                onClick={() =>
+                  router.push(
+                    `/business/closeServices/professionalsPeriod/${periodo.id}`
+                  )
+                }
+              >
+                <FaEye size={16} id={detailsId} />
+                <Tooltip anchorSelect={`#${detailsId}`} place="top">
+                  {t.service.periodDetails}
+                </Tooltip>
+              </Button>
+            </>
+          ),
+          estado: new PeriodosProyecto(periodo).getEstados(t),
+        };
+      });
       setPeriodos(dataWithActions);
     } catch (error) {
       console.error('Error al obtener periodos:', error);
       return []; // En caso de error, retorna un arreglo vacío
     }
   };
+
   useEffect(() => {
     fetchPeriodo();
   }, []);

@@ -1,16 +1,16 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { handleFormSubmit } from "@/app/[locale]/utils/business/UtilsService";
-import Proyecto from "@/app/api/models/proyecto/Proyecto";
-import TarifarioCreate from "@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioCreate";
-import TarifarioSearch from "@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioSearch";
-import ServiceFormSection from "./ServiceFormSection";
-import { useRouter } from "next/navigation";
-import { useFormik } from "formik";
-import { EditAction } from "../../admin/professionals/ProfessionalsActions";
-import BoxInfo from "../../common/BoxInfo";
-import { FaFileDownload } from "react-icons/fa";
-import { Button } from "react-bootstrap";
+'use client';
+import React, { useState, useEffect } from 'react';
+import { handleFormSubmit } from '@/app/[locale]/utils/business/UtilsService';
+import Proyecto from '@/app/api/models/proyecto/Proyecto';
+import TarifarioCreate from '@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioCreate';
+import TarifarioSearch from '@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioSearch';
+import ServiceFormSection from './ServiceFormSection';
+import { useRouter } from 'next/navigation';
+import { useFormik } from 'formik';
+import { EditAction } from '../../admin/professionals/ProfessionalsActions';
+import BoxInfo from '../../common/BoxInfo';
+import { FaFileDownload } from 'react-icons/fa';
+import { Button } from 'react-bootstrap';
 function ServiceEdit({ t, proyecto, data, files }) {
   //========DECLARACION DE VARIABLES ===============
   const [correlativo, setCorrelativo] = useState([]);
@@ -25,22 +25,33 @@ function ServiceEdit({ t, proyecto, data, files }) {
   };
   const router = useRouter();
   useEffect(() => {
-    files.forEach((file, index) => {
-      if (index < 2) {
-        // Crear un nuevo File a partir del blob y el nombre del archivo
-        const newFile = new File([file.blob], file.nombre);
-        // Actualizar el estado formData según el índice del archivo
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          [`file${index + 1}`]: newFile, // Usar la URL en lugar del Blob
-        }));
-      } else {
-        const newFile = new File([file.blob], file.nombre);
-        // Esperar a que el estado se actualice antes de intentar usar el nuevo valor
-        setFile(newFile);
-      }
-    });
-  }, []);
+    if (Array.isArray(files)) {
+      files.forEach(async (file, index) => {
+        try {
+          // Hacer una nueva solicitud para obtener el Blob desde la URL
+          const response = await fetch(file.url);
+          if (response.ok) {
+            const blob = await response.blob();
+            const newFile = new File([blob], file.nombre);
+
+            if (index < 2) {
+              // Actualizar el estado formData según el índice del archivo
+              setFormData((prevFormData) => ({
+                ...prevFormData,
+                [`file${index + 1}`]: newFile, // Usar la URL en lugar del Blob
+              }));
+            } else {
+              // Esperar a que el estado se actualice antes de intentar usar el nuevo valor
+              setFile(newFile);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching file blob:', error);
+        }
+      });
+    }
+  }, [files]); // Asegúrate de agregar `files` como dependencia
+
   /*
      =================================================================================
      Seccion Funciones de componente
@@ -58,14 +69,14 @@ function ServiceEdit({ t, proyecto, data, files }) {
           proyecto: values,
         };
         const data = new FormData();
-        data.append("proyectoJson", JSON.stringify(proyectoDTO));
+        data.append('proyectoJson', JSON.stringify(proyectoDTO));
         // Agrega los archivos
-        data.append("files", formData.file1);
-        data.append("files", formData.file2);
-        data.append("files", file);
+        data.append('files', formData.file1);
+        data.append('files', formData.file2);
+        data.append('files', file);
         await handleFormSubmit(data, t, router.push, true);
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
         EditAction();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
@@ -78,8 +89,8 @@ function ServiceEdit({ t, proyecto, data, files }) {
         <h4>{`${t.Common.edit} ${t.business.title}`}</h4>
         <div className="col-sm-2 text-end">
           <h6>
-            {t.Common.correlative} {t.business.title}{" "}
-            {proyecto.pryId === 0 ? "N/A" : proyecto.pryId}
+            {t.Common.correlative} {t.business.title}{' '}
+            {proyecto.pryId === 0 ? 'N/A' : proyecto.pryId}
           </h6>
         </div>
       </div>
@@ -113,11 +124,16 @@ function ServiceEdit({ t, proyecto, data, files }) {
           {file && (
             <>
               <label className="col-sm-3 col-form-label">
-                {file ? file.name : ""}
+                {file ? file.name : ''}
               </label>
-              <Button variant="link" className="col-sm-2" href={file && URL.createObjectURL(file)} download={file && file.name}>
-               {t.Common.downloadFile}  {"      "}
-              <FaFileDownload size={18} className="link" beat/>
+              <Button
+                variant="link"
+                className="col-sm-2"
+                href={file && URL.createObjectURL(file)}
+                download={file && file.name}
+              >
+                {t.Common.downloadFile} {'      '}
+                <FaFileDownload size={18} className="link" beat />
               </Button>
             </>
           )}
@@ -140,7 +156,12 @@ function ServiceEdit({ t, proyecto, data, files }) {
       </form>
       <hr />
       <BoxInfo title={t.business.agreedRate} startShow={false}>
-        <TarifarioCreate t={t} data={data} idService={proyecto.pryId} proyecto={formikProyecto.values}/>
+        <TarifarioCreate
+          t={t}
+          data={data}
+          idService={proyecto.pryId}
+          proyecto={formikProyecto.values}
+        />
       </BoxInfo>
     </>
   );

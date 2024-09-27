@@ -1,5 +1,5 @@
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import {
   proyectoCreateAsyncApiUrl,
   proyectoUpdateAsyncApiUrl,
@@ -10,16 +10,16 @@ import {
   proyectoDeleteAsyncApiUrl,
   proyectoWithEntitiesApiUrl,
   proyectoByIdWithEntitiesApiUrl,
-} from "@/app/api/apiConfig";
-import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { fetchByIdProyecto } from "@/app/[locale]/utils/business/tarifario/UtilsTarifario";
-import { fetchMoneda } from "@/app/[locale]/utils/country/moneda/UtilsMoneda";
-import { fetchPerfil } from "@/app/[locale]/utils/admin/perfil/UtilsPerfil";
-import fetchCountriest from "@/app/[locale]/utils/country/Countrylist";
-import { fetchTypeService } from "@/app/[locale]/utils/project/tipoServicio/UtilsTypeService";
-import { differenceInMonths, differenceInCalendarMonths } from "date-fns";
-import Proyecto from "@/app/api/models/proyecto/Proyecto";
-import { fechtClients } from "@/app/[locale]/utils/client/ClientFormLogic";
+} from '@/app/api/apiConfig';
+import { fetchPersonGetbyIdClient } from '@/app/[locale]/utils/person/UtilsPerson';
+import { fetchByIdProyecto } from '@/app/[locale]/utils/business/tarifario/UtilsTarifario';
+import { fetchMoneda } from '@/app/[locale]/utils/country/moneda/UtilsMoneda';
+import { fetchPerfil } from '@/app/[locale]/utils/admin/perfil/UtilsPerfil';
+import fetchCountriest from '@/app/[locale]/utils/country/Countrylist';
+import { fetchTypeService } from '@/app/[locale]/utils/project/tipoServicio/UtilsTypeService';
+import { differenceInMonths, differenceInCalendarMonths } from 'date-fns';
+import Proyecto from '@/app/api/models/proyecto/Proyecto';
+import { fechtClients } from '@/app/[locale]/utils/client/ClientFormLogic';
 export const handleInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -38,7 +38,7 @@ export const handleFormSubmit = async (
     const url = isEditMode
       ? `${proyectoUpdateAsyncApiUrl}/${formData.pryId}`
       : `${proyectoCreateAsyncApiUrl}`;
-    const method = isEditMode ? "PUT" : "POST";
+    const method = isEditMode ? 'PUT' : 'POST';
     await NotificationSweet({
       title: isEditMode
         ? translations.notification.loading.title
@@ -62,7 +62,7 @@ export const handleFormSubmit = async (
         text: translations.notification.success.text,
         type: translations.notification.success.type,
         push: push,
-        link: "/business/closeServices/search",
+        link: '/business/closeServices/search',
       });
     } else if (response.status === 409) {
       NotificationSweet({
@@ -72,7 +72,7 @@ export const handleFormSubmit = async (
         push: push,
         link: isEditMode
           ? `/business/closeServices/edit/${formData.cliId}`
-          : "/business/closeServices/create",
+          : '/business/closeServices/create',
       });
     } else {
       NotificationSweet({
@@ -82,7 +82,7 @@ export const handleFormSubmit = async (
         push: push,
         link: isEditMode
           ? `/business/closeServices/edit/${formData.cliId}`
-          : "/business/closeServices/create",
+          : '/business/closeServices/create',
       });
     }
   } catch (error) {
@@ -91,9 +91,9 @@ export const handleFormSubmit = async (
       text: translations.notification.error.text,
       type: translations.notification.error.type,
       push: push,
-      link: "/business/closeServices/search",
+      link: '/business/closeServices/search',
     });
-    console.error("Error sending data:", error);
+    console.error('Error sending data:', error);
     // router.push('');
   }
 };
@@ -109,7 +109,7 @@ export const handleDelete = async (idService, trans, fetchService) => {
   if (confirmed) {
     await NotificationSweet({
       title: trans.notification.loading.title,
-      text: "",
+      text: '',
       type: trans.notification.loading.type,
       showLoading: true,
     });
@@ -117,7 +117,7 @@ export const handleDelete = async (idService, trans, fetchService) => {
       const response = await fetch(
         `${proyectoDeleteAsyncApiUrl}/${idService}`,
         {
-          method: "DELETE",
+          method: 'DELETE',
         }
       ); // Utiliza Axios para hacer la solicitud DELETE
       if (response.ok) {
@@ -159,7 +159,7 @@ export const handleEdit = async (idService, trans, push) => {
 export const fetchServiceById = async (id, t, push) => {
   try {
     const response = await fetch(`${proyectoByIdWithEntitiesApiUrl}/${id}`, {
-      cache: "no-cache",
+      cache: 'no-cache',
     });
     if (response.ok) {
       const resultData = await response.json();
@@ -179,82 +179,31 @@ export const fetchServiceById = async (id, t, push) => {
         const url = `${proyectoGeFileApiUrl}?path=${encodeURIComponent(
           documento.docUrl
         )}`;
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {},
+        archivos.push({
+          documento: documento,
+          nombre: documento.docNombre,
+          url, // Solo pasamos la URL
         });
-        if (response.ok) {
-          const blob = await response.blob();
-          const archivo = {
-            documento: documento,
-            nombre: documento.docNombre,
-            blob,
-          };
-          archivos.push(archivo);
-        }
       }
-      return { proyecto, archivos };
-      // const tarifarios = await fetchByIdProyecto(proyecto.pryId);
-      // const elementosTabla = tarifarios.data.map((element) => {
-      //   const nuevoElemento = {
-      //     TcPerfilAsignado: element.tcPerfilAsignado,
-      //     TcTarifa: element.tcTarifa,
-      //     TcMoneda: element.tcMoneda,
-      //     TcBase: element.tcBase,
-      //     TcStatus: 0,
-      //   };
-
-      //   setFormData((prevData) => ({
-      //     ...prevData,
-      //     listPerfil: [...prevData.listPerfil, nuevoElemento],
-      //     perfiles: [...prevData.perfiles, element],
-      //   }));
-
-      //   return {
-      //     idPerfil: element.perfil.prf_Nombre,
-      //     fee: element.tcTarifa,
-      //     idMon: element.moneda.monNombre,
-      //     base:
-      //       element.tcBase === 1
-      //         ? t.time.mes
-      //         : element.tcBase === 3
-      //         ? t.time.hour
-      //         : t.time.week,
-      //   };
-      // });
-      // setTablaCommon(elementosTabla);
-      // const persons = await fetchPersonGetbyIdClient(result.pryIdCliente);
-      // const options = persons.data
-      //   .filter((item) => item.id === result.pryIdContacto)
-      //   .map((item) => ({
-      //     label: item.perNombres + " " + item.perApellidoPaterno,
-      //   }))[0];
-      // setFormData((prevFormData) => ({
-      //   ...prevFormData,
-      //   cliId: result.pryIdCliente,
-      //   perId: result.pryIdContacto,
-      //   personData: options.label,
-      //   client: proyecto.cliente.cliNombre,
-      //   ...result,
-      // }));
-      // setProyecto(proyecto);
+      // Asegurar que archivos es un arreglo
+      return { proyecto, archivos: archivos || [] };
     } else if (response.status == 404) {
       NotificationSweet({
         title: t.notification.warning.title,
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "/business/closeServices/search",
+        link: '/business/closeServices/search',
       });
     }
   } catch (error) {
-    console.error("Error fetching client data:", error);
+    console.error('Error fetching client data:', error);
     NotificationSweet({
       title: t.notification.error.title,
       text: t.notification.error.text,
       type: t.notification.error.type,
       push: push,
-      link: "/business/closeServices/search",
+      link: '/business/closeServices/search',
     });
   }
 };
@@ -271,17 +220,17 @@ export const fetchServiceLastId = async (t, push) => {
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "/business/closeServices/search",
+        link: '/business/closeServices/search',
       });
     }
   } catch (error) {
-    console.error("Error fetching client data:", error);
+    console.error('Error fetching client data:', error);
     NotificationSweet({
       title: t.notification.warning.title,
       text: t.Common.notExist,
       type: t.notification.warning.type,
       push: push,
-      link: "/business/closeServices/search",
+      link: '/business/closeServices/search',
     });
   }
 };
@@ -291,7 +240,7 @@ export const handleView = async (idService, push) => {
 };
 export const GetLastIdProjecService = async () => {
   try {
-    const response = await fetch("");
+    const response = await fetch('');
     if (response.status == 404) {
       return null;
     }
@@ -300,7 +249,7 @@ export const GetLastIdProjecService = async () => {
       return data;
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -310,7 +259,7 @@ export const fetchProyecto = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -321,7 +270,7 @@ export const fetchProyectoDocumentoById = async (id) => {
     const documento = data.map((element) => element.documento);
     return documento;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -356,7 +305,7 @@ export const downloadFiles = async (id, translations) => {
       )}`;
       console.log(url);
       const response = await fetch(url, {
-        method: "GET",
+        method: 'GET',
         headers: {},
       });
       console.log(response);
@@ -365,10 +314,10 @@ export const downloadFiles = async (id, translations) => {
       }
       const blob = await response.blob();
       const urlBlob = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = urlBlob;
       a.download = documento.docNombre;
-      a.style.display = "none"; // Ocultar el enlace
+      a.style.display = 'none'; // Ocultar el enlace
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a); // Eliminar el enlace después de la descarga
@@ -400,7 +349,7 @@ export const GetData = async () => {
 
     const mappedPerfiles = perfiles.map((perfil) => ({
       value: perfil.id,
-      label: perfil.prf_Nombre + " " + perfil.prf_Descripcion,
+      label: perfil.prf_Nombre + ' ' + perfil.prf_Descripcion,
     }));
 
     const mappedPaises = paises.map((country) => ({
@@ -427,7 +376,7 @@ export const GetData = async () => {
     };
   } catch (error) {
     // Manejo de errores si alguna de las operaciones falla
-    console.error("Error al obtener los datos:", error);
+    console.error('Error al obtener los datos:', error);
     throw error;
   }
 };
