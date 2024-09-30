@@ -1,7 +1,6 @@
-"use client"
-import React, { useMemo } from 'react'
+'use client';
+import React, { useMemo } from 'react';
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
-import { Tooltip } from 'react-tooltip';
 import Link from 'next/link';
 import SupportButtons from '@/app/[locale]/components/support/SupportButtons';
 import Soporte from '@/app/api/models/support/Soporte';
@@ -12,48 +11,46 @@ function ListSupport({ t, data, tipo = Constantes.TipoSorpote.CONTRATO }) {
   const memoizedSoporteActions = useMemo(() => {
     return data.map((soporte) => ({
       ...Soporte.transformFacturaPeriodoData(soporte),
-      actions: (
-        <SupportButtons t={t} proyecto={soporte} />
-      )
+      actions: <SupportButtons t={t} proyecto={soporte} />,
     }));
   }, [data, t]);
   const tipoSoporte = () => {
     var nombreSoporte;
     switch (tipo) {
       case Constantes.TipoSorpote.CONTRATO:
-        nombreSoporte=t.support.contractSupport
+        nombreSoporte = t.support.contractSupport;
         break;
       case Constantes.TipoSorpote.BOLSA:
-        nombreSoporte=t.support.bagholder
+        nombreSoporte = t.support.bagholder;
         break;
       case Constantes.TipoSorpote.ONDEMAND:
-        nombreSoporte=t.support.onDemandSupport
+        nombreSoporte = t.support.onDemandSupport;
         break;
       default:
         break;
     }
     return nombreSoporte;
-  }
+  };
   const hrefSoporte = () => {
     var nombreSoporte;
     switch (tipo) {
       case Constantes.TipoSorpote.CONTRATO:
-        nombreSoporte="/business/Support/contract/create"
+        nombreSoporte = '/business/Support/contract/create';
         break;
       case Constantes.TipoSorpote.BOLSA:
-        nombreSoporte="/business/Support/bag/create"
+        nombreSoporte = '/business/Support/bag/create';
         break;
       case Constantes.TipoSorpote.ONDEMAND:
-        nombreSoporte="/business/Support/onDemand/create"
+        nombreSoporte = '/business/Support/onDemand/create';
         break;
       default:
         break;
     }
     return nombreSoporte;
-  }
+  };
   return (
     <>
-      <h4 className='mb-3'>{tipoSoporte()}</h4>
+      <h4 className="mb-3">{tipoSoporte()}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <Link href={hrefSoporte()}>
           <button type="button" className=" btn btn-primary ">
@@ -61,9 +58,12 @@ function ListSupport({ t, data, tipo = Constantes.TipoSorpote.CONTRATO }) {
           </button>
         </Link>
       </div>
-      <MemoizedTableMaterialUI columns={columns} data={memoizedSoporteActions} />
+      <MemoizedTableMaterialUI
+        columns={columns}
+        data={memoizedSoporteActions}
+      />
     </>
-  )
+  );
 }
 
-export default ListSupport
+export default ListSupport;

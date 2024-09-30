@@ -1,11 +1,11 @@
 import React from 'react';
 import BasePages from '@/app/[locale]/components/common/BasePages';
-import { useTranslations, useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import ProfessionalsSearch from '@/app/[locale]/components/admin/professionals/ProfessionalsSearch';
 import Link from 'next/link';
 import { fetchAllProfessionals } from '@/app/[locale]/utils/person/PersonActions';
 async function page() {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const personas = await fetchAllProfessionals();
   return (

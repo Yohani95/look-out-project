@@ -1,6 +1,6 @@
 import React from 'react';
 import BasePages from '@/app/[locale]/components/common/BasePages';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import { GetData } from '@/app/[locale]/utils/business/UtilsService';
 import BagCreate from '@/app/[locale]/components/support/bag/BagCreate';
 import { getAllTipoFacturacion } from '@/app/api/actions/factura/TipoFacturacionActions';
@@ -10,7 +10,7 @@ import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
 async function page() {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const tiposFacturas = (await getAllTipoFacturacion()) as TipoFacturacion[];
   const data = await GetData();

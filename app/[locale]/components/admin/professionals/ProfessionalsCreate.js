@@ -1,14 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import Persona from "@/app/api/models/admin/Persona";
-import ProfessionalsFormSection from "@/app/[locale]/components/admin/professionals/ProfessionalsFormSection";
-import { useRouter } from "next/navigation";
-import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
-import { professionalCreateApiUrl } from "@/app/api/apiConfig";
-import { EditAction } from "./ProfessionalsActions";
-import { Constantes } from "@/app/api/models/common/Constantes";
-import { submitProfessional } from "@/app/[locale]/utils/person/PersonActions";
+'use client';
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import Persona from '@/app/api/models/admin/Persona';
+import ProfessionalsFormSection from '@/app/[locale]/components/admin/professionals/ProfessionalsFormSection';
+import { useRouter } from 'next/navigation';
+import { handleFormSubmit } from '@/app/[locale]/utils/Form/UtilsForm';
+import { professionalCreateApiUrl } from '@/app/api/apiConfig';
+import { EditAction } from './ProfessionalsActions';
+import { Constantes } from '@/app/api/models/common/Constantes';
+import { submitProfessional } from '@/app/[locale]/utils/person/PersonActions';
 function ProfessionalsCreate({ locale, data }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
@@ -16,7 +16,7 @@ function ProfessionalsCreate({ locale, data }) {
   //validación con Yup
   const validationSchema = Persona.validationRules(t);
   const apiurl = {
-    edit: "",
+    edit: '',
     create: professionalCreateApiUrl,
   };
   const formik = useFormik({
@@ -26,21 +26,22 @@ function ProfessionalsCreate({ locale, data }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
-        values.tpeId=Constantes.TipoPersona.PERSONA_PROFESIONAL
-        const form= handleFormSubmit(
+        values.tpeId = Constantes.TipoPersona.PERSONA_PROFESIONAL;
+        const form = handleFormSubmit(
           values,
           t,
           router.push,
           false,
-          "/admin/professional",
+          '/admin/professional',
           apiurl,
           0
         );
-         await submitProfessional()
-         router.refresh()
+        await submitProfessional();
+        router.refresh();
+        router.back();
         // Ejecuta la función almacenada
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
         //EditAction()
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.

@@ -12,10 +12,10 @@ class TarifarioConvenido {
   comentariosGrales: string | null;
   prpId: number | null;
 
-  constructor(data: any) {
+  constructor(data?: any) {
     this.tcId = data?.tcId || 0;
     this.tcPerfilAsignado = data?.tcPerfilAsignado || 0;
-    this.tcTarifa = data?.tcTarifa ||0;
+    this.tcTarifa = data?.tcTarifa || 0;
     this.tcMoneda = data?.tcMoneda || 0;
     this.tcBase = data?.tcBase || 0;
     this.tcStatus = data?.tcStatus || null;
@@ -38,6 +38,40 @@ class TarifarioConvenido {
       comentariosGrales: Yup.string().max(1000).nullable(),
       prpId: Yup.number().nullable(),
     });
+  }
+  static createColumns(t: any) {
+    return [
+      {
+        accessorKey: 'tcId',
+        header: 'Id',
+        size: 50,
+      },
+      {
+        accessorKey: 'tcPerfilAsignado',
+        header: t.business.assignedProfile,
+        size: 150,
+      },
+      {
+        accessorKey: 'tcTarifa',
+        header: t.Common.fee,
+        size: 100,
+      },
+      {
+        accessorKey: 'tcMoneda',
+        header: t.Common.currency,
+        size: 100,
+      },
+      {
+        accessorKey: 'tcBase',
+        header: t.Common.base,
+        size: 100,
+      },
+      {
+        accessorKey: 'actions',
+        header: 'Acciones',
+        size: 100,
+      },
+    ];
   }
 }
 

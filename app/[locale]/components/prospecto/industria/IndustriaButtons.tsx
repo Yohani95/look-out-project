@@ -34,17 +34,40 @@ function IndustriaButtons({ t, industria }) {
         });
     }
   };
+  // Genera IDs únicos para los tooltips basados en industria.id
+  const editTooltipId = `edit-tooltip-${industria.id}`;
+  const deleteTooltipId = `delete-tooltip-${industria.id}`;
 
   return (
     <>
-      <Button size="sm" variant="link" onClick={() => handleEdit()}>
-        <FaEdit size={16} className="my-anchor-element" />
-        <Tooltip anchorSelect=".my-anchor-element" place="top">
+      {/* Botón de Editar con ID único */}
+      <Button
+        size="sm"
+        variant="link"
+        onClick={handleEdit}
+        style={{ position: 'relative', zIndex: 1 }}
+      >
+        {/* Asigna un ID único al icono de editar */}
+        <FaEdit size={16} id={editTooltipId} />
+        {/* Tooltip asociado al ID único */}
+        <Tooltip anchorSelect={`#${editTooltipId}`} place="top">
           {t?.Common.edit}
         </Tooltip>
       </Button>
-      <Button size="sm" variant="link" onClick={() => handleDelete()}>
-        <FaTrash size={16} />
+
+      {/* Botón de Eliminar con ID único */}
+      <Button
+        size="sm"
+        variant="link"
+        onClick={handleDelete}
+        style={{ position: 'relative', zIndex: 1 }}
+      >
+        {/* Asigna un ID único al icono de eliminar */}
+        <FaTrash size={16} id={deleteTooltipId} />
+        {/* Tooltip asociado al ID único */}
+        <Tooltip anchorSelect={`#${deleteTooltipId}`} place="top">
+          {t?.Common.delete}
+        </Tooltip>
       </Button>
     </>
   );

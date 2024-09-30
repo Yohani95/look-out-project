@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import Moneda from '../world/Moneda';
 
 class TarifarioVentaLicencia {
   id: number | null;
@@ -9,6 +10,9 @@ class TarifarioVentaLicencia {
   valor: number | null;
   idLicencia: number | null;
   idVentaLicencia: number | null;
+  idMoneda: number | null;
+  // Other properties...
+  moneda: Moneda | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.idMarcaLicencia = data?.idMarcaLicencia || null;
@@ -20,6 +24,8 @@ class TarifarioVentaLicencia {
     this.valor = data?.valor || null;
     this.idLicencia = data?.idLicencia || null;
     this.idVentaLicencia = data?.idVentaLicencia || null;
+    this.idMoneda = data?.idMoneda || null;
+    this.moneda = data?.moneda || null;
   }
 
   static getValidationSchema(t: any) {
@@ -69,6 +75,11 @@ class TarifarioVentaLicencia {
         accessorKey: 'valor',
         header: t.Common.amount,
         size: 50,
+      },
+      {
+        accessorKey: 'moneda.monNombre',
+        header: `${t.Ficha.type} ${t.Common.currency}`,
+        size: 100,
       },
       {
         accessorKey: 'actions',

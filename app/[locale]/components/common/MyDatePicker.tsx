@@ -1,49 +1,99 @@
 'use client';
-import React from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import React, { useEffect } from 'react';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import {
+  DatePicker,
+  DateTimePicker,
+  LocalizationProvider,
+} from '@mui/x-date-pickers';
 import { es, ptBR, enUS } from 'date-fns/locale';
 import { useLocale } from 'next-intl';
+import { PopperProps } from '@mui/material';
+interface DatePickerFieldProps {
+  title?: string;
+  selectedDate: Date | null;
+  onChange: (date: Date | null) => void;
+  labelClassName?: string;
+  divClassName?: string;
+  preOption?: string;
+  isRequired?: boolean;
+  withTime?: boolean;
+  isRead?: boolean;
+}
 
 const locales = {
   es: es,
   en: enUS,
   br: ptBR,
 };
-const timeCaptions = {
-  es: 'Hora',
-  en: 'Time',
-  br: 'Hora',
-};
-function MyDatePicker({
-  onChange,
+
+const DatePickerField: React.FC<DatePickerFieldProps> = ({
+  title = 'Select Date',
   selectedDate,
+  onChange,
+  labelClassName = '',
+  divClassName = '',
+  preOption = 'Select Date',
+  isRequired = true,
+  withTime = false,
   isRead = false,
-  title,
-  locale = 'en',
-  shouldBeRequired = true,
-  withTime = false, // Nuevo flag para indicar si se debe seleccionar la hora
-}) {
+}) => {
   const idioma = useLocale();
-  const selectedLocale = locales[idioma];
-  const selectedTimeCaption = timeCaptions[idioma] || 'Time';
-
+  const selectedLocale = locales[idioma] || enUS;
+  useEffect(() => {}, [selectedDate]);
+  const popperSx: PopperProps['sx'] = {
+    '& .MuiPaper-root': {
+      minWidth: '300px', // Ancho mínimo del cuadro del selector
+      maxHeight: '400px', // Altura máxima para el cuadro del selector de tiempo
+      overflowY: 'auto', // Agrega un scroll dentro del selector
+      zIndex: 1300, // Asegura que se muestre sobre otros elementos
+    },
+  };
   return (
-    <DatePicker
-      className="form-control form-select"
-      selected={selectedDate}
-      onChange={onChange}
-      placeholderText={title || 'Date'}
-      dateFormat={withTime ? 'dd/MM/yyyy HH:mm aa' : 'dd/MM/yyyy'} // Cambia el formato basado en el flag
-      showTimeSelect={withTime} // Muestra la selección de hora si withTime es true
-      timeFormat="HH:mm" // Formato de la hora (solo si withTime es true)
-      timeIntervals={15} // Intervalos de 15 minutos (solo si withTime es true)
-      //required={shouldBeRequired}
-      timeCaption={selectedTimeCaption} // Texto dinámico según el idioma
-      readOnly={isRead}
-      locale={selectedLocale}
-    />
+    <>
+      <div className={divClassName}>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          adapterLocale={selectedLocale}
+        >
+          {withTime ? (
+            <DateTimePicker
+              label={title} // Usa el título proporcionado
+              value={selectedDate}
+              onChange={(date) => onChange(date)}
+              readOnly={isRead}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  required: isRequired,
+                  variant: 'outlined',
+                  sx: { backgroundColor: '#fff', borderRadius: '4px' },
+                },
+                popper: {
+                  sx: popperSx, // Aplicar los estilos personalizados al popper
+                },
+              }}
+              ampm={false} // Utilizar formato de 24 horas
+            />
+          ) : (
+            <DatePicker
+              label={title} // Usa el título proporcionado
+              value={selectedDate}
+              onChange={(date) => onChange(date)}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  required: isRequired,
+                  variant: 'outlined',
+                  sx: { backgroundColor: '#fff', borderRadius: '4px' },
+                },
+              }}
+            />
+          )}
+        </LocalizationProvider>
+      </div>
+    </>
   );
-}
-
-export default MyDatePicker;
+};
+export default DatePickerField;

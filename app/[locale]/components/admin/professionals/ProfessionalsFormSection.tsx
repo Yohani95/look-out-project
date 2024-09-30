@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 import {
   handleSelectChange,
   handleInputChange,
-} from "@/app/[locale]/utils/Form/UtilsForm";
-import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
-import SelectField from "@/app/[locale]/components/common/SelectField";
+} from '@/app/[locale]/utils/Form/UtilsForm';
+import MyDatePicker from '@/app/[locale]/components/common/MyDatePicker';
+import SelectField from '@/app/[locale]/components/common/SelectField';
 function ProfessionalsFormSection({
   t,
   formData,
@@ -82,7 +82,6 @@ function ProfessionalsFormSection({
             name="perIdNacional"
             value={formData.perIdNacional}
             onChange={handleInputChange(formData, setFormData)}
-            required
           />
           {formik?.errors && formik.errors.perIdNacional && (
             <div className="error-message">{formik.errors.perIdNacional}</div>
@@ -102,6 +101,7 @@ function ProfessionalsFormSection({
               setFormData({ ...formData, perFechaNacimiento: date })
             }
             title={t.Common.date}
+            isRequired={false}
           />
           {formik?.errors && formik.errors.perFechaNacimiento && (
             <div className="error-message">
@@ -115,7 +115,7 @@ function ProfessionalsFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "paiId", setFormData)}
+          onChange={(e) => handleSelectChange(e, 'paiId', setFormData)}
           selectedValue={formData.paiId}
         />
         {formik?.errors && formik.errors.paiId && (

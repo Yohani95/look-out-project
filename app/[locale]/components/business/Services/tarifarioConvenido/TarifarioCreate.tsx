@@ -1,17 +1,20 @@
-import React from "react";
-import TarifarioConvenido from "@/app/api/models/proyecto/TarifarioConvenido";
-import { useFormik } from "formik";
-import TarifarioForm from "./TarifarioForm";
-import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
-import { tarifarioApiUrl } from "@/app/api/apiConfig";
-import { EditAction, tagAction } from "../../../admin/professionals/ProfessionalsActions";
-import TarifarioSearch from "@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioSearch";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { useRouter } from "next/navigation";
-function TarifarioCreate({ t, data, idService,proyecto }) {
-  const router=useRouter()
+import React from 'react';
+import TarifarioConvenido from '@/app/api/models/proyecto/TarifarioConvenido';
+import { useFormik } from 'formik';
+import TarifarioForm from './TarifarioForm';
+import { handleFormSubmit } from '@/app/[locale]/utils/Form/UtilsForm';
+import { tarifarioApiUrl } from '@/app/api/apiConfig';
+import {
+  EditAction,
+  tagAction,
+} from '../../../admin/professionals/ProfessionalsActions';
+import TarifarioSearch from '@/app/[locale]/components/business/Services/tarifarioConvenido/TarifarioSearch';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { useRouter } from 'next/navigation';
+function TarifarioCreate({ t, data, idService, proyecto }) {
+  const router = useRouter();
   const apiurl = {
-    edit: "",
+    edit: '',
     create: tarifarioApiUrl,
   };
   const validationSchema = TarifarioConvenido.getValidationSchema(t);
@@ -23,10 +26,10 @@ function TarifarioCreate({ t, data, idService,proyecto }) {
         values.prpId = idService;
         values.tcMoneda = proyecto.monId;
         await handleFormSubmit(values, t, null, false, null, apiurl, 0);
-        tagAction("tarifas")
-        router.refresh()
+        tagAction('tarifas');
+        router.refresh();
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
         //EditAction();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
@@ -37,7 +40,7 @@ function TarifarioCreate({ t, data, idService,proyecto }) {
     <>
       <form
         action={(e) => {
-          formik.handleSubmit(e);
+          formik.handleSubmit();
         }}
       >
         <TarifarioForm

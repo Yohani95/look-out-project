@@ -20,6 +20,7 @@ import Persona from '@/app/api/models/admin/Persona';
 import ClientePersona from '@/app/api/models/cuenta/ClientePersona';
 import { ClientePersonaApiUrl } from '@/app/api/apiConfig';
 import { handleSelectChange } from '../../utils/Form/UtilsForm';
+import { Form } from 'react-bootstrap';
 function ContactInfoSection({
   t,
   formData,
@@ -103,22 +104,19 @@ function ContactInfoSection({
         </div>
       </div>
       <div className=" mb-3 row align-items-center">
-        {/* <label
-          htmlFor="persona.perIdNacional"
-          className="col-sm-1 col-form-label"
-        >
-          DNI
+        <label htmlFor="cargo" className="col-sm-1 col-form-label">
+          {`${t.Ficha.position}`}
         </label>
         <div className="col-sm-3">
           <input
             type="text"
             className="form-control"
-            id="persona.perIdNacional"
-            name="persona.perIdNacional"
-            value={formData.persona.perIdNacional}
+            id="persona.cargo"
+            name="persona.cargo"
+            value={formData.persona.cargo}
             onChange={handleInputChange(formData, setFormData)}
           />
-        </div> */}
+        </div>
         <label htmlFor="perApellidoMaterno" className="col-sm-1 col-form-label">
           {t.Common.birthDay}
         </label>
@@ -139,7 +137,7 @@ function ContactInfoSection({
               }));
             }}
             title={t.Common.date}
-            shouldBeRequired={false}
+            isRequired={false}
           />
         </div>
         <SelectField
@@ -168,7 +166,7 @@ function ContactInfoSection({
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) => handleSelectChange(e, 'idCliente', setFormData)}
-          isRequired={false}
+          isRequired={true}
           selectedValue={formData.idCliente}
         />
       </div>
@@ -244,7 +242,7 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
           setFormData((prevData) => ({
             ...prevData,
             clientePersona: filteredData,
-            idCliente: filteredData.cliId,
+            idCliente: filteredData?.cliId,
           }));
         })
         .then(() => {
@@ -274,18 +272,20 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
     <form onSubmit={handleSubmit}>
       <fieldset disabled={!isCreate && !isEdit ? true : false}>
         {isCreate || isEdit ? (
-          <h4>{isEdit ? t.Common.contacts : t.Nav.contacts.create}</h4>
-        ) : (
           <h4>
-            {t.Common.edit}
-            {t.Common.contact}
+            {isEdit
+              ? `${t.Common.edit} ${t.Common.contact}`
+              : t.Nav.contacts.create}
           </h4>
+        ) : (
+          <h4>{t.Common.contact}</h4>
         )}
         <ContactInfoSection
           t={t}
           formData={formData}
           setFormData={setFormData}
           idPerson={idPerson}
+          setLoading={{}}
         />
 
         <EmailSection

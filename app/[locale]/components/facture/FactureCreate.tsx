@@ -154,32 +154,44 @@ const FactureCreate: React.FC<FactureProps> = ({
     await Utils.handleOnSubmit(t, deleteFacturaPeriodo, facturaId);
   };
   const memoizedFacturaActions = useMemo(() => {
-    return facturas.map((factura) => ({
-      ...FacturaPeriodo.transformFacturaPeriodoData(factura),
-      actions: (
-        <>
-          <Button
-            variant="link"
-            type="button"
-            onClick={() => handleDelete(factura.id)}
-            disabled={
-              factura.idEstado != FacturaPeriodo.ESTADO_FACTURA.PENDIENTE
-            }
-          >
-            <FaTrash size={16} className="my-anchor-element" />
-          </Button>
-          <Button
-            variant="link"
-            type="button"
-            onClick={() => downloadDocumento(factura.documentosFactura)}
-            disabled={factura.documentosFactura.length === 0}
-          >
-            <FaFileDownload size={16} className="descargar" />
-            <Tooltip anchorSelect=".descargar">{t.Common.downloadFile}</Tooltip>
-          </Button>
-        </>
-      ),
-    }));
+    return facturas.map((factura) => {
+      // Generamos IDs únicos para cada acción en la fila de la factura
+      const deleteId = `delete-${factura.id}`;
+      const downloadId = `download-${factura.id}`;
+
+      return {
+        ...FacturaPeriodo.transformFacturaPeriodoData(factura),
+        actions: (
+          <>
+            <Button
+              variant="link"
+              type="button"
+              onClick={() => handleDelete(factura.id)}
+              disabled={
+                factura.idEstado != FacturaPeriodo.ESTADO_FACTURA.PENDIENTE
+              }
+            >
+              <FaTrash size={16} id={deleteId} />
+            </Button>
+            <Tooltip anchorSelect={`#${deleteId}`} place="top">
+              {t.Common.delete}
+            </Tooltip>
+
+            <Button
+              variant="link"
+              type="button"
+              onClick={() => downloadDocumento(factura.documentosFactura)}
+              disabled={factura.documentosFactura.length === 0}
+            >
+              <FaFileDownload size={16} id={downloadId} />
+            </Button>
+            <Tooltip anchorSelect={`#${downloadId}`} place="top">
+              {t.Common.downloadFile}
+            </Tooltip>
+          </>
+        ),
+      };
+    });
   }, [facturas, t]);
   const handleChangeEstado = async () => {
     await showLoadingNotification();

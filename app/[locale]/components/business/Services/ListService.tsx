@@ -1,50 +1,31 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
+'use client';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   handleEdit,
   handleDelete,
   fetchProyecto,
   handleView,
   downloadFiles,
-} from "@/app/[locale]/utils/business/UtilsService";
-import ServiceButtons from "@/app/[locale]/components/business/ServiceButtons";
-import ErroData from "@/app/[locale]/components/common/ErroData";
-import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import { useRouter } from "next/navigation";
-import TableCommon from "@/app/[locale]/components/common/TableCommon";
-import { FaCheck, FaTimes } from "react-icons/fa";
+} from '@/app/[locale]/utils/business/UtilsService';
+import ErroData from '@/app/[locale]/components/common/ErroData';
+import LoadingData from '@/app/[locale]/components/common/LoadingData';
+import { useRouter } from 'next/navigation';
+import TableMaterialUI from '../../common/TablaMaterialUi';
+import Proyecto from '@/app/api/models/proyecto/Proyecto';
+import ServiceButtons from '../ServiceButtons';
+const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function ListService({ locale }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState([]);
   let t = require(`@/messages/${locale}.json`);
   const router = useRouter();
-  const columns = [
-    { title: t.Common.correlative, key: "pryId" },
-    { title: t.Common.name, key: "pryNombre" },
-    { title: t.Common.account, key: "account" },
-    { title: t.Account.type + " " + t.Account.business, key: "type" },
-    { title: t.business.estimatedStartDate, key: "pryFechaInicioEstimada" },
-    { title: t.business.estimatedClosingDate, key: "pryFechaCierreEstimada" },
-    {
-      title: t.Account.select,
-      key: "actions",
-      render: (item) => (
-        <ServiceButtons
-          id={item.pryId}
-          onDelete={() => handleDelete(item.pryId, t, fetchList)}
-          onEdit={() => handleEdit(item.pryId, t, router.push)}
-          onView={() => handleView(item.pryId, router.push)}
-          downloadFile={() => downloadFiles(item.pryId, t)}
-          t={t}
-        />
-      ),
-    },
-  ];
+  const columns = useMemo(() => Proyecto.createColumns(t), [t]);
+
   function formatDate(inputDate) {
     const date = new Date(inputDate);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
 
     return `${day}/${month}/${year}`;
@@ -58,7 +39,7 @@ function ListService({ locale }) {
         pryFechaInicioEstimada: formatDate(item.pryFechaInicioEstimada),
         pryFechaCierreEstimada: formatDate(item.pryFechaCierreEstimada),
         type: item.tipoServicio.tseDescripcion,
-        account:item.cliente.cliNombre
+        account: item.cliente.cliNombre,
         //     item.per.perNombres + " " + item.per.perApellidoPaterno || "N/A", // Reemplazar con "N/A" si es nulo
         //     cliId:
         //     item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo
@@ -77,6 +58,23 @@ function ListService({ locale }) {
   useEffect(() => {
     fetchList();
   }, []);
+  const memoizedActions = useMemo(() => {
+    return data.map((item) => ({
+      ...item,
+      actions: (
+        <>
+          <ServiceButtons
+            id={item.pryId}
+            onDelete={() => handleDelete(item.pryId, t, fetchList)}
+            onEdit={() => handleEdit(item.pryId, t, router.push)}
+            onView={() => handleView(item.pryId, router.push)}
+            downloadFile={() => downloadFiles(item.pryId, t)}
+            t={t}
+          />
+        </>
+      ),
+    }));
+  }, [data, t]);
   return (
     <>
       {isLoading ? (
@@ -88,13 +86,7 @@ function ListService({ locale }) {
           <h4>{t.Ficha.business}</h4> {t.Common.noData}
         </div>
       ) : (
-        <TableCommon
-          columns={columns}
-          noResultsFound={t.Common.noResultsFound}
-          data={data}
-          title={t.Ficha.business}
-          search={t.Account.table.search}
-        />
+        <MemoizedTableMaterialUI columns={columns} data={memoizedActions} />
       )}
     </>
   );

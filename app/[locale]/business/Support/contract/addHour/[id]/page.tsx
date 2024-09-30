@@ -1,6 +1,6 @@
 import React from 'react';
 import BasePages from '@/app/[locale]/components/common/BasePages';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import { GetData } from '@/app/[locale]/utils/business/UtilsService';
 import TipoFacturacion from '@/app/api/models/factura/TipoFacturacion';
 import { getAllTipoFacturacion } from '@/app/api/actions/factura/TipoFacturacionActions';
@@ -17,13 +17,12 @@ import ContractHorasUtilizadas from '@/app/[locale]/components/support/contract/
 import { getAllHorasByIdSoporte } from '@/app/api/actions/soporte/HorasUtilizadasActions';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
-  const tiposFacturas = (await getAllTipoFacturacion()) as TipoFacturacion[];
+  const tiposFacturas = await getAllTipoFacturacion();
   const data = await GetData();
-  const diaPagos = (await getAllDiaPagos()) as DiaPagos[];
-  const empresaPrestadora =
-    (await getAllEmpresaPrestadora()) as EmpresaPrestadora[];
+  const diaPagos = await getAllDiaPagos();
+  const empresaPrestadora = await getAllEmpresaPrestadora();
   data.tiposFacturas = tiposFacturas.map((tipoFactura) => {
     return new TipoFacturacion(tipoFactura).getSelectOptions();
   });
@@ -33,10 +32,15 @@ async function page({ params }) {
   data.empresaPrestadora = empresaPrestadora.map((empresa) => {
     return new EmpresaPrestadora(empresa).getSelectOptions();
   });
-  data.soporte = (await GetAllEntitiesById(params.id)) as Soporte;
-  data.horasUtilizadas = (await getAllHorasByIdSoporte(
-    params.id
-  )) as HorasUtilizadas[];
+  // Asumiendo que GetAllEntitiesById retorna una sola entidad
+  const soporteData = await GetAllEntitiesById(params.id);
+  data.soporte = soporteData ? { ...soporteData } : null;
+
+  // Asegurar que horasUtilizadas sean objetos planos
+  const horasUtilizadasData = await getAllHorasByIdSoporte(params.id);
+  data.horasUtilizadas = horasUtilizadasData.map((hora) => ({
+    ...hora,
+  }));
   return (
     <BasePages title={t.Common.supports}>
       <ContractHorasUtilizadas t={t} data={data} />

@@ -1,12 +1,12 @@
-import * as Yup from "yup";
-import Cliente from "../cuenta/Cliente";
-import TipoServicio from "./TipoServicio";
-import Pais from "../world/Pais";
-import Persona from "../admin/Persona";
-import TipoFacturacion from "../factura/TipoFacturacion";
+import * as Yup from 'yup';
+import Cliente from '../cuenta/Cliente';
+import TipoServicio from './TipoServicio';
+import Pais from '../world/Pais';
+import Persona from '../admin/Persona';
+import TipoFacturacion from '../factura/TipoFacturacion';
 import { format } from 'date-fns';
-import EmpresaPrestadora from "./EmpresaPrestadora";
-import DiaPagos from "../factura/DiaPagos";
+import EmpresaPrestadora from './EmpresaPrestadora';
+import DiaPagos from '../factura/DiaPagos';
 class Proyecto {
   pryId: number | null;
   pryNombre: string | null;
@@ -31,13 +31,13 @@ class Proyecto {
   facturacionDiaHabil: number | null;
   idTipoFacturacion: number | null;
   tipoFacturacion: TipoFacturacion | null;
-  idDiaPago: number| null;
-  idEmpresaPrestadora:number|null;
+  idDiaPago: number | null;
+  idEmpresaPrestadora: number | null;
   empresaPrestadora: EmpresaPrestadora | null;
-  diaPagos:DiaPagos| null;
-  constructor(data: any) {
+  diaPagos: DiaPagos | null;
+  constructor(data?: any) {
     this.pryId = data?.pryId || 0;
-    this.pryNombre = data?.pryNombre || "";
+    this.pryNombre = data?.pryNombre || '';
     this.prpId = data?.prpId || null;
     this.epyId = data?.epyId || null;
     this.tseId = data?.tseId || 0;
@@ -52,15 +52,15 @@ class Proyecto {
     this.facturacionDiaHabil = data?.facturacionDiaHabil || 0;
     this.idTipoFacturacion = data?.idTipoFacturacion || 0;
     this.idDiaPago = data?.idDiaPago || 0;
-    this.idEmpresaPrestadora= data?.idEmpresaPrestadora || 0;
-    this.empresaPrestadora=data?.empresaPrestadora|| null;
+    this.idEmpresaPrestadora = data?.idEmpresaPrestadora || 0;
+    this.empresaPrestadora = data?.empresaPrestadora || null;
     //objetos
     this.cliente = data?.cliente || null;
     this.tipoServicio = data?.tipoServicio || null;
     this.pais = data?.pais || null;
     this.contacto = data?.contacto || null;
     this.tipoFacturacion = data?.tipoFacturacion || null;
-    this.diaPagos=data?.diaPagos|| null;
+    this.diaPagos = data?.diaPagos || null;
     // Manejo de fechas
     this.pryFechaInicioEstimada = this.isValidDate(data?.pryFechaInicioEstimada)
       ? new Date(data.pryFechaInicioEstimada)
@@ -106,37 +106,37 @@ class Proyecto {
   static createColumns(t: any) {
     return [
       {
-        accessorKey: "pryId",
+        accessorKey: 'pryId',
         header: t.Common.correlative,
         size: 50,
       },
       {
-        accessorKey: "pryNombre",
+        accessorKey: 'pryNombre',
         header: t.Common.name,
-        size: 150,
+        size: 100,
       },
       {
-        accessorKey: "tipoServicio.tseDescripcion",
+        accessorKey: 'account',
         header: t.Common.account,
-        size: 150,
+        size: 100,
       },
       {
-        accessorKey: "cliente.cliNombre",
-        header: t.Account.type + " " + t.Account.business,
-        size: 150,
+        accessorKey: 'type',
+        header: `${t.Account.type} ${t.Account.business}`,
+        size: 100,
       },
       {
-        accessorKey: "_pryFechaInicioEstimada",
+        accessorKey: 'pryFechaInicioEstimada',
         header: t.business.estimatedStartDate,
-        size: 150,
+        size: 100,
       },
       {
-        accessorKey: "_pryFechaCierreEstimada",
+        accessorKey: 'pryFechaCierreEstimada',
         header: t.business.estimatedClosingDate,
-        size: 150,
+        size: 100,
       },
       {
-        accessorKey: "actions",
+        accessorKey: 'actions',
         header: t.Common.actions,
         size: 100,
       },
@@ -144,14 +144,18 @@ class Proyecto {
     ];
   }
   public getFechaString(date: Date | null): string | null {
-    return date ? format(new Date(date), 'dd/MM/yyyy') : "N/A";
+    return date ? format(new Date(date), 'dd/MM/yyyy') : 'N/A';
   }
   static transformFacturaPeriodoData(proyecto: any) {
     const proyectoInstance = new Proyecto(proyecto);
     return {
       ...proyecto,
-      _pryFechaInicioEstimada: proyectoInstance.getFechaString(proyecto.pryFechaInicioEstimada),
-      _pryFechaCierreEstimada: proyectoInstance.getFechaString(proyecto.pryFechaCierreEstimada),
+      _pryFechaInicioEstimada: proyectoInstance.getFechaString(
+        proyecto.pryFechaInicioEstimada
+      ),
+      _pryFechaCierreEstimada: proyectoInstance.getFechaString(
+        proyecto.pryFechaCierreEstimada
+      ),
     };
   }
 }

@@ -1,49 +1,51 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import TableCommon from "@/app/[locale]/components/common/TableCommon";
-import ErroData from "@/app/[locale]/components/common/ErroData";
-import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import { Tooltip } from "react-tooltip";
+'use client';
+import React, { useState, useEffect, useMemo } from 'react';
+import TableCommon from '@/app/[locale]/components/common/TableCommon';
+import ErroData from '@/app/[locale]/components/common/ErroData';
+import LoadingData from '@/app/[locale]/components/common/LoadingData';
+import { Tooltip } from 'react-tooltip';
 //import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { Button } from "react-bootstrap";
+import { Button } from 'react-bootstrap';
 import {
   FaPlus,
   FaTimes,
   FaToggleOff,
   FaToggleOn,
   FaCheck,
-} from "react-icons/fa";
-import { useFormik } from "formik";
+} from 'react-icons/fa';
+import { useFormik } from 'formik';
 import {
   handleDelete,
   fetchParticipanteByIdProyecto,
-} from "@/app/[locale]/utils/business/UtilsParticipants";
-import Persona from "@/app/api/models/admin/Persona";
-import { useRouter } from "next/navigation";
-import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
+} from '@/app/[locale]/utils/business/UtilsParticipants';
+import Persona from '@/app/api/models/admin/Persona';
+import { useRouter } from 'next/navigation';
+import BoxInfo from '@/app/[locale]/components/common/BoxInfo';
 import {
   validarRut,
   formatearRut,
   quitarPuntosRut,
-} from "@/app/[locale]/utils/Common/UtilsChilePersonas";
-import { Constantes } from "@/app/api/models/common/Constantes";
+} from '@/app/[locale]/utils/Common/UtilsChilePersonas';
+import { Constantes } from '@/app/api/models/common/Constantes';
 import {
   participanteApiUrl,
   personTipoPersonaApiUrl,
-} from "@/app/api/apiConfig";
-import ParticipanteForm from "../proyectoParticipante/ParticipanteForm";
-import ProyectoParticipante from "@/app/api/models/proyecto/ProyectoParticipante";
-import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
-import SelectField from "../../common/SelectField";
-import PeriodosCreate from "./periodos/PeriodosCreate";
-import PeriodosProyecto from "@/app/api/models/proyecto/PeriodosProyecto";
-function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
+} from '@/app/api/apiConfig';
+import ParticipanteForm from '../proyectoParticipante/ParticipanteForm';
+import ProyectoParticipante from '@/app/api/models/proyecto/ProyectoParticipante';
+import { handleFormSubmit } from '@/app/[locale]/utils/Form/UtilsForm';
+import SelectField from '../../common/SelectField';
+import PeriodosCreate from './periodos/PeriodosCreate';
+import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
+import TableMaterialUI from '../../common/TablaMaterialUi';
+const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
+function ProfessionalForm({ idService, t, perfiles, proyecto }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [tablaCommon, setTablaCommon] = useState([]);
   const [data, setData] = useState([]);
   const [perfilOptions, setPerfilOptions] = useState([]);
-  const [periodo, setPeriodo] = useState("");
+  const [periodo, setPeriodo] = useState('');
   const [periodoModel, setPeriodoModel] = useState(new PeriodosProyecto());
   const [professionals, setProfessionalsOptions] = useState([]);
   const router = useRouter();
@@ -51,61 +53,55 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     edit: participanteApiUrl,
     create: participanteApiUrl,
   };
-  const columns = [
-    { title: "ID", key: "idParticipante" },
-    { title: t.Common.rut, key: "perIdNacional" },
-    { title: t.Common.name, key: "perNombre" },
-    { title: t.Common.profile, key: "perfil" },
-    { title: t.Common.dateAssignment, key: "fechaAsignacion" },
-    { title: t.project.dateEnd, key: "fechaTermino" },
-    { title: t.Common.fee, key: "perTarifa" },
-    { title: t.Common.status, key: "estado" },
-    {
-      title: t.Account.action, // Título de la columna de acciones
-      key: "actions",
-      render: (item) => (
-        <>
-          <Button size="sm" variant="link" disabled={compararFechasPeriodo()}>
-            {item.status == true ? (
-              <>
-                <FaToggleOff
-                  size={16}
-                  className="my-anchor-element" // Clase para el elemento ancla
-                  onClick={() => handleUnAssing(item.data, t)} // Acción del botón
-                />
-                <Tooltip anchorSelect=".my-anchor-element" place="top">
-                  {t.Common.unassign}
-                </Tooltip>
-              </>
-            ) : (
-              <>
-                <FaToggleOn
-                  size={16}
-                  className="my-anchor" // Clase para el elemento ancla
-                  onClick={() => handleUnAssing(item.data, t, false)} // Acción del botón
-                />
-                <Tooltip anchorSelect=".my-anchor" place="top">
-                  {t.Common.reassign}
-                </Tooltip>
-              </>
-            )}
-          </Button>
-          <Button
-            size="sm"
-            variant="link"
-            onClick={() =>
-              router.push(`/service/createNovelty/${idService}/${item.id}`)
-            }
-          >
-            <FaPlus size={16} className="my-novedad" />
-            <Tooltip anchorSelect=".my-novedad" place="top">
-              {t.Nav.services.createNovelty}
-            </Tooltip>
-          </Button>
-        </>
-      ),
-    },
-  ];
+  const columns = useMemo(() => {
+    return [
+      {
+        accessorKey: 'idParticipante',
+        header: 'ID',
+        size: 50,
+      },
+      {
+        accessorKey: 'perIdNacional',
+        header: t.Common.rut,
+        size: 100,
+      },
+      {
+        accessorKey: 'perNombre',
+        header: t.Common.name,
+        size: 150,
+      },
+      {
+        accessorKey: 'perfil',
+        header: t.Common.profile,
+        size: 100,
+      },
+      {
+        accessorKey: 'fechaAsignacion',
+        header: t.Common.dateAssignment,
+        size: 100,
+      },
+      {
+        accessorKey: 'fechaTermino',
+        header: t.project.dateEnd,
+        size: 100,
+      },
+      {
+        accessorKey: 'perTarifa',
+        header: t.Common.fee,
+        size: 100,
+      },
+      {
+        accessorKey: 'estado',
+        header: t.Common.status,
+        size: 100,
+      },
+      {
+        accessorKey: 'actions',
+        header: t.Account.action,
+        size: 100,
+      },
+    ];
+  }, [t]);
   const fetchData = async () => {
     try {
       await fetchParticipanteByIdProyecto(idService).then((profesionales) => {
@@ -118,21 +114,21 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
           perNombre: new Persona(element.persona).getNombreCompleto(),
           fechaAsignacion: element.fechaAsignacion
             ? new Date(element.fechaAsignacion).toLocaleDateString()
-            : "N/A",
+            : 'N/A',
           fechaTermino: element.fechaTermino
             ? new Date(element.fechaTermino).toLocaleDateString()
-            : "N/A",
+            : 'N/A',
           status: element.estado,
           data: element,
           estado: element.estado ? (
-            <FaCheck style={{ color: "green" }} />
+            <FaCheck style={{ color: 'green' }} />
           ) : (
-            <FaTimes style={{ color: "red" }} />
+            <FaTimes style={{ color: 'red' }} />
           ),
         }));
         setTablaCommon([...nuevosElementosTabla]);
         setData([...nuevosElementosTabla]);
-        if (periodo === "") {
+        if (periodo === '') {
           const periodosTotal = calculatePeriods();
           setPeriodo(periodosTotal[0]?.value);
         } else {
@@ -168,17 +164,8 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
   }, [perfiles]);
   const handleUnAssing = async (item, t, unassing = true) => {
     try {
-      const participante = new ProyectoParticipante(
-        item.ppaId,
-        item.pryId,
-        item.perId,
-        item.carId,
-        item.perTarifa,
-        item.prfId,
-        item.fechaAsignacion,
-        item.fechaTermino,
-        item.estado
-      );
+      const participante = new ProyectoParticipante(item);
+      console.log(participante);
       if (unassing) {
         participante.estado = 0;
       }
@@ -195,18 +182,18 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
         //handle(periodo);
       });
     } catch (error) {
-      console.error("Ocurrió un error o la eliminación se canceló:", error);
+      console.error('Ocurrió un error o la eliminación se canceló:', error);
     }
   };
-  const validateRules = ProyectoParticipante.validationRules(t);
+  const validationSchema = ProyectoParticipante.validationRules(t);
   const formik = useFormik({
     initialValues: new ProyectoParticipante(),
-    validateRules,
+    validationSchema, // Usar 'validate' si es una función
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
-        console.log(perfiles)
+        console.log(perfiles);
         values.perTarifa = perfiles.find(
           (tarifario) => tarifario.tcId == values.tarifarioId
         )?.tcTarifa;
@@ -217,9 +204,8 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
         await handleFormSubmit(values, t, null, false, null, apiurl);
         fetchData();
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
-        EditAction();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
     },
@@ -228,15 +214,15 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     const startDate = new Date(proyecto.pryFechaInicioEstimada);
     const endDate = new Date(proyecto.pryFechaCierreEstimada);
     const cutoffDate = parseInt(proyecto.fechaCorte, 10);
-    
+
     const periods = [];
     let currentDate = new Date(startDate);
-    
+
     while (currentDate <= endDate) {
       let year = currentDate.getFullYear();
       let month = currentDate.getMonth();
       let daysInMonth = new Date(year, month + 1, 0).getDate(); // Obtener el número de días en el mes
-      
+
       // Determinar el día límite según el mes y año actual
       let periodEndDate;
       if (cutoffDate > daysInMonth) {
@@ -246,7 +232,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
         // Si el día de corte es válido para el mes, usarlo
         periodEndDate = new Date(year, month, cutoffDate);
       }
-  
+
       // Si la fecha de corte es antes de la fecha de inicio, ajustar al próximo mes
       if (periodEndDate < currentDate) {
         month++;
@@ -255,57 +241,68 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
           year++;
         }
         daysInMonth = new Date(year, month + 1, 0).getDate();
-        periodEndDate = new Date(year, month, Math.min(cutoffDate, daysInMonth));
+        periodEndDate = new Date(
+          year,
+          month,
+          Math.min(cutoffDate, daysInMonth)
+        );
       }
-  
+
       // Si la fecha de corte excede la fecha de cierre, ajustar al día de cierre
       if (periodEndDate > endDate) {
         periodEndDate = new Date(endDate);
       }
-      
+
       const formattedStartDate = currentDate.toLocaleDateString();
       const formattedEndDate = periodEndDate.toLocaleDateString();
-      
+
       periods.push({
         key: `${periods.length + 1}`,
         label: `${formattedStartDate} - ${formattedEndDate}`,
         value: `${currentDate.toISOString()} - ${periodEndDate.toISOString()}`,
       });
-      
+
       // Establecer el día después del final del período actual como base para el próximo periodo
-      currentDate = new Date(periodEndDate.getFullYear(), periodEndDate.getMonth(), periodEndDate.getDate() + 1);
+      currentDate = new Date(
+        periodEndDate.getFullYear(),
+        periodEndDate.getMonth(),
+        periodEndDate.getDate() + 1
+      );
     }
     return periods;
   };
-  
+
   const handle = (selectedOption) => {
-    if (selectedOption == ""|| selectedOption==null) {
+    if (selectedOption == '' || selectedOption == null) {
       setTablaCommon(data); // Establecer la data completa
       return;
     }
-    const [startDateStr, endDateStr] = selectedOption.split(" - ");
+    const [startDateStr, endDateStr] = selectedOption.split(' - ');
     const startDate = new Date(startDateStr);
     const endDate = new Date(endDateStr);
     const filteredData = data.filter((item) => {
       const fechaAsignacion = new Date(item.data.fechaAsignacion);
       const fechaTermino = item.data.fechaTermino;
-  
+
       if (fechaTermino === 'N/A' || fechaTermino === null) {
         // Si Fecha Término es 'N/A' o nula, verificar Fecha Asignación en el rango
         return fechaAsignacion <= endDate;
       }
-  
+
       const fechaTerminoDate = new Date(fechaTermino);
-  
+
       if (fechaAsignacion <= endDate && fechaTerminoDate >= startDate) {
         return true; // El rango de fechas se superpone, incluir elemento
       }
-  
+
       return false;
     });
 
     const numeroParticipantes = filteredData.length;
-    const totalTarifa = filteredData.reduce((total, item) => total + item.perTarifa, 0);
+    const totalTarifa = filteredData.reduce(
+      (total, item) => total + item.perTarifa,
+      0
+    );
     // Actualizar el objeto periodoModel con los nuevos datos
     const updatedPeriodoModel = new PeriodosProyecto({
       pryId: idService, // Establecer el ID del proyecto
@@ -322,11 +319,11 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     handle(periodo); // Llamar a handle cuando periodo cambie
   }, [periodo]);
   const compararFechasPeriodo = () => {
-    if (!periodo || periodo==="") {
+    if (!periodo || periodo === '') {
       return true; // Si periodo es null o undefined, devuelve false
     }
 
-    const [_, endDateStr] = periodo.split(" - "); // Suponiendo que el formato es 'startDate - endDate'
+    const [_, endDateStr] = periodo.split(' - '); // Suponiendo que el formato es 'startDate - endDate'
     const endDate = new Date(endDateStr);
     const fechaActual = new Date(); // Obtener la fecha actual
 
@@ -341,6 +338,59 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
     }
     //return compararFechasPeriodo(); // Si ninguna condición se cumple, el botón se deja habilitado
   }
+  const memoizedActions = useMemo(() => {
+    return tablaCommon.map((item) => {
+      const unassignId = `unassign-tooltip-${item.id}`;
+      const reassignId = `reassign-tooltip-${item.id}`;
+      const noveltyId = `novelty-tooltip-${item.id}`;
+
+      return {
+        ...item,
+        actions: (
+          <>
+            <Button size="sm" variant="link" disabled={compararFechasPeriodo()}>
+              {item.status === true ? (
+                <>
+                  <FaToggleOff
+                    size={16}
+                    id={unassignId} // Usamos un ID único
+                    onClick={() => handleUnAssing(item.data, t)}
+                  />
+                  <Tooltip anchorSelect={`#${unassignId}`} place="top">
+                    {t.Common.unassign}
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <FaToggleOn
+                    size={16}
+                    id={reassignId} // Usamos un ID único
+                    onClick={() => handleUnAssing(item.data, t, false)}
+                  />
+                  <Tooltip anchorSelect={`#${reassignId}`} place="top">
+                    {t.Common.reassign}
+                  </Tooltip>
+                </>
+              )}
+            </Button>
+            <Button
+              size="sm"
+              variant="link"
+              onClick={() =>
+                router.push(`/service/createNovelty/${idService}/${item.id}`)
+              }
+            >
+              <FaPlus size={16} id={noveltyId} />
+              <Tooltip anchorSelect={`#${noveltyId}`} place="top">
+                {t.Nav.services.createNovelty}
+              </Tooltip>
+            </Button>
+          </>
+        ),
+      };
+    });
+  }, [tablaCommon, t]);
+
   return (
     <>
       <BoxInfo title={t.Common.professionals} startShow={true}>
@@ -376,7 +426,7 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
               className="text-end  btn btn-primary"
               disabled={compararFechasPeriodo()}
             >
-              {t.Common.add}{" "}
+              {t.Common.add}{' '}
             </button>
           </div>
         </form>
@@ -384,20 +434,15 @@ function ProfessionalForm({ isEdit, idService, t, perfiles, proyecto }) {
           <LoadingData loadingMessage={t.Common.loadingData} />
         ) : error ? (
           <ErroData message={t.Common.errorMsg} />
-        ) : tablaCommon.length == [] ? ( // Verifica si no hay datos
-          <div className="text-center justify-content-center align-items-center">
-            <h4>{t.Common.professionals}</h4> {t.Common.noData}
-          </div>
         ) : (
-          <TableCommon
-            columns={columns}
-            noResultsFound={t.Common.noResultsFound}
-            data={tablaCommon}
-            title=""
-            search={t.Account.table.search}
-          />
+          <TableMaterialUI columns={columns} data={memoizedActions} />
         )}
-        <PeriodosCreate t={t} periodo={periodoModel} isButtonDisabled={isButtonDisabled} idService={idService}/>
+        <PeriodosCreate
+          t={t}
+          periodo={periodoModel}
+          isButtonDisabled={isButtonDisabled}
+          idService={idService}
+        />
       </BoxInfo>
     </>
   );

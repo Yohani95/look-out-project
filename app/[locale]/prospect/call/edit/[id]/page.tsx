@@ -1,12 +1,12 @@
 import React from 'react';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import LlamadaProspectoEdit from '@/app/[locale]/components/prospecto/llamada/LlamadaProspectoEdit';
 import { getLlamadaProspectoById } from '@/app/actions/prospecto/LlamadaProspectoActions';
 import MedioLlamadaProspecto from '@/app/api/models/prospecto/MedioLlamadaProspecto';
 import { getAllMedioLlamadaProspecto } from '@/app/actions/prospecto/MedioLlamadaProspectoActions';
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData(params.id);
   return (

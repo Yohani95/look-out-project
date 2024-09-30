@@ -1,6 +1,6 @@
 import FactureCreate from '@/app/[locale]/components/facture/FactureCreate';
 import { GetAllEntitiesByIdLicense } from '@/app/api/actions/factura/FacturaPeriodoActions';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import React from 'react';
 import PeriodoGenerico from '@/app/api/models/factura/PeriodoGenerico';
 import TarifarioVentaLicencia from '@/app/api/models/licencia/TarifarioVentaLicencia';
@@ -9,7 +9,7 @@ import BasePages from '@/app/[locale]/components/common/BasePages';
 import { getAllTarifarioVentaLicenciaByIdLicencia } from '@/app/actions/licencia/TarifarioVentaLicencia';
 import { GetAllFacturaAdaptacionEntitiesByIdLicense } from '@/app/api/actions/factura/FacturaAdaptacionActions';
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData(params);
   const licencia = data.licencia;

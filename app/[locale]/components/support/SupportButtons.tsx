@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   FaTrash,
   FaEdit,
@@ -7,13 +7,13 @@ import {
   FaUserPlus,
   FaUserClock,
   FaRegClock,
-  FaFileInvoiceDollar
-} from "react-icons/fa";
-import { Button } from "react-bootstrap";
-import { Tooltip } from "react-tooltip";
-import { useRouter } from "next/navigation";
-import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import { Constantes } from "@/app/api/models/common/Constantes";
+  FaFileInvoiceDollar,
+} from 'react-icons/fa';
+import { Button } from 'react-bootstrap';
+import { Tooltip } from 'react-tooltip';
+import { useRouter } from 'next/navigation';
+import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
+import { Constantes } from '@/app/api/models/common/Constantes';
 function SupportButtons({ t, proyecto }) {
   const router = useRouter();
   const handleEdit = async (id, trans, push) => {
@@ -42,34 +42,63 @@ function SupportButtons({ t, proyecto }) {
   };
   return (
     <>
-      <Button size="sm" variant="link" onClick={() => { router.push(`/business/Support/contract/addHour/${proyecto.pryId}`) }}>
-        <FaRegClock size={16} className="my-anchor-user" />
-        <Tooltip anchorSelect=".my-anchor-user" place="top">
+      <Button
+        size="sm"
+        variant="link"
+        onClick={() => {
+          router.push(`/business/Support/contract/addHour/${proyecto.pryId}`);
+        }}
+      >
+        <FaRegClock size={16} id={`add-hour-tooltip-${proyecto.pryId}`} />
+        <Tooltip
+          anchorSelect={`#add-hour-tooltip-${proyecto.pryId}`}
+          place="top"
+        >
           {t?.Common.add} {t?.Common.hour}
         </Tooltip>
       </Button>
-      <Button size="sm" variant="link" onClick={() => handleEdit(proyecto.pryId, t, router.push)}>
-        <FaEdit size={16} className="my-anchor-element" />
-        <Tooltip anchorSelect=".my-anchor-element" place="top">
+
+      <Button
+        size="sm"
+        variant="link"
+        onClick={() => handleEdit(proyecto.pryId, t, router.push)}
+      >
+        <FaEdit size={16} id={`edit-tooltip-${proyecto.pryId}`} />
+        <Tooltip anchorSelect={`#edit-tooltip-${proyecto.pryId}`} place="top">
           {t?.Common.edit}
         </Tooltip>
       </Button>
-      {proyecto.idTipoSoporte == Constantes.TipoSorpote.BOLSA &&
-        <Button size="sm" variant="link" onClick={() => { router.push(`/facture/createBagSupport/${proyecto.pryId}`) }}>
-          <FaFileInvoiceDollar size={16} className="my-anchor-documento" />
-          <Tooltip anchorSelect=".my-anchor-documento" place="top">
+
+      {proyecto.idTipoSoporte == Constantes.TipoSorpote.BOLSA && (
+        <Button
+          size="sm"
+          variant="link"
+          onClick={() => {
+            router.push(`/facture/createBagSupport/${proyecto.pryId}`);
+          }}
+        >
+          <FaFileInvoiceDollar
+            size={16}
+            id={`billing-tooltip-${proyecto.pryId}`}
+          />
+          <Tooltip
+            anchorSelect={`#billing-tooltip-${proyecto.pryId}`}
+            place="top"
+          >
             {t?.Nav.facture.requestBilling}
           </Tooltip>
         </Button>
-      }
+      )}
+
       {/* <Button size="sm" variant="link">
-        <FaFileDownload size={16}  className="my-anchor-documento"/>
-        <Tooltip anchorSelect=".my-anchor-documento" place="top">
-          {t?.Common.downloadFile} 
-        </Tooltip>
-      </Button> */}
+    <FaFileDownload size={16} className="my-anchor-documento"/>
+    <Tooltip anchorSelect=".my-anchor-documento" place="top">
+      {t?.Common.downloadFile} 
+    </Tooltip>
+  </Button> */}
+
       <Button size="sm" variant="link">
-        <FaTrash size={16} className="" />
+        <FaTrash size={16} />
       </Button>
     </>
   );

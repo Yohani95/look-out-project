@@ -1,16 +1,18 @@
-'use client'
+'use client';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import Link from "next-intl/link"
+import Link from 'next/link';
 import AppInfo from './AppInfo';
-function MyTitle({title}) {
+function MyTitle({ title }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-    <Breadcrumb>
-      <Link href={'/'} className='text-decoration-none'>Home</Link>
-      <Breadcrumb.Item active>&nbsp;/&nbsp;{title}</Breadcrumb.Item>
-    </Breadcrumb>
-    <AppInfo />
-  </div>
+      <Breadcrumb>
+        <Link href={'/'} className="text-decoration-none">
+          Home
+        </Link>
+        <Breadcrumb.Item active>&nbsp;/&nbsp;{title}</Breadcrumb.Item>
+      </Breadcrumb>
+      <AppInfo />
+    </div>
   );
 }
 

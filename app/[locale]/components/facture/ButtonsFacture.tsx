@@ -157,47 +157,58 @@ const ButtonsFacture = ({
       );
     }
   );
+  // Generar IDs únicos basados en idFactura, idPeriodo o idHoraUtilizada
+  const canastoId = `canasto-${idFactura || idPeriodo || idHoraUtilizada}`;
+  const documentId = `document-${idFactura || idPeriodo || idHoraUtilizada}`;
+  const changeStatusId = `changeStatus-${
+    idFactura || idPeriodo || idHoraUtilizada
+  }`;
+  const payDateId = `payDate-${idFactura || idPeriodo || idHoraUtilizada}`;
+  const detallesId = `detalles-${idFactura || idPeriodo || idHoraUtilizada}`;
+  const descargarId = `descargar-${idFactura || idPeriodo || idHoraUtilizada}`;
   return (
     <>
       {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA &&
       periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA &&
       periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
         <Button variant="link" onClick={handleAddDocument}>
-          <FaCartPlus size={16} className="canasto" />
-          <Tooltip anchorSelect=".canasto" place="top">
+          <FaCartPlus size={16} id={canastoId} />
+          <Tooltip anchorSelect={`#${canastoId}`} place="top">
             {t.Nav.facture.requestBilling}
           </Tooltip>
         </Button>
       ) : (
         <Button variant="link" disabled>
-          <FaCartPlus size={16} className="canasto" />
-          <Tooltip anchorSelect=".canasto" place="top">
+          <FaCartPlus size={16} id={canastoId} />
+          <Tooltip anchorSelect={`#${canastoId}`} place="top">
             {t.Nav.facture.requestBilling}
           </Tooltip>
         </Button>
       )}
+
       {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ? (
         <Button variant="link" onClick={handleEnviada}>
-          <FaFileUpload className="document" size={16} />
-          <Tooltip anchorSelect=".document" place="top">
+          <FaFileUpload id={documentId} size={16} />
+          <Tooltip anchorSelect={`#${documentId}`} place="top">
             {t.Common.submit} {t.Common.document}
           </Tooltip>
         </Button>
       ) : periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
         <Button variant="link" onClick={handlePagada}>
-          <FaDollarSign className="changeStatus" size={16} />
-          <Tooltip anchorSelect=".changeStatus" place="top">
+          <FaDollarSign id={changeStatusId} size={16} />
+          <Tooltip anchorSelect={`#${changeStatusId}`} place="top">
             {t.Common.pay}
           </Tooltip>
         </Button>
       ) : periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.PAGADA ? (
         <Button variant="link" onClick={() => setShowModalInfo(true)}>
-          <FaDollarSign color="green" className="payDate" size={16} />
-          <Tooltip anchorSelect=".payDate" place="top">
+          <FaDollarSign color="green" id={payDateId} size={16} />
+          <Tooltip anchorSelect={`#${payDateId}`} place="top">
             {t.Common.payDate}
           </Tooltip>
         </Button>
       ) : null}
+
       <Button
         variant="link"
         onClick={(e) =>
@@ -206,8 +217,8 @@ const ButtonsFacture = ({
             : router.push(`/facture/createSupport/${idHoraUtilizada}`)
         }
       >
-        <FaEye size={16} className="detalles" />
-        <Tooltip anchorSelect=".detalles" place="top">
+        <FaEye size={16} id={detallesId} />
+        <Tooltip anchorSelect={`#${detallesId}`} place="top">
           {t.facture.billingDetails}
         </Tooltip>
       </Button>
@@ -216,22 +227,24 @@ const ButtonsFacture = ({
         <Button
           variant="link"
           onClick={() => downloadDocumento(documentoFactura)}
-          //disabled={!documentoFactura.contenidoDocumento}
           style={{ fontSize: '14px' }}
-          className="descargar"
+          id={descargarId}
         >
           <FaFileDownload size={16} />
-          <Tooltip anchorSelect=".descargar">{t.Common.downloadFile}</Tooltip>
+          <Tooltip anchorSelect={`#${descargarId}`}>
+            {t.Common.downloadFile}
+          </Tooltip>
         </Button>
       )}
 
+      {/* Modal Forms */}
       <ModalForm
         periodoFactura={periodoFactura}
         idPeriodo={idPeriodo}
         idFactura={idFactura}
         t={t}
         showModal={showModal}
-        handleClose={handleClose}
+        handleClose={() => setShowModal(false)}
         monedas={monedas}
       />
       <ModalPago

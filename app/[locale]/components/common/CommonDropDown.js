@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { NavDropdown } from "react-bootstrap";
-import Link from "next-intl/link";
+import React, { useState } from 'react';
+import { NavDropdown } from 'react-bootstrap';
+import Link from 'next/link';
 
 function CommonDropDown({ t, title }) {
   const [showDropdown, setShowDropdown] = useState(false);

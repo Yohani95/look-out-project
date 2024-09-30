@@ -8,9 +8,11 @@ import { FaCheck, FaPhoneSlash, FaTimes } from 'react-icons/fa';
 import Persona from '@/app/api/models/admin/Persona';
 import { FaPhoneFlip } from 'react-icons/fa6';
 import ContactosProspecto from '@/app/api/models/prospecto/ContactoProspecto';
+import UploadExcelProspecto from './UploadExcelProspecto';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function ProspectoSearch({ t, data }) {
   const columns = useMemo(() => Prospecto.createColumns(t), [t]);
+
   const renderIcon = (value: boolean | null) => {
     return value ? <FaPhoneFlip color="green" /> : <FaPhoneSlash color="red" />;
   };
@@ -32,8 +34,9 @@ function ProspectoSearch({ t, data }) {
     <>
       <h4 className="mb-3">{t.Common.prospect}</h4>
       <div className="d-flex justify-content-end container mb-3">
+        <UploadExcelProspecto t={t} />
         <Link href={'/prospect/create'}>
-          <button type="button" className=" btn btn-primary ">
+          <button type="button" className=" btn btn-primary m-2">
             + {t.Account.add} {t.Common.prospect}
           </button>
         </Link>

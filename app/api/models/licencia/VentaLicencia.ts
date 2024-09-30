@@ -29,6 +29,7 @@ class VentaLicencia {
   cliente: Cliente | null;
   diaPagos: DiaPagos | null;
   empresaPrestadora: EmpresaPrestadora | null;
+  descripcion: string | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || '';
@@ -50,6 +51,7 @@ class VentaLicencia {
     this.idTipoLicencia = data?.idTipoLicencia || null;
     this.descuento = data?.descuento || null;
     this.idEmpresaPrestadora = data?.idEmpresaPrestadora || null;
+    this.descripcion = data?.descripcion || null;
     //relaciones
     this.estadoVentaLicencia = data?.estadoVentaLicencia || null;
     this.kam = data?.kam || null;
@@ -79,6 +81,9 @@ class VentaLicencia {
         .nullable()
         .min(1, t.ValidationMessages.discountMin)
         .max(100, t.ValidationMessages.discountMax),
+      descripcion: Yup.string()
+        .nullable()
+        .max(500, `${t.ValidationMessages.maxLength} 500 max`),
     });
   }
 

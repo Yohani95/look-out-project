@@ -187,7 +187,8 @@ export const MarcaLicenciaApiUrl = `${apiBaseUrl}/MarcaLicencia`;
 export const MayoristaLicenciaApiUrl = `${apiBaseUrl}/MayoristaLicencia`;
 //TarifarioVentaLicenciaApiUrl
 export const TarifarioVentaLicenciaApiUrl = `${apiBaseUrl}/TarifarioVentaLicencia`;
-
+//
+export const documentoLicenciaApiUrl = `${apiBaseUrl}/documentoLicencia`;
 //Prospectos
 export const ProspectoApiUrl = `${apiBaseUrl}/Prospecto`;
 export const EstadoProspectoApiUrl = `${apiBaseUrl}/EstadoProspecto`;

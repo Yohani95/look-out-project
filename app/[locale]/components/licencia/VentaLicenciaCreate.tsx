@@ -8,6 +8,7 @@ import NotificationSweet from '@/app/[locale]/components/common/NotificationSwee
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 import { createVentaLicencia } from '@/app/actions/licencia/VentaLicenciaActions';
 import VentaLicenciaForm from './VentaLicenciaForm';
+import Utils from '@/app/api/models/common/Utils';
 function VentaLicenciaCreate({ data, t }) {
   const { data: session } = useSession();
   const user = session?.user as Usuario;
@@ -30,41 +31,18 @@ function VentaLicenciaCreate({ data, t }) {
           .then((res) => {
             router.refresh();
             if (res.status == 400) {
-              NotificationSweet({
-                title: t.notification.error.title,
-                text: t.notification.error.text,
-                type: t.notification.error.type,
-                push: router.push,
-                link: '/licenses/search',
-              });
+              Utils.handleErrorNotification(t, router.back);
             } else {
-              NotificationSweet({
-                title: t.notification.success.title,
-                text: t.notification.success.text,
-                type: t.notification.success.type,
-                push: router.push,
-                link: '/licenses/search',
-              });
+              router.refresh();
+              Utils.handleSuccessNotification(t, router.back);
             }
           })
           .catch((err) => {
-            NotificationSweet({
-              title: t.notification.error.title,
-              text: t.notification.error.text,
-              type: t.notification.error.type,
-              push: router.push,
-              link: '/licenses/search',
-            });
+            Utils.handleErrorNotification(t, router.back);
           });
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
-          push: router.push,
-          link: '/opportunities/search',
-        });
+        Utils.handleErrorNotification(t, router.back);
       } finally {
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
@@ -95,7 +73,7 @@ function VentaLicenciaCreate({ data, t }) {
             type="button"
             className="btn btn-danger m-2"
             onClick={(e) => {
-              router.back();
+              router.push('/licenses/search');
             }}
           >
             {t.Common.cancel}

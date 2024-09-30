@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import { getAllEstadoProspecto } from '@/app/actions/prospecto/EstadoProspectoActions';
 import EstadoProspecto from '@/app/api/models/prospecto/EstadoProspecto';
@@ -15,7 +15,7 @@ import { getAllContactoProspecto } from '@/app/actions/prospecto/ContactoProspec
 import { getAllMedioLlamadaProspecto } from '@/app/actions/prospecto/MedioLlamadaProspectoActions';
 import MedioLlamadaProspecto from '@/app/api/models/prospecto/MedioLlamadaProspecto';
 async function page({ params }) {
-  const locale = useLocale();
+  const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData(params.id);
   return (
