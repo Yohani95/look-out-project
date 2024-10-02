@@ -126,15 +126,14 @@ function ServiceEdit({ t, proyecto, data, files }) {
               <label className="col-sm-3 col-form-label">
                 {file ? file.name : ''}
               </label>
-              <Button
-                variant="link"
-                className="col-sm-2"
+              <a
+                className="col-sm-2 btn btn-link"
                 href={file && URL.createObjectURL(file)}
                 download={file && file.name}
               >
                 {t.Common.downloadFile} {'      '}
-                <FaFileDownload size={18} className="link" beat />
-              </Button>
+                <FaFileDownload size={18} className="link" />
+              </a>
             </>
           )}
         </div>
