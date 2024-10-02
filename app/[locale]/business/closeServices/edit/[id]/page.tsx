@@ -13,15 +13,18 @@ import { getAllTipoFacturacion } from '@/app/api/actions/factura/TipoFacturacion
 import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
+import TipoFacturacion from '@/app/api/models/factura/TipoFacturacion';
+import DiaPagos from '@/app/api/models/factura/DiaPagos';
+import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
+import Persona from '@/app/api/models/admin/Persona';
 
 async function page({ params }) {
   const tiposFacturas = await getAllTipoFacturacion();
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
-
   // Fetch data for proyecto and archivos
-  const { proyecto, archivos } = await fetchServiceById(params.id, t);
+  const { proyecto, archivos } = await fetchServiceById(77, t);
   // Fetch tarifarios and process them as plain objects
   data.tarifarios = await fetch(
     `${tarifarioGetByIdProyectoApiUrl}/${params.id}`,
@@ -53,17 +56,24 @@ async function page({ params }) {
   );
 
   // Asignar valores a data como objetos planos
-  data.tiposFacturas = tiposFacturas.map((tipoFactura) => tipoFactura);
-  data.diaPagos = diaPagos.map((diaPago) => diaPago);
-  data.empresaPrestadora = empresaPrestadora.map((empresa) => empresa);
-  data.personasKam = personasKam.map((kam) => kam);
+  data.tiposFacturas = tiposFacturas.map((tipoFactura) => {
+    return new TipoFacturacion(tipoFactura).getSelectOptions();
+  });
+  data.diaPagos = diaPagos.map((diaPagos) => {
+    return new DiaPagos(diaPagos).getSelectOptions();
+  });
+  data.empresaPrestadora = empresaPrestadora.map((empresa) => {
+    return new EmpresaPrestadora(empresa).getSelectOptions();
+  });
+  data.personasKam = personasKam.map((kam) => {
+    return new Persona(kam).getSelectOptions();
+  });
 
   // Pasa solo datos JSON serializables
   return (
     <BasePages title={t.business.title}>
       <ServiceEdit
         t={t}
-        idService={params.id}
         data={data}
         proyecto={JSON.parse(JSON.stringify(proyecto))}
         files={archivos} // Ahora 'archivos' es una lista de objetos planos

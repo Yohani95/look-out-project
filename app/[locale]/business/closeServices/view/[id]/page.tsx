@@ -63,7 +63,6 @@ async function page({ params }) {
       <fieldset disabled>
         <ServiceEdit
           t={t}
-          idService={params.id}
           data={data}
           proyecto={plainProyecto}
           files={archivos}
