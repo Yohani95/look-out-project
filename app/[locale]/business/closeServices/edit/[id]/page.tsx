@@ -24,7 +24,7 @@ async function page({ params }) {
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   // Fetch data for proyecto and archivos
-  const { proyecto, archivos } = await fetchServiceById(77, t);
+  const { proyecto, archivos } = await fetchServiceById(params.id, t);
   // Fetch tarifarios and process them as plain objects
   data.tarifarios = await fetch(
     `${tarifarioGetByIdProyectoApiUrl}/${params.id}`,
