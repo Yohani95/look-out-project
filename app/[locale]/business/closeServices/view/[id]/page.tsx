@@ -14,6 +14,8 @@ import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
 import DiaPagos from '@/app/api/models/factura/DiaPagos';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
+import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
+import Persona from '@/app/api/models/admin/Persona';
 async function page({ params }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -31,7 +33,9 @@ async function page({ params }) {
     }
   );
   const resultTarifa = await response.json();
-
+  const personasKam = await getAllByIdTipoPersona(
+    Constantes.TipoPersona.PERSONA_KAM
+  );
   // Verifica que `result.data` exista antes de intentar mapear los elementos
   data.tarifarios = resultTarifa.data?.map((item: any) => ({
     tcId: item.tcId,
@@ -55,6 +59,9 @@ async function page({ params }) {
   });
   data.empresaPrestadora = empresaPrestadora.map((empresa) => {
     return new EmpresaPrestadora(empresa).getSelectOptions();
+  });
+  data.personasKam = personasKam.map((kam) => {
+    return new Persona(kam).getSelectOptions();
   });
   // Convertir `proyecto` y `archivos` a objetos planos
   const plainProyecto = proyecto ? { ...proyecto } : null;
