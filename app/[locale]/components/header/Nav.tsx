@@ -86,6 +86,10 @@ const MyNav = ({ t, locale }) => {
                     title={t.namesMenu.licencia.title}
                   />
                   <CommonDropDown
+                    t={t.namesMenu.proyecto}
+                    title={t.namesMenu.proyecto.title}
+                  />
+                  <CommonDropDown
                     t={t.namesMenu.facture}
                     title={t.namesMenu.facture.title}
                   />
