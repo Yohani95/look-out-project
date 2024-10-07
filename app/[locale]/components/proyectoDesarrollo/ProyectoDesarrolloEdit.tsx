@@ -18,17 +18,17 @@ interface FormProps {
 const ProyectoDesarrolloEdit: React.FC<FormProps> = ({ t, data, id }) => {
   const router = useRouter();
   const validationSchema = ProyectoDesarrollo.getValidationSchema(t);
-
   const formik = useFormik({
-    initialValues: new ProyectoDesarrollo(data.proyecto),
+    initialValues: new ProyectoDesarrollo(data.proyectoDesarrollo),
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         await Utils.showLoadingNotification(t);
-        await updateProyectoDesarrollo(values, id)
+        const plainValues = JSON.parse(JSON.stringify(values));
+        await updateProyectoDesarrollo(plainValues, id)
           .then((res) => {
             if (res != 204) {
-              Utils.handleErrorNotification(t, router.back);
+              Utils.handleErrorNotification(t);
             } else {
               router.refresh();
               Utils.handleSuccessNotification(t, router.back);

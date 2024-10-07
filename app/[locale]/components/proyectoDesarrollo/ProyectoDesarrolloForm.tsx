@@ -74,6 +74,33 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
             </div>
           </>
         )}
+        <label htmlFor="nombre" className="col-sm-1 col-form-label">
+          {t.Common.name}
+        </label>
+        <div className="col-sm-2">
+          <input
+            type="nombre"
+            className="form-control"
+            id="nombre"
+            name="nombre"
+            value={formik ? formik.values.nombre : proyectoModel.nombre || ''}
+            onChange={formik?.handleChange}
+          />
+        </div>
+        <label className="col-sm-2 col-form-label">
+          {t.Ficha.table.business.dateEnd}
+        </label>
+        <div className="col-sm-3">
+          <MyDatePicker
+            selectedDate={proyectoModel.fechaCierre}
+            onChange={(date) =>
+              setProyecto({ ...proyectoModel, fechaCierre: date })
+            }
+            title={t.Common.date}
+          />
+        </div>
+      </div>
+      <div className="mb-3 row align-items-center">
         <SelectField
           label={t.Ficha.name}
           options={data.clientes}
@@ -92,8 +119,6 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idContacto', setProyecto)}
           selectedValue={proyectoModel.idContacto}
         />
-      </div>
-      <div className="mb-3 row align-items-center">
         <SelectField
           label={t.Ficha.type}
           options={data.tiposProyecto}
@@ -103,9 +128,11 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idTipoProyecto', setProyecto)}
           selectedValue={proyectoModel.idTipoProyecto}
         />
+      </div>
+      <div className="mb-3 row align-items-center">
         <SelectField
           label={'Etapa'}
-          options={data.etapas}
+          options={data.etapasProyecto}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
@@ -114,40 +141,13 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
         />
         <SelectField
           label={t.Common.status}
-          options={data.estados}
+          options={data.estadosProyecto}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) => handleSelectChange(e, 'idEstado', setProyecto)}
           selectedValue={proyectoModel.idEstado}
         />
-      </div>
-      <div className="mb-3 row align-items-center">
-        <label htmlFor="avance" className="col-sm-1 col-form-label">
-          {t.Ficha.progress} Avance
-        </label>
-        <div className="col-sm-2">
-          <input
-            type="number"
-            className="form-control"
-            id="avance"
-            name="avance"
-            value={proyectoModel.avance || ''}
-            onChange={(e) => handleInputChange(e, 'avance', setProyecto)}
-          />
-        </div>
-        <label className="col-sm-2 col-form-label">
-          {t.Ficha.table.business.dateEnd}
-        </label>
-        <div className="col-sm-3">
-          <MyDatePicker
-            selectedDate={proyectoModel.fechaCierre}
-            onChange={(date) =>
-              setProyecto({ ...proyectoModel, fechaCierre: date })
-            }
-            title={t.Common.date}
-          />
-        </div>
         <SelectField
           label={t.Common.currency}
           options={data.monedas}
@@ -157,6 +157,21 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idMoneda', setProyecto)}
           selectedValue={proyectoModel.idMoneda}
         />
+      </div>
+      <div className="mb-3 row align-items-center">
+        <label htmlFor="avance" className="col-sm-1 col-form-label">
+          Avance
+        </label>
+        <div className="col-sm-3">
+          <input
+            type="number"
+            className="form-control"
+            id="avance"
+            name="avance"
+            value={formik ? formik.values.avance : proyectoModel.avance || ''}
+            onChange={formik?.handleChange}
+          />
+        </div>
       </div>
     </>
   );

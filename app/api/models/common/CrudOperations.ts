@@ -60,7 +60,6 @@ export class CrudOperations<T> implements ICrudOperations<T> {
 
   async getAll() {
     'use server';
-    console.log(this.apiUrl);
     try {
       const response = await fetch(this.apiUrl, {
         method: 'GET',
@@ -70,7 +69,6 @@ export class CrudOperations<T> implements ICrudOperations<T> {
         next: { tags: [this.tag] },
         cache: 'no-cache',
       });
-      console.log('data', response);
       return response.json();
     } catch (error) {
       console.error('Error fetching data:', error);

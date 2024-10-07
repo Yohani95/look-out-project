@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { FaTrash, FaEdit, FaCalendarPlus } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,9 @@ function ProyectoDesarrolloButtons({ t, proyecto }) {
       router.push(`/developmentProject/edit/${proyecto.id}`);
     }
   };
-
+  const handleHito = async () => {
+    router.push(`/developmentProject/milestone/${proyecto.id}`);
+  };
   const handleDelete = async () => {
     const confirmed = await Utils.showConfirmationDialogDelete(t);
     if (confirmed) {
@@ -39,13 +41,19 @@ function ProyectoDesarrolloButtons({ t, proyecto }) {
   // Genera IDs únicos para cada fila en función del id del proyecto
   const editId = `edit-tooltip-${proyecto.id}`;
   const deleteId = `delete-tooltip-${proyecto.id}`;
-
+  const hitosId = `hitos-tooltip-${proyecto.id}`;
   return (
     <>
       <Button size="sm" variant="link" onClick={() => handleEdit()}>
         <FaEdit size={16} id={editId} />
         <Tooltip anchorSelect={`#${editId}`} place="left">
           {t?.Common.edit}
+        </Tooltip>
+      </Button>
+      <Button size="sm" variant="link" onClick={() => handleHito()}>
+        <FaCalendarPlus size={16} id={hitosId} />
+        <Tooltip anchorSelect={`#${hitosId}`} place="left">
+          {t?.Common.milestone}
         </Tooltip>
       </Button>
 

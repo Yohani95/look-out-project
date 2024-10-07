@@ -7,7 +7,7 @@ import Persona from '../admin/Persona';
 import TipoProyectoDesarrollo from './TipoProyectoDesarrollo';
 
 class ProyectoDesarrollo {
-  id: number | null;
+  id: number | 0;
   nombre: string | null;
   fechaCierre: Date | null;
   idContacto: number | null;
@@ -28,9 +28,9 @@ class ProyectoDesarrollo {
   kam: Persona | null;
 
   constructor(data?: any) {
-    this.id = data?.id || null;
+    this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
-    this.fechaCierre = data?.fechaCierre || null;
+    this.fechaCierre = data?.fechaCierre ? new Date(data.fechaCierre) : null;
     this.idContacto = data?.idContacto || null;
     this.idKam = data?.idKam || null;
     this.idMoneda = data?.idMoneda || null;
@@ -85,17 +85,12 @@ class ProyectoDesarrollo {
         size: 150,
       },
       {
-        accessorKey: 'moneda.nombre',
-        header: 'Moneda',
-        size: 100,
-      },
-      {
         accessorKey: 'etapa.nombre',
         header: 'Etapa',
         size: 150,
       },
       {
-        accessorKey: 'cliente.nombre',
+        accessorKey: 'cliente.cliNombre',
         header: 'Cliente',
         size: 150,
       },
@@ -105,19 +100,9 @@ class ProyectoDesarrollo {
         size: 150,
       },
       {
-        accessorKey: 'kam.nombre',
-        header: 'Kam',
-        size: 150,
-      },
-      {
         accessorKey: 'avance',
         header: 'Avance (%)',
         size: 100,
-      },
-      {
-        accessorKey: 'fechaCierre',
-        header: 'Fecha de Cierre',
-        size: 150,
       },
       {
         accessorKey: 'actions',

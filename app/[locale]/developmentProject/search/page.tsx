@@ -10,8 +10,6 @@ async function page() {
 
   // Obtener los proyectos de desarrollo y cualquier dato adicional necesario
   const data = await GetData();
-  const proyectos = await getAllProyectoDesarrollo();
-  console.log(proyectos);
   return (
     <BasePages title={t.Common.project}>
       <ProyectoDesarrolloSearch t={t} data={data.proyectos} />

@@ -10,8 +10,8 @@ import { getAllTipoProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/T
 import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
 import { Constantes } from '@/app/api/models/common/Constantes';
 import Persona from '@/app/api/models/admin/Persona';
-import ProyectoDesarrolloEdit from '@/app/[locale]/components/proyectoDesarrollo/ProyectoDesarrolloEdit';
 import BasePages from '@/app/[locale]/components/common/BasePages';
+import ProyectoDesarrolloMilestone from '@/app/[locale]/components/proyectoDesarrollo/ProyectoDesarrolloMilestone';
 
 async function page({ params }) {
   const locale = await getLocale();
@@ -19,7 +19,7 @@ async function page({ params }) {
   const data = await GetData(params.id);
   return (
     <BasePages title={t.Common.project}>
-      <ProyectoDesarrolloEdit data={data} t={t} id={params.id} />
+      <ProyectoDesarrolloMilestone data={data} t={t} id={params.id} />
     </BasePages>
   );
 }
@@ -72,7 +72,6 @@ const GetData = async (id: number) => {
     const mappedPersonaKam = personasKam.map((kam) => {
       return new Persona(kam).getSelectOptions();
     });
-
     return {
       monedas: mappedMonedas,
       clientes: mappedClientes,
