@@ -18,7 +18,9 @@ class ProyectoDesarrollo {
   idCliente: number | null;
   idEtapa: number | null;
   avance: number | null;
-
+  idPais: number | null;
+  idEmpresaPrestadora: number | null;
+  monto: number | null;
   // Relaciones
   estado: EstadoProyectoDesarrollo | null;
   moneda: Moneda | null;
@@ -39,7 +41,9 @@ class ProyectoDesarrollo {
     this.idCliente = data?.idCliente || null;
     this.idEtapa = data?.idEtapa || null;
     this.avance = data?.avance || null;
-
+    this.idPais = data?.idPais || null;
+    this.idEmpresaPrestadora = data?.idEmpresaPrestadora || null;
+    this.monto = data?.monto || null;
     // Relaciones
     this.estado = data?.estado || null;
     this.moneda = data?.moneda || null;

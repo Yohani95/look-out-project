@@ -15,11 +15,11 @@ function ProyectoDesarrolloButtons({ t, proyecto }) {
   const handleEdit = async () => {
     const confirmed = await Utils.showConfirmationDialogEdit(t);
     if (confirmed) {
-      router.push(`/developmentProject/edit/${proyecto.id}`);
+      router.push(`/developmentProject/${proyecto.id}/edit`);
     }
   };
   const handleHito = async () => {
-    router.push(`/developmentProject/milestone/${proyecto.id}`);
+    router.push(`/developmentProject/${proyecto.id}/milestone/search`);
   };
   const handleDelete = async () => {
     const confirmed = await Utils.showConfirmationDialogDelete(t);

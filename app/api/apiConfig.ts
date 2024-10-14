@@ -211,3 +211,12 @@ export const TipoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoProyectoDesarroll
 
 // URL de la entidad EstadoProyectoDesarrollo
 export const EstadoProyectoDesarrolloApiUrl = `${apiBaseUrl}/EstadoProyectoDesarrollo`;
+
+// URL de la entidad HitoProyectoDesarrollo
+export const HitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/HitoProyectoDesarrollo`;
+
+export const TipoHitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoHitoProyectoDesarrollo`;
+
+export const NovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/NovedadesProyectoDesarrollo`;
+
+export const TipoNovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoNovedadesProyectoDesarrollo`;

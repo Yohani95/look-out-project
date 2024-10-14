@@ -149,6 +149,28 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
           selectedValue={proyectoModel.idEstado}
         />
         <SelectField
+          label={'Empresa Prestadora'}
+          options={data.empresaPrestadora}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-3"
+          onChange={(e) =>
+            handleSelectChange(e, 'idEmpresaPrestadora', setProyecto)
+          }
+          selectedValue={proyectoModel.idEmpresaPrestadora}
+        />
+      </div>
+      <div className="mb-3 row align-items-center">
+        <SelectField
+          label={t.Common.country}
+          options={data.paises}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-3"
+          onChange={(e) => handleSelectChange(e, 'idPais', setProyecto)}
+          selectedValue={proyectoModel.idPais}
+        />
+        <SelectField
           label={t.Common.currency}
           options={data.monedas}
           preOption={t.Account.select}
@@ -157,6 +179,19 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idMoneda', setProyecto)}
           selectedValue={proyectoModel.idMoneda}
         />
+        <label htmlFor="monto" className="col-sm-1 col-form-label">
+          monto
+        </label>
+        <div className="col-sm-3">
+          <input
+            type="number"
+            className="form-control"
+            id="monto"
+            name="monto"
+            value={formik ? formik.values.monto : proyectoModel.monto || ''}
+            onChange={formik?.handleChange}
+          />
+        </div>
       </div>
       <div className="mb-3 row align-items-center">
         <label htmlFor="avance" className="col-sm-1 col-form-label">

@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import HitoProyectoDesarrolloForm from './HitoProyectoDesarrolloForm';
+import NovedadProyectoDesarrolloForm from './NovedadProyectoDesarrolloForm';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import Utils from '@/app/api/models/common/Utils';
-import HitoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/HitoProyectoDesarrollo';
-import { createHitoProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/HitoProyectoDesarrolloActions';
+import NovedadProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/NovedadProyectoDesarrollo';
+import { createNovedadProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/NovedadesProyectoDesarrolloActions';
 
 interface FormProps {
   t: any; // Función de traducción
@@ -13,21 +13,21 @@ interface FormProps {
   idProyectoDesarrollo: number; // ID del proyecto
 }
 
-const HitoProyectoDesarrolloCreate: React.FC<FormProps> = ({
+const NovedadProyectoDesarrolloCreate: React.FC<FormProps> = ({
   t,
   data,
   idProyectoDesarrollo,
 }) => {
   const router = useRouter();
-  const validationSchema = HitoProyectoDesarrollo.getValidationSchema(t);
+  const validationSchema = NovedadProyectoDesarrollo.getValidationSchema(t);
   const formik = useFormik({
-    initialValues: new HitoProyectoDesarrollo({ idProyectoDesarrollo }),
+    initialValues: new NovedadProyectoDesarrollo({ idProyectoDesarrollo }),
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         setSubmitting(true);
         await Utils.showLoadingNotification(t);
-        await createHitoProyectoDesarrollo(values)
+        await createNovedadProyectoDesarrollo(values)
           .then((res) => {
             if (res.status === 400) {
               Utils.handleErrorNotification(t, router.back);
@@ -54,11 +54,11 @@ const HitoProyectoDesarrolloCreate: React.FC<FormProps> = ({
         formik.handleSubmit(e);
       }}
     >
-      <h4>{`${t.Common.add} ${t.Common.milestone}`}</h4>
-      <HitoProyectoDesarrolloForm
+      <h4>{`${t.Nav.services.createNovelty}`}</h4>
+      <NovedadProyectoDesarrolloForm
         t={t}
-        hitoModel={formik.values}
-        setHito={formik.setValues}
+        novedadModel={formik.values}
+        setNovedad={formik.setValues}
         data={data}
         formik={formik}
       />
@@ -86,4 +86,4 @@ const HitoProyectoDesarrolloCreate: React.FC<FormProps> = ({
   );
 };
 
-export default HitoProyectoDesarrolloCreate;
+export default NovedadProyectoDesarrolloCreate;

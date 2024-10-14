@@ -10,8 +10,11 @@ import { getAllTipoProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/T
 import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
 import { Constantes } from '@/app/api/models/common/Constantes';
 import Persona from '@/app/api/models/admin/Persona';
-import ProyectoDesarrolloEdit from '@/app/[locale]/components/proyectoDesarrollo/ProyectoDesarrolloEdit';
 import BasePages from '@/app/[locale]/components/common/BasePages';
+import ProyectoDesarrolloMilestone from '@/app/[locale]/components/proyectoDesarrollo/ProyectoDesarrolloMilestone';
+import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
+import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
+import fetchCountries from '@/app/[locale]/utils/country/Countrylist';
 
 async function page({ params }) {
   const locale = await getLocale();
@@ -19,7 +22,7 @@ async function page({ params }) {
   const data = await GetData(params.id);
   return (
     <BasePages title={t.Common.project}>
-      <ProyectoDesarrolloEdit data={data} t={t} id={params.id} />
+      <ProyectoDesarrolloMilestone data={data} t={t} id={params.id} />
     </BasePages>
   );
 }
@@ -34,6 +37,8 @@ const GetData = async (id: number) => {
       tiposProyecto,
       proyectoDesarrollo,
       personasKam,
+      empresaPrestadora,
+      paises,
     ] = await Promise.all([
       fetchMoneda(),
       fechtClients(),
@@ -42,12 +47,19 @@ const GetData = async (id: number) => {
       getAllTipoProyectoDesarrollo(),
       getProyectoDesarrolloById(id),
       getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM),
+      getAllEmpresaPrestadora(),
+      fetchCountries(),
     ]);
 
     // Mapeo de datos para opciones de selección
     const mappedMonedas = monedas.map((moneda) => ({
       value: moneda.monId,
       label: moneda.monNombre,
+    }));
+
+    const mappedPaises = paises.map((country) => ({
+      value: country.paiId,
+      label: country.paiNombre,
     }));
 
     const mappedClientes = clientes.map((item) => ({
@@ -72,7 +84,9 @@ const GetData = async (id: number) => {
     const mappedPersonaKam = personasKam.map((kam) => {
       return new Persona(kam).getSelectOptions();
     });
-
+    const mappedEmpresaEmprestadora = empresaPrestadora.map((empresa) => {
+      return new EmpresaPrestadora(empresa).getSelectOptions();
+    });
     return {
       monedas: mappedMonedas,
       clientes: mappedClientes,
@@ -81,6 +95,8 @@ const GetData = async (id: number) => {
       tiposProyecto: mappedTiposProyecto,
       proyectoDesarrollo,
       personasKam: mappedPersonaKam,
+      empresaPrestadora: mappedEmpresaEmprestadora,
+      paises: mappedPaises,
     };
   } catch (error) {
     console.error('Error al obtener los datos:', error);

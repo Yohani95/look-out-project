@@ -1,22 +1,22 @@
 'use client';
 
 import React from 'react';
-import { FaTrash, FaEdit, FaCalendarPlus } from 'react-icons/fa';
+import { FaTrash, FaEdit } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
 import Utils from '@/app/api/models/common/Utils';
-import { deleteHitoProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/HitoProyectoDesarrolloActions';
+import { deleteNovedadProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/NovedadesProyectoDesarrolloActions';
 
-function HitoProyectoDesarrolloButtons({ t, hito }) {
+function NovedadProyectoDesarrolloButtons({ t, novedad }) {
   const router = useRouter();
 
   const handleEdit = async () => {
     const confirmed = await Utils.showConfirmationDialogEdit(t);
     if (confirmed) {
       router.push(
-        `/developmentProject/${hito.idProyectoDesarrollo}/milestone/edit/${hito.id}`
+        `/developmentProject/${novedad.idProyectoDesarrollo}/novelty/edit/${novedad.id}`
       );
     }
   };
@@ -24,7 +24,7 @@ function HitoProyectoDesarrolloButtons({ t, hito }) {
   const handleDelete = async () => {
     const confirmed = await Utils.showConfirmationDialogDelete(t);
     if (confirmed) {
-      await deleteHitoProyectoDesarrollo(hito.id)
+      await deleteNovedadProyectoDesarrollo(novedad.id)
         .then((res) => {
           NotificationSweet({
             title: t.notification.Deleted.title,
@@ -38,9 +38,9 @@ function HitoProyectoDesarrolloButtons({ t, hito }) {
     }
   };
 
-  // Genera IDs únicos para cada fila en función del id del hito
-  const editId = `edit-tooltip-${hito.id}`;
-  const deleteId = `delete-tooltip-${hito.id}`;
+  // Genera IDs únicos para cada fila en función del id de la novedad
+  const editId = `edit-tooltip-${novedad.id}`;
+  const deleteId = `delete-tooltip-${novedad.id}`;
 
   return (
     <>
@@ -61,4 +61,4 @@ function HitoProyectoDesarrolloButtons({ t, hito }) {
   );
 }
 
-export default HitoProyectoDesarrolloButtons;
+export default NovedadProyectoDesarrolloButtons;

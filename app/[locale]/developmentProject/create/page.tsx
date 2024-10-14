@@ -11,6 +11,8 @@ import { getAllTipoProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/T
 import EstadoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/EstadoProyectoDesarrollo';
 import EtapaProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/EtapaProyectoDesarrollo';
 import TipoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/TipoProyectoDesarrollo';
+import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
+import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
 
 async function page() {
   const locale = await getLocale();
@@ -32,6 +34,7 @@ const GetData = async () => {
       estadosProyecto,
       etapasProyecto,
       tiposProyecto,
+      empresaPrestadora,
     ] = await Promise.all([
       fetchMoneda(),
       fetchCountriest(),
@@ -39,6 +42,7 @@ const GetData = async () => {
       getAllEstadoProyectoDesarrollo(),
       getAllEtapaProyectoDesarrollo(),
       getAllTipoProyectoDesarrollo(),
+      getAllEmpresaPrestadora(),
     ]);
 
     const mappedMonedas = monedas.map((moneda) => ({
@@ -67,7 +71,9 @@ const GetData = async () => {
     const mappedTiposProyecto = tiposProyecto.map((tipo) => {
       return new TipoProyectoDesarrollo(tipo).getSelectOptions();
     });
-
+    const mappedEmpresaEmprestadora = empresaPrestadora.map((empresa) => {
+      return new EmpresaPrestadora(empresa).getSelectOptions();
+    });
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -75,6 +81,7 @@ const GetData = async () => {
       estadosProyecto: mappedEstadosProyecto,
       etapasProyecto: mappedEtapasProyecto,
       tiposProyecto: mappedTiposProyecto,
+      empresaPrestadora: mappedEmpresaEmprestadora,
     };
   } catch (error) {
     console.error('Error al obtener los datos:', error);

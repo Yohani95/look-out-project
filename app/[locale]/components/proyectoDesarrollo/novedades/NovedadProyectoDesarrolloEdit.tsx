@@ -1,31 +1,35 @@
 'use client';
 import React from 'react';
-import ProyectoDesarrolloForm from './ProyectoDesarrolloForm';
-
+import NovedadProyectoDesarrolloForm from './NovedadProyectoDesarrolloForm';
 import { useRouter } from 'next/navigation';
-
 import { useFormik } from 'formik';
 import Utils from '@/app/api/models/common/Utils';
-import ProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/ProyectoDesarrollo';
-import { updateProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/ProyectoDesarrolloActions';
+import NovedadProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/NovedadProyectoDesarrollo';
+import { updateNovedadProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/NovedadesProyectoDesarrolloActions';
 
 interface FormProps {
   t: any; // Función de traducción
   data: any;
-  id: number; // ID del proyecto
+  id: number; // ID de la novedad
 }
 
-const ProyectoDesarrolloEdit: React.FC<FormProps> = ({ t, data, id }) => {
+const NovedadProyectoDesarrolloEdit: React.FC<FormProps> = ({
+  t,
+  data,
+  id,
+}) => {
   const router = useRouter();
-  const validationSchema = ProyectoDesarrollo.getValidationSchema(t);
+  const validationSchema = NovedadProyectoDesarrollo.getValidationSchema(t);
   const formik = useFormik({
-    initialValues: new ProyectoDesarrollo(data.proyectoDesarrollo),
+    initialValues: new NovedadProyectoDesarrollo(
+      data.novedadProyectoDesarrollo
+    ),
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         await Utils.showLoadingNotification(t);
         const plainValues = JSON.parse(JSON.stringify(values));
-        await updateProyectoDesarrollo(plainValues, id)
+        await updateNovedadProyectoDesarrollo(plainValues, id)
           .then((res) => {
             if (res != 204) {
               Utils.handleErrorNotification(t);
@@ -48,16 +52,16 @@ const ProyectoDesarrolloEdit: React.FC<FormProps> = ({ t, data, id }) => {
 
   return (
     <>
-      <h4>{`${t.Common.edit} ${t.Common.project}`}</h4>
+      <h4>{`${t.Nav.services.editNovelty}`}</h4>
       <form
         onSubmit={(e) => {
           formik.handleSubmit(e);
         }}
       >
-        <ProyectoDesarrolloForm
+        <NovedadProyectoDesarrolloForm
           t={t}
-          proyectoModel={formik.values}
-          setProyecto={formik.setValues}
+          novedadModel={formik.values}
+          setNovedad={formik.setValues}
           data={data}
           formik={formik}
         />
@@ -67,7 +71,7 @@ const ProyectoDesarrolloEdit: React.FC<FormProps> = ({ t, data, id }) => {
             className="btn btn-danger m-2"
             onClick={async () => {
               await router.refresh();
-              router.push('/developmentProject/search');
+              router.back();
             }}
           >
             {t.Common.cancel}
@@ -81,4 +85,4 @@ const ProyectoDesarrolloEdit: React.FC<FormProps> = ({ t, data, id }) => {
   );
 };
 
-export default ProyectoDesarrolloEdit;
+export default NovedadProyectoDesarrolloEdit;
