@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import ProyectoDesarrollo from './ProyectoDesarrollo';
 import TipoHitoProyectoDesarrollo from './TipoHitoProyectoDesarrollo';
-
 class HitoProyectoDesarrollo {
   id: number | 0;
   nombre: string | null;
@@ -14,7 +13,6 @@ class HitoProyectoDesarrollo {
   // Relaciones
   proyectoDesarrollo: ProyectoDesarrollo | null;
   tipoHitoProyectoDesarrollo: TipoHitoProyectoDesarrollo | null;
-
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -29,9 +27,14 @@ class HitoProyectoDesarrollo {
     // Relaciones
     this.proyectoDesarrollo = data?.proyectoDesarrollo || null;
     this.tipoHitoProyectoDesarrollo = data?.tipoHitoProyectoDesarrollo || null;
+    this.proyectoDesarrollo = data?.proyectoDesarrollo || null;
   }
 
-  static getValidationSchema(t: any) {
+  static getValidationSchema(
+    t: any,
+    montoRestante: number,
+    porcentajeRestante: number
+  ) {
     return Yup.object().shape({
       id: Yup.number().nullable(),
       nombre: Yup.string()
@@ -40,8 +43,18 @@ class HitoProyectoDesarrollo {
       fechaCreacion: Yup.date().nullable(),
       idProyectoDesarrollo: Yup.number().nullable(),
       idTipoPagoHito: Yup.number().nullable(),
-      monto: Yup.number().nullable(),
-      porcentajePagado: Yup.number().nullable(),
+      monto: Yup.number()
+        .nullable()
+        .max(montoRestante, `El monto no puede ser mayor que ${montoRestante}`),
+
+      // Validación para porcentajePagado, permite ser igual a porcentajeRestante
+      porcentajePagado: Yup.number()
+        .nullable()
+        .max(
+          porcentajeRestante,
+          `El porcentaje no puede ser mayor que ${porcentajeRestante}`
+        ),
+
       descripcion: Yup.string()
         .nullable()
         .max(500, `${t.ValidationMessages.maxLength}, max 500 `),

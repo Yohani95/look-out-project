@@ -2,9 +2,8 @@ import React from 'react';
 import { getLocale } from 'next-intl/server';
 import { getAllTipoNovedadProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/TipoNovedadProyectoDesarrolloActions';
 import TipoNovedadProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/TipoNovedadProyectoDesarrollo';
-import BasePages from '@/app/[locale]/components/common/BasePages';
-import NovedadProyectoDesarrolloEdit from '@/app/[locale]/components/proyectoDesarrollo/novedades/NovedadProyectoDesarrolloEdit';
 import { getNovedadProyectoDesarrolloById } from '@/app/actions/proyectoDesarrollo/NovedadesProyectoDesarrolloActions';
+import NovedadProyectoDesarrolloEdit from '@/app/[locale]/components/proyectoDesarrollo/novedades/NovedadProyectoDesarrolloEdit';
 
 async function page({ params }) {
   const locale = await getLocale();

@@ -1,7 +1,12 @@
 'use client';
 
 import React from 'react';
-import { FaTrash, FaEdit, FaCalendarPlus } from 'react-icons/fa';
+import {
+  FaTrash,
+  FaEdit,
+  FaCalendarPlus,
+  FaFileInvoiceDollar,
+} from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
@@ -41,7 +46,7 @@ function HitoProyectoDesarrolloButtons({ t, hito }) {
   // Genera IDs únicos para cada fila en función del id del hito
   const editId = `edit-tooltip-${hito.id}`;
   const deleteId = `delete-tooltip-${hito.id}`;
-
+  const facturaID = `facture-tooltip-${hito.id}`;
   return (
     <>
       <Button size="sm" variant="link" onClick={() => handleEdit()}>
@@ -50,7 +55,16 @@ function HitoProyectoDesarrolloButtons({ t, hito }) {
           {t?.Common.edit}
         </Tooltip>
       </Button>
-
+      <Button
+        size="sm"
+        variant="link"
+        onClick={() => router.push(`/facture/createProject/${hito.id}`)}
+      >
+        <FaFileInvoiceDollar size={16} id={facturaID} />
+        <Tooltip anchorSelect={`#${facturaID}`} place="left">
+          {t?.business.milestoneFacture}
+        </Tooltip>
+      </Button>
       <Button size="sm" variant="link" onClick={() => handleDelete()}>
         <FaTrash size={16} id={deleteId} />
         <Tooltip anchorSelect={`#${deleteId}`} place="left">

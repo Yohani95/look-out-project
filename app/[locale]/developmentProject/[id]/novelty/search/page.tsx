@@ -1,8 +1,8 @@
 import React from 'react';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import { getLocale } from 'next-intl/server';
-import NovedadProyectoDesarrolloSearch from '@/app/[locale]/components/proyectoDesarrollo/novedades/NovedadProyectoDesarrolloSearch';
 import { NovedadGetAllByIdProyecto } from '@/app/actions/proyectoDesarrollo/NovedadesProyectoDesarrolloActions';
+import NovedadProyectoDesarrolloSearch from '@/app/[locale]/components/proyectoDesarrollo/novedades/NovedadProyectoDesarrolloSearch';
 async function page({ params }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);

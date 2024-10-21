@@ -19,7 +19,11 @@ const HitoProyectoDesarrolloCreate: React.FC<FormProps> = ({
   idProyectoDesarrollo,
 }) => {
   const router = useRouter();
-  const validationSchema = HitoProyectoDesarrollo.getValidationSchema(t);
+  const validationSchema = HitoProyectoDesarrollo.getValidationSchema(
+    t,
+    data.montoRestantePorPagar,
+    data.porcentajePagado
+  );
   const formik = useFormik({
     initialValues: new HitoProyectoDesarrollo({ idProyectoDesarrollo }),
     validationSchema,

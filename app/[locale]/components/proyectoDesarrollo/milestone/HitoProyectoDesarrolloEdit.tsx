@@ -15,7 +15,11 @@ interface FormProps {
 
 const HitoProyectoDesarrolloEdit: React.FC<FormProps> = ({ t, data, id }) => {
   const router = useRouter();
-  const validationSchema = HitoProyectoDesarrollo.getValidationSchema(t);
+  const validationSchema = HitoProyectoDesarrollo.getValidationSchema(
+    t,
+    data.montoRestantePorPagar,
+    data.porcentajePagado
+  );
   const formik = useFormik({
     initialValues: new HitoProyectoDesarrollo(data.hitoProyectoDesarrollo),
     validationSchema,

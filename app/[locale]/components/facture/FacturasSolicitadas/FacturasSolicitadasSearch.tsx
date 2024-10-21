@@ -8,6 +8,7 @@ import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import Soporte from '@/app/api/models/support/Soporte';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
+import ProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/ProyectoDesarrollo';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
   const columns = useMemo(() => FacturaPeriodo.createColumnsFacturas(t), [t]);
@@ -28,6 +29,10 @@ function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
         ? new Soporte(factura.soporte).getPeriodoCompleto()
         : factura.ventaLicencia
         ? new VentaLicencia(factura.ventaLicencia).getPeriodoCompleto()
+        : factura.hitoProyectoDesarrollo
+        ? new ProyectoDesarrollo(
+            factura.hitoProyectoDesarrollo.proyectoDesarrollo
+          ).getPeriodoCompleto()
         : 'N/A',
       actions: (
         <ButtonsFacture
@@ -43,7 +48,7 @@ function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
       observaciones: (
         <div>
           {factura.observaciones.slice(0, 25)}{' '}
-          {/* Mostrar solo los primeros 50 caracteres */}
+          {/* Mostrar solo los primeros 25 caracteres */}
           {factura.observaciones.length > 25 && (
             <Button
               variant="link"

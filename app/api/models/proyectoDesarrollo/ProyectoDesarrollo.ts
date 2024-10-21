@@ -5,7 +5,8 @@ import EtapaProyectoDesarrollo from './EtapaProyectoDesarrollo';
 import Cliente from '../cuenta/Cliente';
 import Persona from '../admin/Persona';
 import TipoProyectoDesarrollo from './TipoProyectoDesarrollo';
-
+import EmpresaPrestadora from '../proyecto/EmpresaPrestadora';
+import { format } from 'date-fns';
 class ProyectoDesarrollo {
   id: number | 0;
   nombre: string | null;
@@ -28,7 +29,8 @@ class ProyectoDesarrollo {
   cliente: Cliente | null;
   tipoProyectoDesarrollo: TipoProyectoDesarrollo | null;
   kam: Persona | null;
-
+  fechaCreacion: Date | null;
+  empresaPrestadora: EmpresaPrestadora | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -44,6 +46,9 @@ class ProyectoDesarrollo {
     this.idPais = data?.idPais || null;
     this.idEmpresaPrestadora = data?.idEmpresaPrestadora || null;
     this.monto = data?.monto || null;
+    this.fechaCreacion = data?.fechaCreacion
+      ? new Date(data?.fechaCreacion)
+      : null;
     // Relaciones
     this.estado = data?.estado || null;
     this.moneda = data?.moneda || null;
@@ -51,6 +56,7 @@ class ProyectoDesarrollo {
     this.cliente = data?.cliente || null;
     this.tipoProyectoDesarrollo = data?.tipoProyectoDesarrollo || null;
     this.kam = data?.kam || null;
+    this.empresaPrestadora = data?.empresaPrestadora || null;
   }
 
   static getValidationSchema(t: any) {
@@ -121,6 +127,13 @@ class ProyectoDesarrollo {
       value: this.id,
       label: this.nombre,
     };
+  }
+  getPeriodoCompleto(): string {
+    const formato = 'dd/MM/yyyy';
+    return `${format(this.fechaCreacion, formato)} - ${format(
+      this.fechaCierre,
+      formato
+    )}`;
   }
 }
 

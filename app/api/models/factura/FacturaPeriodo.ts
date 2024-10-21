@@ -5,6 +5,7 @@ import DocumentoFactura from './DocumentoFactura';
 import HorasUtilizadas from '../support/HorasUtilizadas';
 import Soporte from '../support/Soporte';
 import VentaLicencia from '../licencia/VentaLicencia';
+import HitoProyectoDesarrollo from '../proyectoDesarrollo/HitoProyectoDesarrollo';
 class FacturaPeriodo {
   id: number | null;
   rut: string | null;
@@ -30,6 +31,10 @@ class FacturaPeriodo {
   horasUtilizadas: HorasUtilizadas | null;
   ventaLicencia: VentaLicencia | null;
   documentosFactura: DocumentoFactura[] | null;
+
+  // proyectos factura
+  idHitoProyectoDesarrollo: number | null;
+
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.rut = data?.rut || '';
@@ -57,6 +62,7 @@ class FacturaPeriodo {
     this.ventaLicencia = data?.ventaLicencia || null;
     this.idBanco = data?.idBanco || null;
     this.fechaPago = data?.fecha_pago ? new Date(data.fecha_pago) : null;
+    this.idHitoProyectoDesarrollo = data?.idHitoProyectoDesarrollo || null;
   }
 
   public getFechaString(date: Date | null): string | null {
@@ -86,6 +92,8 @@ class FacturaPeriodo {
         new Soporte(facturaPeriodo.soporte)?.empresaPrestadora?.nombre ??
         new VentaLicencia(facturaPeriodo.ventaLicencia)?.empresaPrestadora
           ?.nombre ??
+        new HitoProyectoDesarrollo(facturaPeriodo.hitoProyectoDesarrollo)
+          ?.proyectoDesarrollo?.empresaPrestadora?.nombre ??
         'N/A',
     };
   }

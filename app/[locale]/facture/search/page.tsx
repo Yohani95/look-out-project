@@ -11,6 +11,7 @@ async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const facturas = await getAllPreSolicitadaFacturaPeriodo();
+  const fac = facturas.filter((factura) => factura.id > 118);
   const monedasresult = (await getAllMoneda()) as Moneda[];
   const monedas = monedasresult.map((moneda) => {
     return new Moneda(moneda).getSelectOptions();

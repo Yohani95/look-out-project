@@ -1,5 +1,5 @@
 import HitoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/HitoProyectoDesarrollo';
-import React from 'react';
+import React, { useEffect } from 'react';
 import SelectField from '@/app/[locale]/components/common/SelectField';
 import { handleSelectChange } from '@/app/[locale]/utils/Form/UtilsForm';
 import MyDatePicker from '@/app/[locale]/components/common/MyDatePicker';
@@ -21,6 +21,16 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
   data,
   formik,
 }) => {
+  // useEffect para calcular el porcentaje pagado cuando cambia el monto
+  useEffect(() => {
+    if (formik.values.monto && data.montoProyecto > 0) {
+      const porcentaje = (formik.values.monto / data.montoProyecto) * 100;
+      formik.setFieldValue('porcentajePagado', porcentaje.toFixed(2)); // Actualiza el campo porcentajePagado
+    } else {
+      formik.setFieldValue('porcentajePagado', 0);
+    }
+  }, [formik.values.monto, data.montoProyecto]); // Ejecutar cuando cambie el monto o el montoProyecto
+
   return (
     <>
       <div className="mb-3 row align-items-center">
@@ -95,6 +105,7 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
             </Form.Control.Feedback>
           )}
         </div>
+        {/* Campo porcentajePagado, deshabilitado y calculado */}
         <label htmlFor="porcentajePagado" className="col-sm-1 col-form-label">
           {t.Common.pay} %
         </label>
@@ -114,16 +125,14 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
                 ? formik.values.porcentajePagado
                 : hitoModel.porcentajePagado || ''
             }
-            onChange={formik?.handleChange}
-            min={1} // Limitar el valor mínimo a 1
-            max={100} // Limitar el valor máximo a 10
+            readOnly // Deshabilitar el campo para que no sea editable
           />
-          {formik?.errors.porcentajePagado &&
+          {/* {formik?.errors.porcentajePagado &&
             formik.touched.porcentajePagado && (
               <Form.Control.Feedback type="invalid">
                 {formik.errors.porcentajePagado}
               </Form.Control.Feedback>
-            )}
+            )} */}
         </div>
       </div>
       <hr />

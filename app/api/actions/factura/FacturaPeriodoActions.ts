@@ -211,3 +211,49 @@ export async function GetAllEntitiesByIdLicense(idLicense: number) {
     return [];
   }
 }
+export async function ChangeEstadoFacturaByProyectoDesarrollo(
+  idProyectoDesarrollo: number,
+  estado: number
+) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/ChangeEstadoProyectoDesarrollo/${idProyectoDesarrollo}/${estado}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-cache',
+        next: { tags: [tag] },
+      }
+    );
+    if (response.ok) {
+      await revalidateDataFacturaPeriodo();
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+export async function GetAllEntitiesFacturaByIdProyectoDesarrollo(
+  idProyectoDesarrollo: number
+) {
+  try {
+    const response = await fetch(
+      `${facturaPeriodoApiUrl}/GetAllEntitiesByIdHitoProyectoDesarrollo/${idProyectoDesarrollo}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-cache',
+        next: { tags: [tag] },
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
