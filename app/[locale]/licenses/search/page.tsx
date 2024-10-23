@@ -7,6 +7,7 @@ async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await getAllVentaLicencia();
+  console.log(data);
   return (
     <BasePages title={t.Common.licenses}>
       <VentaLicenciaSearch t={t} data={data} />

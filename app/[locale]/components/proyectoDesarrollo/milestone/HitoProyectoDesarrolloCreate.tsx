@@ -22,7 +22,7 @@ const HitoProyectoDesarrolloCreate: React.FC<FormProps> = ({
   const validationSchema = HitoProyectoDesarrollo.getValidationSchema(
     t,
     data.montoRestantePorPagar,
-    data.porcentajePagado
+    data.montoRestantePorPagar
   );
   const formik = useFormik({
     initialValues: new HitoProyectoDesarrollo({ idProyectoDesarrollo }),

@@ -114,6 +114,22 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
           onChange={(e) => handleSelectChange(e, 'idMoneda', setTarifario)}
           selectedValue={tarifarioModel.idMoneda}
         />
+        <label htmlFor="valor" className="col-sm-1 col-form-label">
+          N° {t.Common.license}
+        </label>
+        <div className="col-sm-3">
+          <Form.Control
+            type="number"
+            name="cantidad"
+            id="cantidad"
+            value={tarifarioModel.cantidad || ''}
+            onChange={handleInputChange(tarifarioModel, setTarifario)}
+            isInvalid={formik.touched.cantidad && !!formik.errors.cantidad}
+          />
+          <Form.Control.Feedback type="invalid">
+            {formik.touched.cantidad && formik.errors.cantidad}
+          </Form.Control.Feedback>
+        </div>
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { Moneda } from './../world/Moneda';
 import * as Yup from 'yup';
 import EstadoVentaLicencia from './EstadoVentaLicencia';
 import Persona from '../admin/Persona';
@@ -30,6 +31,7 @@ class VentaLicencia {
   diaPagos: DiaPagos | null;
   empresaPrestadora: EmpresaPrestadora | null;
   descripcion: string | null;
+  Moneda: Moneda | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || '';
@@ -59,6 +61,7 @@ class VentaLicencia {
     this.idDiaPago = data?.idDiaPago || null;
     this.diaPagos = data?.diaPagos || null;
     this.empresaPrestadora = data?.empresaPrestadora || null;
+    this.Moneda = data?.Moneda || null;
   }
 
   static getValidationSchema(t: any) {
@@ -102,6 +105,11 @@ class VentaLicencia {
       {
         accessorKey: 'cliente.cliNombre',
         header: t.Common.account,
+        size: 200,
+      },
+      {
+        accessorKey: 'moneda.monNombre',
+        header: t.Common.currency,
         size: 200,
       },
       {

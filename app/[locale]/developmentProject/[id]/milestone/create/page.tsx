@@ -55,12 +55,12 @@ const GetData = async (id: number) => {
       return new TipoHitoProyectoDesarrollo(tipo).getSelectOptions();
     });
     console.log('porcentaje pagado', porcentajePagado);
-    console.log('porcentaje pagado', porcentajeRestante);
+    console.log('porcentaje restante', porcentajeRestante);
     console.log('monto por pagar ', montoRestantePorPagar);
     // Devolver los datos requeridos
     return {
       tiposHito: mappedTiposHito,
-      porcentajePagado,
+      porcentajeRestante,
       montoRestantePorPagar,
       montoProyecto,
     };

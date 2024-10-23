@@ -41,6 +41,10 @@ const GetData = async (id: number, idHito: number) => {
     // Calcular el porcentaje pagado y el monto restante
     const porcentajePagado =
       montoProyecto > 0 ? (montoTotal / montoProyecto) * 100 : 0;
+    const porcentajeRestante =
+      montoProyecto > 0
+        ? ((montoProyecto - montoTotal) / montoProyecto) * 100
+        : 0;
     const montoRestantePorPagar = Math.max(montoProyecto - montoTotal, 0);
 
     // Mapear los tipos de hitos
@@ -51,7 +55,7 @@ const GetData = async (id: number, idHito: number) => {
     return {
       tiposHito: mappedTiposHito,
       hitoProyectoDesarrollo,
-      porcentajePagado,
+      porcentajeRestante,
       montoRestantePorPagar,
       montoProyecto,
     };

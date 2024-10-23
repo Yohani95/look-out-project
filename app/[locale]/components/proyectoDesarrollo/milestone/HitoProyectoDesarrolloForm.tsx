@@ -118,7 +118,7 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
               formik?.errors.porcentajePagado &&
               formik?.touched.porcentajePagado
                 ? 'is-invalid'
-                : ''
+                : 0
             }`}
             value={
               formik
@@ -127,12 +127,12 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
             }
             readOnly // Deshabilitar el campo para que no sea editable
           />
-          {/* {formik?.errors.porcentajePagado &&
+          {formik?.errors.porcentajePagado &&
             formik.touched.porcentajePagado && (
               <Form.Control.Feedback type="invalid">
                 {formik.errors.porcentajePagado}
               </Form.Control.Feedback>
-            )} */}
+            )}
         </div>
       </div>
       <hr />

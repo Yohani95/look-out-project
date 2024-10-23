@@ -33,7 +33,8 @@ class HitoProyectoDesarrollo {
   static getValidationSchema(
     t: any,
     montoRestante: number,
-    porcentajeRestante: number
+    porcentajeRestante: number,
+    montoAlmacenado?: number // Este es el valor previamente almacenado
   ) {
     return Yup.object().shape({
       id: Yup.number().nullable(),
@@ -45,16 +46,41 @@ class HitoProyectoDesarrollo {
       idTipoPagoHito: Yup.number().nullable(),
       monto: Yup.number()
         .nullable()
-        .max(montoRestante, `El monto no puede ser mayor que ${montoRestante}`),
+        .test('max-montoRestante-o-almacenado', function (value) {
+          // Si es creación (montoAlmacenado no está disponible)
+          if (montoAlmacenado === undefined || montoAlmacenado === null) {
+            return (
+              value === null ||
+              value <= montoRestante ||
+              this.createError({
+                message: `El monto no puede ser mayor que ${montoRestante}`,
+              })
+            );
+          }
 
-      // Validación para porcentajePagado, permite ser igual a porcentajeRestante
-      porcentajePagado: Yup.number()
-        .nullable()
-        .max(
-          porcentajeRestante,
-          `El porcentaje no puede ser mayor que ${porcentajeRestante}`
-        ),
+          // En caso de edición
+          if (montoRestante === 0) {
+            // Si el monto restante es 0, solo permitir hasta el monto almacenado
+            return (
+              value === null ||
+              value <= montoAlmacenado ||
+              this.createError({
+                message: `El monto no puede ser mayor que ${montoAlmacenado}`,
+              })
+            );
+          }
 
+          // Si hay monto restante, permitir suma de montoRestante + montoAlmacenado
+          return (
+            value === null ||
+            value <= montoRestante + montoAlmacenado ||
+            this.createError({
+              message: `El monto no puede ser mayor que ${
+                montoRestante + montoAlmacenado
+              }`,
+            })
+          );
+        }),
       descripcion: Yup.string()
         .nullable()
         .max(500, `${t.ValidationMessages.maxLength}, max 500 `),
