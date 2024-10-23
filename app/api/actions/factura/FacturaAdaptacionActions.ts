@@ -134,3 +134,31 @@ export const GetAllFacturaAdaptacionEntitiesByIdSoporte = async (
     return [];
   }
 };
+export const GetAllFacturaAdaptacionEntitiesByIdProyectoDesarrollo = async (
+  id: number
+) => {
+  try {
+    const response = await fetch(
+      `${FacturaAdaptacionApiUrl}/GetAllEntitiesByIdProyectoDesarrollo/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-cache',
+        next: { tags: [tag] },
+      }
+    );
+    if (response.ok) {
+      if (response.status === 204) {
+        return null; // Devuelve un array vacío si no hay contenido
+      }
+    }
+    const data = await response.json();
+    await revalidateDataFacturaAdaptacion();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+};

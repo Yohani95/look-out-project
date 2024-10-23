@@ -50,6 +50,10 @@ const AdaptationFactureModal: React.FC<ModalProps> = ({
           console.log('Handling "createBagSupport" route');
           values.idHorasUtilizadas = id;
           break;
+        case pathname.includes('createProject'):
+          console.log('Handling "Project" route');
+          values.idHitoProyectoDesarrollo = id;
+          break;
         default:
           values.idPeriodoProyecto = id;
           break;

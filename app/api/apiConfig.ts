@@ -199,3 +199,24 @@ export const LlamadaProspectoApiUrl = `${apiBaseUrl}/LlamadaProspecto`;
 export const ReunionProspectoApiUrl = `${apiBaseUrl}/ReunionProspecto`;
 export const TipoContactoProspectoApiUrl = `${apiBaseUrl}/TipoContactoProspecto`;
 export const MedioLlamadaProspectoApiUrl = `${apiBaseUrl}/MedioLlamadaProspecto`;
+
+// URL de la entidad ProyectoDesarrollo
+export const ProyectoDesarrolloApiUrl = `${apiBaseUrl}/ProyectoDesarrollo`;
+
+// URL de la entidad EtapaProyectoDesarrollo
+export const EtapaProyectoDesarrolloApiUrl = `${apiBaseUrl}/EtapaProyectoDesarrollo`;
+
+// URL de la entidad TipoProyectoDesarrollo
+export const TipoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoProyectoDesarrollo`;
+
+// URL de la entidad EstadoProyectoDesarrollo
+export const EstadoProyectoDesarrolloApiUrl = `${apiBaseUrl}/EstadoProyectoDesarrollo`;
+
+// URL de la entidad HitoProyectoDesarrollo
+export const HitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/HitoProyectoDesarrollo`;
+
+export const TipoHitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoHitoProyectoDesarrollo`;
+
+export const NovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/NovedadesProyectoDesarrollo`;
+
+export const TipoNovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoNovedadesProyectoDesarrollo`;

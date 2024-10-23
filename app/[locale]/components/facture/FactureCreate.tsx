@@ -8,6 +8,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import PeriodosProyecto from '@/app/api/models/proyecto/PeriodosProyecto';
 import {
   ChangeEstadoFacturaByLicencia,
+  ChangeEstadoFacturaByProyectoDesarrollo,
   ChangeEstadoFacturaBySoporte,
   createFacturaPeriodo,
   deleteFacturaPeriodo,
@@ -99,6 +100,8 @@ const FactureCreate: React.FC<FactureProps> = ({
           values.idLicencia = periodo.id;
         } else if (pathname.includes('createBagSupport')) {
           values.idSoporteBolsa = periodo.proyecto.pryId;
+        } else if (pathname.includes('createProject')) {
+          values.idHitoProyectoDesarrollo = periodo.proyecto.pryId;
         }
         values.fechaFactura = new Date();
         values.idEstado = FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
@@ -219,6 +222,13 @@ const FactureCreate: React.FC<FactureProps> = ({
       await Utils.handleOnSubmit(
         t,
         ChangeEstadoHoras,
+        periodo.id,
+        FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
+      );
+    } else if (pathname.includes('createProject')) {
+      await Utils.handleOnSubmit(
+        t,
+        ChangeEstadoFacturaByProyectoDesarrollo,
         periodo.id,
         FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
       );

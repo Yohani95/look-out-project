@@ -13,6 +13,7 @@ class TarifarioVentaLicencia {
   idMoneda: number | null;
   // Other properties...
   moneda: Moneda | null;
+  cantidad: number | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.idMarcaLicencia = data?.idMarcaLicencia || null;
@@ -26,6 +27,7 @@ class TarifarioVentaLicencia {
     this.idVentaLicencia = data?.idVentaLicencia || null;
     this.idMoneda = data?.idMoneda || null;
     this.moneda = data?.moneda || null;
+    this.cantidad = data?.cantidad || null;
   }
 
   static getValidationSchema(t: any) {
@@ -74,6 +76,11 @@ class TarifarioVentaLicencia {
       {
         accessorKey: 'valor',
         header: t.Common.amount,
+        size: 50,
+      },
+      {
+        accessorKey: 'cantidad',
+        header: 'N°',
         size: 50,
       },
       {

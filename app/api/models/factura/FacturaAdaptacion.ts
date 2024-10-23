@@ -11,6 +11,7 @@ class FacturaAdaptacion {
   idSoporte: number | null;
   idPeriodoProyecto: number | null;
   idHorasUtilizadas: number | null;
+  idHitoProyectoDesarrollo: number | null;
   solicitada: boolean | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
@@ -24,6 +25,7 @@ class FacturaAdaptacion {
     this.idPeriodoProyecto = data?.idPeriodoProyecto || null;
     this.idHorasUtilizadas = data?.idHorasUtilizadas || null;
     this.solicitada = data?.solicitada || null;
+    this.idHitoProyectoDesarrollo = data?.idHitoProyectoDesarrollo || null;
   }
 
   static getValidationSchema(t: any) {

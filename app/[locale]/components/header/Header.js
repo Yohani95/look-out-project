@@ -165,6 +165,15 @@ const Header = () => {
         },
         title: t('Common.prospect'),
       },
+      proyecto: {
+        link: {
+          searchProspect: {
+            name: t('Common.project'),
+            link: '/developmentProject/search',
+          },
+        },
+        title: t('Common.project'),
+      },
     },
   };
   return <Nav t={languages} locale={useLocale()} />;

@@ -392,7 +392,7 @@ const ModalForm = ({
           type: t.notification.loading.type,
           showLoading: true,
         });
-        let addDias;
+        let addDias = 30;
         if (factura.periodo) {
           addDias = factura.periodo.proyecto.diaPagos.dia;
         } else if (factura.horasUtilizadas) {
@@ -434,6 +434,7 @@ const ModalForm = ({
         );
         values.contenidoDocumento = base64String;
         values.idTipoDocumento = DocumentoFactura.TIPO_DOCUMENTO.FACTURA;
+        console.log(values);
         // Enviar el documento al servidor
         delete values.archivo;
         await fetch(
@@ -546,7 +547,8 @@ const ModalForm = ({
             <Form.Control
               type="date"
               value={
-                formik.values?.fecha
+                formik.values?.fecha &&
+                !isNaN(new Date(formik.values.fecha).getTime())
                   ? new Date(formik.values.fecha).toISOString().split('T')[0]
                   : ''
               }
