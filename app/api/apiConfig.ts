@@ -220,3 +220,5 @@ export const TipoHitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoHitoProyectoD
 export const NovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/NovedadesProyectoDesarrollo`;
 
 export const TipoNovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoNovedadesProyectoDesarrollo`;
+
+export const PlanificacionProyectoDesarrolloApiUrl = `${apiBaseUrl}/PlanificacionProyectoDesarrollo`;
