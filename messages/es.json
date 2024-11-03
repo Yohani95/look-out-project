@@ -1,5 +1,6 @@
 {
   "Common": {
+    "planning": "Planificación",
     "activity": "Actividad",
     "activities": "Actividades",
     "meeting": "Reunión",
@@ -478,8 +479,8 @@
   "ValidationMessages": {
     "required": "Este campo es obligatorio.",
     "maxLength": "El valor ingresado supera la longitud máxima permitida.",
-    "discountMin": "Descuento debe ser al menos 1%",
-    "discountMax": "Descuento no puede ser mayor a 100%"
+    "discountMin": "Debe ser al menos 1%",
+    "discountMax": "No puede ser mayor a 100%"
   },
   "Export": {
     "exportAllRows": "Exportar todas las filas (PDF)",

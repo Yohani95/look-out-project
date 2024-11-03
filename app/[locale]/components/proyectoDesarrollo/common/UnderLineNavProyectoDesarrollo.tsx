@@ -56,6 +56,17 @@ function UnderLineNavProyectoDesarrollo({ id }) {
             {t.service.historyNovelty}
           </Nav.Link>
         </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link-4"
+            className="custom-nav-link"
+            onClick={() =>
+              handleNavigation(`/developmentProject/${id}/planning/search`)
+            }
+          >
+            {t.Common.planning}
+          </Nav.Link>
+        </Nav.Item>
       </Nav>
       <style jsx>{`
         .custom-nav-link {
