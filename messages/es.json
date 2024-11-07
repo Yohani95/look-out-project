@@ -361,7 +361,11 @@
     "progressMilestone": "Avance Hito",
     "newMilestone": "Nuevo Hito",
     "closeProject": "Cerrar Proyecto",
-    "kickOffProject": "Kick Off Proyecto"
+    "kickOffProject": "Kick Off Proyecto",
+    "stages": "Etapas",
+    "stage": "Etapa",
+    "finishedStage": "Etapa Terminada",
+    "percentageWork": "Porcentaje Trabajo %"
   },
   "service": {
     "docKickOff": "Doc. Kick Off",

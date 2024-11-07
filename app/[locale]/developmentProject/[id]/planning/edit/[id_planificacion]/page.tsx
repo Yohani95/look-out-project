@@ -1,14 +1,17 @@
 import React from 'react';
 import { getLocale } from 'next-intl/server';
-import EtapaProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/EtapaProyectoDesarrollo';
-import { getPlanificacionProyectoDesarrolloById } from '@/app/actions/proyectoDesarrollo/PlanificacionProyectoDesarrolloActions';
-import { getAllEtapaProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/EtapaProyectoDesarrolloActions';
+import {
+  getPlanificacionProyectoDesarrolloById,
+  PlanificacionGetAllByIdProyecto,
+} from '@/app/actions/proyectoDesarrollo/PlanificacionProyectoDesarrolloActions';
 import PlanificacionProyectoDesarrolloEdit from '@/app/[locale]/components/proyectoDesarrollo/planification/PlanificacionProyectoDesarrolloEdit';
+import { getAllEtapaPlanificacionProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/EtapaPlanificacionProyectoDesarrolloActions';
+import EtapaPlanificacionProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/EtapaPlanificacionProyectoDesarrollo';
 
 async function page({ params }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
-  const data = await GetData(params.id_planificacion);
+  const data = await GetData(params.id_planificacion, params.id);
   return (
     <PlanificacionProyectoDesarrolloEdit
       data={data}
@@ -18,18 +21,19 @@ async function page({ params }) {
   );
 }
 
-const GetData = async (id: number) => {
+const GetData = async (id: number, idproyecto) => {
   try {
     const [etapas, planificacionProyectoDesarrollo] = await Promise.all([
-      getAllEtapaProyectoDesarrollo(),
+      getAllEtapaPlanificacionProyectoDesarrollo(),
       getPlanificacionProyectoDesarrolloById(id),
     ]);
 
     const mappedEtapas = etapas.map((etapa) => {
-      return new EtapaProyectoDesarrollo(etapa).getSelectOptions();
+      return new EtapaPlanificacionProyectoDesarrollo(etapa).getSelectOptions();
     });
-
+    const planificaciones = await PlanificacionGetAllByIdProyecto(idproyecto);
     return {
+      etapasExistente: planificaciones,
       etapas: mappedEtapas,
       planificacionProyectoDesarrollo,
     };

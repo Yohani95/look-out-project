@@ -41,7 +41,9 @@ function PlanificacionProyectoDesarrolloButtons({ t, planificacion }) {
   // Genera IDs únicos para cada fila en función del id de la planificación
   const editId = `edit-tooltip-${planificacion.id}`;
   const deleteId = `delete-tooltip-${planificacion.id}`;
-
+  if (planificacion.terminado) {
+    return null; // No mostrar botón de borrar para los hitos terminados.
+  }
   return (
     <>
       <Button size="sm" variant="link" onClick={handleEdit}>

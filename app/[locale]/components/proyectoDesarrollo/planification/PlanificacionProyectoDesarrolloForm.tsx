@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SelectField from '@/app/[locale]/components/common/SelectField';
 import { handleSelectChange } from '@/app/[locale]/utils/Form/UtilsForm';
 import MyDatePicker from '@/app/[locale]/components/common/MyDatePicker';
 import { FormikProps } from 'formik';
 import { Form } from 'react-bootstrap';
 import PlanificacionProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/PlanificacionProyectoDesarrollo';
+import EtapaPlanificacionProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/EtapaPlanificacionProyectoDesarrollo';
 
 interface FormProps {
   planificacionModel: PlanificacionProyectoDesarrollo;
@@ -12,6 +13,7 @@ interface FormProps {
   t: any; // Función de traducción
   data: any; // Datos adicionales (etapas, proyectos, etc.)
   formik?: FormikProps<PlanificacionProyectoDesarrollo>;
+  etapasExistente?: [PlanificacionProyectoDesarrollo] | any;
 }
 
 const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
@@ -20,14 +22,23 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
   t,
   data,
   formik,
+  etapasExistente,
 }) => {
+  const etapasOrdenadas = [
+    new EtapaPlanificacionProyectoDesarrollo(null).Constantes.Kick_Off,
+    new EtapaPlanificacionProyectoDesarrollo(null).Constantes.Preparacion,
+    new EtapaPlanificacionProyectoDesarrollo(null).Constantes.Levantamiento,
+    new EtapaPlanificacionProyectoDesarrollo(null).Constantes.Desarrollo,
+    new EtapaPlanificacionProyectoDesarrollo(null).Constantes.QA_Interno,
+    new EtapaPlanificacionProyectoDesarrollo(null).Constantes.QA_Externo,
+  ];
   return (
     <>
       <div className="mb-3 mt-3 row align-items-center">
         <label htmlFor="nombre" className="col-sm-1 col-form-label">
           {t.Common.name}
         </label>
-        <div className="col-sm-3">
+        <div className="col-sm-2">
           <Form.Control
             type="text"
             id="nombre"
@@ -48,13 +59,12 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
             </Form.Control.Feedback>
           )}
         </div>
-
         <SelectField
-          label={'Etapa'}
+          label={t.project.stage}
           options={data.etapas}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
+          divClassName="col-sm-2"
           onChange={(e) => handleSelectChange(e, 'idEtapa', setPlanificacion)}
           selectedValue={planificacionModel.idEtapa}
           isInvalid={!!formik?.errors.idEtapa && formik?.touched.idEtapa}
@@ -64,13 +74,40 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
             {formik.errors.idEtapa}
           </Form.Control.Feedback>
         )}
+
+        <label className="col-sm-1 col-form-label">{t.project.dateStart}</label>
+        <div className="col-sm-2">
+          <MyDatePicker
+            selectedDate={planificacionModel.fechaInicio}
+            onChange={(date) =>
+              setPlanificacion({ ...planificacionModel, fechaInicio: date })
+            }
+            title={t.Common.date}
+            isRead={planificacionModel.id ? true : false}
+          />
+        </div>
+        <label className="col-sm-1 col-form-label">{t.project.dateEnd}</label>
+
+        <div className="col-sm-2">
+          <MyDatePicker
+            selectedDate={planificacionModel.fechaTermino}
+            onChange={(date) =>
+              setPlanificacion({
+                ...planificacionModel,
+                fechaTermino: date,
+              })
+            }
+            title={t.Common.date}
+            isRead={planificacionModel.id ? true : false}
+          />
+        </div>
       </div>
       <div className="mb-3 row align-items-center">
         <label
           htmlFor="porcentajeCargaTrabajo"
           className="col-sm-1 col-form-label"
         >
-          {'Carga Trabajo %'}
+          {t.project.percentageWork}
         </label>
         <div className="col-sm-3">
           <Form.Control
@@ -99,21 +136,59 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
               </Form.Control.Feedback>
             )}
         </div>
-        <label htmlFor="lineaBase" className="col-sm-1 col-form-label">
-          {'Linea Base?'}
-        </label>
-        <div className="col-sm-3">
-          <Form.Check
-            type="checkbox"
-            id="lineaBase"
-            name="lineaBase"
-            checked={formik?.values.lineaBase || false}
-            onChange={(e) => {
-              formik?.setFieldValue('lineaBase', e.target.checked);
-            }}
-            label={t.Common.yes}
-          />
-        </div>
+        {planificacionModel.id ? (
+          <>
+            <label className="col-sm-1 col-form-label">
+              {t.project.dateStart} Real
+            </label>
+            <div className="col-sm-2">
+              <MyDatePicker
+                selectedDate={planificacionModel.fechaActividad}
+                onChange={(date) =>
+                  setPlanificacion({
+                    ...planificacionModel,
+                    fechaActividad: date,
+                  })
+                }
+                title={t.Common.date}
+              />
+            </div>
+            <label htmlFor="terminado" className="col-sm-1 col-form-label">
+              {t.project.finishedStage}?
+            </label>
+            <div className="col-sm-1">
+              <Form.Check
+                type="checkbox"
+                id="terminado"
+                name="terminado"
+                checked={formik?.values.terminado || false}
+                onChange={(e) => {
+                  formik?.setFieldValue('terminado', e.target.checked);
+                }}
+                label={t.Common.yes}
+              />
+            </div>
+            {formik?.values.terminado ? (
+              <>
+                <label className="col-sm-1 col-form-label">
+                  {t.project.dateEnd} Real
+                </label>
+                <div className="col-sm-2">
+                  <MyDatePicker
+                    selectedDate={planificacionModel.fechaTerminoReal}
+                    onChange={(date) =>
+                      setPlanificacion({
+                        ...planificacionModel,
+                        fechaTerminoReal: date,
+                      })
+                    }
+                    title={t.Common.date}
+                  />
+                </div>
+              </>
+            ) : null}
+          </>
+        ) : null}
       </div>
     </>
   );

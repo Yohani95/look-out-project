@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import EtapaProyectoDesarrollo from './EtapaProyectoDesarrollo';
 import ProyectoDesarrollo from './ProyectoDesarrollo';
+import EtapaPlanificacionProyectoDesarrollo from './EtapaPlanificacionProyectoDesarrollo';
 
 class PlanificacionProyectoDesarrollo {
   id: number;
@@ -10,8 +10,13 @@ class PlanificacionProyectoDesarrollo {
   lineaBase: boolean | null;
   idProyectoDesarrollo: number | null;
   fechaCreacion: Date | null; ///
+  fechaInicio: Date | null;
+  fechaActividad: Date | null;
+  fechaTermino: Date | null; ///
+  fechaTerminoReal: Date | null;
+  terminado: boolean | null;
   // Relaciones
-  etapa: EtapaProyectoDesarrollo | null;
+  etapa: EtapaPlanificacionProyectoDesarrollo | null;
   //proyectoDesarrollo: ProyectoDesarrollo | null;
 
   constructor(data?: any) {
@@ -24,6 +29,15 @@ class PlanificacionProyectoDesarrollo {
     this.fechaCreacion = data?.fechaCreacion
       ? new Date(data.fechaCreacion)
       : null;
+    this.fechaInicio = data?.fechaInicio ? new Date(data.fechaInicio) : null;
+    this.fechaActividad = data?.fechaActividad
+      ? new Date(data.fechaActividad)
+      : null;
+    this.fechaTermino = data?.fechaTermino ? new Date(data.fechaTermino) : null;
+    this.fechaTerminoReal = data?.fechaTerminoReal
+      ? new Date(data.fechaTerminoReal)
+      : null;
+    this.terminado = data?.terminado || null;
     // Relaciones
     this.etapa = data?.etapa || null;
     //this.proyectoDesarrollo = data?.proyectoDesarrollo || null;
@@ -56,27 +70,42 @@ class PlanificacionProyectoDesarrollo {
       },
       {
         accessorKey: 'nombre',
-        header: 'Nombre de la Planificación',
-        size: 200,
+        header: t.Common.name,
+        size: 50,
       },
       {
         accessorKey: 'etapa.nombre',
-        header: 'Etapa',
+        header: t.project.stage,
         size: 150,
       },
       {
         accessorKey: 'porcentajeCargaTrabajo',
-        header: 'Porcentaje Carga de Trabajo',
+        header: `${t.project.percentageWork}`,
         size: 100,
       },
       {
-        accessorKey: 'lineaBase',
-        header: 'Línea Base',
+        accessorKey: 'fechaInicio',
+        header: t.project.dateStart,
         size: 100,
       },
       {
-        accessorKey: 'fechaCreacion',
-        header: t.Common.date,
+        accessorKey: 'fechaTermino',
+        header: t.project.dateEnd,
+        size: 100,
+      },
+      {
+        accessorKey: 'fechaActividad',
+        header: `${t.project.dateStart} Real`,
+        size: 100,
+      },
+      {
+        accessorKey: 'fechaTerminoReal',
+        header: `${t.project.dateEnd} Real`,
+        size: 100,
+      },
+      {
+        accessorKey: 'terminado',
+        header: t.project.finishedStage,
         size: 100,
       },
       {

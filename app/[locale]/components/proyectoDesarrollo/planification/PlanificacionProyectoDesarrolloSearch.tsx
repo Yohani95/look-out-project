@@ -19,16 +19,19 @@ function PlanificacionProyectoDesarrolloSearch({
     () => PlanificacionProyectoDesarrollo.createColumns(t),
     [t]
   );
-
+  console.log(data);
   const memoizedActions = useMemo(() => {
     return data.map((planificacion: PlanificacionProyectoDesarrollo) => ({
       ...planificacion,
-      lineaBase: planificacion.lineaBase ? (
+      terminado: planificacion.terminado ? (
         <FaCheck color="green" />
       ) : (
         <FaTimes color="#2f4bce" />
       ),
-      fechaCreacion: Utils.getFechaString(planificacion.fechaCreacion),
+      fechaInicio: Utils.getFechaString(planificacion.fechaInicio),
+      fechaTermino: Utils.getFechaString(planificacion.fechaTermino),
+      fechaActividad: Utils.getFechaString(planificacion.fechaActividad),
+      fechaTerminoReal: Utils.getFechaString(planificacion.fechaTerminoReal),
       actions: (
         <>
           <PlanificacionProyectoDesarrolloButtons

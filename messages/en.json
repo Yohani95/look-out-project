@@ -361,7 +361,11 @@
     "progressMilestone": "Milestone Progress",
     "newMilestone": "New Milestone",
     "closeProject": "Close Project",
-    "kickOffProject": "Project Kick Off"
+    "kickOffProject": "Project Kick Off",
+    "stages": "Stages",
+    "stage": "Stage",
+    "finishedStage": "Finished Stage",
+    "percentageWork": "Percentage Work %"
   },
   "service": {
     "docKickOff": "Doc. Kick Off",

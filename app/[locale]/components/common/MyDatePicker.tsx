@@ -81,6 +81,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
               label={title} // Usa el título proporcionado
               value={selectedDate}
               onChange={(date) => onChange(date)}
+              readOnly={isRead}
               slotProps={{
                 textField: {
                   fullWidth: true,
