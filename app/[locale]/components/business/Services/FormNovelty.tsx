@@ -1,22 +1,28 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { fetchNoveltyType } from "@/app/[locale]/utils/business/Novelty/UtilsNovelType";
-import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
-import Novedad from "@/app/api/models/proyecto/Novedad";
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import LoadingData from "@/app/[locale]/components/common/LoadingData";
-import { fetchGetbyId } from "@/app/[locale]/utils/person/UtilsPerson";
-import { useRouter } from "next/navigation";
-import { novedadApiUrl,novedadCreateAsyncApiUrl } from "@/app/api/apiConfig";
-import Persona from "@/app/api/models/admin/Persona";
-import { fetchByIdProyecto } from "@/app/[locale]/utils/business/tarifario/UtilsTarifario";
-import BoxInfo from "@/app/[locale]/components/common/BoxInfo";
-import ListNovelty from "@/app/[locale]/components/business/Services/ListNovelty";
-import NovedadFormSetion from "@/app/[locale]/components/business/Services/novedades/NovedadFormSection";
-import { useFormik } from "formik";
-import { EditAction } from "../../admin/professionals/ProfessionalsActions";
-import { RefreshList } from "@/app/api/models/common/ActionsCommon";
-function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
+'use client';
+import React, { useState, useEffect } from 'react';
+import { fetchNoveltyType } from '@/app/[locale]/utils/business/Novelty/UtilsNovelType';
+import { handleFormSubmit } from '@/app/[locale]/utils/Form/UtilsForm';
+import Novedad from '@/app/api/models/proyecto/Novedad';
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+import LoadingData from '@/app/[locale]/components/common/LoadingData';
+import { fetchGetbyId } from '@/app/[locale]/utils/person/UtilsPerson';
+import { useRouter } from 'next/navigation';
+import { novedadApiUrl, novedadCreateAsyncApiUrl } from '@/app/api/apiConfig';
+import Persona from '@/app/api/models/admin/Persona';
+import { fetchByIdProyecto } from '@/app/[locale]/utils/business/tarifario/UtilsTarifario';
+import BoxInfo from '@/app/[locale]/components/common/BoxInfo';
+import ListNovelty from '@/app/[locale]/components/business/Services/ListNovelty';
+import NovedadFormSetion from '@/app/[locale]/components/business/Services/novedades/NovedadFormSection';
+import { useFormik } from 'formik';
+import { EditAction } from '../../admin/professionals/ProfessionalsActions';
+import { RefreshList } from '@/app/api/models/common/ActionsCommon';
+function FormNovelty({
+  locale,
+  idPersona,
+  idProyecto,
+  listaNovedades,
+  idProfesionalProyecto,
+}) {
   //========DECLARACION DE VARIABLES ===============
   const t = require(`@/messages/${locale}.json`);
   const [formData, setFormData] = useState(new Novedad());
@@ -39,18 +45,18 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
           text: t.Common.notExist,
           type: t.notification.warning.type,
           push: router.push,
-          link: "/business/closeServices/search",
+          link: '/business/closeServices/search',
         });
         return;
       }
       const persona = new Persona(data);
-      const rutElement = document.getElementById("rut");
-      const nameElement = document.getElementById("name");
+      const rutElement = document.getElementById('rut');
+      const nameElement = document.getElementById('name');
       if (rutElement) {
-        rutElement.textContent = persona.perIdNacional || "N/A";
+        rutElement.textContent = persona.perIdNacional || 'N/A';
       }
       if (nameElement) {
-        nameElement.textContent = persona.getNombreCompleto() || "N/A";
+        nameElement.textContent = persona.getNombreCompleto() || 'N/A';
       }
     });
   }, []);
@@ -62,7 +68,7 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
           text: t.Common.notExist,
           type: t.notification.warning.type,
           push: router.push,
-          link: "/business/closeServices/search",
+          link: '/business/closeServices/search',
         });
         return;
       }
@@ -87,9 +93,9 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
   }, []);
   //=======FIN SECCION DE USSEFFECT===============
 
-  const validationSchema = Novedad.getValidationSchema(t)
+  const validationSchema = Novedad.getValidationSchema(t);
   const formik = useFormik({
-    initialValues: new Novedad(),
+    initialValues: new Novedad({ idProfesionalProyecto }),
     validationSchema,
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
@@ -99,7 +105,7 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
         values.idProyecto = idProyecto;
         await handleFormSubmit(values, t, null, false, null, apiUrls);
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
         RefreshList();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
@@ -109,11 +115,11 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
   if (isLoading) return <LoadingData loadingMessage={t.Common.loadingData} />;
   return (
     <>
-        <form
-          onSubmit={(e) => {
-            formik.handleSubmit(e);
-          }}
-        >
+      <form
+        onSubmit={(e) => {
+          formik.handleSubmit(e);
+        }}
+      >
         <h4>{t.service.noveltyByProfessional}</h4> <br />
         <NovedadFormSetion
           t={t}
@@ -139,7 +145,12 @@ function FormNovelty({ locale, idPersona, idProyecto,listaNovedades }) {
       </form>
       <hr />
       <BoxInfo title={t.service.historyNovelty}>
-        <ListNovelty locale={locale} idPersona={idPersona} listaNovedades={listaNovedades} idProyecto={idProyecto}/>
+        <ListNovelty
+          locale={locale}
+          idPersona={idPersona}
+          listaNovedades={listaNovedades}
+          idProyecto={idProyecto}
+        />
       </BoxInfo>
     </>
   );

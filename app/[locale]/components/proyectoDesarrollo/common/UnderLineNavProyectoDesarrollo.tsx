@@ -25,6 +25,8 @@ function UnderLineNavProyectoDesarrollo({ id }) {
       setActiveKey('link-3');
     else if (pathname.match(`/developmentProject/${id}/planning`))
       setActiveKey('link-4');
+    else if (pathname.match(`/developmentProject/${id}/documents`))
+      setActiveKey('link-5');
   }, [pathname, id]);
   const handleNavigation = (url) => {
     router.push(url);
@@ -77,6 +79,17 @@ function UnderLineNavProyectoDesarrollo({ id }) {
             }
           >
             {t.Common.planning}
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link-5"
+            className="custom-nav-link"
+            onClick={() =>
+              handleNavigation(`/developmentProject/${id}/documents/search`)
+            }
+          >
+            {t.Common.documents}
           </Nav.Link>
         </Nav.Item>
       </Nav>

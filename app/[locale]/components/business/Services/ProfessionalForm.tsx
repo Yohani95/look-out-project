@@ -105,6 +105,7 @@ function ProfessionalForm({ idService, t, perfiles, proyecto }) {
   const fetchData = async () => {
     try {
       await fetchParticipanteByIdProyecto(idService).then((profesionales) => {
+        console.log(profesionales);
         const nuevosElementosTabla = profesionales.data.map((element) => ({
           id: element.persona.id,
           idParticipante: element.ppaId,
@@ -377,7 +378,9 @@ function ProfessionalForm({ idService, t, perfiles, proyecto }) {
               size="sm"
               variant="link"
               onClick={() =>
-                router.push(`/service/createNovelty/${idService}/${item.id}`)
+                router.push(
+                  `/service/createNovelty/${idService}/${item.id}/${item.idParticipante}`
+                )
               }
             >
               <FaPlus size={16} id={noveltyId} />
