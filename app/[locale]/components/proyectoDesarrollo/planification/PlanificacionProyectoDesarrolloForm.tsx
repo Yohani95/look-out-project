@@ -83,7 +83,7 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
               setPlanificacion({ ...planificacionModel, fechaInicio: date })
             }
             title={t.Common.date}
-            isRead={planificacionModel.id ? true : false}
+            // isRead={planificacionModel.id ? true : false}
           />
         </div>
         <label className="col-sm-1 col-form-label">{t.project.dateEnd}</label>
@@ -98,7 +98,7 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
               })
             }
             title={t.Common.date}
-            isRead={planificacionModel.id ? true : false}
+            // isRead={planificacionModel.id ? true : false}
           />
         </div>
       </div>
@@ -115,7 +115,7 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
             id="porcentajeCargaTrabajo"
             name="porcentajeCargaTrabajo"
             max={100}
-            min={1}
+            min={0}
             className={`form-control ${
               formik?.errors.porcentajeCargaTrabajo &&
               formik?.touched.porcentajeCargaTrabajo
@@ -153,6 +153,22 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
                 title={t.Common.date}
               />
             </div>
+
+            <label className="col-sm-1 col-form-label">
+              {t.project.dateEnd} Real
+            </label>
+            <div className="col-sm-2">
+              <MyDatePicker
+                selectedDate={planificacionModel.fechaTerminoReal}
+                onChange={(date) =>
+                  setPlanificacion({
+                    ...planificacionModel,
+                    fechaTerminoReal: date,
+                  })
+                }
+                title={t.Common.date}
+              />
+            </div>
             <label htmlFor="terminado" className="col-sm-1 col-form-label">
               {t.project.finishedStage}?
             </label>
@@ -168,25 +184,6 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
                 label={t.Common.yes}
               />
             </div>
-            {formik?.values.terminado ? (
-              <>
-                <label className="col-sm-1 col-form-label">
-                  {t.project.dateEnd} Real
-                </label>
-                <div className="col-sm-2">
-                  <MyDatePicker
-                    selectedDate={planificacionModel.fechaTerminoReal}
-                    onChange={(date) =>
-                      setPlanificacion({
-                        ...planificacionModel,
-                        fechaTerminoReal: date,
-                      })
-                    }
-                    title={t.Common.date}
-                  />
-                </div>
-              </>
-            ) : null}
           </>
         ) : null}
       </div>

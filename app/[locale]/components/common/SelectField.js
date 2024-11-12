@@ -37,6 +37,12 @@ const SelectField = ({
           isClearable={!isRequired}
           isSearchable
           required={isRequired}
+          styles={{
+            menu: (provided) => ({
+              ...provided,
+              zIndex: 1500, // Asegura que el menú de selección tenga una prioridad mayor
+            }),
+          }}
         />
       </div>
     </>
