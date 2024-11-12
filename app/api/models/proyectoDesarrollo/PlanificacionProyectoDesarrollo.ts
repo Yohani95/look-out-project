@@ -52,7 +52,7 @@ class PlanificacionProyectoDesarrollo {
         .max(255, `${t.ValidationMessages.maxLength}. max 255`),
       porcentajeCargaTrabajo: Yup.number()
         .required(t.ValidationMessages.required) // Cambia esto si quieres que sea obligatorio
-        .min(1, `${t.ValidationMessages.discountMin}. min 1`)
+        .min(0, `${t.ValidationMessages.discountMin}. min 0`)
         .max(100, `${t.ValidationMessages.discountMax}. max 100`),
       idEtapa: Yup.number().nullable(),
       lineaBase: Yup.boolean().nullable(),

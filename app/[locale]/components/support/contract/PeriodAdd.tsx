@@ -16,6 +16,7 @@ import {
 } from '@/app/api/actions/soporte/HorasUtilizadasActions';
 import HoursList from './HoursList';
 import { Constantes } from '@/app/api/models/common/Constantes';
+import Utils from '@/app/api/models/common/Utils';
 
 function PeriodAdd({ t, soporte, horasUtilizadas }) {
   //========FIN DECLARACION DE VARIABLES ===============
@@ -93,50 +94,26 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
                 values.horasExtras + existingHour.horasExtras;
               await updatehorasUtilizadas(values, existingHour.id)
                 .then((res) => {
-                  if (res != 400 && res != 500) {
-                    showNotification(
-                      t.notification.success.type,
-                      t.notification.success.title,
-                      t.notification.success.text
-                    );
+                  if (res != 400) {
+                    Utils.handleSuccessNotification(t);
                   } else {
-                    showNotification(
-                      t.notification.warning.type,
-                      t.notification.warning.title,
-                      t.notification.warning.text
-                    );
+                    Utils.handleErrorNotification(t);
                   }
                 })
                 .catch((err) => {
-                  showNotification(
-                    t.notification.error.type,
-                    t.notification.error.title,
-                    t.notification.error.text
-                  );
+                  Utils.handleErrorNotification(t);
                 });
             } else {
               await createhorasUtilizadas(values)
                 .then((res) => {
-                  if (res != 400 && res != 500) {
-                    showNotification(
-                      t.notification.success.type,
-                      t.notification.success.title,
-                      t.notification.success.text
-                    );
+                  if (res.status != 400) {
+                    Utils.handleSuccessNotification(t);
                   } else {
-                    showNotification(
-                      t.notification.warning.type,
-                      t.notification.warning.title,
-                      t.notification.warning.text
-                    );
+                    Utils.handleErrorNotification(t);
                   }
                 })
                 .catch((err) => {
-                  showNotification(
-                    t.notification.error.type,
-                    t.notification.error.title,
-                    t.notification.error.text
-                  );
+                  Utils.handleErrorNotification(t);
                 });
             }
             break;
@@ -148,51 +125,27 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
               await updateBagHorasUtilizadas(values, existingHour.id)
                 .then((res) => {
                   console.log(res);
-                  if (res.status != 400 && res.status != 500) {
-                    showNotification(
-                      t.notification.success.type,
-                      t.notification.success.title,
-                      t.notification.success.text
-                    );
+                  if (res != 400) {
+                    Utils.handleSuccessNotification(t);
                   } else {
-                    showNotification(
-                      t.notification.warning.type,
-                      t.notification.warning.title,
-                      t.notification.warning.text
-                    );
+                    Utils.handleErrorNotification(t);
                   }
                 })
                 .catch((err) => {
-                  showNotification(
-                    t.notification.error.type,
-                    t.notification.error.title,
-                    t.notification.error.text
-                  );
+                  Utils.handleErrorNotification(t);
                 });
             } else {
               await createBagHorasUtilizadas(values)
                 .then((res) => {
                   console.log(res);
-                  if (res.status != 400 && res.status != 500) {
-                    showNotification(
-                      t.notification.success.type,
-                      t.notification.success.title,
-                      t.notification.success.text
-                    );
+                  if (res.status != 400) {
+                    Utils.handleSuccessNotification(t);
                   } else {
-                    showNotification(
-                      t.notification.warning.type,
-                      t.notification.warning.title,
-                      t.notification.warning.text
-                    );
+                    Utils.handleErrorNotification(t);
                   }
                 })
                 .catch((err) => {
-                  showNotification(
-                    t.notification.error.type,
-                    t.notification.error.title,
-                    t.notification.error.text
-                  );
+                  Utils.handleErrorNotification(t);
                 });
             }
             break;
@@ -203,50 +156,26 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
                 values.horasExtras + existingHour.horasExtras;
               await updateOnDemandHorasUtilizadas(values, existingHour.id)
                 .then((res) => {
-                  if (res.status != 400 && res.status != 500) {
-                    showNotification(
-                      t.notification.success.type,
-                      t.notification.success.title,
-                      t.notification.success.text
-                    );
+                  if (res != 400) {
+                    Utils.handleSuccessNotification(t);
                   } else {
-                    showNotification(
-                      t.notification.warning.type,
-                      t.notification.warning.title,
-                      t.notification.warning.text
-                    );
+                    Utils.handleErrorNotification(t);
                   }
                 })
                 .catch((err) => {
-                  showNotification(
-                    t.notification.error.type,
-                    t.notification.error.title,
-                    t.notification.error.text
-                  );
+                  Utils.handleErrorNotification(t);
                 });
             } else {
               await createOnDemandHorasUtilizadas(values)
                 .then((res) => {
-                  if (res.status != 400 && res.status != 500) {
-                    showNotification(
-                      t.notification.success.type,
-                      t.notification.success.title,
-                      t.notification.success.text
-                    );
+                  if (res.status != 400) {
+                    Utils.handleSuccessNotification(t);
                   } else {
-                    showNotification(
-                      t.notification.warning.type,
-                      t.notification.warning.title,
-                      t.notification.warning.text
-                    );
+                    Utils.handleErrorNotification(t);
                   }
                 })
                 .catch((err) => {
-                  showNotification(
-                    t.notification.error.type,
-                    t.notification.error.title,
-                    t.notification.error.text
-                  );
+                  Utils.handleErrorNotification(t);
                 });
             }
             break;
@@ -255,11 +184,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
         }
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
-        });
+        Utils.handleErrorNotification(t);
       } finally {
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
