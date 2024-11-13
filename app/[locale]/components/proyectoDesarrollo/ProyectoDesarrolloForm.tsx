@@ -207,6 +207,16 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
             onChange={formik?.handleChange}
           />
         </div>
+        {/* <SelectField
+          label={"Jefe Proyecto"}
+          options={data.profesionales}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-3"
+          onChange={(e) => handleSelectChange(e, 'idEtapa', setProyecto)}
+          selectedValue={proyectoModel.idEtapa}
+          isInvalid={!!formik?.errors.idEtapa && formik?.touched.idEtapa}
+        /> */}
       </div>
     </>
   );

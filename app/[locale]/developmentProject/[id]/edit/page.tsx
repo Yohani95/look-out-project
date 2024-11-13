@@ -35,6 +35,7 @@ const GetData = async (id: number) => {
       personasKam,
       empresaPrestadora,
       paises,
+      profesionales,
     ] = await Promise.all([
       fetchMoneda(),
       fechtClients(),
@@ -45,6 +46,7 @@ const GetData = async (id: number) => {
       getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM),
       getAllEmpresaPrestadora(),
       fetchCountries(),
+      getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_PROFESIONAL),
     ]);
 
     // Mapeo de datos para opciones de selección
@@ -83,6 +85,9 @@ const GetData = async (id: number) => {
     const mappedEmpresaEmprestadora = empresaPrestadora.map((empresa) => {
       return new EmpresaPrestadora(empresa).getSelectOptions();
     });
+    const mappedProfesionales = profesionales.map((profesional) => {
+      return new Persona(profesional).getSelectOptions();
+    });
     return {
       paises: mappedPaises,
       monedas: mappedMonedas,
@@ -93,6 +98,7 @@ const GetData = async (id: number) => {
       proyectoDesarrollo,
       personasKam: mappedPersonaKam,
       empresaPrestadora: mappedEmpresaEmprestadora,
+      profesionales: mappedProfesionales,
     };
   } catch (error) {
     console.error('Error al obtener los datos:', error);

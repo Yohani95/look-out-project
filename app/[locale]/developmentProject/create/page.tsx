@@ -13,6 +13,10 @@ import EtapaProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/EtapaPr
 import TipoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/TipoProyectoDesarrollo';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
+import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
+import { Constantes } from '@/app/api/models/common/Constantes';
+import { Person } from '@mui/icons-material';
+import Persona from '@/app/api/models/admin/Persona';
 
 async function page() {
   const locale = await getLocale();
@@ -35,6 +39,7 @@ const GetData = async () => {
       etapasProyecto,
       tiposProyecto,
       empresaPrestadora,
+      profesionales,
     ] = await Promise.all([
       fetchMoneda(),
       fetchCountriest(),
@@ -43,6 +48,7 @@ const GetData = async () => {
       getAllEtapaProyectoDesarrollo(),
       getAllTipoProyectoDesarrollo(),
       getAllEmpresaPrestadora(),
+      getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_PROFESIONAL),
     ]);
 
     const mappedMonedas = monedas.map((moneda) => ({
@@ -74,6 +80,9 @@ const GetData = async () => {
     const mappedEmpresaEmprestadora = empresaPrestadora.map((empresa) => {
       return new EmpresaPrestadora(empresa).getSelectOptions();
     });
+    const mappedProfesionales = profesionales.map((profesional) => {
+      return new Persona(profesional).getSelectOptions();
+    });
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -82,6 +91,7 @@ const GetData = async () => {
       etapasProyecto: mappedEtapasProyecto,
       tiposProyecto: mappedTiposProyecto,
       empresaPrestadora: mappedEmpresaEmprestadora,
+      profesionales: mappedProfesionales,
     };
   } catch (error) {
     console.error('Error al obtener los datos:', error);

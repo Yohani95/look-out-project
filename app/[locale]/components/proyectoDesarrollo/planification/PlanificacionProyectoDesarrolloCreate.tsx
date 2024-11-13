@@ -29,10 +29,10 @@ const PlanificacionProyectoDesarrolloCreate: React.FC<FormProps> = ({
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log(values);
         setSubmitting(true);
         await Utils.showLoadingNotification(t);
-        console.log(values);
+        values.fechaActividad = values.fechaInicio;
+        values.fechaTerminoReal = values.fechaTermino;
         await createPlanificacionProyectoDesarrollo(values)
           .then((res) => {
             console.log(res);

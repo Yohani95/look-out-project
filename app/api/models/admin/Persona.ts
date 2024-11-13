@@ -61,6 +61,30 @@ class Persona {
       label: this.getNombreCompleto(),
     };
   }
+  static createColumnsProfessionals(t: any) {
+    return [
+      {
+        accessorKey: 'id',
+        header: 'ID',
+        size: 50,
+      },
+      {
+        accessorKey: 'nombre',
+        header: t.Common.name,
+        size: 200,
+      },
+      {
+        accessorKey: 'perIdNacional',
+        header: t.Common.rut,
+        size: 150,
+      },
+      {
+        accessorKey: 'actions',
+        header: t.Common.actions,
+        size: 100,
+      },
+    ];
+  }
 }
 
 export default Persona;

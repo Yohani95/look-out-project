@@ -19,7 +19,6 @@ function PlanificacionProyectoDesarrolloSearch({
     () => PlanificacionProyectoDesarrollo.createColumns(t),
     [t]
   );
-  console.log(data);
   const memoizedActions = useMemo(() => {
     return data.map((planificacion: PlanificacionProyectoDesarrollo) => ({
       ...planificacion,
