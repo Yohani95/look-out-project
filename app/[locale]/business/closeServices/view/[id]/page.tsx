@@ -65,6 +65,7 @@ async function page({ params }) {
   });
   // Convertir `proyecto` y `archivos` a objetos planos
   const plainProyecto = proyecto ? { ...proyecto } : null;
+  console.log(params);
   return (
     <BasePages title={t.business.title}>
       <fieldset disabled>

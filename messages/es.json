@@ -1,5 +1,6 @@
 {
   "Common": {
+    "planning": "Planificación",
     "activity": "Actividad",
     "activities": "Actividades",
     "meeting": "Reunión",
@@ -360,7 +361,11 @@
     "progressMilestone": "Avance Hito",
     "newMilestone": "Nuevo Hito",
     "closeProject": "Cerrar Proyecto",
-    "kickOffProject": "Kick Off Proyecto"
+    "kickOffProject": "Kick Off Proyecto",
+    "stages": "Etapas",
+    "stage": "Etapa",
+    "finishedStage": "Etapa Terminada",
+    "percentageWork": "Porcentaje Trabajo %"
   },
   "service": {
     "docKickOff": "Doc. Kick Off",
@@ -478,8 +483,8 @@
   "ValidationMessages": {
     "required": "Este campo es obligatorio.",
     "maxLength": "El valor ingresado supera la longitud máxima permitida.",
-    "discountMin": "Descuento debe ser al menos 1%",
-    "discountMax": "Descuento no puede ser mayor a 100%"
+    "discountMin": "Debe ser al menos 1%",
+    "discountMax": "No puede ser mayor a 100%"
   },
   "Export": {
     "exportAllRows": "Exportar todas las filas (PDF)",

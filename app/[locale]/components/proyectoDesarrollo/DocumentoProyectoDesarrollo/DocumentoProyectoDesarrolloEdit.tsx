@@ -1,31 +1,25 @@
 'use client';
 import React from 'react';
-import { useSession } from 'next-auth/react';
-import { Usuario } from '@/app/api/models/admin/Usuario';
-import { useRouter } from 'next/navigation';
-import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
-import { createOportunidad } from '@/app/actions/Oportunidad/OportunidadActions';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
+import DocumentoProyectoDesarrolloForm from './DocumentoProyectoDesarrolloForm';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
-import OportunidadForm from './OportunidadForm';
+import DocumentoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/DocumentoProyectoDesarrollo';
+import {
+  revalidateDataDocumentoProyectoDesarrollo,
+  updateDocumentoProyectoDesarrollo,
+} from '@/app/actions/proyectoDesarrollo/DocumentoProyectoDesarrolloActions';
 import Utils from '@/app/api/models/common/Utils';
-function OportunidadCreate({ t, data }) {
-  const { data: session } = useSession();
-  const user = session?.user as Usuario;
-  const router = useRouter();
-  //========FIN DECLARACION DE VARIABLES ===============
 
-  // if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
-  //     return <p>You are not authorized to view this page!</p>;
-  // }
-  /*
-       =================================================================================
-       Seccion Funciones de componente
-       =================================================================================
-    */
-  const validationSchema = Oportunidad.getValidationSchema(t);
+function DocumentoProyectoDesarrolloEdit({
+  t,
+  documento,
+  idProyectoDesarrollo,
+}) {
+  const router = useRouter();
+  const validationSchema = DocumentoProyectoDesarrollo.getValidationSchema(t);
   const formik = useFormik({
-    initialValues: new Oportunidad(null),
+    initialValues: new DocumentoProyectoDesarrollo(documento),
     validationSchema,
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
@@ -37,11 +31,10 @@ function OportunidadCreate({ t, data }) {
           showLoading: true,
         });
 
-        await createOportunidad(values)
-          .then((res) => {
-            router.refresh();
-            if (res.status == 400) {
-              Utils.handleErrorNotification(t, router.back);
+        await updateDocumentoProyectoDesarrollo(values, values.id)
+          .then(async (res) => {
+            if (res == 400) {
+              Utils.handleErrorNotification(t);
             } else {
               router.refresh();
               Utils.handleSuccessNotification(t, router.back);
@@ -54,6 +47,7 @@ function OportunidadCreate({ t, data }) {
         console.error('Error in handleFormSubmit:', error);
         Utils.handleErrorNotification(t, router.back);
       } finally {
+        revalidateDataDocumentoProyectoDesarrollo();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }
     },
@@ -66,14 +60,14 @@ function OportunidadCreate({ t, data }) {
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-          <h4>{`${t.Common.create} ${t.Opportunity.opportunity}`}</h4>
+          <h4>{`${t.Common.edit} ${t.Common.document} `}</h4>
         </div>
-        <OportunidadForm
+        <DocumentoProyectoDesarrolloForm
           t={t}
-          oportunidadModel={formik.values}
-          setOportunidad={formik.setValues}
-          data={data}
+          documentoModel={formik.values}
+          setDocumentoProyectoDesarrollo={formik.setValues}
           formik={formik}
+          idProyectoDesarrollo={idProyectoDesarrollo}
         />
         <div className="d-flex justify-content-end mb-3">
           <button type="submit" className="btn btn-primary m-2">
@@ -94,4 +88,4 @@ function OportunidadCreate({ t, data }) {
   );
 }
 
-export default OportunidadCreate;
+export default DocumentoProyectoDesarrolloEdit;

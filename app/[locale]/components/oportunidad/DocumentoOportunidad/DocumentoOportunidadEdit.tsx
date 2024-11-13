@@ -92,7 +92,7 @@ function DocumentoOportunidadEdit({ t, documento, idOportunidad }) {
             type="button"
             className="btn btn-danger m-2"
             onClick={(e) => {
-              router.push('/licenses/search');
+              router.back();
             }}
           >
             {t.Common.cancel}

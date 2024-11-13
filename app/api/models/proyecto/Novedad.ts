@@ -1,5 +1,5 @@
-import * as Yup from "yup";
-import { revalidatePath } from "next/cache";
+import * as Yup from 'yup';
+import { revalidatePath } from 'next/cache';
 class Novedad {
   id: number | null;
   idPersona: number | null;
@@ -9,7 +9,7 @@ class Novedad {
   observaciones: string | null;
   Idperfil: number | null;
   idTipoNovedad: number | null;
-
+  idProfesionalProyecto: number | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.idPersona = data?.idPersona || null;
@@ -23,6 +23,7 @@ class Novedad {
     this.observaciones = data?.observaciones || null;
     this.Idperfil = data?.Idperfil || null;
     this.idTipoNovedad = data?.idTipoNovedad || null;
+    this.idProfesionalProyecto = data?.idProfesionalProyecto || null;
   }
 
   static getValidationSchema(t) {
@@ -40,37 +41,37 @@ class Novedad {
   static createColumns(t) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "fechaInicio",
+        accessorKey: 'fechaInicio',
         header: t.service.noveltyDate,
         size: 200,
       },
       {
-        accessorKey: "fechaHasta",
+        accessorKey: 'fechaHasta',
         header: t.service.dateTo,
         size: 200,
       },
       {
-        accessorKey: "IdPerfil",
+        accessorKey: 'IdPerfil',
         header: t.Common.profile,
         size: 150,
       },
       {
-        accessorKey: "idTipoNovedad",
+        accessorKey: 'idTipoNovedad',
         header: t.service.noveltyType,
         size: 100,
       },
       {
-        accessorKey: "observaciones",
+        accessorKey: 'observaciones',
         header: t.Common.observations,
         size: 100,
       },
       {
-        accessorKey: "acciones",
+        accessorKey: 'acciones',
         header: t.Common.actions,
         size: 100,
       },
@@ -89,9 +90,9 @@ class Novedad {
   //     ];
   //   }
   // }
-  static RefreshList(){
-    "use server"
-    revalidatePath("/")
+  static RefreshList() {
+    'use server';
+    revalidatePath('/');
   }
 }
 export default Novedad;

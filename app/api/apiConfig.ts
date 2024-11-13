@@ -205,7 +205,8 @@ export const ProyectoDesarrolloApiUrl = `${apiBaseUrl}/ProyectoDesarrollo`;
 
 // URL de la entidad EtapaProyectoDesarrollo
 export const EtapaProyectoDesarrolloApiUrl = `${apiBaseUrl}/EtapaProyectoDesarrollo`;
-
+// URL de la entidad EtapaPlanificacionProyectoDesarrollo
+export const EtapaPlanificacionProyectoDesarrolloApiUrl = `${apiBaseUrl}/EtapaPlanificacionProyectoDesarrollo`;
 // URL de la entidad TipoProyectoDesarrollo
 export const TipoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoProyectoDesarrollo`;
 
@@ -220,3 +221,8 @@ export const TipoHitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoHitoProyectoD
 export const NovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/NovedadesProyectoDesarrollo`;
 
 export const TipoNovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoNovedadesProyectoDesarrollo`;
+
+export const PlanificacionProyectoDesarrolloApiUrl = `${apiBaseUrl}/PlanificacionProyectoDesarrollo`;
+
+//DocumentoProyectoDesarrolloApiUrl
+export const DocumentoProyectoDesarrolloApiUrl = `${apiBaseUrl}/DocumentoProyectoDesarrollo`;

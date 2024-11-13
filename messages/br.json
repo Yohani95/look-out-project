@@ -1,5 +1,6 @@
 {
   "Common": {
+    "planning": "Planejamento",
     "activity": "Atividade",
     "activities": "Atividades",
     "meeting": "reunião",
@@ -360,7 +361,12 @@
     "progressMilestone": "Avanço do Marco",
     "newMilestone": "Novo Marco",
     "closeProject": "Fechar Projeto",
-    "kickOffProject": "Kick Off do Projeto"
+    "kickOffProject": "Kick Off do Projeto",
+    "stages": "Fases",
+    "stage": "Fase",
+    "finishedStage": "Estágio Concluído",
+    "Carga de trabalho": "Carga de trabalho",
+    "percentageWork": "porcentagem Trabalho %"
   },
   "service": {
     "docKickOff": "Doc. Início",

@@ -34,6 +34,7 @@ async function page({ params }) {
           idPersona={params.idPersona}
           idProyecto={params.IdProject}
           listaNovedades={listaNovedades}
+          idProfesionalProyecto={params.idParticipante}
         />
       </BasePages>
     </>

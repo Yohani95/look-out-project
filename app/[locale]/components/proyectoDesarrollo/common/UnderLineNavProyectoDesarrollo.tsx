@@ -1,19 +1,33 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import '@/app/css/UnderLineNav.css';
 import { useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 function UnderLineNavProyectoDesarrollo({ id }) {
   const locale = useLocale();
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
-  const [activeKey, setActiveKey] = useState('link-1');
+  const [activeKey, setActiveKey] = useState(null);
 
   const handleSelect = (selectedKey) => {
     setActiveKey(selectedKey);
   };
+  const pathname = usePathname(); // Para obtener la ruta actual
+  useEffect(() => {
+    // Sincroniza activeKey con la URL actual, considerando sub URLs
+    if (pathname.match(`/developmentProject/${id}/edit`))
+      setActiveKey('link-1');
+    else if (pathname.match(`/developmentProject/${id}/milestone`))
+      setActiveKey('link-2');
+    else if (pathname.match(`/developmentProject/${id}/novelty`))
+      setActiveKey('link-3');
+    else if (pathname.match(`/developmentProject/${id}/planning`))
+      setActiveKey('link-4');
+    else if (pathname.match(`/developmentProject/${id}/documents`))
+      setActiveKey('link-5');
+  }, [pathname, id]);
   const handleNavigation = (url) => {
     router.push(url);
   };
@@ -54,6 +68,28 @@ function UnderLineNavProyectoDesarrollo({ id }) {
             }
           >
             {t.service.historyNovelty}
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link-4"
+            className="custom-nav-link"
+            onClick={() =>
+              handleNavigation(`/developmentProject/${id}/planning/search`)
+            }
+          >
+            {t.Common.planning}
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            eventKey="link-5"
+            className="custom-nav-link"
+            onClick={() =>
+              handleNavigation(`/developmentProject/${id}/documents/search`)
+            }
+          >
+            {t.Common.documents}
           </Nav.Link>
         </Nav.Item>
       </Nav>

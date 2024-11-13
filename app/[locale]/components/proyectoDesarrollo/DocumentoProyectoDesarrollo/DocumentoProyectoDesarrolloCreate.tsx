@@ -1,31 +1,20 @@
 'use client';
 import React from 'react';
-import { useSession } from 'next-auth/react';
-import { Usuario } from '@/app/api/models/admin/Usuario';
-import { useRouter } from 'next/navigation';
-import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
-import { createOportunidad } from '@/app/actions/Oportunidad/OportunidadActions';
 import { useFormik } from 'formik';
-import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
-import OportunidadForm from './OportunidadForm';
-import Utils from '@/app/api/models/common/Utils';
-function OportunidadCreate({ t, data }) {
-  const { data: session } = useSession();
-  const user = session?.user as Usuario;
-  const router = useRouter();
-  //========FIN DECLARACION DE VARIABLES ===============
+import { useRouter } from 'next/navigation';
 
-  // if (user?.rol?.rolId != Constantes.Roles.ADMIN) {
-  //     return <p>You are not authorized to view this page!</p>;
-  // }
-  /*
-       =================================================================================
-       Seccion Funciones de componente
-       =================================================================================
-    */
-  const validationSchema = Oportunidad.getValidationSchema(t);
+import DocumentoProyectoDesarrolloForm from './DocumentoProyectoDesarrolloForm';
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+
+import Utils from '@/app/api/models/common/Utils';
+import DocumentoProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/DocumentoProyectoDesarrollo';
+import { DocumentoProyectoDesarrolloApiUrl } from '@/app/api/apiConfig';
+import { createDocumentoProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/DocumentoProyectoDesarrolloActions';
+function DocumentoProyectoDesarrolloCreate({ t, idProyectoDesarrollo }) {
+  const router = useRouter();
+  const validationSchema = DocumentoProyectoDesarrollo.getValidationSchema(t);
   const formik = useFormik({
-    initialValues: new Oportunidad(null),
+    initialValues: new DocumentoProyectoDesarrollo(idProyectoDesarrollo),
     validationSchema,
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
@@ -36,12 +25,10 @@ function OportunidadCreate({ t, data }) {
           type: t.notification.loading.type,
           showLoading: true,
         });
-
-        await createOportunidad(values)
-          .then((res) => {
-            router.refresh();
+        await createDocumentoProyectoDesarrollo(values)
+          .then(async (res) => {
             if (res.status == 400) {
-              Utils.handleErrorNotification(t, router.back);
+              Utils.handleErrorNotification(t);
             } else {
               router.refresh();
               Utils.handleSuccessNotification(t, router.back);
@@ -66,14 +53,14 @@ function OportunidadCreate({ t, data }) {
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-          <h4>{`${t.Common.create} ${t.Opportunity.opportunity}`}</h4>
+          <h4>{`${t.Common.create} ${t.Common.document} `}</h4>
         </div>
-        <OportunidadForm
+        <DocumentoProyectoDesarrolloForm
           t={t}
-          oportunidadModel={formik.values}
-          setOportunidad={formik.setValues}
-          data={data}
+          documentoModel={formik.values}
+          setDocumentoProyectoDesarrollo={formik.setValues}
           formik={formik}
+          idProyectoDesarrollo={idProyectoDesarrollo}
         />
         <div className="d-flex justify-content-end mb-3">
           <button type="submit" className="btn btn-primary m-2">
@@ -94,4 +81,4 @@ function OportunidadCreate({ t, data }) {
   );
 }
 
-export default OportunidadCreate;
+export default DocumentoProyectoDesarrolloCreate;
