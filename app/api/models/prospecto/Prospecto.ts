@@ -94,6 +94,11 @@ class Prospecto {
         size: 150,
       },
       {
+        accessorKey: 'numeroContacto',
+        header: 'Numero',
+        size: 50,
+      },
+      {
         accessorKey: 'estadoProspecto.nombre',
         header: t.Common.status,
         size: 150,
