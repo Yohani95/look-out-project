@@ -26,6 +26,7 @@ function ProspectoSearch({ t, data }) {
       responde: renderIcon(prospecto.responde),
       cantidadLlamadas: prospecto.cantidadLlamadas ?? '—',
       contacto: new ContactosProspecto(prospecto.contacto).nombreCompleto,
+      numeroContacto: new ContactosProspecto(prospecto.contacto).numero || '-',
       tipoContactoProspecto: prospecto.contacto?.tipoContactoProspecto?.nombre,
       actions: <ProspectoButtons t={t} prospecto={prospecto} />,
     }));

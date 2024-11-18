@@ -58,7 +58,7 @@ const LlamadaProspectoForm: React.FC<LlamadaProspectoFormProps> = ({
         }
         selectedValue={llamadaProspectoModel.idMedioLlamadaProspecto}
       />
-      <label htmlFor="detalle" className="col-sm-1 col-form-label">
+      <label htmlFor="detalle" className="col-sm-2 col-form-label">
         {t.Common.description}
       </label>
       <div className="col-sm-3">

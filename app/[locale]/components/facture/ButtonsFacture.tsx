@@ -29,6 +29,7 @@ import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import MyDatePicker from '../common/MyDatePicker';
 import Utils from '@/app/api/models/common/Utils';
 import ModalInfo from '../common/ModalInfo';
+import { getDocumentoFacturaById } from '@/app/api/actions/factura/DocumentoFacturaActions';
 const ButtonsFacture = ({
   t,
   idFactura,
@@ -123,7 +124,8 @@ const ButtonsFacture = ({
       });
     }
   };
-  const downloadDocumento = (documento) => {
+  const downloadDocumento = async (predocumento) => {
+    const documento = await getDocumentoFacturaById(predocumento.id);
     const uint8Array = new Uint8Array(
       atob(documento.contenidoDocumento)
         .split('')

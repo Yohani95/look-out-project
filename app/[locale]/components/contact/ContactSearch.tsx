@@ -32,7 +32,7 @@ function ContactSearch({ locale }) {
         size: 100,
       },
       {
-        accessorKey: 'position',
+        accessorKey: 'cargo',
         header: t.Account.position,
         size: 100,
       },
@@ -72,7 +72,7 @@ function ContactSearch({ locale }) {
         perNombres:
           item.persona.perNombres + ' ' + item.persona.perApellidoPaterno ||
           'N/A', // Reemplazar con "N/A" si es nulo
-        position: 'N/A',
+        cargo: item.persona.cargo || 'N/A',
         email: item.email || 'N/A',
         telefono: item.telefono || 'N/A',
         account: item.cuenta || 'N/A',
