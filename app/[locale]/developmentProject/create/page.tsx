@@ -80,9 +80,15 @@ const GetData = async () => {
     const mappedEmpresaEmprestadora = empresaPrestadora.map((empresa) => {
       return new EmpresaPrestadora(empresa).getSelectOptions();
     });
-    const mappedProfesionales = profesionales.map((profesional) => {
-      return new Persona(profesional).getSelectOptions();
-    });
+
+    const filteredAndMappedProfesionales = profesionales
+      .filter((prof) =>
+        prof.perfil?.prf_Nombre
+          .trim()
+          .toLowerCase()
+          .includes('Jefe de Proyectos'.trim().toLowerCase())
+      )
+      .map((profesional) => new Persona(profesional).getSelectOptions());
     return {
       monedas: mappedMonedas,
       paises: mappedPaises,
@@ -91,7 +97,7 @@ const GetData = async () => {
       etapasProyecto: mappedEtapasProyecto,
       tiposProyecto: mappedTiposProyecto,
       empresaPrestadora: mappedEmpresaEmprestadora,
-      profesionales: mappedProfesionales,
+      profesionales: filteredAndMappedProfesionales,
     };
   } catch (error) {
     console.error('Error al obtener los datos:', error);

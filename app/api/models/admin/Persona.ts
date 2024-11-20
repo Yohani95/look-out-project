@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import Perfil from './Perfil';
 class Persona {
   id: number;
   perIdNacional: string;
@@ -9,6 +10,8 @@ class Persona {
   tpeId: number | null;
   perFechaNacimiento: string | null = null;
   cargo: string | null;
+  perfilId: number | null;
+  perfil: Perfil | null;
   constructor(data?: any) {
     if (data) {
       this.id = data.id || 0;
@@ -20,6 +23,8 @@ class Persona {
       this.tpeId = data.tpeId || null;
       this.perFechaNacimiento = data.perFechaNacimiento || null;
       this.cargo = data.cargo || null;
+      this.perfilId = data.perfilId || null; // Agregar otros campos y reemplazar si es necesario
+      this.perfil = data.perfil ? new Perfil(data.perfil) : null; // Agregar otros campos y reemplazar si es necesario
     } else {
       this.id = 0;
       this.perIdNacional = null;
@@ -30,6 +35,8 @@ class Persona {
       this.tpeId = null;
       this.perFechaNacimiento = null;
       this.cargo = null;
+      this.perfilId = null; // Agregar otros campos y reemplazar si es necesario
+      this.perfil = null; // Agregar otros campos y reemplazar si es necesario
     }
   }
 
@@ -76,6 +83,11 @@ class Persona {
       {
         accessorKey: 'perIdNacional',
         header: t.Common.rut,
+        size: 150,
+      },
+      {
+        accessorKey: 'perfil.prf_Nombre',
+        header: t.Common.profile,
         size: 150,
       },
       {

@@ -12,30 +12,9 @@ import NotificationSweet from '../../common/NotificationSweet';
 import { deletePersona } from '@/app/actions/admin/PersonaActions';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 
-async function ProfesionalsSearch({ data, locale }) {
+function ProfesionalsSearch({ data, locale }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
-  const columns = [
-    {
-      key: 'id',
-      title: 'ID',
-    },
-    { key: 'perNombres', title: t.Common.name },
-    { key: 'perIdNacional', title: t.Common.rut },
-    {
-      title: t.Account.action,
-      key: 'actions',
-      render: (item) => (
-        <ActionButtons
-          //onDelete={() => handleDelete(item.id, t)}
-          onEdit={() => handleEditProfessional(item.id, t, router.push)}
-          onView={() => {
-            router.push(`/admin/professional/view/${item.id}`);
-          }}
-        />
-      ),
-    },
-  ];
   const onDelete = async (id) => {
     const confirmed = await Utils.showConfirmationDialogDelete(t);
     if (confirmed) {
@@ -52,8 +31,8 @@ async function ProfesionalsSearch({ data, locale }) {
         });
     }
   };
-  const columns2 = useMemo(() => Persona.createColumnsProfessionals(t), [t]);
-  const personas = data?.map((persona) => ({
+  const columns = useMemo(() => Persona.createColumnsProfessionals(t), [t]);
+  const personas = data?.map((persona: Persona) => ({
     ...new Persona(persona), // Instancia una nueva Persona con los datos existentes
     perNombres: new Persona(persona).getNombreCompleto(),
   }));
@@ -77,7 +56,7 @@ async function ProfesionalsSearch({ data, locale }) {
   return (
     <>
       {personas && personas.length > 0 ? (
-        <MemoizedTableMaterialUI columns={columns2} data={memoizedActions} />
+        <MemoizedTableMaterialUI columns={columns} data={memoizedActions} />
       ) : (
         <div className="text-center justify-content-center align-items-center">
           <h4>{t.Common.professionals}</h4> {t.Common.noData}

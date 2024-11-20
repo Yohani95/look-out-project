@@ -131,7 +131,7 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
       </div>
       <div className="mb-3 row align-items-center">
         <SelectField
-          label={'Etapa'}
+          label={t.project.stage}
           options={data.etapasProyecto}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
@@ -180,7 +180,7 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
           selectedValue={proyectoModel.idMoneda}
         />
         <label htmlFor="monto" className="col-sm-1 col-form-label">
-          monto
+          {t.Common.amount}
         </label>
         <div className="col-sm-3">
           <input
@@ -195,7 +195,7 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
       </div>
       <div className="mb-3 row align-items-center">
         <label htmlFor="avance" className="col-sm-1 col-form-label">
-          Avance
+          {t.project.percentageWork}
         </label>
         <div className="col-sm-3">
           <input
@@ -207,16 +207,16 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
             onChange={formik?.handleChange}
           />
         </div>
-        {/* <SelectField
-          label={"Jefe Proyecto"}
+        <SelectField
+          label={`${t.Common.boss} ${t.Common.project}`}
           options={data.profesionales}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'idEtapa', setProyecto)}
-          selectedValue={proyectoModel.idEtapa}
-          isInvalid={!!formik?.errors.idEtapa && formik?.touched.idEtapa}
-        /> */}
+          onChange={(e) => handleSelectChange(e, 'idJefeProyecto', setProyecto)}
+          selectedValue={proyectoModel.idJefeProyecto}
+          //isInvalid={!!formik?.errors.idEtapa && formik?.touched.idEtapa}
+        />
       </div>
     </>
   );

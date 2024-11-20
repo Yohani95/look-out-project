@@ -22,6 +22,7 @@ class ProyectoDesarrollo {
   idPais: number | null;
   idEmpresaPrestadora: number | null;
   monto: number | null;
+  idJefeProyecto: number | null;
   // Relaciones
   estado: EstadoProyectoDesarrollo | null;
   moneda: Moneda | null;
@@ -49,6 +50,7 @@ class ProyectoDesarrollo {
     this.fechaCreacion = data?.fechaCreacion
       ? new Date(data?.fechaCreacion)
       : null;
+    this.idJefeProyecto = data?.idJefeProyecto || null;
     // Relaciones
     this.estado = data?.estado || null;
     this.moneda = data?.moneda || null;

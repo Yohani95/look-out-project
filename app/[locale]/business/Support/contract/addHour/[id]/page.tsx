@@ -16,6 +16,8 @@ import {
 import ContractHorasUtilizadas from '@/app/[locale]/components/support/contract/ContractHorasUtilizadas';
 import { getAllHorasByIdSoporte } from '@/app/api/actions/soporte/HorasUtilizadasActions';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
+import { getAllByIdTipoPersona } from '@/app/actions/admin/PersonaActions';
+import { Constantes } from '@/app/api/models/common/Constantes';
 async function page({ params }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);

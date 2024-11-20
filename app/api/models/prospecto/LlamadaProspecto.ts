@@ -9,6 +9,7 @@ class LlamadaProspecto {
   detalle: string | null;
   idMedioLlamadaProspecto: number | null;
   medioLlamadaProspecto: MedioLlamadaProspecto | null;
+  fechaProximaLlamada: Date | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.fechaCreacion = data?.fechaCreacion || null;
@@ -17,6 +18,9 @@ class LlamadaProspecto {
     this.detalle = data?.detalle || null;
     this.idMedioLlamadaProspecto = data?.idMedioLlamadaProspecto || null;
     this.medioLlamadaProspecto = data?.medioLlamadaProspecto || null;
+    this.fechaProximaLlamada = data?.fechaProximaLlamada
+      ? new Date(data.fechaProximaLlamada)
+      : null;
   }
 
   // Método para obtener el esquema de validación usando Yup
@@ -43,7 +47,7 @@ class LlamadaProspecto {
       {
         accessorKey: 'fechaCreacion',
         header: t.Common.creationDate,
-        size: 100,
+        size: 50,
       },
       {
         accessorKey: 'respondeLlamada',
@@ -58,7 +62,12 @@ class LlamadaProspecto {
       {
         accessorKey: 'detalle',
         header: t.Common.description,
-        size: 300,
+        size: 200,
+      },
+      {
+        accessorKey: 'fechaProximaLlamada',
+        header: t.Common.nextCallDate,
+        size: 150,
       },
       {
         accessorKey: 'actions',

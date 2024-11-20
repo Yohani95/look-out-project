@@ -41,6 +41,7 @@ class Soporte {
   numeroHoras: number | null;
   documentosSoporte: DocumentosSoporte[] | null;
   idTipoSoporte: number | null;
+  personaKam: Persona | null;
   constructor(data: any) {
     this.pryId = data?.pryId || 0;
     this.pryNombre = data?.pryNombre || '';
@@ -72,6 +73,7 @@ class Soporte {
     this.tipoFacturacion = data?.tipoFacturacion || null;
     this.diaPagos = data?.diaPagos || null;
     this.documentosSoporte = data?.documentosSoporte || [];
+    this.personaKam = data?.personaKam || null;
     // Manejo de fechas
     this.pryFechaInicioEstimada = this.isValidDate(data?.pryFechaInicioEstimada)
       ? new Date(data.pryFechaInicioEstimada)

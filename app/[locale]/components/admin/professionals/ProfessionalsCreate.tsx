@@ -9,7 +9,7 @@ import { professionalCreateApiUrl } from '@/app/api/apiConfig';
 import { EditAction } from './ProfessionalsActions';
 import { Constantes } from '@/app/api/models/common/Constantes';
 import { submitProfessional } from '@/app/[locale]/utils/person/PersonActions';
-function ProfessionalsCreate({ locale, data }) {
+function ProfessionalsCreate({ locale, data, perfiles }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
 
@@ -65,6 +65,7 @@ function ProfessionalsCreate({ locale, data }) {
           setFormData={formik.setValues}
           countryOptions={data}
           formik={formik}
+          perfiles={perfiles}
         />
 
         <div className="d-flex justify-content-end mt-2 mb-2 ">
