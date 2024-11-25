@@ -10,9 +10,10 @@ import { useRouter } from 'next/navigation';
 interface FormProps {
   t: any; // Función de traducción
   data: ReunionProspecto;
+  estados: any; //
 }
 
-const ReunionProspectoEdit: React.FC<FormProps> = ({ t, data }) => {
+const ReunionProspectoEdit: React.FC<FormProps> = ({ t, data, estados }) => {
   const router = useRouter();
   const validationSchema = ReunionProspecto.getValidationSchema(t);
   const formik = useFormik({
@@ -69,6 +70,7 @@ const ReunionProspectoEdit: React.FC<FormProps> = ({ t, data }) => {
           reunionProspectoModel={formik.values}
           setReunionProspecto={formik.setValues}
           formik={formik}
+          estados={estados}
         />
         <div className="d-flex justify-content-end mb-2">
           <button

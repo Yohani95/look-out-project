@@ -12,6 +12,8 @@ import ContactosProspecto from '@/app/api/models/prospecto/ContactoProspecto';
 import { getAllContactoProspecto } from '@/app/actions/prospecto/ContactoProspectoActions';
 import { getAllReunionProspecto } from '@/app/actions/prospecto/ReunionProspectoActions';
 import ProspectoReunion from '@/app/[locale]/components/prospecto/ProspectoReunion';
+import { getAllEstadoReunionProspecto } from '@/app/actions/prospecto/EstadoReunionProspecto';
+import EstadoReunionProspecto from '@/app/api/models/prospecto/EstadoReunionProspecto';
 async function page({ params }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -24,15 +26,23 @@ async function page({ params }) {
 }
 const GetData = async (id) => {
   try {
-    const [estados, kam, prospecto, clientes, reuniones, contactos] =
-      await Promise.all([
-        getAllEstadoProspecto(),
-        getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM),
-        getProspectoById(id),
-        fechtClients(),
-        getAllReunionProspecto(),
-        getAllContactoProspecto(),
-      ]);
+    const [
+      estados,
+      kam,
+      prospecto,
+      clientes,
+      reuniones,
+      contactos,
+      estadosReunion,
+    ] = await Promise.all([
+      getAllEstadoProspecto(),
+      getAllByIdTipoPersona(Constantes.TipoPersona.PERSONA_KAM),
+      getProspectoById(id),
+      fechtClients(),
+      getAllReunionProspecto(),
+      getAllContactoProspecto(),
+      getAllEstadoReunionProspecto(),
+    ]);
     const mappedClientes = clientes.map((item) => ({
       value: item.cliId,
       label: item.cliNombre,
@@ -50,6 +60,9 @@ const GetData = async (id) => {
     const mappedContactos = contactos.map((contacto) => {
       return new ContactosProspecto(contacto).getSelectOptions();
     });
+    const mappedEstadosReunion = estadosReunion.map((estado) => {
+      return new EstadoReunionProspecto(estado).getSelectOptions();
+    });
     return {
       estados: mappedEstados,
       clientes: mappedClientes,
@@ -57,6 +70,7 @@ const GetData = async (id) => {
       prospecto,
       contactos: mappedContactos,
       reuniones: reunionesProspecto,
+      estadosReunion: mappedEstadosReunion,
     };
   } catch (error) {
     console.error(error);

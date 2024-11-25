@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import EstadoReunionProspecto from './EstadoReunionProspecto';
 
 class ReunionProspecto {
   id: number | null;
@@ -7,6 +8,8 @@ class ReunionProspecto {
   idProspecto: number;
   detalle: string | null;
   fechaReunion: Date | null;
+  idEstadoReunionProspecto: number | null;
+  estadoReunionProspecto: EstadoReunionProspecto | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.fechaCreacion = data?.fechaCreacion || null;
@@ -14,6 +17,8 @@ class ReunionProspecto {
     this.idProspecto = data?.idProspecto || 0;
     this.detalle = data?.detalle || null;
     this.fechaReunion = data?.fechaReunion ? new Date(data.fechaReunion) : null;
+    this.idEstadoReunionProspecto = data?.idEstadoReunionProspecto || null;
+    this.estadoReunionProspecto = data?.estadoReunionProspecto || null;
   }
 
   // Método para obtener el esquema de validación usando Yup
@@ -54,6 +59,11 @@ class ReunionProspecto {
         accessorKey: 'solicitaPropuesta',
         header: t.Common.proposal,
         size: 100, // Ajusta según tus necesidades
+      },
+      {
+        accessorKey: 'estadoReunionProspecto.nombre',
+        header: t.Common.status,
+        size: 200, // Ajusta según tus necesidades
       },
       {
         accessorKey: 'detalle',

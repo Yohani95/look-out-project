@@ -74,6 +74,7 @@ const ReunionProspectoCreate: React.FC<FormProps> = ({
           reunionProspectoModel={formik.values}
           setReunionProspecto={formik.setValues}
           formik={formik}
+          estados={data.estadosReunion}
         />
         <div className="d-flex justify-content-end mb-2">
           <button type="submit" className="btn btn-primary m-2">
