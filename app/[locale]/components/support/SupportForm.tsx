@@ -242,6 +242,7 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
                   };
 
                   // Reemplazar el documento existente si ya existe uno del mismo tipo, de lo contrario, agregar el nuevo documento
+                  delete newDocumento.archivo;
                   if (existingDocumentoIndex !== -1) {
                     newDocumentos[existingDocumentoIndex] = newDocumento;
                   } else {
@@ -330,7 +331,6 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
                     fecha: new Date(),
                   };
                   delete newDocumento.archivo;
-                  newDocumentos.push(newDocumento);
                   if (existingDocumentoIndex !== -1) {
                     newDocumentos[existingDocumentoIndex] = newDocumento;
                   } else {

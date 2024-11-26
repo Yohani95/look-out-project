@@ -45,11 +45,10 @@ function ContractEdit({ t, data }) {
           type: t.notification.loading.type,
           showLoading: true,
         });
-        console.log('KAm ID', values);
         delete values.personaKam;
         delete values.pais;
         delete values.empresaPrestadora;
-
+        delete values.cliente;
         await updatesoporte(values, values.pryId)
           .then((res) => {
             router.refresh();
@@ -58,7 +57,7 @@ function ContractEdit({ t, data }) {
           .catch((err) => {
             NotificationSweet({
               title: t.notification.error.title,
-              text: t.notification.error.text,
+              text: err.message,
               type: t.notification.error.type,
             });
           });
@@ -154,7 +153,7 @@ function ContractEdit({ t, data }) {
                   idTipoDocumento: DocumentosSoporte.TIPO_DOCUMENTO.KICK_OFF,
                   fecha: new Date(),
                 };
-
+                delete newDocumento.archivo;
                 // Reemplazar el documento existente si ya existe uno del mismo tipo, de lo contrario, agregar el nuevo documento
                 if (existingDocumentoIndex !== -1) {
                   newDocumentos[existingDocumentoIndex] = newDocumento;
