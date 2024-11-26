@@ -96,6 +96,11 @@ class Oportunidad {
         size: 50,
       },
       {
+        accessorKey: 'monto',
+        header: 'Monto',
+        size: 50,
+      },
+      {
         accessorKey: 'estadoOportunidad.nombre',
         header: 'Estado Oportunidad',
         size: 100,

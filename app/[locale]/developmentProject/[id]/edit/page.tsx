@@ -88,6 +88,14 @@ const GetData = async (id: number) => {
     const mappedProfesionales = profesionales.map((profesional) => {
       return new Persona(profesional).getSelectOptions();
     });
+    const filteredAndMappedProfesionales = profesionales
+      .filter((prof) =>
+        prof.perfil?.prf_Nombre
+          .trim()
+          .toLowerCase()
+          .includes('Jefe de Proyectos'.trim().toLowerCase())
+      )
+      .map((profesional) => new Persona(profesional).getSelectOptions());
     return {
       paises: mappedPaises,
       monedas: mappedMonedas,
@@ -98,7 +106,7 @@ const GetData = async (id: number) => {
       proyectoDesarrollo,
       personasKam: mappedPersonaKam,
       empresaPrestadora: mappedEmpresaEmprestadora,
-      profesionales: mappedProfesionales,
+      profesionales: filteredAndMappedProfesionales,
     };
   } catch (error) {
     console.error('Error al obtener los datos:', error);

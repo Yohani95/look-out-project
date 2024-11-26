@@ -1,18 +1,18 @@
-"use client";
-import React,{useEffect} from "react";
-import { useFormik } from "formik";
-import Persona from "@/app/api/models/admin/Persona";
-import ProfessionalsFormSection from "@/app/[locale]/components/admin/professionals/ProfessionalsFormSection";
-import { useRouter } from "next/navigation";
+'use client';
+import React, { useEffect } from 'react';
+import { useFormik } from 'formik';
+import Persona from '@/app/api/models/admin/Persona';
+import ProfessionalsFormSection from '@/app/[locale]/components/admin/professionals/ProfessionalsFormSection';
+import { useRouter } from 'next/navigation';
 import {
   professionalEditApiUrl,
   professionalApiUrl,
-} from "@/app/api/apiConfig";
-import { handleFormSubmit } from "@/app/[locale]/utils/Form/UtilsForm";
-import { EditAction } from "./ProfessionalsActions";
-import { revalidatePath,revalidateTag } from "next/cache";
-import { fetchGetbyId } from "@/app/[locale]/utils/person/UtilsPerson";
-function ProfessionalsEdit({ persona, data, locale }) {
+} from '@/app/api/apiConfig';
+import { handleFormSubmit } from '@/app/[locale]/utils/Form/UtilsForm';
+import { EditAction } from './ProfessionalsActions';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { fetchGetbyId } from '@/app/[locale]/utils/person/UtilsPerson';
+function ProfessionalsEdit({ persona, data, locale, perfiles }) {
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();
 
@@ -20,45 +20,50 @@ function ProfessionalsEdit({ persona, data, locale }) {
   const validationSchema = Persona.validationRules(t);
   const apiurl = {
     edit: professionalApiUrl,
-    create: "",
+    create: '',
   };
   const formik = useFormik({
     initialValues: new Persona(persona),
     validationSchema,
     //validateOnMount: true,
-    onSubmit: async (values ,{ setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         await handleFormSubmit(
           values,
           t,
           router.push,
           true,
-          "/admin/professional",
+          '/admin/professional',
           apiurl,
-          persona.id,
+          persona.id
         );
-        router.refresh()
+        router.refresh();
       } catch (error) {
-        console.error("Error al manejar el formulario:", error);
+        console.error('Error al manejar el formulario:', error);
       } finally {
-        EditAction()
-        setSubmitting(false)
+        EditAction();
+        setSubmitting(false);
       }
     },
   });
   return (
     <>
       <h4>
-        {t.Common.create} {t.Common.professionals}
+        {t.Common.edit} {t.Common.professionals}
       </h4>
       <br />
-      <form action={formik.handleSubmit}>
+      <form
+        onSubmit={(e) => {
+          formik.handleSubmit(e);
+        }}
+      >
         <ProfessionalsFormSection
           t={t}
           formData={formik.values}
           setFormData={formik.setValues}
           countryOptions={data}
           formik={formik}
+          perfiles={perfiles}
         />
         <div className="d-flex justify-content-end mt-2 mb-2 ">
           <button type="submit" className="btn btn-primary m-2">

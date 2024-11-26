@@ -8,14 +8,9 @@ import { getAllDiaPagos } from '@/app/api/actions/factura/DiaPagosActions';
 import { getAllEmpresaPrestadora } from '@/app/api/actions/proyecto/EmpresaPrestadoraActions';
 import DiaPagos from '@/app/api/models/factura/DiaPagos';
 import EmpresaPrestadora from '@/app/api/models/proyecto/EmpresaPrestadora';
-import Soporte from '@/app/api/models/support/Soporte';
-import {
-  GetAllEntitiesById,
-  getsoporteById,
-} from '@/app/api/actions/soporte/SoporteActions';
+import { GetAllEntitiesById } from '@/app/api/actions/soporte/SoporteActions';
 import ContractHorasUtilizadas from '@/app/[locale]/components/support/contract/ContractHorasUtilizadas';
 import { getAllHorasByIdSoporte } from '@/app/api/actions/soporte/HorasUtilizadasActions';
-import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 async function page({ params }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);

@@ -19,6 +19,7 @@ function LlamadaProspectoSearch({ data, t }) {
       ...llamada,
       fechaCreacion: Utils.getFechaString(llamada.fechaCreacion),
       respondeLlamada: renderIcon(llamada.respondeLlamada),
+      fechaProximaLlamada: Utils.getFechaString(llamada.fechaProximaLlamada),
       actions: <LlamadaProspectoButtons t={t} llamada={llamada} />,
     }));
   }, [data]);

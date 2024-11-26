@@ -1,5 +1,6 @@
 {
   "Common": {
+    "nextCallDate": "Fecha próxima Llamada",
     "planning": "Planificación",
     "activity": "Actividad",
     "activities": "Actividades",

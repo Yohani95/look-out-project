@@ -83,7 +83,7 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
               setPlanificacion({ ...planificacionModel, fechaInicio: date })
             }
             title={t.Common.date}
-            // isRead={planificacionModel.id ? true : false}
+            isRead={planificacionModel.id ? true : false}
           />
         </div>
         <label className="col-sm-1 col-form-label">{t.project.dateEnd}</label>
@@ -98,7 +98,7 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
               })
             }
             title={t.Common.date}
-            // isRead={planificacionModel.id ? true : false}
+            isRead={planificacionModel.id ? true : false}
           />
         </div>
       </div>

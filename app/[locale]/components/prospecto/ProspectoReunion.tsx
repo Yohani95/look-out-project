@@ -11,6 +11,7 @@ import Utils from '@/app/api/models/common/Utils';
 import { updateProspecto } from '@/app/actions/prospecto/ProspectoActions';
 import { useFormik } from 'formik';
 import Prospecto from '@/app/api/models/prospecto/Prospecto';
+import ContactoProspectoView from './llamada/ContactoViewProps';
 interface FormProps {
   t: any; // Función de traducción
   data: any;
@@ -66,6 +67,10 @@ const ProspectoReunion: React.FC<FormProps> = ({ t, data, id }) => {
           </button>
         </div>
       </form>
+      <hr />
+      <BoxInfo title={t.Common.prospectContact}>
+        <ContactoProspectoView contacto={data.prospecto?.contacto} t={t} />
+      </BoxInfo>
       <hr />
       <BoxInfo title={t.Common.meeting}>
         <ReunionProspectoCreate data={data} t={t} idProspecto={id} />

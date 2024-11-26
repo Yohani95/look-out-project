@@ -11,6 +11,7 @@ function ProfessionalsFormSection({
   setFormData,
   countryOptions,
   formik,
+  perfiles,
 }) {
   return (
     <>
@@ -121,6 +122,17 @@ function ProfessionalsFormSection({
         {formik?.errors && formik.errors.paiId && (
           <div className="error-message">{formik.errors.paiId}</div>
         )}
+      </div>
+      <div className=" mb-3 row align-items-center">
+        <SelectField
+          label={t.Common.profile}
+          options={perfiles}
+          preOption={t.Account.select}
+          labelClassName="col-sm-1 col-form-label"
+          divClassName="col-sm-3"
+          onChange={(e) => handleSelectChange(e, 'perfilId', setFormData)}
+          selectedValue={formData.perfilId}
+        />
       </div>
     </>
   );

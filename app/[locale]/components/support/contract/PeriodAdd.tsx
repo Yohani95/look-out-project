@@ -187,6 +187,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
         Utils.handleErrorNotification(t);
       } finally {
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
+        router.refresh();
       }
     },
   });
