@@ -101,6 +101,11 @@ class Oportunidad {
         size: 50,
       },
       {
+        accessorKey: 'moneda.monNombre',
+        header: 'Moneda',
+        size: 50,
+      },
+      {
         accessorKey: 'estadoOportunidad.nombre',
         header: 'Estado Oportunidad',
         size: 100,
