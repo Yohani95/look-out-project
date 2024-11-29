@@ -84,11 +84,6 @@ class TarifarioVentaLicencia {
         size: 50,
       },
       {
-        accessorKey: 'moneda.monNombre',
-        header: `${t.Ficha.type} ${t.Common.currency}`,
-        size: 100,
-      },
-      {
         accessorKey: 'actions',
         header: t.Common.actions,
         size: 80,

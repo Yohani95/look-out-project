@@ -88,7 +88,7 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
           />
         </div>
         <label htmlFor="valor" className="col-sm-1 col-form-label">
-          {t.Common.amount}
+          {t.Common.amount} c/u
         </label>
         <div className="col-sm-3">
           <Form.Control
@@ -105,7 +105,7 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
         </div>
       </div>
       <div className="mb-3 row align-items-center">
-        <SelectField
+        {/* <SelectField
           label={`${t.Ficha.type} ${t.Common.currency}`}
           options={data.monedas}
           preOption={t.Account.select}
@@ -113,7 +113,7 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
           divClassName="col-sm-2"
           onChange={(e) => handleSelectChange(e, 'idMoneda', setTarifario)}
           selectedValue={tarifarioModel.idMoneda}
-        />
+        /> */}
         <label htmlFor="valor" className="col-sm-1 col-form-label">
           N° {t.Common.license}
         </label>

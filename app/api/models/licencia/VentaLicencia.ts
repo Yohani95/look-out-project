@@ -110,7 +110,12 @@ class VentaLicencia {
       {
         accessorKey: 'moneda.monNombre',
         header: t.Common.currency,
-        size: 200,
+        size: 50,
+      },
+      {
+        accessorKey: 'monto',
+        header: t.Common.amount,
+        size: 50,
       },
       {
         accessorKey: 'fechaCierre',
