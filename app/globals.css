@@ -1,187 +1,73 @@
+/* Tailwind CSS Directivas */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import "~bootstrap/dist/css/bootstrap.min.css"; */
+/* @import '~bootstrap/dist/css/bootstrap.min.css'; */
+/* Variables CSS de Shadcn */
+@layer base {
+  :root {
+    --background: 255, 255, 255;
+    --foreground: 0, 0, 0;
+    --card: 255, 255, 255;
+    --card-foreground: 0, 0, 0;
+    --popover: 255, 255, 255;
+    --popover-foreground: 0, 0, 0;
+    --primary: 59, 130, 246;
+    --primary-foreground: 255, 255, 255;
+    --muted: 243, 244, 246;
+    --muted-foreground: 107, 114, 128;
+    --border: 229, 231, 235;
+    --input: 229, 231, 235;
+    --radius: 0.5rem;
+  }
 
-input.form-control {
-  border-color: #6c757d; /* Cambia el color del borde aquí (gris oscuro en este caso) */
-}
-select.form-control {
-  border-color: #6c757d; /* Borde gris oscuro para los selects */
-  /* Otros estilos para los selects si lo deseas */
-}
-textarea.form-control {
-  border-color: #6c757d;
-}
-span.form-control {
-  border-color: #6c757d;
-}
-/* hr{
-    color:  #2F4BCE;
-    background-color:  #2F4BCE;
-    border: 1px solid;
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* footer {
+    background-color: #151d37;
+    padding: 20px 0;
+    box-sizing: border-box;
   } */
-button {
-  /* Agrega aquí los estilos que desees */
-  /* Por ejemplo: */
-  /* background-color: rgb(15, 210, 142);
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 999px; */
+  .main-content {
+    flex: 1;
+  }
+  .page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .dark {
+    --background: 31, 41, 55;
+    --foreground: 255, 255, 255;
+    --card: 31, 41, 55;
+    --card-foreground: 255, 255, 255;
+    --popover: 31, 41, 55;
+    --popover-foreground: 255, 255, 255;
+    --primary: 59, 130, 246;
+    --primary-foreground: 255, 255, 255;
+    --muted: 55, 65, 81;
+    --muted-foreground: 229, 231, 235;
+    --border: 75, 85, 99;
+    --input: 75, 85, 99;
+  }
 }
-/* 
-  color pagina oficial de kpaz 
 
-  Navbar
-  #2F4BCE
-   */
-/* h1, h2, h3, h4, h5, h6 {
-    color: #2F4BCE;
-  } */
+/* Estilos Personalizados */
 h4,
-h6,
-h5 {
-  color: #2f4bce !important;
-}
-.form-check-input {
-  border: 1px solid #2f4bce;
-  cursor: pointer;
+h5,
+h6 {
+  color: #2f4bce;
 }
 
-.form-check-label {
-  cursor: pointer; /* Change cursor to pointer when hovering over the label */
-  padding-left: 5px; /* Add left padding for better click area */
-}
-footer {
-  background-color: #151d37;
-  padding: 20px 0;
-  box-sizing: border-box;
-}
-.main-content {
-  flex: 1;
-}
-.page-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.placeholder {
-  /* Color de fondo del esqueleto */
-  display: block;
-  margin: 6px 0;
-  animation: loading 1s infinite;
-  display: inline-block;
-}
-
-@keyframes loading {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.custom-checkbox {
-  cursor: pointer;
-}
-
-.custom-checkbox:checked {
-  /* Añadir estilos para cuando el checkbox está marcado */
-}
-
-.custom-checkbox:hover:checked {
-  /* cursor: pointer; */
-  /* Añadir estilos para cuando el checkbox está marcado y el cursor está sobre él */
-}
-
-.custom-checkbox.disabled {
-  /* Ajusta la opacidad para cuando está deshabilitado */
-  pointer-events: none; /* Evita eventos de puntero cuando está deshabilitado */
-}
-/* CSS para el esqueleto */
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
 .error-message {
   font-size: 12px;
   color: red;
   margin-top: 5px;
 }
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+
+footer {
+  background-color: #151d37;
+  padding: 20px 0;
+  box-sizing: border-box;
 }

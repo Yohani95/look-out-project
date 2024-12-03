@@ -1,23 +1,79 @@
 import React from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import MyTitle from '@/app/[locale]/components/common/MyTitle';
-function BasePages({ children, additionalContent = null, title }) {
+import { cn } from '@/lib/utils';
+
+interface BasePagesProps {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+  additionalContent?: React.ReactNode;
+  footerContent?: React.ReactNode;
+  actionButton?: React.ReactNode;
+}
+
+const BasePages: React.FC<BasePagesProps> = ({
+  title,
+  description,
+  children,
+  additionalContent = null,
+  footerContent = null,
+  actionButton = null,
+}) => {
   return (
     <>
-      <div className="d-flex justify-content-center align-items-center m-4">
-        <div className="col-lg-10">
+      <div className="flex flex-col items-center p-4">
+        <div className="w-full max-w-[90%] mb-6">
+          {/* Encabezado de la página */}
           <MyTitle title={title} />
         </div>
-      </div>
-      <div className="d-flex justify-content-center align-items-center">
-        <div className="card col-lg-10 shadow">
-          <div className="container mt-4 mb-4">
+
+        {/* Card principal */}
+        <Card className="w-full max-w-[90%]  p-6 shadow-md border rounded-lg">
+          {/* Header del Card */}
+          <CardHeader className="flex flex-col items-start gap-2 pb-4">
+            {/* Título */}
+            <CardTitle>
+              <h4 className="text-[#2f4bce] text-xl font-bold">{title}</h4>
+            </CardTitle>
+
+            {/* Descripción y Botón */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-4">
+              {/* Descripción */}
+              {description && (
+                <CardDescription className="text-[#272833] text-sm font-normal">
+                  {description}
+                </CardDescription>
+              )}
+
+              {/* Botón */}
+              {actionButton && (
+                <div className="flex justify-end">{actionButton}</div>
+              )}
+            </div>
+          </CardHeader>
+
+          {/* Contenido del Card */}
+          <CardContent>
             {children}
             {additionalContent}
-          </div>
-        </div>
+          </CardContent>
+
+          {/* Footer del Card */}
+          {footerContent && (
+            <CardFooter className="pt-4">{footerContent}</CardFooter>
+          )}
+        </Card>
       </div>
     </>
   );
-}
+};
 
 export default BasePages;

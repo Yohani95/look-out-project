@@ -234,6 +234,9 @@
     }
   },
   "Account": {
+    "descriptionPages": {
+      "search": "Aquí podrás ver el listado de empresas con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada."
+    },
     "saveButton": "Guardar",
     "findAccount": "Buscar Cuenta",
     "find": "buscar",
