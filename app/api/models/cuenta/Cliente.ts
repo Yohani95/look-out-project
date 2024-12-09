@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Pais from '../world/Pais';
+import Persona from '../admin/Persona';
 
 class Cliente {
   cliId: number | null;
@@ -12,6 +13,7 @@ class Cliente {
   cliSitioWeb: string | null;
   cliNif: string | null;
   pais: Pais | null;
+  kam: Persona | null;
   constructor(data: any) {
     this.cliId = data?.cli_id || null;
     this.cliNombre = data?.cli_nombre || null;
@@ -23,6 +25,7 @@ class Cliente {
     this.cliSitioWeb = data?.cli_sitio_web || null;
     this.cliNif = data?.cli_nif || 'rut empresa';
     this.pais = data?.pais;
+    this.kam = data?.kam || null;
   }
 
   static getValidationSchema(t: any) {
@@ -63,6 +66,11 @@ class Cliente {
       {
         accessorKey: 'email',
         header: t.Ficha.Email,
+        size: 100,
+      },
+      {
+        accessorKey: 'kam',
+        header: 'KAM',
         size: 100,
       },
       {

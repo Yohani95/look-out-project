@@ -47,10 +47,12 @@ const BasePages: React.FC<BasePagesProps> = ({
             {/* Descripción y Botón */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-4">
               {/* Descripción */}
-              {description && (
+              {(description && (
                 <CardDescription className="text-[#272833] text-sm font-normal">
                   {description}
                 </CardDescription>
+              )) || (
+                <CardDescription className="text-[#272833] text-sm font-normal"></CardDescription>
               )}
 
               {/* Botón */}

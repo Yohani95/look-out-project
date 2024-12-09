@@ -15,14 +15,14 @@ function Page() {
       description={t('Account.descriptionPages.search')}
       actionButton={
         <>
-          <Link href={'/account/relations'}>
+          {/* <Link href={'/account/relations'}>
             <button type="button" className="btn btn-secondary me-2">
               {t('Ficha.button.see_relations')}
             </button>
-          </Link>
+          </Link> */}
           <Link href={'/account/create'}>
             <button type="button" className="btn btn-primary me-2">
-              + {t('Account.new')} {t('Account.account')}
+              {t('Common.add')} {t('Account.account')}
             </button>
           </Link>
         </>

@@ -21,6 +21,7 @@ import ClientePersona from '@/app/api/models/cuenta/ClientePersona';
 import { ClientePersonaApiUrl } from '@/app/api/apiConfig';
 import { handleSelectChange } from '../../utils/Form/UtilsForm';
 import { Form } from 'react-bootstrap';
+import { Separator } from '@/components/ui/separator';
 function ContactInfoSection({
   t,
   formData,
@@ -262,10 +263,6 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
   const cancel = () => {
     router.back();
   };
-  // useEffect(() => {
-
-  //   console.log(formData)
-  // }, [formData]);
   if (isLoading) return <LoadingData loadingMessage={t.Common.loadingData} />;
   if (error) return <ErroData message={t.Common.errorMsg} />;
   return (
@@ -295,14 +292,13 @@ function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
           idPerson={idPerson}
         />
 
-        <hr />
         <PhoneSection
           t={t}
           formData={formData}
           setFormData={setFormData}
           idPerson={idPerson}
         />
-        <hr />
+
         <AddressSection
           t={t}
           formData={formData}

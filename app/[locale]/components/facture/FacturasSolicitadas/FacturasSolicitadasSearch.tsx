@@ -64,7 +64,6 @@ function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
 
   return (
     <>
-      <h4 className="mb-3">{t.Nav.facture.billing}</h4>
       <MemoizedTableMaterialUI
         columns={FacturaPeriodo.createColumnsFacturas(t)}
         data={memoizedFacturaActions}

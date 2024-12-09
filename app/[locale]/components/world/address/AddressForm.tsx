@@ -1,17 +1,18 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import SelectField from "@/app/[locale]/components/common/SelectField";
-import { useRouter } from "next/navigation";
-import { fetchPersonByContact } from "@/app/[locale]/utils/person/UtilsPerson";
+'use client';
+import React, { useState, useEffect } from 'react';
+import SelectField from '@/app/[locale]/components/common/SelectField';
+import { useRouter } from 'next/navigation';
+import { fetchPersonByContact } from '@/app/[locale]/utils/person/UtilsPerson';
 import {
-    handleInputChange,
-    handleFormSubmit,
-    fetchaddressType,
-    fetchaddressById,
-  } from "@/app/[locale]/utils/address/UtilsAddress";
-  import {fetchComuna} from "@/app/[locale]/utils/comuna/utilsComuna" 
-  import { fetchAllContacts} from "@/app/[locale]/utils/person/PersonActions";
-  import Persona from "@/app/api/models/admin/Persona";
+  handleInputChange,
+  handleFormSubmit,
+  fetchaddressType,
+  fetchaddressById,
+} from '@/app/[locale]/utils/address/UtilsAddress';
+import { fetchComuna } from '@/app/[locale]/utils/comuna/utilsComuna';
+import { fetchAllContacts } from '@/app/[locale]/utils/person/PersonActions';
+import Persona from '@/app/api/models/admin/Persona';
+import { Separator } from '@/components/ui/separator';
 function AddressForm({ locale, isEdit, isCreate, idAddress }) {
   const router = useRouter();
   const [addressOptions, setAddressOptions] = useState([]);
@@ -19,9 +20,9 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
   const [comunaOptions, setComunaOptions] = useState([]);
   const [formData, setFormData] = useState({
     dirId: 0,
-    CliId: "",
+    CliId: '',
     PerId: 0,
-    dirCalle: "",
+    dirCalle: '',
     comId: 0,
     dirBlock: 0,
     tdirId: 0,
@@ -46,7 +47,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
     });
   }, []);
   useEffect(() => {
-    fetchAllContacts().then((result) => { 
+    fetchAllContacts().then((result) => {
       const options = result.map((item) => {
         const personaInstance = new Persona(item);
         return personaInstance.getSelectOptions();
@@ -60,7 +61,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
     }, [idAddress]);
   }
   const cancel = () => {
-    router.push("/admin/address/search");
+    router.push('/admin/address/search');
   };
   const handleSubmit = handleFormSubmit(
     formData,
@@ -82,7 +83,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
           </h4>
         ) : (
           <h4>{t.Account.phone}</h4>
-        )}{" "}
+        )}{' '}
         <div className="mb-3 row align-items-center">
           <label htmlFor="dirCalle" className="col-sm-2 col-form-label">
             {t.Common.address}
@@ -120,7 +121,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
               preOption={t.Account.select}
               labelClassName="col-sm-1 col-form-label"
               divClassName="col-sm-2"
-              onChange={(e) => handleSelectChange(e, "comId")}
+              onChange={(e) => handleSelectChange(e, 'comId')}
               selectedValue={formData.comId}
             />
           </div>
@@ -132,7 +133,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
             preOption={t.Account.select}
             labelClassName="col-sm-2 col-form-label"
             divClassName="col-sm-4"
-            onChange={(e) => handleSelectChange(e, "tdirId")}
+            onChange={(e) => handleSelectChange(e, 'tdirId')}
             selectedValue={formData.tdirId}
           />
           <SelectField
@@ -141,7 +142,7 @@ function AddressForm({ locale, isEdit, isCreate, idAddress }) {
             preOption={t.Account.select}
             labelClassName="col-sm-2 col-form-label"
             divClassName="col-sm-4"
-            onChange={(e) => handleSelectChange(e, "PerId")}
+            onChange={(e) => handleSelectChange(e, 'PerId')}
             selectedValue={formData.PerId}
           />
         </div>

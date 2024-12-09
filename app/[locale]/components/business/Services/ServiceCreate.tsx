@@ -1,11 +1,11 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { handleFormSubmit } from "@/app/[locale]/utils/business/UtilsService";
-import Proyecto from "@/app/api/models/proyecto/Proyecto";
-import { useFormik } from "formik";
-import { EditAction } from "../../admin/professionals/ProfessionalsActions";
-import ServiceFormSection from "./ServiceFormSection";
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { handleFormSubmit } from '@/app/[locale]/utils/business/UtilsService';
+import Proyecto from '@/app/api/models/proyecto/Proyecto';
+import { useFormik } from 'formik';
+import { EditAction } from '../../admin/professionals/ProfessionalsActions';
+import ServiceFormSection from './ServiceFormSection';
 function ServiceCreate({ t, data }) {
   //========DECLARACION DE VARIABLES ===============
   const [correlativo, setCorrelativo] = useState([]);
@@ -32,13 +32,13 @@ function ServiceCreate({ t, data }) {
           proyecto: values,
         };
         const data = new FormData();
-        data.append("proyectoJson", JSON.stringify(proyectoDTO));
+        data.append('proyectoJson', JSON.stringify(proyectoDTO));
         // Agrega los archivos
-        data.append("files", formData.file1);
-        data.append("files", formData.file2);
+        data.append('files', formData.file1);
+        data.append('files', formData.file2);
         await handleFormSubmit(data, t, router.push);
       } catch (error) {
-        console.error("Error in handleFormSubmit:", error);
+        console.error('Error in handleFormSubmit:', error);
       } finally {
         EditAction();
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
@@ -53,11 +53,11 @@ function ServiceCreate({ t, data }) {
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-          <h4>{`${t.Common.create} ${t.business.title}`}</h4>
+          <h4></h4>
           <div className="col-sm-2 text-end">
             <h6>
-              {t.Common.correlative} {t.business.title}{" "}
-              {correlativo ? "#" : correlativo}
+              {t.Common.correlative} {t.business.title}{' '}
+              {correlativo ? '#' : correlativo}
             </h6>
           </div>
         </div>

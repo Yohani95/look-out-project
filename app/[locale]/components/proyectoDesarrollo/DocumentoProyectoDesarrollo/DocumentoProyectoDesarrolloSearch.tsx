@@ -22,7 +22,6 @@ function DocumentoProyectoDesarrolloSearch({ t, data, idProyectoDesarrollo }) {
   }, [data, t]);
   return (
     <>
-      <h4 className="mb-3">{t.Common.documents}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <Link
           href={`/developmentProject/${idProyectoDesarrollo}/documents/create`}

@@ -176,11 +176,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
             </button>
           </div>
         )} */}
-        {isCreate || isEdit ? (
-          <h4>{isEdit ? t.Account.edit : t.Account.title}</h4>
-        ) : (
-          <h4>{t.Common.account}</h4>
-        )}
         <form onSubmit={handleSubmit}>
           <fieldset disabled={!isCreate && !isEdit ? true : false}>
             <div className="mb-3 row align-items-center">

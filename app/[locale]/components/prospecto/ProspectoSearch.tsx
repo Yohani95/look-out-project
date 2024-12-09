@@ -33,7 +33,6 @@ function ProspectoSearch({ t, data }) {
   }, [data]);
   return (
     <>
-      <h4 className="mb-3">{t.Common.prospect}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <UploadExcelProspecto t={t} />
         <Link href={'/prospect/create'}>

@@ -17,7 +17,7 @@ function MyTitle({ title }: { title: string }) {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <Link href="/" className="text-blue hover:underline">
+            <Link href="/" className="text-blue hover:underline text-blue-800">
               Home
             </Link>
           </BreadcrumbItem>

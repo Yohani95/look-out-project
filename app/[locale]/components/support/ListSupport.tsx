@@ -50,7 +50,6 @@ function ListSupport({ t, data, tipo = Constantes.TipoSorpote.CONTRATO }) {
   };
   return (
     <>
-      <h4 className="mb-3">{tipoSoporte()}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <Link href={hrefSoporte()}>
           <button type="button" className=" btn btn-primary ">

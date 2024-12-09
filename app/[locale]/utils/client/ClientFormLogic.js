@@ -1,6 +1,6 @@
-import React from "react";
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
+import React from 'react';
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import {
   clientApiUrl,
   clientCreateApiUrl,
@@ -9,9 +9,9 @@ import {
   clientUpdatepiUrl,
   clientWithEntitiesApiUrl,
   clientWithDTOApiUrl,
-  ClientePersonaGetAllApiUrl
-} from "@/app/api/apiConfig";
-import axios from "axios";
+  ClientePersonaGetAllApiUrl,
+} from '@/app/api/apiConfig';
+import axios from 'axios';
 export const handleClientInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -25,7 +25,7 @@ export const handleClientFormSubmit =
   async (event) => {
     event.preventDefault();
     try {
-      console.log(formData)
+      console.log(formData);
       const clienteWithIds = {
         cliente: {
           cliId: formData.cliId,
@@ -39,15 +39,15 @@ export const handleClientFormSubmit =
           cliNif: formData.cliNif,
         },
         idPerson: formData.idPerson,
-        kamIdPerson:{
-          Id: formData.kamId
-        }
+        kamIdPerson: {
+          Id: formData.kamId,
+        },
       };
-     console.log(clienteWithIds)
+      console.log(clienteWithIds);
       const url = isEditMode
         ? `${clientUpdatepiUrl}/${formData.cliId}`
         : `${clientCreateApiUrl}`;
-      const method = isEditMode ? "PUT" : "POST";
+      const method = isEditMode ? 'PUT' : 'POST';
       await NotificationSweet({
         title: isEditMode
           ? translations.notification.loading.title
@@ -63,7 +63,7 @@ export const handleClientFormSubmit =
       const response = await fetch(url, {
         method: method,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(clienteWithIds),
       });
@@ -73,7 +73,7 @@ export const handleClientFormSubmit =
           text: translations.notification.success.text,
           type: translations.notification.success.type,
           push: push,
-          link: "/account/search",
+          link: '/account/search',
         });
       } else if (response.status === 409) {
         NotificationSweet({
@@ -83,10 +83,10 @@ export const handleClientFormSubmit =
           push: push,
           link: isEditMode
             ? `/account/edit/${formData.cliId}`
-            : "/account/create",
+            : '/account/create',
         });
       } else {
-        console.log(response)
+        console.log(response);
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,
@@ -94,7 +94,7 @@ export const handleClientFormSubmit =
           push: push,
           link: isEditMode
             ? `/account/edit/${formData.cliId}`
-            : "/account/create",
+            : '/account/create',
         });
       }
     } catch (error) {
@@ -103,56 +103,56 @@ export const handleClientFormSubmit =
         text: translations.notification.error.text,
         type: translations.notification.error.type,
         push: push,
-        link: "/account/search",
+        link: '/account/search',
       });
-      console.error("Error sending data:", error);
+      console.error('Error sending data:', error);
       // router.push('');
     }
   };
 
-  export const handleClienteDelete = async (idClient,trans,fechtClients) => {
-    const confirmed = await ConfirmationDialog(
-      trans.notification.deleting.title,
-      trans.notification.deleting.text,
-      trans.notification.deleting.type,
-      trans.notification.deleting.buttonOk,
-      trans.notification.deleting.buttonCancel
-    );
-    if (confirmed) {
-      await NotificationSweet({
-        title: trans.notification.loading.title,
-        text: "",
-        type: trans.notification.loading.type,
-        showLoading: true,
-      });
-      try {
-        const response = await axios.delete(`${clientDeleteApiUrl}/${idClient}`); // Utiliza Axios para hacer la solicitud DELETE
-        if (response.data.isSuccess) {
-          NotificationSweet({
-            title: trans.notification.success.title,
-            text: trans.notification.success.text,
-            type: trans.notification.success.type,
-          });
-          // Actualiza la lista de usuarios después de eliminar
-          fechtClients();
-        } else {
-          NotificationSweet({
-            title: trans.notification.error.title,
-            text: trans.notification.error.text,
-            type: trans.notification.error.type,
-          });
-        }
-      } catch (error) {
-        console.log(error)
+export const handleClienteDelete = async (idClient, trans, fechtClients) => {
+  const confirmed = await ConfirmationDialog(
+    trans.notification.deleting.title,
+    trans.notification.deleting.text,
+    trans.notification.deleting.type,
+    trans.notification.deleting.buttonOk,
+    trans.notification.deleting.buttonCancel
+  );
+  if (confirmed) {
+    await NotificationSweet({
+      title: trans.notification.loading.title,
+      text: '',
+      type: trans.notification.loading.type,
+      showLoading: true,
+    });
+    try {
+      const response = await axios.delete(`${clientDeleteApiUrl}/${idClient}`); // Utiliza Axios para hacer la solicitud DELETE
+      if (response.data.isSuccess) {
+        NotificationSweet({
+          title: trans.notification.success.title,
+          text: trans.notification.success.text,
+          type: trans.notification.success.type,
+        });
+        // Actualiza la lista de usuarios después de eliminar
+        fechtClients();
+      } else {
         NotificationSweet({
           title: trans.notification.error.title,
           text: trans.notification.error.text,
           type: trans.notification.error.type,
         });
       }
+    } catch (error) {
+      console.log(error);
+      NotificationSweet({
+        title: trans.notification.error.title,
+        text: trans.notification.error.text,
+        type: trans.notification.error.type,
+      });
     }
-  };
-export const handleEdit = async (userId,trans,push) => {
+  }
+};
+export const handleEdit = async (userId, trans, push) => {
   const confirmed = await ConfirmationDialog(
     trans.notification.edit.title,
     trans.notification.edit.text,
@@ -161,15 +161,13 @@ export const handleEdit = async (userId,trans,push) => {
     trans.notification.edit.buttonCancel
   );
   if (confirmed) {
-    push(`/account/edit/${userId}`)
+    push(`/account/edit/${userId}`);
   }
 };
 
-export const fetchGetbyId= async (idClient)=>{
+export const fetchGetbyId = async (idClient) => {
   try {
-    const response = await fetch(
-      `${clientApiUrl}/${idClient}`
-    );
+    const response = await fetch(`${clientApiUrl}/${idClient}`);
     return response;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -177,13 +175,13 @@ export const fetchGetbyId= async (idClient)=>{
   }
 };
 
-export const handleView=async(idClient,push)=>{
-  push(`/account/view/${idClient}`)
+export const handleView = async (idClient, push) => {
+  push(`/account/view/${idClient}`);
 };
 
-export const handleRelations=async()=>{
+export const handleRelations = async () => {
   try {
-    const response = await fetch("");
+    const response = await fetch('');
     const data = await response.json();
     return data;
   } catch (error) {
@@ -192,32 +190,36 @@ export const handleRelations=async()=>{
   }
 };
 
-export const fechtClients=async()=>{
+export const fechtClients = async () => {
   try {
-    const response = await axios.get(clientWithDTOApiUrl, { headers: apiHeaders });
+    const response = await axios.get(clientWithDTOApiUrl, {
+      headers: apiHeaders,
+    });
     const modifiedData = response.data.map((item) => ({
       ...item,
-      cliId:item.cliente.cliId,
+      cliId: item.cliente.cliId,
       cliNombre: item.cliente.cliNombre,
       sectorComercial: item.cliente.sectorComercial.secNombre,
       pais: item.cliente.pais.paiNombre,
-      email: item.email || "N/A",
+      email: item.email || 'N/A',
     }));
     return modifiedData;
   } catch (error) {
     console.error('Error fetching data:', error);
     return [];
   }
-}
-export const fetchClientsRelations=async()=>{
+};
+export const fetchClientsRelations = async () => {
   try {
-    const response = await axios.get(ClientePersonaGetAllApiUrl, { headers: apiHeaders });
+    const response = await axios.get(ClientePersonaGetAllApiUrl, {
+      headers: apiHeaders,
+    });
     const modifiedData = response.data.data.map((item) => ({
       id: item.cliente.cliId,
       kam: item.persona
-      ? `${item.persona.perNombres} ${item.persona.perApellidoPaterno}`
-      : 'N/A',  
-       paiNombre: item.cliente.pais.paiNombre,
+        ? `${item.persona.perNombres} ${item.persona.perApellidoPaterno}`
+        : 'N/A',
+      paiNombre: item.cliente.pais.paiNombre,
       cliNombre: item.cliente.cliNombre,
       secNombre: item.cliente.sectorComercial.secNombre,
     }));
@@ -226,4 +228,4 @@ export const fetchClientsRelations=async()=>{
     console.error('Error fetching data:', error);
     return [];
   }
-}
+};

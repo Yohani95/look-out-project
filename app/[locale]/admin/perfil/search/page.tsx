@@ -1,7 +1,7 @@
 import React from 'react';
 import MyTitle from '@/app/[locale]/components/common/MyTitle';
+import ListPerfil from '@/app/[locale]/components/admin/perfil/ListPerfil';
 import { useTranslations, useLocale } from 'next-intl';
-import ListService from '@/app/[locale]/components/business/Services/ListService';
 import Link from 'next/link';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 function page() {
@@ -10,16 +10,16 @@ function page() {
   return (
     <>
       <BasePages
-        title={t('Common.services')}
+        title={t('Common.perfil')}
         actionButton={
-          <Link href={'/business/closeServices/create'}>
-            <button type="button" className=" btn btn-primary me-2">
-              {t('Account.add')} {t('Common.services')}
+          <Link href={'/admin/perfil/create'}>
+            <button type="button" className=" btn btn-primary ">
+              + {t('Account.add')} {t('Common.perfil')}
             </button>
           </Link>
         }
       >
-        <ListService locale={locale} />
+        <ListPerfil locale={locale} />
       </BasePages>
     </>
   );

@@ -10,50 +10,32 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreVertical } from 'lucide-react';
+import { Edit, Eye, MoreVertical, Trash2 } from 'lucide-react';
 
 const ActionButtons = ({ onDelete, onEdit, onView }) => {
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <MoreVertical /> {/* Icono de tres puntos */}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel></DropdownMenuLabel>
-          <DropdownMenuItem>
-            <Button>
-              <FaEye size={16} onClick={onView} />
-            </Button>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Button size="sm">
-              <FaEdit size={16} onClick={onEdit} />
-            </Button>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Button size="sm" variant="destructive">
-              <FaTrash size={16} className="" onClick={onDelete} />
-            </Button>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <Button variant="link">
-        <FaEye size={16} onClick={onView} />
-      </Button>
-      {/* <Button variant="link" size="sm">
-        <FaBuilding className="custom-icon" />
-      </Button> */}
-      <Button size="sm" variant="link">
-        <FaEdit size={16} onClick={onEdit} />
-      </Button>
-      <Button size="sm" variant="link">
-        <FaTrash size={16} className="" onClick={onDelete} />
-      </Button>
-    </>
+    <DropdownMenu>
+      {/* Trigger para el menú */}
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <MoreVertical className="w-4 h-4" /> {/* Icono de tres puntos */}
+        </Button>
+      </DropdownMenuTrigger>
+
+      {/* Contenido del menú */}
+      <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-lg z-50">
+        <DropdownMenuItem onClick={onView}>
+          <Eye className="w-4 h-4 mr-2" /> Ver
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onEdit}>
+          <Edit className="w-4 h-4 mr-2" /> Editar
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onDelete} className="text-red-600">
+          <Trash2 className="w-4 h-4 mr-2" /> Eliminar
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
