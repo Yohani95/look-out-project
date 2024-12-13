@@ -24,6 +24,7 @@ export const handleClientFormSubmit =
   (formData, translations, push, isEditMode = false) =>
   async (event) => {
     event.preventDefault();
+    console.log(formData);
     try {
       console.log(formData);
       const clienteWithIds = {

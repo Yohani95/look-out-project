@@ -16,7 +16,7 @@ import {
   handleClientFormSubmit,
   fetchGetbyId,
 } from '../../utils/client/ClientFormLogic';
-function Form({ locale, isEdit, idPerson, isCreate }) {
+function AccountCreate({ locale, isEdit, idPerson, isCreate }) {
   let t;
   t = require(`@/messages/${locale}.json`);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -24,7 +24,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
   const [KamOptions, setKamOptions] = useState([]);
   const [giroOptions, setGiroOptions] = useState([]);
   const [estadoOptions, setEstadoOptions] = useState([]);
-  const [selectedItemId, setSelectedItemId] = useState([]); // Estado para el ID seleccionado
   const [selectedIds, setSelectedIds] = useState([]);
   const [formData, setFormData] = useState({
     cliNombre: '',
@@ -163,19 +162,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
   return (
     <>
       <div className="card-body">
-        {/* {!isEdit && (
-          <div className="d-flex justify-content-end mb-3">
-            <button type="button" className="btn btn-primary me-2">
-              {t.Account.button.see_relations}
-            </button>
-            <button type="button" className="btn btn-secondary me-2">
-              {t.Account.button.Modify}
-            </button>
-            <button type="button" className="btn btn-danger">
-              {t.Account.button.delete}
-            </button>
-          </div>
-        )} */}
         <form onSubmit={handleSubmit}>
           <fieldset disabled={!isCreate && !isEdit ? true : false}>
             <div className="mb-3 row align-items-center">
@@ -189,23 +175,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
                   id="cliNombre"
                   name="cliNombre"
                   value={formData.cliNombre}
-                  onChange={handleClientInputChange(formData, setFormData)}
-                  required
-                />
-              </div>
-              <label
-                htmlFor="cliDescripcion"
-                className="col-sm-1 col-form-label"
-              >
-                {t.Common.description}
-              </label>
-              <div className="col-sm-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="cliDescripcion"
-                  name="cliDescripcion"
-                  value={formData.cliDescripcion}
                   onChange={handleClientInputChange(formData, setFormData)}
                   required
                 />
@@ -255,15 +224,6 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
             </div>
             <div className="mb-3 row align-items-center">
               <SelectField
-                label={t.Account.status}
-                options={estadoOptions}
-                preOption={t.Account.select}
-                labelClassName="col-sm-1 col-form-label"
-                divClassName="col-sm-3"
-                onChange={(e) => handleSelectChange(e, 'eclId')}
-                selectedValue={formData.eclId}
-              />
-              <SelectField
                 label={t.Account.country}
                 options={countryOptions}
                 preOption={t.Account.select}
@@ -287,13 +247,12 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
               </div>
             </div>
           </fieldset>
-          <hr className="mt-5" />
           <div className="mt-5">
             <ContactList
               locale={locale}
               onRadioChange={handleCheckboxChange}
               idPersons={selectedIds}
-              isCreate={isCreate}
+              // isCreate={isCreate}
               isView={isCreate || isEdit ? false : true}
             />
           </div>
@@ -314,10 +273,9 @@ function Form({ locale, isEdit, idPerson, isCreate }) {
             </button>
           </div>
         </form>
-        <hr />
       </div>
     </>
   );
 }
 
-export default Form;
+export default AccountCreate;

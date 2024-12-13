@@ -56,10 +56,6 @@ const NovedadProyectoDesarrolloForm: React.FC<FormProps> = ({
             handleSelectChange(e, 'idTipoNovedadProyectoDesarrollo', setNovedad)
           }
           selectedValue={novedadModel.idTipoNovedadProyectoDesarrollo}
-          isInvalid={
-            !!formik?.errors.idTipoNovedadProyectoDesarrollo &&
-            formik?.touched.idTipoNovedadProyectoDesarrollo
-          }
         />
         {formik?.errors.idTipoNovedadProyectoDesarrollo &&
           formik.touched.idTipoNovedadProyectoDesarrollo && (

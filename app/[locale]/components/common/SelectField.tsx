@@ -1,13 +1,12 @@
-'use client';
 import React from 'react';
 import Select from 'react-select';
 
 const SelectField = ({
-  label,
-  options,
-  labelClassName,
-  divClassName,
-  preOption,
+  label = '',
+  options = [],
+  labelClassName = '',
+  divClassName = '',
+  preOption = 'Selecciona una opción',
   onChange,
   selectedValue,
   isRequired = true,

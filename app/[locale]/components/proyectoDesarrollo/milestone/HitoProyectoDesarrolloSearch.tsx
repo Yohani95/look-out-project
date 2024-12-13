@@ -16,6 +16,7 @@ function HitoProyectoDesarrolloSearch({ t, data, idProyectoDesarrollo }) {
     return data.map((hito: HitoProyectoDesarrollo) => ({
       ...hito,
       fechaCreacion: Utils.getFechaString(hito.fechaCreacion),
+      hitoCumplido: hito.hitoCumplido ? `${t.Common.yes}` : `${t.Common.no}`,
       actions: (
         <>
           <HitoProyectoDesarrolloButtons hito={hito} t={t} />
