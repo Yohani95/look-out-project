@@ -10,6 +10,7 @@ class HitoProyectoDesarrollo {
   monto: number | null;
   porcentajePagado: number | null;
   descripcion: string | null;
+  hitoCumplido: boolean | null;
   // Relaciones
   proyectoDesarrollo: ProyectoDesarrollo | null;
   tipoHitoProyectoDesarrollo: TipoHitoProyectoDesarrollo | null;
@@ -24,6 +25,7 @@ class HitoProyectoDesarrollo {
     this.monto = data?.monto || null;
     this.porcentajePagado = data?.porcentajePagado || null;
     this.descripcion = data?.descripcion || null;
+    this.hitoCumplido = data?.hitoCumplido || null;
     // Relaciones
     this.proyectoDesarrollo = data?.proyectoDesarrollo || null;
     this.tipoHitoProyectoDesarrollo = data?.tipoHitoProyectoDesarrollo || null;
@@ -112,6 +114,11 @@ class HitoProyectoDesarrollo {
       {
         accessorKey: 'porcentajePagado',
         header: 'Porcentaje Pagado (%)',
+        size: 100,
+      },
+      {
+        accessorKey: 'hitoCumplido',
+        header: t.Common.milestoneAccomplished,
         size: 100,
       },
       {

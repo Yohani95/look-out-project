@@ -354,7 +354,7 @@ const ModalPago = ({ show, t, factura, setShowModalPago, bancos }) => {
                 handleSelectChange(e, 'idBanco', formik.setValues)
               }
               selectedValue={formik.values.idBanco}
-              isInvalid={formik.touched.idBanco && !!formik.errors.idBanco}
+              //isInvalid={formik.touched.idBanco && !!formik.errors.idBanco}
             />
           </div>
           <div className="d-flex justify-content-end mt-2">
@@ -578,9 +578,9 @@ const ModalForm = ({
                   handleSelectChange(e, 'idTipoMoneda', formik.setValues)
                 }
                 selectedValue={formik.values.idTipoMoneda}
-                isInvalid={
-                  formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda
-                }
+                // isInvalid={
+                //   formik.touched.idTipoMoneda && !!formik.errors.idTipoMoneda
+                // }
               />
             </div>
             <Form.Control.Feedback type="invalid">

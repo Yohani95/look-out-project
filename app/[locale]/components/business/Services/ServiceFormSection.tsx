@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   handleSelectChange,
   handleInputChange,
-} from "@/app/[locale]/utils/Form/UtilsForm";
-import SelectField from "../../common/SelectField";
-import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
-import { useSession } from "next-auth/react";
-import { fetchPersonGetbyIdClient } from "@/app/[locale]/utils/person/UtilsPerson";
-import { addMonths, set } from "date-fns";
-import { Button } from "react-bootstrap";
-import { FaFileDownload } from "react-icons/fa";
-import { Usuario } from "@/app/api/models/admin/Usuario";
+} from '@/app/[locale]/utils/Form/UtilsForm';
+import SelectField from '../../common/SelectField';
+import MyDatePicker from '@/app/[locale]/components/common/MyDatePicker';
+import { useSession } from 'next-auth/react';
+import { fetchPersonGetbyIdClient } from '@/app/[locale]/utils/person/UtilsPerson';
+import { addMonths, set } from 'date-fns';
+import { Button } from 'react-bootstrap';
+import { FaFileDownload } from 'react-icons/fa';
+import { Usuario } from '@/app/api/models/admin/Usuario';
 function ServiceFormSection({
   proyectoModel,
   setProyecto,
@@ -38,14 +38,14 @@ function ServiceFormSection({
   */
   useEffect(() => {
     if (!proyectoModel.kamId && user?.persona.id) {
-      setProyecto(prev => ({ ...prev, kamId: user.persona.id }));
+      setProyecto((prev) => ({ ...prev, kamId: user.persona.id }));
     }
-  }, [proyectoModel.kamId, user?.persona.id, setProyecto])
+  }, [proyectoModel.kamId, user?.persona.id, setProyecto]);
   useEffect(() => {
     fetchPersonGetbyIdClient(proyectoModel.pryIdCliente).then((person) => {
       const options = person?.data?.map((item) => ({
         value: item.id,
-        label: item.perNombres + " " + item.perApellidoPaterno,
+        label: item.perNombres + ' ' + item.perApellidoPaterno,
       }));
       setContactOptions(options);
     });
@@ -94,16 +94,17 @@ function ServiceFormSection({
   return (
     <>
       <div className="mb-3 row align-items-center">
-        {data.personasKam ?
+        {data.personasKam ? (
           <SelectField
             label="KAM"
             options={data.personasKam}
             preOption={t.Account.select}
             labelClassName="col-sm-1 col-form-label"
             divClassName="col-sm-3"
-            onChange={(e) => handleSelectChange(e, "kamId", setProyecto)}
+            onChange={(e) => handleSelectChange(e, 'kamId', setProyecto)}
             selectedValue={proyectoModel.kamId}
-          /> :
+          />
+        ) : (
           <>
             <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
             <div className="col-sm-3">
@@ -119,7 +120,7 @@ function ServiceFormSection({
               </span>
             </div>
           </>
-        }
+        )}
         <label className="col-sm-2 col-form-label">
           {t.Ficha.table.business.dateEnd}
         </label>
@@ -138,7 +139,7 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "paisId", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'paisId', setProyecto)}
           selectedValue={proyectoModel.paisId}
         />
       </div>
@@ -150,12 +151,12 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "pryIdCliente", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'pryIdCliente', setProyecto)}
           selectedValue={proyectoModel.pryIdCliente}
         />
         <div className="col-sm-2">
           <button type="button" className="badge btn btn-primary">
-            {t.Common.request} (+){" "}
+            {t.Common.request} (+){' '}
           </button>
         </div>
         <label htmlFor="pryNombre" className="col-sm-1 col-form-label">
@@ -180,7 +181,7 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "pryIdContacto", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'pryIdContacto', setProyecto)}
           isRequired={false}
           selectedValue={proyectoModel.pryIdContacto}
         />
@@ -188,7 +189,7 @@ function ServiceFormSection({
           <button
             type="button"
             className="badge btn btn-primary"
-          //onClick={goContactCreate}
+            //onClick={goContactCreate}
           >
             {t.Common.add} (+)
           </button>
@@ -197,10 +198,10 @@ function ServiceFormSection({
           label={`${t.Account.type} ${t.Account.business}`}
           options={data.tipoServicios}
           preOption={t.Account.select}
-          className="my-contacto"
+          // className="my-contacto"
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, "tseId", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'tseId', setProyecto)}
           selectedValue={proyectoModel.tseId}
         />
       </div>
@@ -215,7 +216,7 @@ function ServiceFormSection({
               type="text"
               className="form-control"
               id="confirmclient"
-              value={formData.file1 ? formData.file1.name : "N/A"}
+              value={formData.file1 ? formData.file1.name : 'N/A'}
               readOnly
               onClick={() => openFileDialog(0)} // Abre el cuadro de diálogo del primer archivo
               accept=".pdf, .jpg, .jpeg, .png"
@@ -227,7 +228,7 @@ function ServiceFormSection({
               id="file1"
               name="file1"
               onChange={(event) => handleFileChange(event, 0)} // Maneja el primer archivo
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
             />
           </div>
           <div className="col-sm-2">
@@ -259,7 +260,7 @@ function ServiceFormSection({
               type="text"
               className="form-control"
               id="proposal"
-              value={formData.file2 ? formData.file2.name : "N/A"}
+              value={formData.file2 ? formData.file2.name : 'N/A'}
               readOnly
               onClick={() => openFileDialog(1)} // Abre el cuadro de diálogo del segundo archivo
               accept=".pdf, .jpg, .jpeg, .png"
@@ -271,7 +272,7 @@ function ServiceFormSection({
               id="file2"
               name="file2"
               onChange={(event) => handleFileChange(event, 1)} // Maneja el segundo archivo
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
             />
           </div>
           <div className="col-sm-2">
@@ -295,7 +296,6 @@ function ServiceFormSection({
               </>
             )}
           </div>
-
         </div>
       </div>
       <hr />
@@ -326,7 +326,7 @@ function ServiceFormSection({
             name="months"
             min="1"
             max="120"
-            value={proyectoModel.months || ""}
+            value={proyectoModel.months || ''}
             onChange={handleInputChange(proyectoModel, setProyecto)}
           />
         </div>
@@ -354,7 +354,7 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "fechaCorte", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'fechaCorte', setProyecto)}
           selectedValue={proyectoModel.fechaCorte}
         />
         <SelectField
@@ -363,7 +363,7 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "monId", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'monId', setProyecto)}
           selectedValue={proyectoModel.monId}
         />
         <SelectField
@@ -372,7 +372,9 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "idTipoFacturacion", setProyecto)}
+          onChange={(e) =>
+            handleSelectChange(e, 'idTipoFacturacion', setProyecto)
+          }
           selectedValue={proyectoModel.idTipoFacturacion}
         />
         <label className="form-check-label col-sm-2" htmlFor="exampleCheck1">
@@ -396,16 +398,18 @@ function ServiceFormSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "idDiaPago", setProyecto)}
+          onChange={(e) => handleSelectChange(e, 'idDiaPago', setProyecto)}
           selectedValue={proyectoModel.idDiaPago}
         />
         <SelectField
-          label={"Empresa Prestadora"}
+          label={'Empresa Prestadora'}
           options={data.empresaPrestadora}
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, "idEmpresaPrestadora", setProyecto)}
+          onChange={(e) =>
+            handleSelectChange(e, 'idEmpresaPrestadora', setProyecto)
+          }
           selectedValue={proyectoModel.idEmpresaPrestadora}
         />
       </div>

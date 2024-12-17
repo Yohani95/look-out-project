@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/navigation';
 import TableMaterialUI from '../common/TablaMaterialUi';
 import Cliente from '@/app/api/models/cuenta/Cliente';
+import Persona from '@/app/api/models/admin/Persona';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function List({ locale }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,15 +34,17 @@ function List({ locale }) {
     }
   };
   const memoizedActions = useMemo(() => {
-    return data.map((cliente) => ({
-      ...cliente,
+    return data.map((clienteDTO) => ({
+      ...clienteDTO,
+      kam: new Persona(clienteDTO.cliente.kam).getNombreCompleto() || 'N/A',
       actions: (
         <>
           <ButtonsActions
-            id={cliente.usu_id}
-            onDelete={() => handleClienteDelete(cliente.cliId, t, fechtClients)}
-            onEdit={() => handleEdit(cliente.cliId, t, router.push)}
-            onView={() => handleView(cliente.cliId, router.push)}
+            onDelete={() =>
+              handleClienteDelete(clienteDTO.cliId, t, fechtClients)
+            }
+            onEdit={() => handleEdit(clienteDTO.cliId, t, router.push)}
+            onView={() => handleView(clienteDTO.cliId, router.push)}
           />
         </>
       ),

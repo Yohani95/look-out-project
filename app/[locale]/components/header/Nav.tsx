@@ -12,6 +12,8 @@ import { red } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
 import { Usuario } from '@/app/api/models/admin/Usuario';
 import { Constantes } from '@/app/api/models/common/Constantes';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const MyNav = ({ t, locale }) => {
   const { data: session, status } = useSession();
   const user = session?.user as any | null;

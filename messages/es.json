@@ -1,5 +1,8 @@
 {
   "Common": {
+    "milestoneAccomplished": "Hito cumplido",
+    "finish": "Finalizar",
+    "continue": "Continuar",
     "nextCallDate": "Fecha próxima Llamada",
     "planning": "Planificación",
     "activity": "Actividad",
@@ -234,6 +237,10 @@
     }
   },
   "Account": {
+    "descriptionPages": {
+      "search": "Aquí podrás ver el listado de empresas con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada.",
+      "create": "En esta página podrás crear una nueva cuenta fácilmente. Completa los datos requeridos para empezar."
+    },
     "saveButton": "Guardar",
     "findAccount": "Buscar Cuenta",
     "find": "buscar",

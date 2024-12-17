@@ -30,7 +30,6 @@ function ProyectoDesarrolloSearch({ t, data }) {
 
   return (
     <>
-      <h4 className="mb-3">{t.Common.project}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <Link href={'/developmentProject/create'}>
           <button type="button" className="btn btn-primary">

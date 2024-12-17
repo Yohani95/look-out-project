@@ -73,9 +73,6 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
           divClassName="col-sm-3"
           onChange={(e) => handleSelectChange(e, 'idTipoPagoHito', setHito)}
           selectedValue={hitoModel.idTipoPagoHito}
-          isInvalid={
-            !!formik?.errors.idTipoPagoHito && formik?.touched.idTipoPagoHito
-          }
         />
         {formik?.errors.idTipoPagoHito && formik.touched.idTipoPagoHito && (
           <Form.Control.Feedback type="invalid">
@@ -133,6 +130,24 @@ const HitoProyectoDesarrolloForm: React.FC<FormProps> = ({
                 {formik.errors.porcentajePagado}
               </Form.Control.Feedback>
             )}
+        </div>
+        <label htmlFor="hitoCumplido" className="col-sm-1 col-form-label">
+          {t.Common.milestoneAccomplished} ?
+        </label>
+        <div className="col-sm-3">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="hitoCumplido"
+            name="hitoCumplido"
+            checked={hitoModel.hitoCumplido ?? false}
+            onChange={(e) =>
+              setHito({
+                ...hitoModel,
+                hitoCumplido: e.target.checked,
+              })
+            }
+          />
         </div>
       </div>
       <hr />

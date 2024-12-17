@@ -67,7 +67,6 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
           divClassName="col-sm-2"
           onChange={(e) => handleSelectChange(e, 'idEtapa', setPlanificacion)}
           selectedValue={planificacionModel.idEtapa}
-          isInvalid={!!formik?.errors.idEtapa && formik?.touched.idEtapa}
         />
         {formik?.errors.idEtapa && formik.touched.idEtapa && (
           <Form.Control.Feedback type="invalid">

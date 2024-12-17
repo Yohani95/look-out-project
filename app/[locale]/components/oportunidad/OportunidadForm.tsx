@@ -165,7 +165,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
           label={`${t.Account.type} ${t.Opportunity.opportunity}`}
           options={data.tipoOportunidad}
           preOption={t.Account.select}
-          className="my-contacto"
           labelClassName="col-sm-2 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) =>
@@ -178,7 +177,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
             label={`Licencias`}
             options={data.tipoLicencia}
             preOption={t.Account.select}
-            className="my-contacto"
             labelClassName="col-sm-1 col-form-label"
             divClassName="col-sm-2"
             onChange={(e) =>
@@ -193,7 +191,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
           label={`Origen`}
           options={data.origenOportunidad}
           preOption={t.Account.select}
-          className="my-contacto"
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) => handleSelectChange(e, 'idOrigen', setOportunidad)}
@@ -203,7 +200,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
           label={`Licitacion`}
           options={data.licitacionOportunidad}
           preOption={t.Account.select}
-          className="my-contacto"
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) =>
@@ -258,7 +254,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
           label={`area Servicio`}
           options={data.areaServicio}
           preOption={t.Account.select}
-          className="my-contacto"
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) =>
@@ -297,7 +292,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
           label={`Estado`}
           options={data.estadoOportunidad}
           preOption={t.Account.select}
-          className="my-contacto"
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
           onChange={(e) =>
@@ -310,7 +304,6 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
             label={`Tipo Cerrada`}
             options={data.tipoCerrada}
             preOption={t.Account.select}
-            className="my-contacto"
             labelClassName="col-sm-1 col-form-label"
             divClassName="col-sm-3"
             onChange={(e) =>

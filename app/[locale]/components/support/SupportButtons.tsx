@@ -2,18 +2,23 @@ import React from 'react';
 import {
   FaTrash,
   FaEdit,
-  FaEye,
-  FaFileDownload,
-  FaUserPlus,
-  FaUserClock,
   FaRegClock,
   FaFileInvoiceDollar,
 } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
 import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import { Constantes } from '@/app/api/models/common/Constantes';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { MoreVertical } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 function SupportButtons({ t, proyecto }) {
   const router = useRouter();
   const handleEdit = async (id, trans, push) => {
@@ -42,7 +47,45 @@ function SupportButtons({ t, proyecto }) {
   };
   return (
     <>
-      <Button
+      <DropdownMenu>
+        {/* Trigger para el menú */}
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreVertical className="w-4 h-4" /> {/* Icono de tres puntos */}
+          </Button>
+        </DropdownMenuTrigger>
+
+        {/* Contenido del menú */}
+        <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-lg z-50">
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(
+                `/business/Support/contract/addHour/${proyecto.pryId}`
+              );
+            }}
+          >
+            {t?.Common.add} {t?.Common.hour}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => handleEdit(proyecto.pryId, t, router.push)}
+          >
+            {t?.Common.edit}
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-red-600">Eliminar</DropdownMenuItem>
+          {proyecto.idTipoSoporte == Constantes.TipoSorpote.BOLSA && (
+            <DropdownMenuItem
+              onClick={() => {
+                router.push(`/facture/createBagSupport/${proyecto.pryId}`);
+              }}
+            >
+              {t?.Nav.facture.requestBilling}
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuSeparator />
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* <Button
         size="sm"
         variant="link"
         onClick={() => {
@@ -56,9 +99,9 @@ function SupportButtons({ t, proyecto }) {
         >
           {t?.Common.add} {t?.Common.hour}
         </Tooltip>
-      </Button>
+      </Button> */}
 
-      <Button
+      {/* <Button
         size="sm"
         variant="link"
         onClick={() => handleEdit(proyecto.pryId, t, router.push)}
@@ -67,9 +110,9 @@ function SupportButtons({ t, proyecto }) {
         <Tooltip anchorSelect={`#edit-tooltip-${proyecto.pryId}`} place="top">
           {t?.Common.edit}
         </Tooltip>
-      </Button>
+      </Button> */}
 
-      {proyecto.idTipoSoporte == Constantes.TipoSorpote.BOLSA && (
+      {/* {proyecto.idTipoSoporte == Constantes.TipoSorpote.BOLSA && (
         <Button
           size="sm"
           variant="link"
@@ -88,7 +131,7 @@ function SupportButtons({ t, proyecto }) {
             {t?.Nav.facture.requestBilling}
           </Tooltip>
         </Button>
-      )}
+      )} */}
 
       {/* <Button size="sm" variant="link">
     <FaFileDownload size={16} className="my-anchor-documento"/>
@@ -97,9 +140,9 @@ function SupportButtons({ t, proyecto }) {
     </Tooltip>
   </Button> */}
 
-      <Button size="sm" variant="link">
+      {/* <Button size="sm" variant="link">
         <FaTrash size={16} />
-      </Button>
+      </Button> */}
     </>
   );
 }

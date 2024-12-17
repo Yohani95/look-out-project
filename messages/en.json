@@ -1,5 +1,8 @@
 {
   "Common": {
+    "milestoneAccomplished": "Milestone Accomplished",
+    "finish": "Finish",
+    "continue": "Continue",
     "nextCallDate": "Next call date",
     "planning": "Planning",
     "activity": "Activity",
@@ -234,6 +237,10 @@
     }
   },
   "Account": {
+    "descriptionPages": {
+      "search": "Here you can see the list of companies we work with and easily add new ones to keep our network always updated.",
+      "create": "On this page you can easily create a new account. Fill in the required information to get started."
+    },
     "saveButton": "Save",
     "findAccount": "Find Account",
     "find": "Find",

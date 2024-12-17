@@ -14,7 +14,6 @@ function ContactoProspectoSearch({ data, t }) {
   }, [data]);
   return (
     <>
-      <h4 className="mb-3">{t.Common.prospectContact}</h4>
       <div className="d-flex justify-content-end container mb-3">
         <Link href={'/prospect/contact/create'}>
           <button type="button" className=" btn btn-primary ">

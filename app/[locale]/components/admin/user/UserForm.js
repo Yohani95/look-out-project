@@ -1,20 +1,20 @@
-"use client";
-import React, { useState,useEffect } from "react";
+'use client';
+import React, { useState, useEffect } from 'react';
 import {
   handleInputChange,
   handleSubmit,
-} from "@/app/[locale]/utils/user/userFormLogic";
-import { userApiUrl, apiHeaders } from "@/app/api/apiConfig";
+} from '@/app/[locale]/utils/user/userFormLogic';
+import { userApiUrl, apiHeaders } from '@/app/api/apiConfig';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
-import { useRouter} from "next/navigation";
-function UserForm({locale,isEdit,id}) {
+import { useRouter } from 'next/navigation';
+function UserForm({ locale, isEdit, id }) {
   const router = useRouter();
   let translations;
   translations = require(`@/messages/${locale}.json`);
   const [formData, setFormData] = useState({
-    usuNombre: "",
-    usuContraseña: "",
-    usuContraseña2: "",
+    usuNombre: '',
+    usuContraseña: '',
+    usuContraseña2: '',
     perId: 0, // Ejemplo de campo adicional
     prfId: 0, // Ejemplo de campo adicional
     usuVigente: 0, // Ejemplo de campo adicional
@@ -30,23 +30,23 @@ function UserForm({locale,isEdit,id}) {
   const fetchUserData = async (userId) => {
     try {
       const response = await fetch(`${userApiUrl}/${userId}`);
-      if(response.ok){
+      if (response.ok) {
         const userData = await response.json();
-        userData.usuContraseña = "";
-        userData.usuContraseña2 = "";
-        console.log(userData)
+        userData.usuContraseña = '';
+        userData.usuContraseña2 = '';
+        console.log(userData);
         setFormData(userData); // Actualiza el estado formData con los datos obtenidos
-      }else if(response.status==404){
+      } else if (response.status == 404) {
         NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.Common.notExist,
           type: translations.notification.warning.type,
           push: router.push,
-          link:'/admin/user/list'
+          link: '/admin/user/list',
         });
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error('Error fetching user data:', error);
     }
   };
   const handleFormSubmit = handleSubmit(
@@ -57,12 +57,11 @@ function UserForm({locale,isEdit,id}) {
     id,
     isEdit
   );
-  const cancel=()=>{
-    router.back()
-  }
+  const cancel = () => {
+    router.back();
+  };
   return (
     <div className="container ">
-      <h4>{isEdit ?  translations.user.editUser : translations.user.createUser}</h4>
       <form onSubmit={handleFormSubmit}>
         <div className="mb-3">
           <label htmlFor="usuNombre" className="form-label">
@@ -152,7 +151,7 @@ function UserForm({locale,isEdit,id}) {
         </div>
         {/* Agregar más campos aquí */}
         <button type="submit" className="btn btn-primary">
-          {isEdit ?  translations.Common.edit:translations.Common.saveButton}
+          {isEdit ? translations.Common.edit : translations.Common.saveButton}
         </button>
         <button type="button" className="btn btn-danger m-2" onClick={cancel}>
           {translations.Common.cancel}

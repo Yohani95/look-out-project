@@ -12,7 +12,6 @@ function page() {
       <BasePages
         title={`${t('Common.search')} ${t('Account.table.contacts.title')}`}
       >
-        <h4 className="mb-3">{t('Account.table.contacts.title')}</h4>
         <div className="d-flex justify-content-end container mb-3">
           <Link href={'/contact/create'}>
             <button type="button" className=" btn btn-primary ">

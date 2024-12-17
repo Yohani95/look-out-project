@@ -44,9 +44,6 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
             handleSelectChange(e, 'idMarcaLicencia', setTarifario)
           }
           selectedValue={tarifarioModel.idMarcaLicencia}
-          isInvalid={
-            formik.touched.idMarcaLicencia && !!formik.errors.idMarcaLicencia
-          }
         />
         <SelectField
           label={t.Common.wholesaler}
@@ -58,10 +55,6 @@ const TarifarioVentaLicenciaForm: React.FC<TarifarioFormProps> = ({
             handleSelectChange(e, 'idMayoristaLicencia', setTarifario)
           }
           selectedValue={tarifarioModel.idMayoristaLicencia}
-          isInvalid={
-            formik.touched.idMayoristaLicencia &&
-            !!formik.errors.idMayoristaLicencia
-          }
         />
       </div>
 
