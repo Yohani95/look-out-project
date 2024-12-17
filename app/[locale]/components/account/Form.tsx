@@ -143,7 +143,7 @@ function Form({ locale, isEdit, idPerson = null, isCreate = false }) {
   const handleSubmit = handleClientFormSubmit(
     formData,
     t,
-    router.push,
+    router.back,
     isEdit,
     setFormData
   );

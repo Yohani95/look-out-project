@@ -12,6 +12,7 @@ import {
   ClientePersonaGetAllApiUrl,
 } from '@/app/api/apiConfig';
 import axios from 'axios';
+import Utils from '@/app/api/models/common/Utils';
 export const handleClientInputChange = (formData, setFormData) => (event) => {
   const { name, value } = event.target;
   setFormData((prevData) => ({
@@ -24,9 +25,7 @@ export const handleClientFormSubmit =
   (formData, translations, push, isEditMode = false) =>
   async (event) => {
     event.preventDefault();
-    console.log(formData);
     try {
-      console.log(formData);
       const clienteWithIds = {
         cliente: {
           cliId: formData.cliId,
@@ -69,13 +68,14 @@ export const handleClientFormSubmit =
         body: JSON.stringify(clienteWithIds),
       });
       if (response.ok) {
-        NotificationSweet({
-          title: translations.notification.success.title,
-          text: translations.notification.success.text,
-          type: translations.notification.success.type,
-          push: push,
-          link: '/account/search',
-        });
+        Utils.handleSuccessNotification(translations, push);
+        // NotificationSweet({
+        //   title: translations.notification.success.title,
+        //   text: translations.notification.success.text,
+        //   type: translations.notification.success.type,
+        //   push: push,
+        //   link: '/account/search',
+        // });
       } else if (response.status === 409) {
         NotificationSweet({
           title: translations.notification.warning.title,
