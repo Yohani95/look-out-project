@@ -36,11 +36,7 @@ async function page({ params }) {
   data.horasUtilizadas = horasUtilizadasData.map((hora) => ({
     ...hora,
   }));
-  return (
-    <BasePages title={t.Common.supports}>
-      <ContractHorasUtilizadas t={t} data={data} />
-    </BasePages>
-  );
+  return <ContractHorasUtilizadas t={t} data={data} />;
 }
 
 export default page;

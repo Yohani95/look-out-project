@@ -26,11 +26,7 @@ async function page() {
   data.empresaPrestadora = empresaPrestadora.map((empresa) => {
     return new EmpresaPrestadora(empresa).getSelectOptions();
   });
-  return (
-    <BasePages title={t.Common.supports}>
-      <Contractcreate t={t} data={data} />
-    </BasePages>
-  );
+  return <Contractcreate t={t} data={data} />;
 }
 
 export default page;

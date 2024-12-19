@@ -29,11 +29,7 @@ async function page({ params }) {
 
   // Combinar los datos generales con los datos extra
   const combinedData = { ...data, ...extraData };
-  return (
-    <BasePages title={t.Common.supports}>
-      <OnDemandEdit t={t} data={combinedData} />
-    </BasePages>
-  );
+  return <OnDemandEdit t={t} data={combinedData} />;
 }
 const getExtraData = async (id) => {
   try {

@@ -501,7 +501,8 @@
   "support": {
     "contractSupport": "Soporte Contrato",
     "bagholder": "Soporte Bolsa",
-    "onDemandSupport": "Soporte On Demand"
+    "onDemandSupport": "Soporte On Demand",
+    "supportDescription": "Aquí podrás ver el listado de empresas con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada."
   },
   "Opportunity": {
     "opportunities": "Oportunidades",

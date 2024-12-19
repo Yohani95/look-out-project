@@ -28,11 +28,7 @@ async function page({ params }) {
 
   // Combinar los datos generales con los datos adicionales
   const combinedData = { ...data, ...extraData };
-  return (
-    <BasePages title={t.Common.supports}>
-      <ContractEdit t={t} data={combinedData} />
-    </BasePages>
-  );
+  return <ContractEdit t={t} data={combinedData} />;
 }
 const getExtraData = async (id) => {
   try {
