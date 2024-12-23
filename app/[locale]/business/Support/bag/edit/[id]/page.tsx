@@ -28,11 +28,7 @@ async function page({ params }) {
 
   // Combinamos los datos básicos con los datos extra
   const combinedData = { ...data, ...extraData };
-  return (
-    <BasePages title={t.Common.supports}>
-      <BagEdit t={t} data={combinedData} />
-    </BasePages>
-  );
+  return <BagEdit t={t} data={combinedData} />;
 }
 const getExtraData = async (id) => {
   try {

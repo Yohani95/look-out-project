@@ -26,11 +26,7 @@ async function page() {
   data.empresaPrestadora = empresaPrestadora.map((empresa) => {
     return new EmpresaPrestadora(empresa).getSelectOptions();
   });
-  return (
-    <BasePages title={t.support.bagholder}>
-      <BagCreate t={t} data={data} />
-    </BasePages>
-  );
+  return <BagCreate t={t} data={data} />;
 }
 
 export default page;

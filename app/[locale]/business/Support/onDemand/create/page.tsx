@@ -27,11 +27,7 @@ async function page() {
   data.empresaPrestadora = empresaPrestadora.map((empresa) => {
     return new EmpresaPrestadora(empresa).getSelectOptions();
   });
-  return (
-    <BasePages title={t.support.onDemandSupport}>
-      <OnDemandCreate t={t} data={data} />
-    </BasePages>
-  );
+  return <OnDemandCreate t={t} data={data} />;
 }
 
 export default page;

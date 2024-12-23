@@ -256,7 +256,7 @@ const FactureCreate: React.FC<FactureProps> = ({
   };
   return (
     <>
-      <h4>{t?.Nav.facture.requestBilling}</h4>
+      {/* <h4>{t?.Nav.facture.requestBilling}</h4> */}
       <div className="d-flex justify-content-end align-items-center mb-3">
         <AdaptationFactureModal
           t={t}

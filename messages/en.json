@@ -501,7 +501,8 @@
   "support": {
     "contractSupport": "Contract Support",
     "bagholder": "Bagholder Support",
-    "onDemandSupport": "On-Demand Support"
+    "onDemandSupport": "On-Demand Support",
+    "supportDescription": "Here you can see the list of companies we work with and easily add new ones to keep our network always updated."
   },
   "Opportunity": {
     "opportunities": "Opportunities",

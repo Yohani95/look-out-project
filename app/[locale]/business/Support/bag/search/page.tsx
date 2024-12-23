@@ -12,9 +12,7 @@ async function page() {
     Constantes.TipoSorpote.BOLSA
   )) as Soporte[];
   return (
-    <BasePages title={t.support.bagholder}>
-      <ListSupport t={t} data={soportes} tipo={Constantes.TipoSorpote.BOLSA} />
-    </BasePages>
+    <ListSupport t={t} data={soportes} tipo={Constantes.TipoSorpote.BOLSA} />
   );
 }
 

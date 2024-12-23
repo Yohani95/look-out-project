@@ -15,14 +15,7 @@ async function page() {
   const soportes = (await GetAllEntitiesByIdTipoSoporte(
     Constantes.TipoSorpote.CONTRATO
   )) as Soporte[];
-  return (
-    <BasePages
-      title={t.support.contractSupport}
-      description="Aquí podrás ver el listado de empresas con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada."
-    >
-      <ListSupport t={t} data={soportes} />
-    </BasePages>
-  );
+  return <ListSupport t={t} data={soportes} />;
 }
 
 export default page;
