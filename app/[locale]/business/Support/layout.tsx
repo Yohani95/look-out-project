@@ -1,7 +1,7 @@
 import React from 'react';
 import BasePages from '../../components/common/BasePages';
 import { getLocale } from 'next-intl/server';
-import SubNavSupport from '../../components/support/Common/SubNavSupport';
+import SubNavSupport from '../../components/support/Common/subNavSupport';
 async function layout({ children }) {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
