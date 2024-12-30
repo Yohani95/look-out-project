@@ -1,172 +1,197 @@
 'use client';
+
+import { useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { User, Menu, X, LogOut } from 'lucide-react';
 import LOGO from '@/public/images/logo.svg';
 import LanguageDropdown from './LanguageDropdown';
-import { Nav, Navbar, NavDropdown, Container } from 'react-bootstrap';
-import CommonDropDown from '@/app/[locale]/components/common/CommonDropDown';
-import { useSession, signOut } from 'next-auth/react';
-import { FaArrowRightToBracket } from 'react-icons/fa6';
-import { FaUser, FaCog, FaBug } from 'react-icons/fa';
-import { red } from '@mui/material/colors';
-import { useRouter } from 'next/navigation';
-import { Usuario } from '@/app/api/models/admin/Usuario';
 import { Constantes } from '@/app/api/models/common/Constantes';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useLocale } from 'next-intl';
 
-const MyNav = ({ t, locale }) => {
+const Navbar = () => {
   const { data: session, status } = useSession();
   const user = session?.user as any | null;
-  let translations;
   const router = useRouter();
-  translations = require(`@/messages/${locale}.json`);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const locale = useLocale();
+  const t = require(`@/messages/${locale}.json`);
   const handleLogout = async () => {
-    await signOut({ redirect: false }); // Redirigir a la página de inicio
+    await signOut({ redirect: false });
     router.push('/');
   };
 
+  const getLogComponent = (idRol: number) => {
+    if (idRol === Constantes.Roles.ADMIN) {
+      return <Link href="/admin/logs/search">Logs</Link>;
+    }
+  };
+
   return (
-    <>
-      <Navbar
-        style={{ backgroundColor: '#2F4BCE' }}
-        className="navbar-custom navbar-dark "
-        expand="lg"
-      >
-        {/* Agrega las clases "navbar-dark bg-primary" */}
-        <Container className="d-flex justify-content-center align-items-center">
-          {' '}
-          {/* Utilizamos el componente Container para centrar el contenido */}
-          <Navbar.Brand>
-            <Link href={'/'} className="navbar-brand">
-              <Image src={LOGO} width={120} height={40} title="logo" alt="" />
-            </Link>
-          </Navbar.Brand>
-          {session && (
-            <>
-              <Navbar.Toggle aria-controls="navbarSupportedContent" />
-              <Navbar.Collapse id="navbarSupportedContent">
-                <Nav className="me-auto">
-                  <Nav.Item>
-                    <Link className="nav-link" href={'/account/search'}>
-                      {translations.Common.accounts}
-                    </Link>
-                  </Nav.Item>
-                  <CommonDropDown
-                    t={t.namesMenu.contacts}
-                    title={t.namesMenu.contacts.title}
-                  />
-                  <Nav.Item>
-                    <Link
-                      className="nav-link"
-                      href={'/business/closeServices/search'}
-                    >
-                      {translations.Ficha.business}
-                    </Link>
-                  </Nav.Item>
-                  <CommonDropDown
-                    t={t.namesMenu.supports}
-                    title={t.namesMenu.supports.title}
-                  />
-                  {/* <CommonDropDown
-                    t={t.namesMenu.service}
-                    title={t.namesMenu.service.title}
-                  /> */}
-                  <CommonDropDown
-                    t={t.namesMenu.oportunidad}
-                    title={t.namesMenu.oportunidad.title}
-                  />
-                  {/* <CommonDropDown
-                    t={t.namesMenu.service}
-                    title={t.namesMenu.service.title}
-                  /> */}
-                  <CommonDropDown
-                    t={t.namesMenu.prospecto}
-                    title={t.namesMenu.prospecto.title}
-                  />
-                  <CommonDropDown
-                    t={t.namesMenu.licencia}
-                    title={t.namesMenu.licencia.title}
-                  />
-                  <CommonDropDown
-                    t={t.namesMenu.proyecto}
-                    title={t.namesMenu.proyecto.title}
-                  />
-                  <CommonDropDown
-                    t={t.namesMenu.facture}
-                    title={t.namesMenu.facture.title}
-                  />
-                  <CommonDropDown
-                    t={t.namesMenu.admin}
-                    title={t.namesMenu.admin.title}
-                  />
-                  <LanguageDropdown t={t} />
-                </Nav>
-                <Nav>
-                  <NavDropdown
-                    title={
-                      <>
-                        <FaUser
-                          style={{ marginRight: '8px', fontSize: '20px' }}
-                        />
-                        {session.user.name}
-                      </>
-                    }
-                    id=""
-                    className=""
-                  >
-                    <Link
-                      href={`/admin/user/edit/${user.id}`}
-                      className="dropdown-item"
-                    >
-                      <FaCog className="text-secondary" />
-                      <span style={{ marginLeft: '8px' }}>
-                        {translations.Common.profile}
-                      </span>
-                    </Link>
-                    {getLogComponent(user.rol?.rolId)}
-                    <button
-                      className="btn btn-outline-primary btn-sm dropdown-item"
-                      onClick={handleLogout}
-                    >
-                      <FaArrowRightToBracket className="text-secondary" />
-                      <span style={{ marginLeft: '8px' }}>
-                        {translations.Common.logout}
-                      </span>
-                    </button>
-                  </NavDropdown>
-                </Nav>
-              </Navbar.Collapse>
-            </>
+    <nav className="bg-[#2F4BCE] text-white shadow-md">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center">
+          <Image src={LOGO} width={120} height={40} alt="Logo" />
+        </Link>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6">
+          <Link href="/" className="hover:text-gray-300">
+            Inicio
+          </Link>
+          <DropdownMenu
+            title="Gestión"
+            links={[
+              { href: '/admin/user/list', label: 'Usuarios' },
+              { href: '/gestion/roles', label: 'Roles' },
+              { href: '/admin/perfil/search', label: 'Perfil' },
+            ]}
+          />
+          <DropdownMenu
+            title="Comercial"
+            links={[
+              { href: '/prospect/search', label: 'Prospectos' },
+              { href: '/contact/search', label: 'Contactos' },
+              { href: '/account/search', label: 'Cuentas' },
+            ]}
+          />
+          <DropdownMenu
+            title="Servicios"
+            links={[
+              { href: '/developmentProject/search', label: 'Proyectos' },
+              { href: '/business/Support/search', label: 'Soporte' },
+            ]}
+          />
+          <Link href="/reportes" className="hover:text-gray-300">
+            Reportes
+          </Link>
+          {user && (
+            <DropdownMenu
+              title={user.name}
+              icon={<User className="w-6 h-6" />}
+              links={[
+                { href: `/admin/user/edit/${user.id}`, label: 'Perfil' },
+                {
+                  onClick: handleLogout,
+                  label: 'Cerrar sesión',
+                },
+                { element: getLogComponent(user.rol?.rolId) },
+              ]}
+            />
           )}
-          {status === 'loading' && (
-            <>
-              <Navbar.Toggle aria-controls="navbarSupportedContent" />
-              <Navbar.Collapse id="navbarSupportedContent">
-                {/* <span class="placeholder col-1 m-1"></span>
-                <span class="placeholder col-1 m-1"></span>
-                <span class="placeholder col-1 m-1"></span>
-                <span class="placeholder col-1 m-1"></span>
-                <span class="placeholder col-1 m-1"></span>
-                <span class="placeholder col-1 m-1"></span>
-                <span class="placeholder col-1 m-1"></span> */}
-                {/* Esqueleto o indicador de carga */}
-              </Navbar.Collapse>
-            </>
+          <LanguageDropdown t={t} />
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden"
+          onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
           )}
-        </Container>
-      </Navbar>
-    </>
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-[#2F4BCE] text-white space-y-4 px-4 py-3">
+          <Link href="/" className="block hover:text-gray-300">
+            Inicio
+          </Link>
+          <DropdownMenu
+            title="Gestión"
+            links={[
+              { href: '/admin/user/list', label: 'Usuarios' },
+              { href: '/gestion/roles', label: 'Roles' },
+              { href: '/admin/perfil/search', label: 'Perfil' },
+            ]}
+          />
+          <DropdownMenu
+            title="Comercial"
+            links={[
+              { href: '/prospect/search', label: 'Prospectos' },
+              { href: '/contact/search', label: 'Contactos' },
+              { href: '/account/search', label: 'Cuentas' },
+            ]}
+          />
+          <DropdownMenu
+            title="Servicios"
+            links={[
+              { href: '/developmentProject/search', label: 'Proyectos' },
+              { href: '/business/Support/search', label: 'Soporte' },
+            ]}
+          />
+          <Link href="/reportes" className="block hover:text-gray-300">
+            Reportes
+          </Link>
+          {user && (
+            <DropdownMenu
+              title={user.name}
+              icon={<User className="w-6 h-6" />}
+              links={[
+                { href: `/admin/user/edit/${user.id}`, label: 'Perfil' },
+                {
+                  onClick: handleLogout,
+                  label: 'Cerrar sesión',
+                },
+                { element: getLogComponent(user.rol?.rolId) },
+              ]}
+            />
+          )}
+          <LanguageDropdown t={t} />
+        </div>
+      )}
+    </nav>
   );
 };
-const getLogComponent = (idRol: number) => {
-  if (idRol == Constantes.Roles.ADMIN) {
-    return (
-      <Link href={`/admin/logs/search`} className="dropdown-item">
-        <FaBug className="text-secondary" />
-        <span style={{ marginLeft: '8px' }}>Logs</span>
-      </Link>
-    );
-  }
-};
 
-export default MyNav;
+const DropdownMenu = ({
+  title,
+  links,
+  icon,
+}: {
+  title: string;
+  links: any[];
+  icon?: React.ReactNode;
+}) => (
+  <div className="group relative">
+    <button className="flex items-center hover:text-gray-300">
+      {icon && <span className="mr-2">{icon}</span>}
+      {title}
+    </button>
+    <div className="absolute left-0 hidden group-hover:block bg-white text-gray-700 shadow-lg rounded-md mt-2">
+      {links.map((link, idx) =>
+        link.href ? (
+          <Link
+            key={idx}
+            href={link.href}
+            className="block px-4 py-2 hover:bg-gray-100"
+          >
+            {link.label}
+          </Link>
+        ) : link.onClick ? (
+          <button
+            key={idx}
+            onClick={link.onClick}
+            className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center"
+          >
+            {link.icon && <span className="mr-2">{link.icon}</span>}
+            {link.label}
+          </button>
+        ) : (
+          <span key={idx} className="block px-4 py-2">
+            {link.element}
+          </span>
+        )
+      )}
+    </div>
+  </div>
+);
+
+export default Navbar;

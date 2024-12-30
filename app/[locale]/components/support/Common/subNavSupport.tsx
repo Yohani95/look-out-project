@@ -19,7 +19,13 @@ function SubNavSupport() {
     { path: '/business/Support/bag/search', label: 'Bolsa' },
     { path: '/business/Support/onDemand/search', label: 'OnDemand' },
   ];
+  // Verifica si la ruta actual coincide con alguna de las rutas configuradas
+  const match = routes.some((route) => pathname.includes(route.path));
 
+  // Si no hay coincidencia, retorna null para no renderizar nada
+  if (!match) {
+    return null;
+  }
   return (
     <Breadcrumb>
       <BreadcrumbList>

@@ -6,7 +6,7 @@ const publicPages = ['/login']; // Páginas públicas accesibles sin autenticaci
 
 const intlMiddleware = createIntlMiddleware({
   locales,
-  defaultLocale: 'en'
+  defaultLocale: 'en',
 });
 
 const authMiddleware = withAuth(
@@ -15,11 +15,11 @@ const authMiddleware = withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }) => token != null
+      authorized: ({ token }) => token != null,
     },
     pages: {
       signIn: '/',
-    }
+    },
   }
 );
 
@@ -52,5 +52,5 @@ export default async function middleware(req, res, next) {
 
 // Configuración opcional para el matcher
 export const config = {
-  matcher: ['/((?!api|_next|.*\\..*).*)']
+  matcher: ['/((?!api|_next|.*\\..*).*)'],
 };

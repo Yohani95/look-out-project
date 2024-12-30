@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 import Header from '@/app/[locale]/components/header/Header';
 import Footer from '@/app/[locale]/components/Footer';
 import AuthContext from '@/app/[locale]/context/AuthContext';
+import LayoutWithSession from './components/common/LayoutWithSession';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -20,9 +21,10 @@ export default function RootLayout({ children }) {
       <body>
         <AuthContext>
           <div className="page-container">
-            <Header />
+            {/* <Header />
             <div className="main-content">{children}</div>
-            <Footer />
+            <Footer /> */}
+            <LayoutWithSession>{children}</LayoutWithSession>
           </div>
         </AuthContext>
       </body>

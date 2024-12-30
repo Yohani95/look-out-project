@@ -38,7 +38,7 @@ const LanguageDropdown = ({ t }) => {
             src={currentLanguageImage} // Cambia esto según el idioma activo
             width={24}
             height={24}
-            alt={t.Common.language}
+            alt={t?.Common?.language || 'Idioma actual'}
             className="rounded-full mr-2"
           />
         </button>
@@ -47,7 +47,12 @@ const LanguageDropdown = ({ t }) => {
         <DropdownMenuItem>
           <Link href={`/en`} locale="en">
             <div className="flex items-center">
-              <Image src={UK} width={20} height={20} alt={t.en} />
+              <Image
+                src={UK}
+                width={20}
+                height={20}
+                alt={t.Languages.english}
+              />
               <span className="ml-2">{t.Languages.english}</span>
             </div>
           </Link>
@@ -55,7 +60,12 @@ const LanguageDropdown = ({ t }) => {
         <DropdownMenuItem>
           <Link href={`/es`} locale="es">
             <div className="flex items-center">
-              <Image src={ES} width={20} height={20} alt={t.es} />
+              <Image
+                src={ES}
+                width={20}
+                height={20}
+                alt={t.Languages.spanish}
+              />
               <span className="ml-2">{t.Languages.spanish}</span>
             </div>
           </Link>
@@ -63,7 +73,12 @@ const LanguageDropdown = ({ t }) => {
         <DropdownMenuItem>
           <Link href={`/br`} locale="br">
             <div className="flex items-center">
-              <Image src={BR} width={20} height={20} alt={t.pt} />
+              <Image
+                src={BR}
+                width={20}
+                height={20}
+                alt={t.Languages.portuguese}
+              />
               <span className="ml-2">{t.Languages.portuguese}</span>
             </div>
           </Link>
