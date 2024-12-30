@@ -23,6 +23,8 @@ export class Constantes {
     COMERCIAL: 2,
     FINANZAS: 3,
     DELEVERY: 4,
+    JEFE_DE_PROYECTOS: 5,
+    CONSULTORIA: 6,
   };
   static TipoSorpote = {
     CONTRATO: 1,
