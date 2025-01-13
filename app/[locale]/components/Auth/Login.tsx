@@ -69,7 +69,7 @@ function Login({ translations }) {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Username Field */}
-            <div>
+            <div className="">
               <Label htmlFor="usu_nombre">{translations.Common.userName}</Label>
               <Input
                 id="usu_nombre"
