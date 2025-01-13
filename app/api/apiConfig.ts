@@ -226,3 +226,7 @@ export const PlanificacionProyectoDesarrolloApiUrl = `${apiBaseUrl}/Planificacio
 
 //DocumentoProyectoDesarrolloApiUrl
 export const DocumentoProyectoDesarrolloApiUrl = `${apiBaseUrl}/DocumentoProyectoDesarrollo`;
+//funcionalidades de rol
+export const FuncionalidadApiUrl = `${apiBaseUrl}/Funcionalidad`;
+export const RolFuncionalidadApiUrl = `${apiBaseUrl}/RolFuncionalidad`;
+export const RolApiUrl = `${apiBaseUrl}/Rol`;

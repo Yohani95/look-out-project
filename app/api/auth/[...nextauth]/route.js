@@ -1,13 +1,13 @@
-import NextAuth from "next-auth/next";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { userApiUrl,apiHeaders } from "@/app/api/apiConfig";
-import https from "https"; 
-import { signIn } from "next-auth/react";
+import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { userApiUrl, apiHeaders } from '@/app/api/apiConfig';
+import https from 'https';
+import { signIn } from 'next-auth/react';
 export const authOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {},
       async authorize(credentials, req) {
         const requestData = {
@@ -15,11 +15,11 @@ export const authOptions = {
           usuContraseña: credentials.usu_contraseña,
         };
         try {
-          process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+          process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
           const response = await fetch(`${userApiUrl}/login`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(requestData),
             agent: new https.Agent({ rejectUnauthorized: false }),
@@ -27,7 +27,7 @@ export const authOptions = {
           if (!response.ok) {
             return null;
           }
-          const data = await response.json()
+          const data = await response.json();
           const user = {
             id: data.usuId, // Convertir a cadena si es necesario
             per_id: data.perId,
@@ -35,9 +35,12 @@ export const authOptions = {
             name: data.usuNombre,
             password: data.usuContraseña, // Ten en cuenta el nombre de la propiedad con caracteres especiales
             vigente: data.usuVigente,
-            persona:data.persona,
-            perfil:data.perfil,
-            rol:data.rol
+            persona: data.persona,
+            perfil: data.perfil,
+            rol: {
+              ...data.rol,
+              funcionalidades: data.rol.funcionalidades, // Incluye las funcionalidades aquí
+            },
             // ... Otros campos del usuario
           };
           if (user) {
@@ -48,51 +51,50 @@ export const authOptions = {
             return null;
             // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
           }
-        
+
           // Resto del código aquí...
         } catch (error) {
-          console.error("Fetch error:", error);
+          console.error('Fetch error:', error);
         }
         s;
       },
     }),
   ],
   session: {
-    strategy: "jwt",
-    maxAge: 30 * 60
+    strategy: 'jwt',
+    maxAge: 30 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-     signIn: "/",
-     signIn:'/'
+    signIn: '/',
+    signIn: '/',
   },
   callbacks: {
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token and user id from a provider.
-      session.accessToken = token.accessToken
-      session.user.id = token.id
-      session.user.person = token.person
-      session.user.profile = token.profile
-      session.user.vigente=token.vigente
-      session.user.persona=token.persona
-      session.user.perfil=token.perfil
-      session.user.rol=token.rol
-      return session
+      session.accessToken = token.accessToken;
+      session.user.id = token.id;
+      session.user.person = token.person;
+      session.user.profile = token.profile;
+      session.user.vigente = token.vigente;
+      session.user.persona = token.persona;
+      session.user.perfil = token.perfil;
+      session.user.rol = token.rol;
+      return session;
     },
     async jwt({ token, account, user }) {
       // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
-        token.accessToken = account.access_token
-        token.id = user.id
-        token.person = user.per_id,
-        token.profile = user.prf_id
-        token.vigente=user.vigente
-        token.persona=user.persona
-        token.perfil=user.perfil
-        token.rol=user.rol
+        token.accessToken = account.access_token;
+        token.id = user.id;
+        (token.person = user.per_id), (token.profile = user.prf_id);
+        token.vigente = user.vigente;
+        token.persona = user.persona;
+        token.perfil = user.perfil;
+        token.rol = user.rol;
       }
-      return token
-    }
+      return token;
+    },
   },
 };
 
