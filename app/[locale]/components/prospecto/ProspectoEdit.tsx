@@ -20,6 +20,10 @@ const ProspectoEdit: React.FC<FormProps> = ({ t, data, id }) => {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         await Utils.showLoadingNotification(t);
+        delete values.kam;
+        delete values.estadoProspecto;
+        delete values.contacto;
+        delete values.cliente;
         await updateProspecto(values, id)
           .then((res) => {
             if (res != 204) {

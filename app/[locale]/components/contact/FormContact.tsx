@@ -214,7 +214,13 @@ function AddressSection({ t, formData, setFormData, idPerson }) {
     </BoxInfo>
   );
 }
-function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
+function FormContact({
+  locale,
+  isEdit,
+  isCreate,
+  idPerson = null,
+  idClient = null,
+}) {
   //========DECLARACION DE VARIABLES ===============
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();

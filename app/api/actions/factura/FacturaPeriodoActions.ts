@@ -257,3 +257,20 @@ export async function GetAllEntitiesFacturaByIdProyectoDesarrollo(
     return [];
   }
 }
+
+export async function GetFacturasResumen() {
+  try {
+    const response = await fetch(`${facturaPeriodoApiUrl}/resumen`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-cache',
+      next: { tags: [tag] },
+    });
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}

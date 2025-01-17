@@ -19,6 +19,7 @@ async function page() {
 const GetData = async () => {
   try {
     // Obtén los proyectos directamente sin modificar su estructura
+
     const proyectos = await getAllProyectoDesarrollo();
     return {
       proyectos,

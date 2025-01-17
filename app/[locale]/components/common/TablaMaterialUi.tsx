@@ -95,10 +95,54 @@ function TableMaterialUI<T>({ columns, data }: Props<T>) {
       clearTimeout(handler); // Limpiar timeout previo
     };
   }, [globalFilter, globalFilterKey]);
+  // Transformar datos: detectar y convertir fechas
+  const processedData = useMemo(() => {
+    return data.map(
+      (row) =>
+        Object.fromEntries(
+          Object.entries(row).map(([key, value]) => {
+            // Detectar formato dd/MM/yyyy
+            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (typeof value === 'string' && dateRegex.test(value)) {
+              const [day, month, year] = value.split('/').map(Number);
+              return [key, new Date(year, month - 1, day)];
+            }
+            return [key, value];
+          })
+        ) as T // Forzar el tipo de regreso a T
+    );
+  }, [data]); // Solo recalcular cuando los datos cambien
+  const processedColumns = useMemo(() => {
+    return columns.map((col) => {
+      return {
+        ...col,
+        sortingFn: (rowA, rowB, columnId) => {
+          const valueA = rowA.getValue(columnId);
+          const valueB = rowB.getValue(columnId);
+
+          // Si ambos valores son fechas, ordena como fechas
+          if (valueA instanceof Date && valueB instanceof Date) {
+            return valueA.getTime() - valueB.getTime();
+          }
+
+          // Si no son fechas, ordena como cadenas
+          return String(valueA).localeCompare(String(valueB));
+        },
+        Cell: ({ cell }) => {
+          const value = cell.getValue();
+          // Si es una fecha, formatear para mostrarla
+          if (value instanceof Date) {
+            return value.toLocaleDateString('es-CL'); // Cambia según tu formato preferido
+          }
+          return value; // Renderiza directamente si no es una fecha
+        },
+      };
+    });
+  }, [columns]); // Solo recalcular si las columnas cambian
 
   const table = useMaterialReactTable<T>({
-    columns,
-    data,
+    columns: processedColumns,
+    data: processedData, // Usar datos procesados
     localization,
     //manualFiltering: true, // Evita el filtrado automático
     initialState: {
