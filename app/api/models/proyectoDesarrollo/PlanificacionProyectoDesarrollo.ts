@@ -15,6 +15,7 @@ class PlanificacionProyectoDesarrollo {
   fechaTermino: Date | null; ///
   fechaTerminoReal: Date | null;
   terminado: boolean | null;
+  avanceEsperado: number | null;
   // Relaciones
   etapa: EtapaPlanificacionProyectoDesarrollo | null;
   //proyectoDesarrollo: ProyectoDesarrollo | null;
@@ -38,6 +39,7 @@ class PlanificacionProyectoDesarrollo {
       ? new Date(data.fechaTerminoReal)
       : null;
     this.terminado = data?.terminado || null;
+    this.avanceEsperado = data?.avanceEsperado || null;
     // Relaciones
     this.etapa = data?.etapa || null;
     //this.proyectoDesarrollo = data?.proyectoDesarrollo || null;

@@ -373,7 +373,8 @@
     "stages": "Stages",
     "stage": "Stage",
     "finishedStage": "Finished Stage",
-    "percentageWork": "Percentage Work %"
+    "percentageWork": "Percentage of actual work %",
+    "expectedProgress": "Expected Progress %"
   },
   "service": {
     "docKickOff": "Doc. Kick Off",

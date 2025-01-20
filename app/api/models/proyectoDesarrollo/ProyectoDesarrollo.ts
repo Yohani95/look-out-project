@@ -33,6 +33,7 @@ class ProyectoDesarrollo {
   fechaCreacion: Date | null;
   empresaPrestadora: EmpresaPrestadora | null;
   jefeProyecto: Persona | null;
+  avanceEsperado: number | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -52,6 +53,7 @@ class ProyectoDesarrollo {
       ? new Date(data?.fechaCreacion)
       : null;
     this.idJefeProyecto = data?.idJefeProyecto || null;
+    this.avanceEsperado = data?.avanceEsperado || null;
     // Relaciones
     this.estado = data?.estado || null;
     this.moneda = data?.moneda || null;
