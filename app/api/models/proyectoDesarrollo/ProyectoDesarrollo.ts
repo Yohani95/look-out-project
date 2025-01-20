@@ -32,6 +32,8 @@ class ProyectoDesarrollo {
   kam: Persona | null;
   fechaCreacion: Date | null;
   empresaPrestadora: EmpresaPrestadora | null;
+  jefeProyecto: Persona | null;
+  avanceEsperado: number | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -51,6 +53,7 @@ class ProyectoDesarrollo {
       ? new Date(data?.fechaCreacion)
       : null;
     this.idJefeProyecto = data?.idJefeProyecto || null;
+    this.avanceEsperado = data?.avanceEsperado || null;
     // Relaciones
     this.estado = data?.estado || null;
     this.moneda = data?.moneda || null;
@@ -59,6 +62,7 @@ class ProyectoDesarrollo {
     this.tipoProyectoDesarrollo = data?.tipoProyectoDesarrollo || null;
     this.kam = data?.kam || null;
     this.empresaPrestadora = data?.empresaPrestadora || null;
+    this.jefeProyecto = data?.jefeProyecto || null;
   }
 
   static getValidationSchema(t: any) {
@@ -89,6 +93,11 @@ class ProyectoDesarrollo {
       {
         accessorKey: 'nombre',
         header: 'Nombre del Proyecto',
+        size: 200,
+      },
+      {
+        accessorKey: 'jefe',
+        header: 'Jefe Proyecto',
         size: 200,
       },
       {

@@ -29,33 +29,79 @@ function ContactInfoSection({
   idPerson,
   setLoading,
 }) {
-  const [clientOptions, setClientOptions] = useState([]);
-  const [countryOptions, setCountryOptions] = useState([]);
-  const FillClient = async () => {
+  const [allClients, setAllClients] = useState([]); // Todos los clientes cargados al inicio
+  const [clientOptions, setClientOptions] = useState([]); // Clientes filtrados por país
+  const [countryOptions, setCountryOptions] = useState([]); // Lista de países
+
+  const FillInitialData = async () => {
     try {
-      const datos = await fechtClients();
-      const options = datos.map((sector) => ({
-        value: sector.cliId,
-        label: sector.cliNombre,
-      }));
-      setClientOptions(options);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-  useEffect(() => {
-    FillClient();
-  }, []);
-  useEffect(() => {
-    fetchCountriest().then((data) => {
-      const options = data.map((country) => ({
+      // Cargar todos los clientes
+      const clientsData = await fechtClients();
+      setAllClients(clientsData);
+      // Cargar todos los países
+      const countriesData = await fetchCountriest();
+      const countryOptions = countriesData.map((country) => ({
         value: country.paiId,
         label: country.paiNombre,
       }));
-      setCountryOptions(options);
-      //if (!idPerson) setLoading(false);
-    });
+      setCountryOptions(countryOptions);
+    } catch (error) {
+      console.error('Error fetching initial data:', error);
+    }
+  };
+
+  const handleCountryChange = (e) => {
+    const selectedPaiId = e.target.value;
+    // Actualizar paiId en formData
+    setFormData((prevData) => ({
+      ...prevData,
+      persona: {
+        ...prevData.persona,
+        paiId: selectedPaiId,
+      },
+    }));
+    // Filtrar clientes por país
+    // Filtrar clientes por país
+    const filteredClients = allClients.filter(
+      (item) => item.cliente?.paiId == parseInt(selectedPaiId)
+    );
+    // Convertir los clientes filtrados en opciones
+    const options = filteredClients.map((client) => ({
+      value: client.cliId,
+      label: client.cliNombre,
+    }));
+    setClientOptions(options);
+  };
+
+  useEffect(() => {
+    FillInitialData(); // Cargar todos los datos al inicio
   }, []);
+  useEffect(() => {
+    if (formData.persona.paiId) {
+      // Filtrar clientes por país cuando formData ya tiene un país seleccionado
+      const filteredClients = allClients.filter(
+        (item) => item.cliente?.paiId == formData.persona.paiId
+      );
+
+      const options = filteredClients.map((client) => ({
+        value: client.cliId,
+        label: client.cliNombre,
+      }));
+
+      setClientOptions(options);
+
+      // Si ya hay un cliente seleccionado, verifica que esté en la lista filtrada
+      if (
+        formData.idCliente &&
+        !filteredClients.some((client) => client.cliId == formData.idCliente)
+      ) {
+        setFormData((prevData) => ({
+          ...prevData,
+          idCliente: '', // Resetear si el cliente no pertenece al país seleccionado
+        }));
+      }
+    }
+  }, [formData.persona.paiId, allClients]);
   return (
     <>
       <div className="mb-3 row align-items-center">
@@ -147,15 +193,7 @@ function ContactInfoSection({
           preOption={t.Account.select}
           labelClassName="col-sm-1 col-form-label"
           divClassName="col-sm-3"
-          onChange={(e) => {
-            setFormData((prevData) => ({
-              ...prevData,
-              persona: {
-                ...prevData.persona,
-                paiId: e.target.value,
-              },
-            }));
-          }}
+          onChange={handleCountryChange} // Cambiado para usar la función de cambio de país
           selectedValue={formData.persona.paiId}
         />
       </div>
@@ -214,7 +252,13 @@ function AddressSection({ t, formData, setFormData, idPerson }) {
     </BoxInfo>
   );
 }
-function FormContact({ locale, isEdit, isCreate, idPerson, idClient }) {
+function FormContact({
+  locale,
+  isEdit,
+  isCreate,
+  idPerson = null,
+  idClient = null,
+}) {
   //========DECLARACION DE VARIABLES ===============
   const t = require(`@/messages/${locale}.json`);
   const router = useRouter();

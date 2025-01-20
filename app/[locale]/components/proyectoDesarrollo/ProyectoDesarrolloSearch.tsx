@@ -12,13 +12,15 @@ const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 
 function ProyectoDesarrolloSearch({ t, data }) {
   const columns = useMemo(() => ProyectoDesarrollo.createColumns(t), [t]);
-
   const memoizedActions = useMemo(() => {
     return data.map((proyecto: ProyectoDesarrollo) => ({
       ...proyecto,
       fechaCierre: Utils.getFechaString(proyecto.fechaCierre),
       personaKam: data.personaKam
         ? new Persona(data.personaKam).getNombreCompleto()
+        : 'N/A',
+      jefe: proyecto.jefeProyecto
+        ? new Persona(proyecto.jefeProyecto).getNombreCompleto()
         : 'N/A',
       actions: (
         <>

@@ -374,7 +374,8 @@
     "stage": "Fase",
     "finishedStage": "Estágio Concluído",
     "Carga de trabalho": "Carga de trabalho",
-    "percentageWork": "porcentagem Trabalho %"
+    "percentageWork": "porcentagem Trabalho real %",
+    "expectedProgress": "Progresso esperado %"
   },
   "service": {
     "docKickOff": "Doc. Início",

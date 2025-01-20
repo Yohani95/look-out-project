@@ -10,51 +10,47 @@ import {
   personContactGetAllApiUrl,
   personContactByIdClientApiUrl,
   personGetAllContactDTOClientApiUrl,
-} from "@/app/api/apiConfig";
-import NotificationSweet from "@/app/[locale]/components/common/NotificationSweet";
-import ConfirmationDialog from "@/app/[locale]/components/common/ConfirmationDialog";
-import MyDatePicker from "@/app/[locale]/components/common/MyDatePicker";
-import axios from "axios";
-import { Constantes } from "@/app/api/models/common/Constantes";
-export const handleInputChange =
-  (formData, setFormData) => (event) => {
-    
-    const { name, value } = event.target;
+} from '@/app/api/apiConfig';
+import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
+import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
+import MyDatePicker from '@/app/[locale]/components/common/MyDatePicker';
+import axios from 'axios';
+import { Constantes } from '@/app/api/models/common/Constantes';
+export const handleInputChange = (formData, setFormData) => (event) => {
+  const { name, value } = event.target;
 
-    // Divide el nombre del campo en partes separadas por punto
-    const nameParts = name.split('.');
+  // Divide el nombre del campo en partes separadas por punto
+  const nameParts = name.split('.');
 
-    // Crea una copia del estado actual de formData para no mutar el estado directamente
-    const updatedFormData = { ...formData };
-  
-    // Utiliza una referencia temporal para navegar por la estructura anidada
-    let tempRef = updatedFormData;
-  
-    // Itera sobre las partes del nombre para llegar al nivel correcto
-    for (let i = 0; i < nameParts.length - 1; i++) {
-      tempRef = tempRef[nameParts[i]] || {};
-    }
-  
-    // Actualiza la propiedad específica
-    tempRef[nameParts[nameParts.length - 1]] = value;
-  
-    // Actualiza el estado de formData con la nueva estructura
-    setFormData(updatedFormData);
- 
- 
-  };
+  // Crea una copia del estado actual de formData para no mutar el estado directamente
+  const updatedFormData = { ...formData };
+
+  // Utiliza una referencia temporal para navegar por la estructura anidada
+  let tempRef = updatedFormData;
+
+  // Itera sobre las partes del nombre para llegar al nivel correcto
+  for (let i = 0; i < nameParts.length - 1; i++) {
+    tempRef = tempRef[nameParts[i]] || {};
+  }
+
+  // Actualiza la propiedad específica
+  tempRef[nameParts[nameParts.length - 1]] = value;
+
+  // Actualiza el estado de formData con la nueva estructura
+  setFormData(updatedFormData);
+};
 
 export const handleFormSubmit =
   (formData, translations, push, isEditMode = false) =>
   async (event) => {
     event.preventDefault();
     try {
-      const constante=new Constantes();
-      formData.persona.tpeId=constante.TipoPersona.PERSONA_CONTACTO;
+      const constante = new Constantes();
+      formData.persona.tpeId = constante.TipoPersona.PERSONA_CONTACTO;
       const url = isEditMode
         ? `${personContactEditApiUrl}/${formData.persona.id}`
         : `${personContactCreateApiUrl}`;
-      const method = isEditMode ? "PUT" : "POST";
+      const method = isEditMode ? 'PUT' : 'POST';
       await NotificationSweet({
         title: isEditMode
           ? translations.notification.loading.title
@@ -70,48 +66,52 @@ export const handleFormSubmit =
       const response = await fetch(url, {
         method: method,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        NotificationSweet({
+        await NotificationSweet({
           title: translations.notification.success.title,
           text: translations.notification.success.text,
           type: translations.notification.success.type,
           push: push,
-          link: "/contact/search",
+          link: '/contact/search',
         });
+        push('/contact/search');
       } else if (response.status === 409) {
-        NotificationSweet({
+        await NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
             ? `/contact/edit/${formData.cliId}`
-            : "/contact/create",
+            : '/contact/create',
         });
+        push('/contact/search');
       } else {
-        NotificationSweet({
+        await NotificationSweet({
           title: translations.notification.warning.title,
           text: translations.client.clientNameExist,
           type: translations.notification.warning.type,
           push: push,
           link: isEditMode
             ? `/contact/edit/${formData.cliId}`
-            : "/contact/create",
+            : '/contact/create',
         });
+        push('/contact/search');
       }
     } catch (error) {
-      NotificationSweet({
+      await NotificationSweet({
         title: translations.notification.error.title,
         text: translations.notification.error.text,
         type: translations.notification.error.type,
         push: push,
-        link: "/contact/search",
+        link: '/contact/search',
       });
-      console.error("Error sending data:", error);
+      push('/contact/search');
+      console.error('Error sending data:', error);
       // router.push('');
     }
   };
@@ -121,7 +121,7 @@ export const fetchPerson = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -131,7 +131,7 @@ export const fetchPersonDTOContact = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -152,17 +152,17 @@ export const fetchPersonById = async (Id, t, setFormData, push) => {
         text: t.Common.notExist,
         type: t.notification.warning.type,
         push: push,
-        link: "/contact/search",
+        link: '/contact/search',
       });
     }
   } catch (error) {
-    console.error("Error fetching client data:", error);
+    console.error('Error fetching client data:', error);
     NotificationSweet({
       title: t.notification.warning.title,
       text: t.Common.notExist,
       type: t.notification.warning.type,
       push: push,
-      link: "/contact/search",
+      link: '/contact/search',
     });
   }
 };
@@ -172,7 +172,7 @@ export const fetchPersonByContact = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -188,7 +188,7 @@ export const handleDelete = async (idClient, trans, fetchPerson) => {
   if (confirmed) {
     await NotificationSweet({
       title: trans.notification.loading.title,
-      text: "",
+      text: '',
       type: trans.notification.loading.type,
       showLoading: true,
     });
@@ -243,7 +243,7 @@ export const fetchPersonGetbyIdClient = async (idClient) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -254,11 +254,11 @@ export const handleView = async (idPerson, idClient, push) => {
 
 export const handleRelations = async () => {
   try {
-    const response = await fetch("");
+    const response = await fetch('');
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };
@@ -269,16 +269,16 @@ _____________________________________________________
 _____________________________________________________
 
 */
-export const fetchAllPerson=async () =>{
+export const fetchAllPerson = async () => {
   try {
-    const response = await fetch(`${personApiUrl}`,{cache:"no-cache"});
-    const data =await  response.json();
+    const response = await fetch(`${personApiUrl}`, { cache: 'no-cache' });
+    const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
-}
+};
 
 export const fetchGetbyId = async (idPerson) => {
   try {
@@ -286,7 +286,7 @@ export const fetchGetbyId = async (idPerson) => {
     const data = response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
     return [];
   }
 };

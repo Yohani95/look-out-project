@@ -270,7 +270,7 @@ function ProfessionalForm({ idService, t, perfiles, proyecto }) {
         periodEndDate.getDate() + 1
       );
     }
-    return periods;
+    return periods.reverse();
   };
 
   const handle = (selectedOption) => {

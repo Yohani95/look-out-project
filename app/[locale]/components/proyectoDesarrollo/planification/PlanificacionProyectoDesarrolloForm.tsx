@@ -108,7 +108,7 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
         >
           {t.project.percentageWork}
         </label>
-        <div className="col-sm-3">
+        <div className="col-sm-2">
           <Form.Control
             type="number"
             id="porcentajeCargaTrabajo"
@@ -185,6 +185,27 @@ const PlanificacionProyectoDesarrolloForm: React.FC<FormProps> = ({
             </div>
           </>
         ) : null}
+      </div>
+      <div className="mb-3 row align-items-center">
+        <label htmlFor="avanceEsperado" className="col-sm-1 col-form-label">
+          {t.project.expectedProgress}
+        </label>
+        <div className="col-sm-2">
+          <input
+            type="number"
+            className="form-control"
+            id="avanceEsperado"
+            name="avanceEsperado"
+            min={0}
+            max={100}
+            value={
+              formik
+                ? formik.values.avanceEsperado
+                : planificacionModel.avanceEsperado || ''
+            }
+            onChange={formik?.handleChange}
+          />
+        </div>
       </div>
     </>
   );

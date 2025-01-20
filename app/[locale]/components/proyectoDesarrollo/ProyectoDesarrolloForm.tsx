@@ -203,7 +203,28 @@ const ProyectoDesarrolloForm: React.FC<FormProps> = ({
             className="form-control"
             id="avance"
             name="avance"
+            min={0}
+            max={100}
             value={formik ? formik.values.avance : proyectoModel.avance || ''}
+            onChange={formik?.handleChange}
+          />
+        </div>
+        <label htmlFor="avanceEsperado" className="col-sm-1 col-form-label">
+          {t.project.expectedProgress}
+        </label>
+        <div className="col-sm-3">
+          <input
+            type="number"
+            className="form-control"
+            id="avanceEsperado"
+            name="avanceEsperado"
+            min={0}
+            max={100}
+            value={
+              formik
+                ? formik.values.avanceEsperado
+                : proyectoModel.avanceEsperado || ''
+            }
             onChange={formik?.handleChange}
           />
         </div>

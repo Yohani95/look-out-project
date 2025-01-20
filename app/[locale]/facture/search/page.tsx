@@ -2,11 +2,15 @@ import React from 'react';
 import { getLocale } from 'next-intl/server';
 import BasePages from '@/app/[locale]/components/common/BasePages';
 import FacturasSolicitadasSearch from '../../components/facture/FacturasSolicitadas/FacturasSolicitadasSearch';
-import { getAllPreSolicitadaFacturaPeriodo } from '@/app/api/actions/factura/FacturaPeriodoActions';
+import {
+  getAllPreSolicitadaFacturaPeriodo,
+  GetFacturasResumen,
+} from '@/app/api/actions/factura/FacturaPeriodoActions';
 import { getAllMoneda } from '@/app/api/actions/world/Moneda';
 import Moneda from '@/app/api/models/world/Moneda';
 import { getAllBanco } from '@/app/api/actions/factura/BancoActions';
 import Banco from '@/app/api/models/factura/Banco';
+import ResumenFacturas from '../../components/facture/ResumenFacturas';
 async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -18,8 +22,11 @@ async function page() {
   });
   const bancos = await getAllBanco();
   const bancosOptions = bancos.map((b) => new Banco(b).getSelectOptions());
+  const resumen = await GetFacturasResumen();
+  console.log(resumen);
   return (
     <BasePages title={t.Nav.facture.billing}>
+      {resumen && <ResumenFacturas resumen={resumen} />}
       <FacturasSolicitadasSearch
         t={t}
         facturas={facturas}
