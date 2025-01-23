@@ -72,7 +72,6 @@ const Navbar = () => {
   };
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
   const getMenuByCategory = (category: string) => {
     if (!user?.rol?.funcionalidades) return null;
 
@@ -84,8 +83,14 @@ const Navbar = () => {
       .map((f) => {
         const func = funcionalidadesMap[f.funcionalidadId];
         return (
-          <DropdownMenuItem key={f.funcionalidadId}>
-            <Link href={func.path}>{func.label}</Link>
+          <DropdownMenuItem
+            key={f.funcionalidadId}
+            onSelect={() => {
+              router.push(func.path); // Navega a la página
+            }} // Navega a la página correspondiente
+            className="cursor-pointer menu-item"
+          >
+            {func.label}
           </DropdownMenuItem>
         );
       });
@@ -93,9 +98,14 @@ const Navbar = () => {
     return items.length > 0 ? (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className="hover:text-gray-300">{category}</button>
+          <button className="hover:text-gray-300 focus:outline-none focus:ring-0 active:bg-transparent">
+            {category}
+          </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="bg-white text-gray-700 shadow-md rounded-md border border-gray-200">
+        <DropdownMenuContent
+          className="bg-white text-gray-700 shadow-md rounded-md border border-gray-200"
+          sideOffset={5} // Desplazamiento visual del menú
+        >
           {items}
         </DropdownMenuContent>
       </DropdownMenu>

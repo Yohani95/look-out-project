@@ -11,6 +11,7 @@ import Moneda from '@/app/api/models/world/Moneda';
 import { getAllBanco } from '@/app/api/actions/factura/BancoActions';
 import Banco from '@/app/api/models/factura/Banco';
 import ResumenFacturas from '../../components/facture/ResumenFacturas';
+import { getAllEstadoFacturaPeriodo } from '@/app/api/actions/factura/EstadoFacturaPeriodo';
 async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
@@ -23,7 +24,7 @@ async function page() {
   const bancos = await getAllBanco();
   const bancosOptions = bancos.map((b) => new Banco(b).getSelectOptions());
   const resumen = await GetFacturasResumen();
-  console.log(resumen);
+  const listadoEstado = await getAllEstadoFacturaPeriodo();
   return (
     <BasePages title={t.Nav.facture.billing}>
       {resumen && <ResumenFacturas resumen={resumen} />}
@@ -32,6 +33,7 @@ async function page() {
         facturas={facturas}
         monedas={monedas}
         bancos={bancosOptions}
+        listadoEstado={listadoEstado}
       />
     </BasePages>
   );

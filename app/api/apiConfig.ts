@@ -125,7 +125,7 @@ export const getPeriodoProfesionalApiUrl = `${apiBaseUrl}/PeriodoProfesionales/G
 
 //facturaPeriodo
 export const facturaPeriodoApiUrl = `${apiBaseUrl}/FacturaPeriodo`;
-
+export const EstadoFacturaPeriodoApiUrl = `${apiBaseUrl}/EstadoFacturaPeriodo`;
 //FacturaAdaptacionApiUrl
 
 export const FacturaAdaptacionApiUrl = `${apiBaseUrl}/FacturaAdaptacion`;

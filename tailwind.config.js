@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
+  mode: 'jit', // Asegúrate de usar el JIT
   content: [
     './app/**/*.{js,ts,jsx,tsx}', // Rutas para tus archivos de Next.js
     './components/**/*.{js,ts,jsx,tsx}', // Rutas para componentes personalizados

@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+'use client';
+import React, { useMemo, useState } from 'react';
 import TableMaterialUI from '../common/TablaMaterialUi';
 import Prospecto from '@/app/api/models/prospecto/Prospecto';
 import ProspectoButtons from './ProspectoButtons';
@@ -9,15 +10,24 @@ import Persona from '@/app/api/models/admin/Persona';
 import { FaPhoneFlip } from 'react-icons/fa6';
 import ContactosProspecto from '@/app/api/models/prospecto/ContactoProspecto';
 import UploadExcelProspecto from './UploadExcelProspecto';
+import MultiSelect from '../common/MultiSelect';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function ProspectoSearch({ t, data }) {
+function ProspectoSearch({ t, data, listadoEstado }) {
+  const [selectedFilters, setSelectedFilters] = useState([]); // Manejar selección múltiple
+  // Filtrar datos según los filtros seleccionados
+  const filteredData = useMemo(() => {
+    if (selectedFilters.length === 0) return data; // Si no hay filtros, mostrar todo
+    return data.filter((item) =>
+      selectedFilters.includes(item.idEstadoProspecto.toString())
+    );
+  }, [data, selectedFilters]);
   const columns = useMemo(() => Prospecto.createColumns(t), [t]);
 
   const renderIcon = (value: boolean | null) => {
     return value ? <FaPhoneFlip color="green" /> : <FaPhoneSlash color="red" />;
   };
   const memoizedData = useMemo(() => {
-    return data.map((prospecto) => ({
+    return filteredData.map((prospecto) => ({
       ...prospecto,
       kam: new Persona(prospecto.kam).getNombreCompleto(),
       fechaCreacion: Utils.getFechaString(prospecto.fechaCreacion),
@@ -30,9 +40,17 @@ function ProspectoSearch({ t, data }) {
       tipoContactoProspecto: prospecto.contacto?.tipoContactoProspecto?.nombre,
       actions: <ProspectoButtons t={t} prospecto={prospecto} />,
     }));
-  }, [data]);
+  }, [filteredData, t]);
   return (
     <>
+      {/* Filtro por estado */}
+      <MultiSelect
+        label={t.Common.status}
+        options={listadoEstado}
+        selectedValues={selectedFilters}
+        onChange={setSelectedFilters}
+        placeholder={t.Common.status}
+      />
       <div className="d-flex justify-content-end container mb-3">
         <UploadExcelProspecto t={t} />
         <Link href={'/prospect/create'}>

@@ -4,13 +4,15 @@ import { getLocale } from 'next-intl/server';
 import OportunidadSearch from '../../components/oportunidad/OportunidadSearch';
 import { getAllOportunidad } from '@/app/actions/Oportunidad/OportunidadActions';
 import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
+import { getAllEstadoOportunidad } from '@/app/actions/Oportunidad/EstadoOportunidad';
 async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = (await getAllOportunidad()) as Oportunidad;
+  const listaestados = await getAllEstadoOportunidad();
   return (
     <BasePages title={t.Opportunity.opportunities}>
-      <OportunidadSearch t={t} data={data} />
+      <OportunidadSearch t={t} data={data} listaestados={listaestados} />
     </BasePages>
   );
 }

@@ -12,7 +12,7 @@ type ResumenFacturasProps = {
 
 const ResumenFacturas: React.FC<ResumenFacturasProps> = ({ resumen }) => {
   return (
-    <div className="flex space-x-2 overflow-x-auto">
+    <div className="flex space-x-2 overflow-x-auto mb-2">
       {Object.entries(resumen).map(([key, value]) => (
         <Card key={key} className="flex-shrink-0 w-24 p-2 shadow-sm border">
           <CardHeader className="p-1">
