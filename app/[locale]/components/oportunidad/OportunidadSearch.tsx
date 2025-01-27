@@ -6,11 +6,23 @@ import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
 import OportunidadButtons from './OportunidadButtons';
 import Persona from '@/app/api/models/admin/Persona';
 import MultiSelect from '../common/MultiSelect';
+import EstadoOportunidad from '@/app/api/models/oportunidad/EstadoOportunidad';
 
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 
 function OportunidadSearch({ t, data, listaestados }) {
-  const [selectedFilters, setSelectedFilters] = useState([]); // Manejar selección múltiple
+  // Construir los filtros preseleccionados excluyendo "CERRADA_PERDIDA" y "CERRADA_GANADA"
+  const preselectedFilters = Object.values(EstadoOportunidad.Constantes)
+    .filter(
+      (estado) =>
+        estado !== EstadoOportunidad.Constantes.CERRADA_PERDIDA &&
+        estado !== EstadoOportunidad.Constantes.CERRADA_GANADA &&
+        estado !== EstadoOportunidad.Constantes.COMPROMETIDO
+    )
+    .map(String); // Convertir a cadenas
+
+  const [selectedFilters, setSelectedFilters] = useState(preselectedFilters); // Inicializar con los filtros preseleccionados
+
   // Filtrar datos según los filtros seleccionados
   const filteredData = useMemo(() => {
     if (selectedFilters.length === 0) return data; // Si no hay filtros, mostrar todo

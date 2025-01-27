@@ -6,10 +6,21 @@ import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 import Utils from '@/app/api/models/common/Utils';
 import VentaLicenciaButtons from './VentaLicenciaButtons';
 import MultiSelect from '../common/MultiSelect';
+import EstadoVentaLicencia from '@/app/api/models/licencia/EstadoVentaLicencia';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function VentaLicenciaSearch({ t, data, listaestados }) {
+  // Construir los filtros preseleccionados excluyendo "PERDIDA" y "GANADA"
+  const preselectedFilters = Object.values(EstadoVentaLicencia.Constantes)
+    .filter(
+      (estado) =>
+        estado !== EstadoVentaLicencia.Constantes.PERDIDA &&
+        estado !== EstadoVentaLicencia.Constantes.GANADA
+    )
+    .map(String); // Convertir a cadenas
+
   const columns = useMemo(() => VentaLicencia.createColumns(t), [t]);
-  const [selectedFilters, setSelectedFilters] = useState([]); // Manejar selección múltiple
+  const [selectedFilters, setSelectedFilters] = useState(preselectedFilters); // Inicializar con los filtros preseleccionados
+
   // Filtrar datos según los filtros seleccionados
   const filteredData = useMemo(() => {
     if (selectedFilters.length === 0) return data; // Si no hay filtros, mostrar todo
@@ -17,18 +28,14 @@ function VentaLicenciaSearch({ t, data, listaestados }) {
       selectedFilters.includes(licencia.idEstado.toString())
     );
   }, [data, selectedFilters]);
+
   const memoizedActions = useMemo(() => {
     return filteredData.map((licencia: VentaLicencia) => ({
       ...licencia,
       fechaCreacion: Utils.getFechaString(licencia.fechaCreacion),
       fechaCierre: Utils.getFechaString(licencia.fechaCierre),
       fechaRenovacion: Utils.getFechaString(licencia.fechaRenovacion),
-      // personaKam: licencia.personaKam ? new Persona(licencia.personaKam).getNombreCompleto() : "N/A",
-      actions: (
-        <>
-          <VentaLicenciaButtons licencia={licencia} t={t} />
-        </>
-      ),
+      actions: <VentaLicenciaButtons licencia={licencia} t={t} />,
     }));
   }, [filteredData, t]);
   return (

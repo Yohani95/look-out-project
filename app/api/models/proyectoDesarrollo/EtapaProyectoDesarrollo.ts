@@ -1,3 +1,4 @@
+import { Constantes } from '@/app/api/models/common/Constantes';
 import * as Yup from 'yup';
 
 class EtapaProyectoDesarrollo {
@@ -54,6 +55,22 @@ class EtapaProyectoDesarrollo {
       label: this.nombre,
     };
   }
+  static Constantes = {
+    KICK_OFF: 1,
+    PREPARACION: 2,
+    LEVANTAMIENTO: 3,
+    DESARROLLO: 4,
+    QA_INTERNO: 5,
+    QA_CLIENTE: 6,
+    PASO_A_PRODUCCION: 7,
+    MARCHA_BLANCA: 8,
+    FINALIZADO: 9,
+    CANCELADO: 10,
+    BLOQUEADO: 11,
+    ARCHIVADO: 12,
+    SUSPENDIDO: 13,
+    GARANTIA: 14,
+  };
 }
 
 export default EtapaProyectoDesarrollo;

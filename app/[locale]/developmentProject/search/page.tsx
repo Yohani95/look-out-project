@@ -3,6 +3,7 @@ import BasePages from '@/app/[locale]/components/common/BasePages';
 import { getLocale } from 'next-intl/server';
 import ProyectoDesarrolloSearch from '../../components/proyectoDesarrollo/ProyectoDesarrolloSearch';
 import { getAllProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/ProyectoDesarrolloActions';
+import { getAllEtapaProyectoDesarrollo } from '@/app/actions/proyectoDesarrollo/EtapaProyectoDesarrolloActions';
 
 async function page() {
   const locale = await getLocale();
@@ -12,7 +13,11 @@ async function page() {
   const data = await GetData();
   return (
     <BasePages title={t.Common.project}>
-      <ProyectoDesarrolloSearch t={t} data={data.proyectos} />
+      <ProyectoDesarrolloSearch
+        t={t}
+        data={data.proyectos}
+        listaEtapa={data.etapas}
+      />
     </BasePages>
   );
 }
@@ -21,8 +26,10 @@ const GetData = async () => {
     // Obtén los proyectos directamente sin modificar su estructura
 
     const proyectos = await getAllProyectoDesarrollo();
+    const etapas = await getAllEtapaProyectoDesarrollo();
     return {
       proyectos,
+      etapas,
     };
   } catch (error) {
     console.error(
