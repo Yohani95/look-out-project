@@ -200,32 +200,33 @@ export const ReunionProspectoApiUrl = `${apiBaseUrl}/ReunionProspecto`;
 export const TipoContactoProspectoApiUrl = `${apiBaseUrl}/TipoContactoProspecto`;
 export const MedioLlamadaProspectoApiUrl = `${apiBaseUrl}/MedioLlamadaProspecto`;
 export const EstadoReunionProspectoApiUrl = `${apiBaseUrl}/EstadoReunionProspecto`;
+
+////////////////////////////////
+//proyecto desarrollo
 // URL de la entidad ProyectoDesarrollo
 export const ProyectoDesarrolloApiUrl = `${apiBaseUrl}/ProyectoDesarrollo`;
-
 // URL de la entidad EtapaProyectoDesarrollo
 export const EtapaProyectoDesarrolloApiUrl = `${apiBaseUrl}/EtapaProyectoDesarrollo`;
 // URL de la entidad EtapaPlanificacionProyectoDesarrollo
 export const EtapaPlanificacionProyectoDesarrolloApiUrl = `${apiBaseUrl}/EtapaPlanificacionProyectoDesarrollo`;
 // URL de la entidad TipoProyectoDesarrollo
 export const TipoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoProyectoDesarrollo`;
-
 // URL de la entidad EstadoProyectoDesarrollo
 export const EstadoProyectoDesarrolloApiUrl = `${apiBaseUrl}/EstadoProyectoDesarrollo`;
-
 // URL de la entidad HitoProyectoDesarrollo
 export const HitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/HitoProyectoDesarrollo`;
-
 export const TipoHitoProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoHitoProyectoDesarrollo`;
-
 export const NovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/NovedadesProyectoDesarrollo`;
-
 export const TipoNovedadProyectoDesarrolloApiUrl = `${apiBaseUrl}/TipoNovedadesProyectoDesarrollo`;
-
 export const PlanificacionProyectoDesarrolloApiUrl = `${apiBaseUrl}/PlanificacionProyectoDesarrollo`;
-
 //DocumentoProyectoDesarrolloApiUrl
 export const DocumentoProyectoDesarrolloApiUrl = `${apiBaseUrl}/DocumentoProyectoDesarrollo`;
+//RegistroHorasProyectoDesarrolloApiUrl
+export const RegistroHorasProyectoDesarrolloApiUrl = `${apiBaseUrl}/RegistroHorasProyectoDesarrollo`;
+//ProfesionalProyectoDesarrolloApiUrl
+export const ProfesionalProyectoDesarrolloApiUrl = `${apiBaseUrl}/ProfesionalesProyectoDesarrollo`;
+////////////////////////////////
+
 //funcionalidades de rol
 export const FuncionalidadApiUrl = `${apiBaseUrl}/Funcionalidad`;
 export const RolFuncionalidadApiUrl = `${apiBaseUrl}/RolFuncionalidad`;
