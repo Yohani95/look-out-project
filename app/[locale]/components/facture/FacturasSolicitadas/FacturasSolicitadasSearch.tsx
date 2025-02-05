@@ -9,9 +9,23 @@ import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import Soporte from '@/app/api/models/support/Soporte';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 import ProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/ProyectoDesarrollo';
+import MultiSelect from '../../common/MultiSelect';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
-function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
-  const columns = useMemo(() => FacturaPeriodo.createColumnsFacturas(t), [t]);
+function FacturasSolicitadasSearch({
+  t,
+  facturas,
+  monedas,
+  bancos,
+  listadoEstado,
+}) {
+  const [selectedFilters, setSelectedFilters] = useState([]); // Manejar selección múltiple
+  // Filtrar datos según los filtros seleccionados
+  const filteredData = useMemo(() => {
+    if (selectedFilters.length === 0) return facturas; // Si no hay filtros, mostrar todo
+    return facturas.filter((item) =>
+      selectedFilters.includes(item.idEstado.toString())
+    );
+  }, [facturas, selectedFilters]);
   const toggleObservaciones = (observaciones) => {
     setObservacionesModal(observaciones);
     setShowModal(!showModal);
@@ -19,7 +33,7 @@ function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
   const [showModal, setShowModal] = useState(false);
   const [observacionesModal, setObservacionesModal] = useState('');
   const memoizedFacturaActions = useMemo(() => {
-    return facturas.map((factura, index) => ({
+    return filteredData.map((factura, index) => ({
       ...FacturaPeriodo.transformFacturaPeriodoData(factura),
       _hito: factura?.periodo
         ? new PeriodosProyecto(factura.periodo).getPeriodoCompleto()
@@ -60,10 +74,18 @@ function FacturasSolicitadasSearch({ t, facturas, monedas, bancos }) {
         </div>
       ),
     }));
-  }, [facturas, t]);
+  }, [filteredData, t]);
 
   return (
     <>
+      {/* Filtro por estado */}
+      <MultiSelect
+        label={t.Common.status}
+        options={listadoEstado}
+        selectedValues={selectedFilters}
+        onChange={setSelectedFilters}
+        placeholder={t.Common.status}
+      />
       <MemoizedTableMaterialUI
         columns={FacturaPeriodo.createColumnsFacturas(t)}
         data={memoizedFacturaActions}

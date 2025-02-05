@@ -71,3 +71,12 @@ footer {
   padding: 20px 0;
   box-sizing: border-box;
 }
+.menu-item:hover {
+  background-color: #e5e7eb !important; /* Tailwind's gray-300 */
+  color: inherit !important; /* Mantén el color del texto */
+  transition: background-color 0.2s ease-in-out; /* Añade una transición suave */
+}
+.text-custom-blue {
+  color: #2f4bce !important;
+  font-weight: bold !important;
+}

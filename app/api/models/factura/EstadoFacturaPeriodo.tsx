@@ -1,26 +1,21 @@
-import { Constantes } from '@/app/api/models/common/Constantes';
 import * as Yup from 'yup';
 
-class EtapaProyectoDesarrollo {
+class EstadoFacturaPeriodo {
   id: number | null;
-  nombre: string | null;
+  nombre: string;
   descripcion: string | null;
 
   constructor(data?: any) {
     this.id = data?.id || null;
-    this.nombre = data?.nombre || null;
+    this.nombre = data?.nombre || '';
     this.descripcion = data?.descripcion || null;
   }
 
   static getValidationSchema(t: any) {
     return Yup.object().shape({
       id: Yup.number().nullable(),
-      nombre: Yup.string()
-        .required(t.ValidationMessages.required)
-        .max(200, t.ValidationMessages.maxLength),
-      descripcion: Yup.string()
-        .nullable()
-        .max(500, t.ValidationMessages.maxLength),
+      nombre: Yup.string().required(t.validationMessages.required),
+      descripcion: Yup.string().nullable(),
     });
   }
 
@@ -34,12 +29,12 @@ class EtapaProyectoDesarrollo {
       {
         accessorKey: 'nombre',
         header: 'Nombre',
-        size: 100,
+        size: 200,
       },
       {
         accessorKey: 'descripcion',
         header: 'Descripción',
-        size: 150,
+        size: 200,
       },
       {
         accessorKey: 'actions',
@@ -55,22 +50,6 @@ class EtapaProyectoDesarrollo {
       label: this.nombre,
     };
   }
-  static Constantes = {
-    KICK_OFF: 1,
-    PREPARACION: 2,
-    LEVANTAMIENTO: 3,
-    DESARROLLO: 4,
-    QA_INTERNO: 5,
-    QA_CLIENTE: 6,
-    PASO_A_PRODUCCION: 7,
-    MARCHA_BLANCA: 8,
-    FINALIZADO: 9,
-    CANCELADO: 10,
-    BLOQUEADO: 11,
-    ARCHIVADO: 12,
-    SUSPENDIDO: 13,
-    GARANTIA: 14,
-  };
 }
 
-export default EtapaProyectoDesarrollo;
+export default EstadoFacturaPeriodo;
