@@ -86,13 +86,13 @@ function ServiceEdit({ t, proyecto, data, files }) {
   return (
     <>
       <div className="d-flex justify-content-between align-items-center  mb-3 mt-2">
-        <h4>{`${t.Common.edit} ${t.business.title}`}</h4>
-        <div className="col-sm-2 text-end">
+        <h4>{``}</h4>
+        {/* <div className="col-sm-2 text-end">
           <h6>
             {t.Common.correlative} {t.business.title}{' '}
             {proyecto.pryId === 0 ? 'N/A' : proyecto.pryId}
           </h6>
-        </div>
+        </div> */}
       </div>
       <form
         onSubmit={(e) => {
@@ -138,22 +138,22 @@ function ServiceEdit({ t, proyecto, data, files }) {
           )}
         </div>
         <div className="d-flex justify-content-end mb-3">
-          <button type="submit" className="btn btn-primary m-2">
-            {t.Common.edit}
-          </button>
           <button
             disabled={false}
             type="button"
-            className="btn btn-danger m-2"
+            className="btn btn-secondary m-2"
             onClick={(e) => {
               router.back();
             }}
           >
             {t.Common.cancel}
           </button>
+          <button type="submit" className="btn btn-primary m-2">
+            {t.Common.edit}
+          </button>
         </div>
       </form>
-      <hr />
+      <hr className="mb-2" />
       <BoxInfo title={t.business.agreedRate} startShow={false}>
         <TarifarioCreate
           t={t}

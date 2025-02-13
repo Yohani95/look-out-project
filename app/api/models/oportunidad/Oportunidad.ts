@@ -1,3 +1,4 @@
+import { Moneda } from '@/app/api/models/world/Moneda';
 import * as Yup from 'yup';
 import { format } from 'date-fns';
 import Persona from '../admin/Persona';
@@ -24,6 +25,7 @@ class Oportunidad {
   idOrigen: number | null;
   idTipoLicencia: number | null;
   idTipoCerrada: number | null;
+  moneda: Moneda | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.nombre = data?.nombre || null;
@@ -49,6 +51,7 @@ class Oportunidad {
     this.idOrigen = data?.idOrigen || null;
     this.idTipoLicencia = data?.idTipoLicencia || null;
     this.idTipoCerrada = data?.idTipoCerrada || null;
+    this.moneda = data?.moneda || null;
   }
 
   static getValidationSchema(t) {
@@ -86,6 +89,11 @@ class Oportunidad {
         size: 100,
       },
       {
+        accessorKey: 'cliente.cliNombre',
+        header: 'Cliente',
+        size: 100,
+      },
+      {
         accessorKey: 'fechaCreacion',
         header: 'Fecha Creación',
         size: 50,
@@ -101,18 +109,8 @@ class Oportunidad {
         size: 50,
       },
       {
-        accessorKey: 'moneda.monNombre',
-        header: 'Moneda',
-        size: 50,
-      },
-      {
         accessorKey: 'estadoOportunidad.nombre',
         header: 'Estado Oportunidad',
-        size: 100,
-      },
-      {
-        accessorKey: 'cliente.cliNombre',
-        header: 'Cliente',
         size: 100,
       },
       {

@@ -29,7 +29,10 @@ async function page() {
     return new EmpresaPrestadora(empresa).getSelectOptions();
   });
   return (
-    <BasePages title={t.Nav.business.insertServices}>
+    <BasePages
+      title={`${t.Common.add} ${t.business.title}`}
+      description={t.business.descriptionCreate}
+    >
       <ServiceCreate data={data} t={t} />
     </BasePages>
   );

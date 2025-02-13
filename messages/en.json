@@ -354,7 +354,10 @@
     "beginningValidity": "Validity Start",
     "termValidity": "Validity Term",
     "historyContractedSupports": "History of Contracted Supports",
-    "typeSupport": "Support Type"
+    "typeSupport": "Support Type",
+    "description": "Here you can see the list of Businesses we work with and add new ones in a simple way to keep our network always updated.",
+    "descriptionCreate": "In this section you can add new businesses associated with company accounts. Complete the necessary information to keep a detailed record.",
+    "descriptionEdit": "In this section you can edit businesses associated with company accounts. Complete the necessary information to keep a detailed record."
   },
   "project": {
     "projectList": "Project List",
@@ -507,6 +510,7 @@
   },
   "Opportunity": {
     "opportunities": "Opportunities",
-    "opportunity": "Opportunity"
+    "opportunity": "Opportunity",
+    "description": "Here you can see the list of opportunities and easily add new ones."
   }
 }

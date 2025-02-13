@@ -71,7 +71,10 @@ async function page({ params }) {
 
   // Pasa solo datos JSON serializables
   return (
-    <BasePages title={t.business.title}>
+    <BasePages
+      title={`${t.Common.edit} ${t.business.title}`}
+      description={t.business.descriptionEdit}
+    >
       <ServiceEdit
         t={t}
         data={data}
