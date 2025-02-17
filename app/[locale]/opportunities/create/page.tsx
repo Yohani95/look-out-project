@@ -26,7 +26,10 @@ async function page() {
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   return (
-    <BasePages title={t.Opportunity.opportunity}>
+    <BasePages
+      title={t.Opportunity.opportunity}
+      description={t.Opportunity.descriptionCreate}
+    >
       <OportunidadCreate data={data} t={t} />
     </BasePages>
   );

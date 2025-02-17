@@ -6,7 +6,6 @@ import ProspectoSearch from '../../components/prospecto/ProspectoSearch';
 import { getAllEstadoProspecto } from '@/app/actions/prospecto/EstadoProspectoActions';
 async function page() {
   const locale = await getLocale();
-  console.log(locale);
   const t = require(`@/messages/${locale}.json`);
   const data = await getAllProspecto();
   const listadoEstado = await getAllEstadoProspecto();

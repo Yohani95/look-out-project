@@ -66,7 +66,7 @@ function OportunidadCreate({ t, data }) {
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-          <h4>{`${t.Common.create} ${t.Opportunity.opportunity}`}</h4>
+          <h6 className="text-[#2f4bce]  font-bold">Cuenta asociada</h6>
         </div>
         <OportunidadForm
           t={t}
@@ -76,17 +76,17 @@ function OportunidadCreate({ t, data }) {
           formik={formik}
         />
         <div className="d-flex justify-content-end mb-3">
-          <button type="submit" className="btn btn-primary m-2">
-            {t.Common.saveButton}
-          </button>
           <button
             type="button"
-            className="btn btn-danger m-2"
+            className="btn btn-secondary m-2"
             onClick={(e) => {
               router.back();
             }}
           >
             {t.Common.cancel}
+          </button>
+          <button type="submit" className="btn btn-primary m-2">
+            {t.Common.saveButton}
           </button>
         </div>
       </form>

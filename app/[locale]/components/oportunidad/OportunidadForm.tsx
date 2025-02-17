@@ -15,6 +15,10 @@ import { Form } from 'react-bootstrap';
 import { FormikProps } from 'formik';
 import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOportunidad';
 import EstadoOportunidad from '@/app/api/models/oportunidad/EstadoOportunidad';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 interface OportunidadFormProps {
   oportunidadModel: Oportunidad;
   setOportunidad: React.Dispatch<React.SetStateAction<any>>;
@@ -34,6 +38,7 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
   const [statusTipo, setStatusTipo] = useState(false);
   const [statusTipoCerrada, setStatusTipoCerrada] = useState(false);
   const { data: session, status } = useSession();
+  const [showKamSelect, setShowKamSelect] = useState(!!data.personasKam);
   const user = session?.user as Usuario;
   useEffect(() => {
     fetchPersonGetbyIdClient(oportunidadModel.idCliente).then((person) => {
@@ -71,265 +76,258 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
   }, [oportunidadModel.idEstadoOportunidad]);
   return (
     <>
-      <div className="mb-3 row align-items-center">
-        {data.personasKam ? (
-          <SelectField
-            label="KAM"
-            options={data.personasKam}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-3"
-            onChange={(e) => handleSelectChange(e, 'idKam', setOportunidad)}
-            selectedValue={oportunidadModel.idKam}
-          />
-        ) : (
-          <>
-            <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
-            <div className="col-sm-3">
-              <input
-                type="hidden"
-                name="idKam"
-                id="idKam"
-                value={oportunidadModel.idKam || (user?.persona.id ?? '')}
-                onChange={handleInputChange(oportunidadModel, setOportunidad)}
-              />
-              <span className="form-control">
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {showKamSelect ? (
+            <>
+              <div>
+                <Label htmlFor="kamId">KAM</Label>
+                <SelectField
+                  label=""
+                  options={data.personasKam}
+                  preOption={t.Account.select}
+                  onChange={(e) =>
+                    handleSelectChange(e, 'idKam', setOportunidad)
+                  }
+                  selectedValue={oportunidadModel.idKam}
+                />
+              </div>
+            </>
+          ) : (
+            <div>
+              <Label>KAM</Label>
+              <span className="border p-2 rounded-md block bg-gray-100">
                 {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
               </span>
             </div>
-          </>
-        )}
-
-        <label className="col-sm-2 col-form-label">
-          {t.Ficha.table.business.dateEnd}
-        </label>
-        <div className="col-sm-3">
-          <MyDatePicker
-            selectedDate={oportunidadModel.fechaCierre}
-            onChange={(date) =>
-              setOportunidad({ ...oportunidadModel, fechaCierre: date })
-            }
-            title={t.Common.date}
-          />
+          )}
         </div>
-        <SelectField
-          label={t.Account.country}
-          options={data.paises}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'idPais', setOportunidad)}
-          selectedValue={oportunidadModel.idPais}
-        />
-      </div>
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={t.Account.name}
-          options={data.clientes}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'idCliente', setOportunidad)}
-          selectedValue={oportunidadModel.idCliente}
-        />
-        {/* <div className="col-sm-2">
-                    <button type="button" className="badge btn btn-primary">
-                        {t.Common.request} (+){" "}
-                    </button>
-                </div> */}
-        <label htmlFor="nombre" className="col-sm-1 col-form-label">
-          {t.Account.business_name}
-        </label>
-        <div className="col-sm-5">
-          <input
-            type="text"
-            className="form-control"
-            id="nombre"
-            name="nombre"
-            value={oportunidadModel.nombre}
-            onChange={handleInputChange(oportunidadModel, setOportunidad)}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <Label htmlFor="nombre">{t.Account.business_name}</Label>
+            <Input
+              type="text"
+              className="form-control"
+              id="nombre"
+              name="nombre"
+              value={oportunidadModel.nombre}
+              onChange={handleInputChange(oportunidadModel, setOportunidad)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idCliente">{t.Account.name}</Label>
+            <SelectField
+              label={''}
+              options={data.clientes}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idCliente', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idCliente}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idContacto">{t.Account.contact}</Label>
+            <SelectField
+              label={t.Common.contact}
+              options={contactOptions}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idContacto', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idContacto}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idTipoOportunidad">{`${t.Account.type} ${t.Opportunity.opportunity}`}</Label>
+            <SelectField
+              label={``}
+              options={data.tipoOportunidad}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idTipoOportunidad', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idTipoOportunidad}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idOrigen">{`Origen`}</Label>
+            <SelectField
+              label={``}
+              options={data.origenOportunidad}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idOrigen', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idOrigen}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <Label htmlFor="idLicitacion">{`Licitacion`}</Label>
+            <SelectField
+              label={``}
+              options={data.licitacionOportunidad}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idLicitacion', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idLicitacion}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idEmpresaPrestadora">
+              {t.Common.lendingCompany}
+            </Label>
+            <SelectField
+              label={''}
+              options={data.empresaPrestadora}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idEmpresaPrestadora', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idEmpresaPrestadora}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idAreaServicio">{`area Servicio`}</Label>
+            <SelectField
+              label={``}
+              options={data.areaServicio}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idAreaServicio', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idAreaServicio}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idEstadoOportunidad">{t.Common.status}</Label>
+            <SelectField
+              label={``}
+              options={data.estadoOportunidad}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idEstadoOportunidad', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idEstadoOportunidad}
+            />
+          </div>
+          <div>
+            {statusTipoCerrada && (
+              <>
+                <Label htmlFor="idTipoCerrada">{t.Common.closed}</Label>
+                <SelectField
+                  label={``}
+                  options={data.tipoCerrada}
+                  preOption={t.Account.select}
+                  onChange={(e) =>
+                    handleSelectChange(e, 'idTipoCerrada', setOportunidad)
+                  }
+                  selectedValue={oportunidadModel.idTipoCerrada}
+                />
+              </>
+            )}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            {statusTipo && (
+              <>
+                <Label htmlFor="idTipoLicencia">{t.Common.license}</Label>
+                <SelectField
+                  label={``}
+                  options={data.tipoLicencia}
+                  preOption={t.Account.select}
+                  onChange={(e) =>
+                    handleSelectChange(e, 'idTipoLicencia', setOportunidad)
+                  }
+                  selectedValue={oportunidadModel.idTipoLicencia}
+                />
+              </>
+            )}
+          </div>
+        </div>
+        <h6 className="text-[#2f4bce]  font-bold">{t.Common.date}</h6>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <Switch
+              id="renovable"
+              className="custom-switch"
+              checked={oportunidadModel.renovable ?? false}
+              onCheckedChange={(value) =>
+                setOportunidad({
+                  ...oportunidadModel,
+                  renovable: value,
+                })
+              }
+            />
+            <Label className="ml-2" htmlFor="renovable">
+              Renovable?
+            </Label>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <Label htmlFor="fechaCierre">
+              {t.Ficha.table.business.dateEnd}
+            </Label>
+            <MyDatePicker
+              selectedDate={oportunidadModel.fechaCierre}
+              onChange={(date) =>
+                setOportunidad({ ...oportunidadModel, fechaCierre: date })
+              }
+              title={''}
+            />
+          </div>
+        </div>
+        <h6 className="text-[#2f4bce]  font-bold">{t.Common.amount}</h6>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label htmlFor="monto">Monto</Label>
+            <Input
+              type="number"
+              className="form-control"
+              id="monto"
+              name="monto"
+              value={oportunidadModel.monto ?? ''}
+              onChange={handleInputChange(oportunidadModel, setOportunidad)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="fechaCierre">
+              {`${t.Ficha.type} ${t.Common.currency}`}
+            </Label>
+            <SelectField
+              label=""
+              options={data.monedas}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idMoneda', setOportunidad)
+              }
+              selectedValue={oportunidadModel.idMoneda}
+            />
+          </div>
+        </div>
+        <div className="grid w-full gap-1.5">
+          <div>
+            <Label htmlFor="descripcion">{t.Common.description}</Label>
+            <Textarea
+              id="descripcion"
+              rows={6}
+              value={oportunidadModel.descripcion || ''}
+              onChange={handleInputChange(oportunidadModel, setOportunidad)}
+              className="w-full"
+            />
+            {formik?.touched?.descripcion && formik.errors.descripcion && (
+              <p className="text-red-500 text-sm">
+                {formik.errors.descripcion}
+              </p>
+            )}
+          </div>
         </div>
       </div>
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={t.Common.contact}
-          options={contactOptions}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'idContacto', setOportunidad)}
-          selectedValue={oportunidadModel.idContacto}
-        />
-        <SelectField
-          label={`${t.Account.type} ${t.Opportunity.opportunity}`}
-          options={data.tipoOportunidad}
-          preOption={t.Account.select}
-          labelClassName="col-sm-2 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) =>
-            handleSelectChange(e, 'idTipoOportunidad', setOportunidad)
-          }
-          selectedValue={oportunidadModel.idTipoOportunidad}
-        />
-        {statusTipo && (
-          <SelectField
-            label={`Licencias`}
-            options={data.tipoLicencia}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-2"
-            onChange={(e) =>
-              handleSelectChange(e, 'idTipoLicencia', setOportunidad)
-            }
-            selectedValue={oportunidadModel.idTipoLicencia}
-          />
-        )}
-      </div>
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={`Origen`}
-          options={data.origenOportunidad}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'idOrigen', setOportunidad)}
-          selectedValue={oportunidadModel.idOrigen}
-        />
-        <SelectField
-          label={`Licitacion`}
-          options={data.licitacionOportunidad}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) =>
-            handleSelectChange(e, 'idLicitacion', setOportunidad)
-          }
-          selectedValue={oportunidadModel.idLicitacion}
-        />
-      </div>
-      <div className="mb-3 row align-items-center">
-        <label htmlFor="renovable" className="col-sm-1 col-form-label">
-          Renovable ?
-        </label>
-        <div className="col-sm-1 form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="renovable"
-            name="renovable"
-            checked={oportunidadModel.renovable ?? false}
-            onChange={(e) =>
-              setOportunidad({
-                ...oportunidadModel,
-                renovable: e.target.checked,
-              })
-            }
-          />
-        </div>
-        <fieldset
-          className="col-sm-2"
-          disabled={!(oportunidadModel.renovable ?? false)}
-        >
-          <MyDatePicker
-            selectedDate={oportunidadModel.fechaRenovacion}
-            onChange={(date) =>
-              setOportunidad({ ...oportunidadModel, fechaRenovacion: date })
-            }
-            title={t.Common.date}
-          />
-        </fieldset>
-        <SelectField
-          label={'Empresa Prestadora'}
-          options={data.empresaPrestadora}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) =>
-            handleSelectChange(e, 'idEmpresaPrestadora', setOportunidad)
-          }
-          selectedValue={oportunidadModel.idEmpresaPrestadora}
-        />
-        <SelectField
-          label={`area Servicio`}
-          options={data.areaServicio}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) =>
-            handleSelectChange(e, 'idAreaServicio', setOportunidad)
-          }
-          selectedValue={oportunidadModel.idAreaServicio}
-        />
-      </div>
-      <div className="mb-3 row align-items-center">
-        <SelectField
-          label={`${t.Ficha.type} ${t.Common.currency}`}
-          options={data.monedas}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'idMoneda', setOportunidad)}
-          selectedValue={oportunidadModel.idMoneda}
-        />
-        <label htmlFor="monto" className="col-sm-1 col-form-label">
-          Monto
-        </label>
-        <div className="col-sm-2">
-          <input
-            type="number"
-            className="form-control"
-            id="monto"
-            name="monto"
-            value={oportunidadModel.monto ?? ''}
-            onChange={handleInputChange(oportunidadModel, setOportunidad)}
-          />
-        </div>
-      </div>
-      <hr />
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={`Estado`}
-          options={data.estadoOportunidad}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) =>
-            handleSelectChange(e, 'idEstadoOportunidad', setOportunidad)
-          }
-          selectedValue={oportunidadModel.idEstadoOportunidad}
-        />
-        {statusTipoCerrada && (
-          <SelectField
-            label={`Tipo Cerrada`}
-            options={data.tipoCerrada}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-3"
-            onChange={(e) =>
-              handleSelectChange(e, 'idTipoCerrada', setOportunidad)
-            }
-            selectedValue={oportunidadModel.idTipoCerrada}
-          />
-        )}
-      </div>
-      <hr />
-      <Form.Group controlId="descripcion" className="mb-3">
-        <Form.Label>{t.Common.description}</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={6}
-          name="descripcion"
-          value={oportunidadModel.descripcion || ''}
-          onChange={handleInputChange(oportunidadModel, setOportunidad)}
-          isInvalid={
-            formik?.touched?.descripcion && !!formik.errors.descripcion
-          }
-        />
-        <Form.Control.Feedback type="invalid">
-          {formik.errors.descripcion}
-        </Form.Control.Feedback>
-      </Form.Group>
     </>
   );
 };

@@ -80,3 +80,29 @@ footer {
   color: #2f4bce !important;
   font-weight: bold !important;
 }
+.custom-switch {
+  width: 40px !important;
+  height: 20px !important;
+  background-color: #e5e7eb !important;
+  border-radius: 9999px !important;
+  position: relative !important;
+  transition: background-color 0.3s !important;
+}
+.custom-switch[data-state='checked'] {
+  background-color: #2f4bce !important;
+}
+.custom-switch::before {
+  content: '' !important;
+  width: 16px !important;
+  height: 16px !important;
+  background-color: white !important;
+  border-radius: 50% !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 2px !important;
+  transform: translateY(-50%) !important;
+  transition: transform 0.3s !important;
+}
+.custom-switch[data-state='checked']::before {
+  transform: translate(20px, -50%) !important;
+}

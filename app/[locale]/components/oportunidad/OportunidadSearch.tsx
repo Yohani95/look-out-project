@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import TableMaterialUI from '@/app/[locale]/components/common/TablaMaterialUi';
 import Oportunidad from '@/app/api/models/oportunidad/Oportunidad';
@@ -9,6 +9,18 @@ import MultiSelect from '../common/MultiSelect';
 import EstadoOportunidad from '@/app/api/models/oportunidad/EstadoOportunidad';
 
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
+const usePersistedState = (key, initialValue) => {
+  const [state, setState] = useState(() => {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+
+  return [state, setState];
+};
 
 function OportunidadSearch({ t, data, listaestados }) {
   // Construir los filtros preseleccionados excluyendo "CERRADA_PERDIDA" y "CERRADA_GANADA"
@@ -21,7 +33,10 @@ function OportunidadSearch({ t, data, listaestados }) {
     )
     .map(String); // Convertir a cadenas
 
-  const [selectedFilters, setSelectedFilters] = useState(preselectedFilters); // Inicializar con los filtros preseleccionados
+  const [selectedFilters, setSelectedFilters] = usePersistedState(
+    'selectedOportunidadFilters',
+    preselectedFilters
+  ); // Inicializar con los filtros preseleccionados
 
   // Filtrar datos según los filtros seleccionados
   const filteredData = useMemo(() => {

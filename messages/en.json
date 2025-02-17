@@ -1,5 +1,6 @@
 {
   "Common": {
+    "lendingCompany": "Lending Company",
     "milestoneAccomplished": "Milestone Accomplished",
     "finish": "Finish",
     "continue": "Continue",
@@ -511,6 +512,8 @@
   "Opportunity": {
     "opportunities": "Opportunities",
     "opportunity": "Opportunity",
-    "description": "Here you can see the list of opportunities and easily add new ones."
+    "description": "Here you can see the list of opportunities and easily add new ones.",
+    "descriptionCreate": "In this section you can add new opportunities associated with company accounts. Complete the necessary information to keep a detailed record.",
+    "descriptionEdit": "In this section you can edit opportunities associated with company accounts. Complete the necessary information to keep a detailed record."
   }
 }

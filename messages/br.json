@@ -1,5 +1,6 @@
 {
   "Common": {
+    "lendingCompany": "Empresa de empréstimo",
     "milestoneAccomplished": "Marco alcançado",
     "finish": "Terminar",
     "continue": "Continuar",
@@ -512,6 +513,8 @@
   "Opportunity": {
     "opportunities": "Oportunidades",
     "opportunity": "Oportunidade",
-    "description": "Aquí podrás ver el listado de las oportunidades y agregar nuevas de forma sencilla."
+    "description": "Aqui você pode ver a lista de oportunidades e facilmente adicionar novas.",
+    "descriptionCreate": "Nesta seção você pode adicionar novas oportunidades associadas às contas da empresa. Preencha as informações necessárias para manter um registro detalhado.",
+    "descriptionEdit": "Nesta seção você pode editar oportunidades associadas a contas empresariais. Preencha as informações necessárias para manter um registro detalhado e organizar oportunidades de negócios."
   }
 }

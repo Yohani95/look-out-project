@@ -6,7 +6,7 @@ function layout({ params, children }) {
   const t = useTranslations('Opportunity');
   return (
     <>
-      <BasePages title={t('opportunity')}>
+      <BasePages title={t('opportunity')} description={t('descriptionEdit')}>
         <UnderLineNav id={params.id} />
         <div>{children}</div>
       </BasePages>
