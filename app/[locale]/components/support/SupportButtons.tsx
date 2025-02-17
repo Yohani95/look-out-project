@@ -84,65 +84,6 @@ function SupportButtons({ t, proyecto }) {
           <DropdownMenuSeparator />
         </DropdownMenuContent>
       </DropdownMenu>
-
-      {/* <Button
-        size="sm"
-        variant="link"
-        onClick={() => {
-          router.push(`/business/Support/contract/addHour/${proyecto.pryId}`);
-        }}
-      >
-        <FaRegClock size={16} id={`add-hour-tooltip-${proyecto.pryId}`} />
-        <Tooltip
-          anchorSelect={`#add-hour-tooltip-${proyecto.pryId}`}
-          place="top"
-        >
-          {t?.Common.add} {t?.Common.hour}
-        </Tooltip>
-      </Button> */}
-
-      {/* <Button
-        size="sm"
-        variant="link"
-        onClick={() => handleEdit(proyecto.pryId, t, router.push)}
-      >
-        <FaEdit size={16} id={`edit-tooltip-${proyecto.pryId}`} />
-        <Tooltip anchorSelect={`#edit-tooltip-${proyecto.pryId}`} place="top">
-          {t?.Common.edit}
-        </Tooltip>
-      </Button> */}
-
-      {/* {proyecto.idTipoSoporte == Constantes.TipoSorpote.BOLSA && (
-        <Button
-          size="sm"
-          variant="link"
-          onClick={() => {
-            router.push(`/facture/createBagSupport/${proyecto.pryId}`);
-          }}
-        >
-          <FaFileInvoiceDollar
-            size={16}
-            id={`billing-tooltip-${proyecto.pryId}`}
-          />
-          <Tooltip
-            anchorSelect={`#billing-tooltip-${proyecto.pryId}`}
-            place="top"
-          >
-            {t?.Nav.facture.requestBilling}
-          </Tooltip>
-        </Button>
-      )} */}
-
-      {/* <Button size="sm" variant="link">
-    <FaFileDownload size={16} className="my-anchor-documento"/>
-    <Tooltip anchorSelect=".my-anchor-documento" place="top">
-      {t?.Common.downloadFile} 
-    </Tooltip>
-  </Button> */}
-
-      {/* <Button size="sm" variant="link">
-        <FaTrash size={16} />
-      </Button> */}
     </>
   );
 }

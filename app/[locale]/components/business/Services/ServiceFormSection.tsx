@@ -11,6 +11,8 @@ import { addMonths, set } from 'date-fns';
 import { Button } from 'react-bootstrap';
 import { FaFileDownload } from 'react-icons/fa';
 import { Usuario } from '@/app/api/models/admin/Usuario';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 function ServiceFormSection({
   proyectoModel,
   setProyecto,
@@ -23,6 +25,7 @@ function ServiceFormSection({
   const [contactOptions, setContactOptions] = useState([]);
   const fileInputRefs = [useRef(null), useRef(null)];
   const { data: session, status } = useSession();
+  const [showKamSelect, setShowKamSelect] = useState(!!data.personasKam);
   const user = session?.user as Usuario;
   const openFileDialog = (index) => {
     fileInputRefs[index].current.click();
@@ -93,217 +96,168 @@ function ServiceFormSection({
 
   return (
     <>
-      <div className="mb-3 row align-items-center">
-        {data.personasKam ? (
-          <SelectField
-            label="KAM"
-            options={data.personasKam}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-3"
-            onChange={(e) => handleSelectChange(e, 'kamId', setProyecto)}
-            selectedValue={proyectoModel.kamId}
-          />
-        ) : (
-          <>
-            <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
-            <div className="col-sm-3">
-              <input
-                type="hidden"
-                name="kamId"
-                id="kamId"
-                value={proyectoModel.idKam || (user?.persona.id ?? '')}
-                onChange={handleInputChange(proyectoModel, setProyecto)}
-              />
-              <span className="form-control">
+      <div className="space-y-6">
+        <h4 className="text-[#2f4bce] text-xl font-bold">Cuenta asociada</h4>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {showKamSelect ? (
+            <>
+              <div>
+                <Label htmlFor="kamId">KAM</Label>
+                <SelectField
+                  label=""
+                  options={data.personasKam}
+                  preOption={t.Account.select}
+                  onChange={(e) => handleSelectChange(e, 'kamId', setProyecto)}
+                  selectedValue={proyectoModel.kamId}
+                />
+              </div>
+            </>
+          ) : (
+            <div>
+              <Label>KAM</Label>
+              <span className="border p-2 rounded-md block bg-gray-100">
                 {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
               </span>
             </div>
-          </>
-        )}
-        <label className="col-sm-2 col-form-label">
-          {t.Ficha.table.business.dateEnd}
-        </label>
-        <div className="col-sm-3">
-          <MyDatePicker
-            selectedDate={proyectoModel.pryFechaCierre}
-            onChange={(date) =>
-              setProyecto({ ...proyectoModel, pryFechaCierre: date })
-            }
-            title={t.Common.date}
-          />
+          )}
         </div>
-        <SelectField
-          label={t.Account.country}
-          options={data.paises}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'paisId', setProyecto)}
-          selectedValue={proyectoModel.paisId}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label htmlFor="pryNombre">{t.Account.business_name}</Label>
+            <Input
+              type="text"
+              className="form-control"
+              id="pryNombre"
+              name="pryNombre"
+              value={proyectoModel.pryNombre}
+              onChange={handleInputChange(proyectoModel, setProyecto)}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="pryIdCliente">{t.Account.name}</Label>
+            <SelectField
+              label=""
+              options={data.clientes}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'pryIdCliente', setProyecto)
+              }
+              selectedValue={proyectoModel.pryIdCliente}
+            />
+          </div>
+          <div>
+            <Label htmlFor="paisId">{t.Account.country}</Label>
+            <SelectField
+              label=""
+              options={data.paises}
+              preOption={t.Account.select}
+              onChange={(e) => handleSelectChange(e, 'paisId', setProyecto)}
+              selectedValue={proyectoModel.paisId}
+            />
+          </div>
+          <div>
+            <Label htmlFor="pryIdContacto">{t.Common.contact}</Label>
+            <SelectField
+              label=""
+              options={contactOptions}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'pryIdContacto', setProyecto)
+              }
+              selectedValue={proyectoModel.pryIdContacto}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+          <div>
+            <Label htmlFor="tseId">{`${t.Account.type} ${t.Account.business}`}</Label>
+            <SelectField
+              label={``}
+              options={data.tipoServicios}
+              preOption={t.Account.select}
+              onChange={(e) => handleSelectChange(e, 'tseId', setProyecto)}
+              selectedValue={proyectoModel.tseId}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idEmpresaPrestadora">{'Empresa Prestadora'}</Label>
+            <SelectField
+              label=""
+              options={data.empresaPrestadora}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idEmpresaPrestadora', setProyecto)
+              }
+              selectedValue={proyectoModel.idEmpresaPrestadora}
+            />
+          </div>
+        </div>
       </div>
-
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={t.Account.name}
-          options={data.clientes}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'pryIdCliente', setProyecto)}
-          selectedValue={proyectoModel.pryIdCliente}
-        />
-        <div className="col-sm-2">
-          <button type="button" className="badge btn btn-primary">
-            {t.Common.request} (+){' '}
-          </button>
-        </div>
-        <label htmlFor="pryNombre" className="col-sm-1 col-form-label">
-          {t.Account.business_name}
-        </label>
-        <div className="col-sm-5">
-          <input
-            type="text"
-            className="form-control"
-            id="pryNombre"
-            name="pryNombre"
-            value={proyectoModel.pryNombre}
-            onChange={handleInputChange(proyectoModel, setProyecto)}
-          />
-        </div>
-      </div>
-
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={t.Common.contact}
-          options={contactOptions}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'pryIdContacto', setProyecto)}
-          isRequired={false}
-          selectedValue={proyectoModel.pryIdContacto}
-        />
-        <div className="col-sm-2">
-          <button
-            type="button"
-            className="badge btn btn-primary"
-            //onClick={goContactCreate}
-          >
-            {t.Common.add} (+)
-          </button>
-        </div>
-        <SelectField
-          label={`${t.Account.type} ${t.Account.business}`}
-          options={data.tipoServicios}
-          preOption={t.Account.select}
-          // className="my-contacto"
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'tseId', setProyecto)}
-          selectedValue={proyectoModel.tseId}
-        />
-      </div>
-
-      <div>
-        <div className="mb-3 row align-items-center">
-          <label htmlFor="confirmclient" className="col-sm-1 col-form-label">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+        <div>
+          <Label htmlFor="confirmclient">
             {t.Common.confirm} {t.Common.client}
-          </label>
-          <div className="col-sm-3">
-            <input
-              type="text"
-              className="form-control"
-              id="confirmclient"
-              value={formData.file1 ? formData.file1.name : 'N/A'}
-              readOnly
-              onClick={() => openFileDialog(0)} // Abre el cuadro de diálogo del primer archivo
-              accept=".pdf, .jpg, .jpeg, .png"
-              disabled
-            />
-            <input
-              type="file"
-              ref={fileInputRefs[0]}
-              id="file1"
-              name="file1"
-              onChange={(event) => handleFileChange(event, 0)} // Maneja el primer archivo
-              style={{ display: 'none' }}
-            />
-          </div>
-          <div className="col-sm-2">
-            <button
-              type="button"
-              className="badge btn btn-success"
-              onClick={() => openFileDialog(0)}
+          </Label>
+          {/* <Input
+            id="confirmclient"
+            value={formData.file1 ? formData.file1.name : 'N/A'}
+            readOnly
+            onClick={() => openFileDialog(0)}
+            className="cursor-pointer"
+          /> */}
+          <input
+            type="file"
+            className="form-control"
+            ref={fileInputRefs[0]}
+            id="file1"
+            name="file1"
+            onChange={(event) => handleFileChange(event, 0)}
+          />
+          {/* <Button variant="outline" onClick={() => openFileDialog(0)}>
+            {t.Common.uploadFile}
+          </Button> */}
+          {formData.file1 && (
+            <a
+              href={URL.createObjectURL(formData.file1)}
+              download={formData.file1.name}
+              className="text-primary flex items-center"
             >
-              {t.Common.uploadFile}
-            </button>
-            {formData.file1 && (
-              <>
-                <a
-                  className="btn btn-link"
-                  href={URL.createObjectURL(formData.file1)}
-                  download={formData.file1.name}
-                >
-                  <span>{t.Common.downloadFile}</span>
-                  <FaFileDownload size={18} className="link" />
-                </a>
-              </>
-            )}
-          </div>
-          <label htmlFor="proposal" className="col-sm-1 col-form-label">
+              <FaFileDownload size={18} className="mr-1" />
+              {t.Common.downloadFile} {formData.file1.name}
+            </a>
+          )}
+        </div>
+        <div>
+          <Label htmlFor="proposal">
             {t.Common.proposal} {t.Common.accepted}
-          </label>
-          <div className="col-sm-3">
-            <input
-              type="text"
-              className="form-control"
-              id="proposal"
-              value={formData.file2 ? formData.file2.name : 'N/A'}
-              readOnly
-              onClick={() => openFileDialog(1)} // Abre el cuadro de diálogo del segundo archivo
-              accept=".pdf, .jpg, .jpeg, .png"
-              disabled
-            />
-            <input
-              type="file"
-              ref={fileInputRefs[1]}
-              id="file2"
-              name="file2"
-              onChange={(event) => handleFileChange(event, 1)} // Maneja el segundo archivo
-              style={{ display: 'none' }}
-            />
-          </div>
-          <div className="col-sm-2">
-            <button
-              type="button"
-              className="badge btn btn-success"
-              onClick={() => openFileDialog(1)}
+          </Label>
+          <input
+            type="file"
+            ref={fileInputRefs[1]}
+            id="file2"
+            name="file2"
+            onChange={(event) => handleFileChange(event, 1)}
+            className="form-control"
+          />
+          {formData.file2 && (
+            <a
+              href={URL.createObjectURL(formData.file2)}
+              download={formData.file2.name}
+              className="text-primary flex items-center"
             >
-              {t.Common.uploadFile}
-            </button>
-            {formData.file2 && (
-              <>
-                <a
-                  className="btn btn-link"
-                  href={URL.createObjectURL(formData.file2)}
-                  download={formData.file2.name}
-                >
-                  <span>{t.Common.downloadFile}</span>
-                  <FaFileDownload size={18} className="link" />
-                </a>
-              </>
-            )}
-          </div>
+              <FaFileDownload size={18} className="mr-1" />{' '}
+              {t.Common.downloadFile} {formData.file2.name}
+            </a>
+          )}
         </div>
       </div>
-      <hr />
-      <div className="mb-3 row align-items-center">
-        <label className="col-sm-1 col-form-label">
-          {t.business.estimatedStartDate}
-        </label>
-        <div className="col-sm-2">
+      <h4 className="text-[#2f4bce] text-xl font-bold">{t.Common.date}</h4>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+        <div>
+          <Label htmlFor="pryFechaInicioEstimada">
+            {t.business.estimatedStartDate}
+          </Label>
           <MyDatePicker
             selectedDate={proyectoModel.pryFechaInicioEstimada}
             onChange={(date) =>
@@ -312,14 +266,44 @@ function ServiceFormSection({
                 pryFechaInicioEstimada: date,
               })
             }
-            title={t.Common.date}
+            title={''}
           />
         </div>
-        <label htmlFor="months" className="col-sm-1 col-form-label">
-          {t.business.estimatedTerm}
-        </label>
-        <div className="col-sm-2">
-          <input
+        <div>
+          <Label htmlFor="pryFechaCierre">
+            {t.Ficha.table.business.dateEnd}
+          </Label>
+          <MyDatePicker
+            selectedDate={proyectoModel.pryFechaCierre}
+            onChange={(date) =>
+              setProyecto({ ...proyectoModel, pryFechaCierre: date })
+            }
+            title={''}
+          />
+        </div>
+        <div>
+          <Label htmlFor="pryFechaCierreEstimada">
+            {t.business.estimatedClosingDate}
+          </Label>
+
+          <MyDatePicker
+            selectedDate={proyectoModel.pryFechaCierreEstimada}
+            onChange={(date) =>
+              setProyecto({
+                ...proyectoModel,
+                pryFechaCierreEstimada: date,
+              })
+            }
+            isRead={true}
+            title={''}
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+        <div>
+          <Label htmlFor="months">{t.business.estimatedTerm}</Label>
+
+          <Input
             type="number"
             className="form-control"
             id="months"
@@ -330,88 +314,63 @@ function ServiceFormSection({
             onChange={handleInputChange(proyectoModel, setProyecto)}
           />
         </div>
-        <label className="col-sm-2 col-form-label">
-          {t.business.estimatedClosingDate}
-        </label>
-        <div className="col-sm-2">
-          <MyDatePicker
-            selectedDate={proyectoModel.pryFechaCierreEstimada}
-            onChange={(date) =>
-              setProyecto({
-                ...proyectoModel,
-                pryFechaCierreEstimada: date,
-              })
-            }
-            isRead={true}
-            title={t.Common.date}
+        <div>
+          <Label htmlFor="fechaCorte">{t.project.datecut}</Label>
+          <SelectField
+            label={''}
+            options={daysArray}
+            preOption={t.Account.select}
+            onChange={(e) => handleSelectChange(e, 'fechaCorte', setProyecto)}
+            selectedValue={proyectoModel.fechaCorte}
+          />
+        </div>
+        <div>
+          <Label htmlFor="idDiaPago">{t.Common.payday}</Label>
+          <SelectField
+            label={''}
+            options={data.diaPagos}
+            preOption={t.Account.select}
+            onChange={(e) => handleSelectChange(e, 'idDiaPago', setProyecto)}
+            selectedValue={proyectoModel.idDiaPago}
           />
         </div>
       </div>
-      <div className="mb-3 row align-items-center">
-        <SelectField
-          label={t.project.datecut}
-          options={daysArray}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'fechaCorte', setProyecto)}
-          selectedValue={proyectoModel.fechaCorte}
-        />
-        <SelectField
-          label={`${t.Ficha.type} ${t.Common.currency}`}
-          options={data.monedas}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'monId', setProyecto)}
-          selectedValue={proyectoModel.monId}
-        />
-        <SelectField
-          label={`${t.Ficha.type} ${t.Nav.facture.billing}`}
-          options={data.tiposFacturas}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) =>
-            handleSelectChange(e, 'idTipoFacturacion', setProyecto)
-          }
-          selectedValue={proyectoModel.idTipoFacturacion}
-        />
-        <label className="form-check-label col-sm-2" htmlFor="exampleCheck1">
-          {t.Common.billingType}
-        </label>
-        <div className="col-sm-1 form-check">
-          <input
+
+      <h4 className="text-[#2f4bce] text-xl font-bold">{t.Common.amount}</h4>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+        <div className="flex items-center space-x-2">
+          <Input
             type="checkbox"
-            className="form-check-input"
             id="facturacionDiaHabil"
             name="facturacionDiaHabil"
             checked={proyectoModel.facturacionDiaHabil === 1}
             onChange={handleCheckboxChange}
+            className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+          />
+          <Label htmlFor="facturacionDiaHabil">{t.Common.billingType}</Label>
+        </div>
+        <div>
+          <Label htmlFor="monId">{`${t.Ficha.type} ${t.Common.currency}`}</Label>
+          <SelectField
+            label=""
+            options={data.monedas}
+            preOption={t.Account.select}
+            onChange={(e) => handleSelectChange(e, 'monId', setProyecto)}
+            selectedValue={proyectoModel.monId}
           />
         </div>
-      </div>
-      <div className="mb-3 row align-items-center">
-        <SelectField
-          label={t.Common.payday}
-          options={data.diaPagos}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'idDiaPago', setProyecto)}
-          selectedValue={proyectoModel.idDiaPago}
-        />
-        <SelectField
-          label={'Empresa Prestadora'}
-          options={data.empresaPrestadora}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) =>
-            handleSelectChange(e, 'idEmpresaPrestadora', setProyecto)
-          }
-          selectedValue={proyectoModel.idEmpresaPrestadora}
-        />
+        <div>
+          <Label htmlFor="idTipoFacturacion">{`${t.Ficha.type} ${t.Nav.facture.billing}`}</Label>
+          <SelectField
+            label=""
+            options={data.tiposFacturas}
+            preOption={t.Account.select}
+            onChange={(e) =>
+              handleSelectChange(e, 'idTipoFacturacion', setProyecto)
+            }
+            selectedValue={proyectoModel.idTipoFacturacion}
+          />
+        </div>
       </div>
     </>
   );

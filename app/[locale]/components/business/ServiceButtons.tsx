@@ -6,40 +6,52 @@ import {
   FaFileDownload,
   FaUserPlus,
 } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
-import { Tooltip } from 'react-tooltip';
+import { useRouter } from 'next/navigation';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { MoreVertical } from 'lucide-react';
+
 function ServiceButtons({ id, onDelete, onEdit, onView, downloadFile, t }) {
-  const editId = `edit-tooltip-${id}`;
-  const userId = `user-tooltip-${id}`;
-  const documentoId = `documento-tooltip-${id}`;
+  const router = useRouter();
+
   return (
-    <>
-      <Button variant="link">
-        <FaUserPlus size={16} onClick={onView} className={userId} />
-        <Tooltip anchorSelect={`.${userId}`} place="top">
+    <DropdownMenu>
+      {/* Botón de tres puntos */}
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <MoreVertical className="w-4 h-4" />
+        </Button>
+      </DropdownMenuTrigger>
+
+      {/* Contenido del menú */}
+      <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-lg z-50">
+        {/* Agregar profesionales */}
+        <DropdownMenuItem onClick={onView}>
           {t?.Common.add} {t?.Common.professionals}
-        </Tooltip>
-      </Button>
-      <Button size="sm" variant="link">
-        <FaEdit size={16} onClick={onEdit} className={editId} />
-        <Tooltip anchorSelect={`.${editId}`} place="right">
-          {t?.Common.edit}
-        </Tooltip>
-      </Button>
-      <Button size="sm" variant="link">
-        <FaFileDownload
-          size={16}
-          onClick={downloadFile}
-          className={documentoId}
-        />
-        <Tooltip anchorSelect={`.${documentoId}`} place="right">
+        </DropdownMenuItem>
+
+        {/* Editar */}
+        <DropdownMenuItem onClick={onEdit}>{t?.Common.edit}</DropdownMenuItem>
+
+        {/* Descargar documento */}
+        <DropdownMenuItem onClick={downloadFile}>
           {t?.Common.downloadFile}
-        </Tooltip>
-      </Button>
-      <Button size="sm" variant="link">
-        <FaTrash size={16} className="" onClick={onDelete} />
-      </Button>
-    </>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        {/* Eliminar */}
+        <DropdownMenuItem onClick={onDelete} className="text-red-600">
+          {t?.Common.delete}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 

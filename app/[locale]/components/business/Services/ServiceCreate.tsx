@@ -54,12 +54,12 @@ function ServiceCreate({ t, data }) {
       >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
           <h4></h4>
-          <div className="col-sm-2 text-end">
+          {/* <div className="col-sm-2 text-end">
             <h6>
               {t.Common.correlative} {t.business.title}{' '}
               {correlativo ? '#' : correlativo}
             </h6>
-          </div>
+          </div> */}
         </div>
         <ServiceFormSection
           t={t}
@@ -70,17 +70,17 @@ function ServiceCreate({ t, data }) {
           data={data}
         />
         <div className="d-flex justify-content-end mb-3">
-          <button type="submit" className="btn btn-primary m-2">
-            {t.Common.saveButton}
-          </button>
           <button
             type="button"
-            className="btn btn-danger m-2"
+            className="btn btn-secondary m-2"
             onClick={(e) => {
               router.back();
             }}
           >
             {t.Common.cancel}
+          </button>
+          <button type="submit" className="btn btn-primary m-2">
+            {t.Common.saveButton}
           </button>
         </div>
       </form>

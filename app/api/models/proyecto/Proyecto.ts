@@ -107,7 +107,7 @@ class Proyecto {
     return [
       {
         accessorKey: 'pryId',
-        header: t.Common.correlative,
+        header: 'ID',
         size: 50,
       },
       {
@@ -122,7 +122,7 @@ class Proyecto {
       },
       {
         accessorKey: 'type',
-        header: `${t.Account.type} ${t.Account.business}`,
+        header: `${t.Account.type}`,
         size: 100,
       },
       {

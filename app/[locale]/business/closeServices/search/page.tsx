@@ -10,11 +10,12 @@ function page() {
   return (
     <>
       <BasePages
-        title={t('Common.services')}
+        title={t('Ficha.business')}
+        description={t('business.description')}
         actionButton={
           <Link href={'/business/closeServices/create'}>
             <button type="button" className=" btn btn-primary me-2">
-              {t('Account.add')} {t('Common.services')}
+              {t('Account.add')} {t('Ficha.business')}
             </button>
           </Link>
         }

@@ -354,7 +354,10 @@
     "beginningValidity": "Inicio Vigencia",
     "termValidity": "Término Vigencia",
     "historyContractedSupports": "Historial Soportes Contratados",
-    "typeSupport": "Tipo Soporte"
+    "typeSupport": "Tipo Soporte",
+    "description": "Aquí podrás ver el listado de Negocios con los que trabajamos y agregar nuevos de forma sencilla para mantener nuestra red siempre actualizada.",
+    "descriptionCreate": "En esta sección podrás añadir nuevos negocios asociados a cuentas de empresas. Completa la información necesaria para llevar un registro detallado.",
+    "descriptionEdit": "En esta sección podrás editar negocios asociados a cuentas de empresas. Completa la información necesaria para llevar un registro detallado y organizado de las oportunidades comerciales."
   },
   "project": {
     "projectList": "Lista de Proyectos",
@@ -503,10 +506,11 @@
     "contractSupport": "Soporte Contrato",
     "bagholder": "Soporte Bolsa",
     "onDemandSupport": "Soporte On Demand",
-    "supportDescription": "Aquí podrás ver el listado de empresas con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada."
+    "supportDescription": "Aquí podrás ver el listado de soporte con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada."
   },
   "Opportunity": {
     "opportunities": "Oportunidades",
-    "opportunity": "Oportunidad"
+    "opportunity": "Oportunidad",
+    "description": "Aqui você pode ver a lista de oportunidades e adicionar novas facilmente."
   }
 }

@@ -15,19 +15,25 @@ import { getAllEstadoFacturaPeriodo } from '@/app/api/actions/factura/EstadoFact
 async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
-  const facturas = await getAllPreSolicitadaFacturaPeriodo();
-  const fac = facturas.filter((factura) => factura.id > 118);
-  const monedasresult = (await getAllMoneda()) as Moneda[];
-  const monedas = monedasresult.map((moneda) => {
-    return new Moneda(moneda).getSelectOptions();
-  });
-  const bancos = await getAllBanco();
+
+  console.time('Cargando datos en paralelo');
+  const [facturas, monedasresult, bancos, resumen, listadoEstado] =
+    await Promise.all([
+      getAllPreSolicitadaFacturaPeriodo(),
+      getAllMoneda(),
+      getAllBanco(),
+      GetFacturasResumen(),
+      getAllEstadoFacturaPeriodo(),
+    ]);
+  console.timeEnd('Cargando datos en paralelo');
+
+  const monedas = monedasresult.map((moneda) =>
+    new Moneda(moneda).getSelectOptions()
+  );
   const bancosOptions = bancos.map((b) => new Banco(b).getSelectOptions());
-  const resumen = await GetFacturasResumen();
-  const listadoEstado = await getAllEstadoFacturaPeriodo();
+
   return (
     <BasePages title={t.Nav.facture.billing}>
-      {resumen && <ResumenFacturas resumen={resumen} />}
       <FacturasSolicitadasSearch
         t={t}
         facturas={facturas}

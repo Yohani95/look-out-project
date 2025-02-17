@@ -43,6 +43,7 @@ function OportunidadSearch({ t, data, listaestados }) {
       personaKam: oportunidad.personaKam
         ? new Persona(oportunidad.personaKam).getNombreCompleto()
         : 'N/A',
+      monto: oportunidad.monto + ' ' + oportunidad.moneda?.monNombre,
       actions: <OportunidadButtons oportunidad={oportunidad} t={t} />,
     }));
   }, [filteredData, t]);
@@ -50,23 +51,31 @@ function OportunidadSearch({ t, data, listaestados }) {
   return (
     <div className="space-y-4">
       {/* Filtro por estado */}
-      <MultiSelect
-        label={t.Common.status}
-        options={listaestados}
-        selectedValues={selectedFilters}
-        onChange={setSelectedFilters}
-        placeholder={t.Common.status}
-      />
 
       {/* Botón para crear nueva oportunidad */}
       <div className="d-flex justify-content-end">
+        <MultiSelect
+          label={t.Common.status}
+          options={listaestados}
+          selectedValues={selectedFilters}
+          onChange={setSelectedFilters}
+          placeholder={t.Common.status}
+        />
+        <Link href="/contact/create" passHref legacyBehavior>
+          <a target="_blank" rel="noopener noreferrer">
+            <button type="button" className="btn btn-secondary ml-2">
+              {t.Common.contact}
+            </button>
+          </a>
+        </Link>
+
         <Link href={'/opportunities/create'}>
-          <button type="button" className="btn btn-primary">
-            + {t.Account.add} {t.Opportunity.opportunity}
+          <button type="button" className="btn btn-primary ml-2">
+            {t.Account.add} {t.Opportunity.opportunity}
           </button>
         </Link>
       </div>
-
+      {/* Botón para crear nuevo contacto */}
       {/* Tabla filtrada */}
       <MemoizedTableMaterialUI columns={columns} data={memoizedActions} />
     </div>
