@@ -68,6 +68,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
                   fullWidth: true,
                   required: isRequired,
                   variant: 'outlined',
+                  size: 'small', // Reduce el tamaño del input
                   sx: { backgroundColor: '#fff', borderRadius: '4px' },
                 },
                 popper: {
@@ -87,6 +88,7 @@ const DatePickerField: React.FC<DatePickerFieldProps> = ({
                   fullWidth: true,
                   required: isRequired,
                   variant: 'outlined',
+                  size: 'small', // Reduce el tamaño del input
                   sx: { backgroundColor: '#fff', borderRadius: '4px' },
                 },
               }}

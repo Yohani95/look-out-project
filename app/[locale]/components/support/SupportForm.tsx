@@ -10,9 +10,14 @@ import { fetchPersonGetbyIdClient } from '@/app/[locale]/utils/person/UtilsPerso
 import { addMonths } from 'date-fns';
 import { Usuario } from '@/app/api/models/admin/Usuario';
 import DocumentosSoporte from '@/app/api/models/support/DocumentosSoporte';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { FaFileDownload } from 'react-icons/fa';
+import { Switch } from '@/components/ui/switch';
 function SupportForm({ soporteModel, setSoporte, t, data }) {
   //========DECLARACION DE VARIABLES ===============
   const [contactOptions, setContactOptions] = useState([]);
+  const [showKamSelect, setShowKamSelect] = useState(!!data.personasKam);
   const { data: session, status } = useSession();
   const user = session?.user as Usuario;
   const daysArray = Array.from({ length: 31 }, (_, index) => {
@@ -72,124 +77,96 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
 
   return (
     <>
-      <div className="mb-3 row align-items-center">
-        {data.personasKam ? (
-          <SelectField
-            label="KAM"
-            options={data.personasKam}
-            preOption={t.Account.select}
-            labelClassName="col-sm-1 col-form-label"
-            divClassName="col-sm-3"
-            onChange={(e) => handleSelectChange(e, 'kamId', setSoporte)}
-            selectedValue={soporteModel.kamId}
-          />
-        ) : (
-          <>
-            <label className="col-sm-1 col-form-label">{t.Account.KAM}</label>
-            <div className="col-sm-3">
-              <input
-                type="hidden"
-                name="kamId"
-                id="kamId"
-                value={soporteModel.kamId || (user?.persona.id ?? '')}
-                onChange={handleInputChange(soporteModel, setSoporte)}
-              />
-              <span className="form-control">
-                {`${soporteModel.personaKam?.perNombres} ${soporteModel?.personaKam?.perApellidoPaterno}`}
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {showKamSelect ? (
+            <>
+              <div>
+                <Label htmlFor="kamId">KAM</Label>
+                <SelectField
+                  label=""
+                  options={data.personasKam}
+                  preOption={t.Account.select}
+                  onChange={(e) => handleSelectChange(e, 'kamId', setSoporte)}
+                  selectedValue={soporteModel.kamId}
+                />
+              </div>
+            </>
+          ) : (
+            <div>
+              <Label>KAM</Label>
+              <span className="border p-2 rounded-md block bg-gray-100">
+                {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
               </span>
             </div>
-          </>
-        )}
-        <label className="col-sm-2 col-form-label">
-          {t.Ficha.table.business.dateEnd}
-        </label>
-        <div className="col-sm-3">
-          <MyDatePicker
-            selectedDate={soporteModel.pryFechaCierre}
-            onChange={(date) =>
-              setSoporte({ ...soporteModel, pryFechaCierre: date })
-            }
-            title={t.Common.date}
-          />
+          )}
         </div>
-        <SelectField
-          label={t.Account.country}
-          options={data.paises}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'paisId', setSoporte)}
-          selectedValue={soporteModel.paisId}
-        />
-      </div>
-
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={t.Account.name}
-          options={data.clientes}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'pryIdCliente', setSoporte)}
-          selectedValue={soporteModel.pryIdCliente}
-        />
-        <div className="col-sm-2">
-          <button type="button" className="badge btn btn-primary">
-            {t.Common.request} (+){' '}
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <Label htmlFor="pryNombre">{t.Account.business_name}</Label>
+            <Input
+              type="text"
+              className="form-control"
+              id="pryNombre"
+              name="pryNombre"
+              value={soporteModel.pryNombre}
+              onChange={handleInputChange(soporteModel, setSoporte)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="pryIdCliente">{t.Account.name}</Label>
+            <SelectField
+              label={''}
+              options={data.clientes}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'pryIdCliente', setSoporte)
+              }
+              selectedValue={soporteModel.pryIdCliente}
+            />
+          </div>
+          <div>
+            <Label htmlFor="pryIdContacto">{t.Common.contact}</Label>
+            <SelectField
+              label={''}
+              options={contactOptions}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'pryIdContacto', setSoporte)
+              }
+              selectedValue={soporteModel.pryIdContacto}
+            />
+          </div>
+          <div>
+            <Label htmlFor="paisId">{t.Account.country}</Label>
+            <SelectField
+              label={''}
+              options={data.paises}
+              preOption={t.Account.select}
+              onChange={(e) => handleSelectChange(e, 'paisId', setSoporte)}
+              selectedValue={soporteModel.paisId}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idEmpresaPrestadora">
+              {t.Common.lendingCompany}
+            </Label>
+            <SelectField
+              label={''}
+              options={data.empresaPrestadora}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idEmpresaPrestadora', setSoporte)
+              }
+              selectedValue={soporteModel.idEmpresaPrestadora}
+            />
+          </div>
         </div>
-        <label htmlFor="pryNombre" className="col-sm-1 col-form-label">
-          {t.Account.business_name}
-        </label>
-        <div className="col-sm-5">
-          <input
-            type="text"
-            className="form-control"
-            id="pryNombre"
-            name="pryNombre"
-            value={soporteModel.pryNombre}
-            onChange={handleInputChange(soporteModel, setSoporte)}
-          />
-        </div>
-      </div>
-
-      <div className=" mb-3 row align-items-center">
-        <SelectField
-          label={t.Common.contact}
-          options={contactOptions}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-3"
-          onChange={(e) => handleSelectChange(e, 'pryIdContacto', setSoporte)}
-          selectedValue={soporteModel.pryIdContacto}
-        />
-        <div className="col-sm-2">
-          <button
-            type="button"
-            className="badge btn btn-primary"
-            //onClick={goContactCreate}
-          >
-            {t.Common.add} (+)
-          </button>
-        </div>
-        {/* <SelectField
-                    label={`${t.Account.type} ${t.Account.business}`}
-                    options={data.tipoServicios}
-                    preOption={t.Account.select}
-                    className="my-contacto"
-                    labelClassName="col-sm-1 col-form-label"
-                    divClassName="col-sm-3"
-                    onChange={(e) => handleSelectChange(e, "tseId", setSoporte)}
-                    selectedValue={soporteModel.tseId}
-                /> */}
-      </div>
-
-      <div>
-        <div className="mb-3 row align-items-center">
-          <label htmlFor="confirmclient" className="col-sm-1 col-form-label">
-            {t.Common.confirm} {t.Common.client}
-          </label>
-          <div className="col-sm-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="fileOC">
+              {t.Common.confirm} {t.Common.client}
+            </Label>
             <input
               className="form-control"
               type="file"
@@ -257,7 +234,6 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
                 }
               }}
             />
-
             {soporteModel.documentosSoporte &&
               soporteModel.documentosSoporte.map((doc) => {
                 if (
@@ -269,6 +245,7 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
                       <a
                         href={`data:application/octet-stream;base64,${doc.contenidoDocumento}`}
                         download={doc.nombreDocumento}
+                        className="text-primary flex items-center"
                       >
                         {t.Common.downloadFile} {doc.nombreDocumento}
                       </a>
@@ -278,15 +255,15 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
                 return null;
               })}
           </div>
-          <label htmlFor="proposal" className="col-sm-1 col-form-label">
-            {t.Common.proposal} {t.Common.accepted}
-          </label>
-          <div className="col-sm-5">
+          <div>
+            <Label htmlFor="proposal">
+              {t.Common.proposal} {t.Common.accepted}
+            </Label>
             <input
               className="form-control"
               type="file"
-              id="fileOC"
-              name="fileOC"
+              id="proposal"
+              name="proposal"
               onChange={async (event) => {
                 const fileInput = event.currentTarget;
                 if (fileInput.files && fileInput.files.length > 0) {
@@ -356,6 +333,7 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
                       <a
                         href={`data:application/octet-stream;base64,${doc.contenidoDocumento}`}
                         download={doc.nombreDocumento}
+                        className="text-primary flex items-center"
                       >
                         {t.Common.downloadFile} {doc.nombreDocumento}
                       </a>
@@ -366,164 +344,161 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
               })}
           </div>
         </div>
-      </div>
-      <hr />
-      <div className="mb-3 row align-items-center">
-        <label className="col-sm-1 col-form-label">
-          {t.business.estimatedStartDate}
-        </label>
-        <div className="col-sm-2">
-          <MyDatePicker
-            selectedDate={soporteModel.pryFechaInicioEstimada}
-            onChange={(date) =>
-              setSoporte({
-                ...soporteModel,
-                pryFechaInicioEstimada: date,
-              })
-            }
-            title={t.Common.date}
-          />
+        <h6 className="text-[#2f4bce]  font-bold">{t.Common.date}</h6>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div>
+            <Label htmlFor="pryFechaCierre">
+              {t.Ficha.table.business.dateEnd}
+            </Label>
+            <MyDatePicker
+              selectedDate={soporteModel.pryFechaCierre}
+              onChange={(date) =>
+                setSoporte({ ...soporteModel, pryFechaCierre: date })
+              }
+              title={''}
+            />
+          </div>
+          <div>
+            <Label htmlFor="pryFechaInicioEstimada">
+              {t.business.estimatedStartDate}
+            </Label>
+            <MyDatePicker
+              selectedDate={soporteModel.pryFechaInicioEstimada}
+              onChange={(date) =>
+                setSoporte({
+                  ...soporteModel,
+                  pryFechaInicioEstimada: date,
+                })
+              }
+              title={''}
+            />
+          </div>
+          <div>
+            <Label htmlFor="months">{t.business.estimatedTerm}</Label>
+            <Input
+              type="number"
+              id="months"
+              name="months"
+              min="1"
+              max="120"
+              value={soporteModel.months || ''}
+              onChange={handleInputChange(soporteModel, setSoporte)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="pryFechaCierreEstimada">
+              {t.business.estimatedClosingDate}
+            </Label>
+
+            <MyDatePicker
+              selectedDate={soporteModel.pryFechaCierreEstimada}
+              onChange={(date) =>
+                setSoporte({
+                  ...soporteModel,
+                  pryFechaCierreEstimada: date,
+                })
+              }
+              isRead={true}
+              title={''}
+            />
+          </div>
+          <div>
+            <Label htmlFor="fechaCorte">{t.project.datecut}</Label>
+            <SelectField
+              label={''}
+              options={daysArray}
+              preOption={t.Account.select}
+              onChange={(e) => handleSelectChange(e, 'fechaCorte', setSoporte)}
+              selectedValue={soporteModel.fechaCorte}
+            />
+          </div>
         </div>
-        <label htmlFor="months" className="col-sm-1 col-form-label">
-          {t.business.estimatedTerm}
-        </label>
-        <div className="col-sm-2">
-          <input
-            type="number"
-            className="form-control"
-            id="months"
-            name="months"
-            min="1"
-            max="120"
-            value={soporteModel.months || ''}
-            onChange={handleInputChange(soporteModel, setSoporte)}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label htmlFor="idDiaPago">{t.Common.payday}</Label>
+            <SelectField
+              label={''}
+              options={data.diaPagos}
+              preOption={t.Account.select}
+              onChange={(e) => handleSelectChange(e, 'idDiaPago', setSoporte)}
+              selectedValue={soporteModel.idDiaPago}
+            />
+          </div>
         </div>
-        <label className="col-sm-2 col-form-label">
-          {t.business.estimatedClosingDate}
-        </label>
-        <div className="col-sm-2">
-          <MyDatePicker
-            selectedDate={soporteModel.pryFechaCierreEstimada}
-            onChange={(date) =>
-              setSoporte({
-                ...soporteModel,
-                pryFechaCierreEstimada: date,
-              })
-            }
-            isRead={true}
-            title={t.Common.date}
-          />
+        <h6 className="text-[#2f4bce]  font-bold">{t.Common.amount}</h6>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label htmlFor="pryValor">Monto</Label>
+            <Input
+              type="number"
+              id="pryValor"
+              name="pryValor"
+              value={soporteModel.pryValor ?? ''}
+              onChange={handleInputChange(soporteModel, setSoporte)}
+            />
+          </div>
+          <div>
+            <Label htmlFor="monId">{`${t.Ficha.type} ${t.Common.currency}`}</Label>
+            <SelectField
+              label={``}
+              options={data.monedas}
+              preOption={t.Account.select}
+              onChange={(e) => handleSelectChange(e, 'monId', setSoporte)}
+              selectedValue={soporteModel.monId}
+            />
+          </div>
+          <div>
+            <Label htmlFor="idTipoFacturacion">{`${t.Ficha.type} ${t.Nav.facture.billing}`}</Label>
+            <SelectField
+              label={``}
+              options={data.tiposFacturas}
+              preOption={t.Account.select}
+              onChange={(e) =>
+                handleSelectChange(e, 'idTipoFacturacion', setSoporte)
+              }
+              selectedValue={soporteModel.idTipoFacturacion}
+            />
+          </div>
+          <div>
+            <Label htmlFor="valorHoraAdicional">Valor Hora Adicional</Label>
+            <Input
+              type="number"
+              id="valorHoraAdicional"
+              name="valorHoraAdicional"
+              value={soporteModel.valorHoraAdicional ?? ''}
+              onChange={handleInputChange(soporteModel, setSoporte)}
+            />
+          </div>
         </div>
-      </div>
-      <div className="mb-3 row align-items-center">
-        <SelectField
-          label={t.project.datecut}
-          options={daysArray}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'fechaCorte', setSoporte)}
-          selectedValue={soporteModel.fechaCorte}
-        />
-        <SelectField
-          label={`${t.Ficha.type} ${t.Common.currency}`}
-          options={data.monedas}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'monId', setSoporte)}
-          selectedValue={soporteModel.monId}
-        />
-        <SelectField
-          label={`${t.Ficha.type} ${t.Nav.facture.billing}`}
-          options={data.tiposFacturas}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) =>
-            handleSelectChange(e, 'idTipoFacturacion', setSoporte)
-          }
-          selectedValue={soporteModel.idTipoFacturacion}
-        />
-      </div>
-      <div className="mb-3 row align-items-center">
-        <SelectField
-          label={t.Common.payday}
-          options={data.diaPagos}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) => handleSelectChange(e, 'idDiaPago', setSoporte)}
-          selectedValue={soporteModel.idDiaPago}
-        />
-        <SelectField
-          label={'Empresa Prestadora'}
-          options={data.empresaPrestadora}
-          preOption={t.Account.select}
-          labelClassName="col-sm-1 col-form-label"
-          divClassName="col-sm-2"
-          onChange={(e) =>
-            handleSelectChange(e, 'idEmpresaPrestadora', setSoporte)
-          }
-          selectedValue={soporteModel.idEmpresaPrestadora}
-        />
-      </div>
-      <div className="mb-3 row align-items-center">
-        <label htmlFor="pryValor" className="col-sm-1 col-form-label">
-          Monto
-        </label>
-        <div className="col-sm-2">
-          <input
-            type="number"
-            className="form-control"
-            id="pryValor"
-            name="pryValor"
-            value={soporteModel.pryValor ?? ''}
-            onChange={handleInputChange(soporteModel, setSoporte)}
-          />
-        </div>
-        <label htmlFor="valorHoraAdicional" className="col-sm-1 col-form-label">
-          Valor Hora Adicional
-        </label>
-        <div className="col-sm-2">
-          <input
-            type="number"
-            className="form-control"
-            id="valorHoraAdicional"
-            name="valorHoraAdicional"
-            value={soporteModel.valorHoraAdicional ?? ''}
-            onChange={handleInputChange(soporteModel, setSoporte)}
-          />
-        </div>
-        <label htmlFor="numeroHoras" className="col-sm-1 col-form-label">
-          Número de Horas
-        </label>
-        <div className="col-sm-2">
-          <input
-            type="number"
-            className="form-control"
-            id="numeroHoras"
-            name="numeroHoras"
-            value={soporteModel.numeroHoras ?? ''}
-            onChange={handleInputChange(soporteModel, setSoporte)}
-            min="1"
-          />
-        </div>
-        <label htmlFor="acumularHoras" className="col-sm-2 col-form-label">
-          Acumular Horas?
-        </label>
-        <div className="col-sm-1 form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="acumularHoras"
-            name="acumularHoras"
-            checked={soporteModel.acumularHoras ?? false}
-            onChange={(e) =>
-              setSoporte({ ...soporteModel, acumularHoras: e.target.checked })
-            }
-          />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+          {/* Input de Número de Horas */}
+          <div className="flex flex-col justify-center">
+            <Label htmlFor="numeroHoras">Número de Horas</Label>
+            <Input
+              type="number"
+              id="numeroHoras"
+              name="numeroHoras"
+              value={soporteModel.numeroHoras ?? ''}
+              onChange={handleInputChange(soporteModel, setSoporte)}
+              min="1"
+              className="h-10"
+            />
+          </div>
+
+          {/* Switch de Acumular Horas */}
+          <div className="flex justify-center items-center space-x-3 h-10">
+            <Switch
+              className="custom-switch"
+              id="acumularHoras"
+              checked={soporteModel.acumularHoras ?? false}
+              onCheckedChange={(value) =>
+                setSoporte({ ...soporteModel, acumularHoras: value })
+              }
+            />
+            <Label htmlFor="acumularHoras" className="text-sm align-middle">
+              Acumular Horas?
+            </Label>
+          </div>
         </div>
       </div>
     </>
