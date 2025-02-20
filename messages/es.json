@@ -1,5 +1,6 @@
 {
   "Common": {
+    "lendingCompany": "Empresa Prestadora",
     "milestoneAccomplished": "Hito cumplido",
     "finish": "Finalizar",
     "continue": "Continuar",
@@ -506,11 +507,13 @@
     "contractSupport": "Soporte Contrato",
     "bagholder": "Soporte Bolsa",
     "onDemandSupport": "Soporte On Demand",
-    "supportDescription": "Aquí podrás ver el listado de soporte con las que trabajamos y agregar nuevas de forma sencilla para mantener nuestra red siempre actualizada."
+    "supportDescription": "Gestiona aquí de forma sencilla el soporte de nuestra red. Consulta, actualiza y añade nuevas opciones según sea necesario."
   },
   "Opportunity": {
     "opportunities": "Oportunidades",
     "opportunity": "Oportunidad",
-    "description": "Aqui você pode ver a lista de oportunidades e adicionar novas facilmente."
+    "description": "Aquí puedes ver una lista de oportunidades y agregar nuevas fácilmente.",
+    "descriptionCreate": "En esta sección podrás añadir nuevas oportunidades asociados a cuentas de empresas. Completa la información necesaria para llevar un registro detallado.",
+    "descriptionEdit": "En esta sección podrás editar oportunidades asociadas a cuentas de empresas. Completa la información necesaria para llevar un registro detallado y organizar las oportunidades comerciales."
   }
 }

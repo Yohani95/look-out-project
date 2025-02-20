@@ -21,12 +21,27 @@ import TipoLicenciaOportunidad from '@/app/api/models/oportunidad/TipoLicenciaOp
 import OrigenOportunidad from '@/app/api/models/oportunidad/OrigenOportunidad';
 import { getAllTipoCerradaOportunidad } from '@/app/actions/Oportunidad/TipoCerradaOportunidadActions';
 import TipoCerradaOportunidad from '@/app/api/models/oportunidad/TipoCerradaOportunidad';
+import Link from 'next/link';
 async function page() {
   const locale = await getLocale();
   const t = require(`@/messages/${locale}.json`);
   const data = await GetData();
   return (
-    <BasePages title={t.Opportunity.opportunity}>
+    <BasePages
+      title={t.Opportunity.opportunity}
+      description={t.Opportunity.descriptionCreate}
+      actionButton={
+        <>
+          <Link href="/contact/create" passHref legacyBehavior>
+            <a target="_blank" rel="noopener noreferrer">
+              <button type="button" className="btn btn-secondary ml-2">
+                {t.Common.contact}
+              </button>
+            </a>
+          </Link>
+        </>
+      }
+    >
       <OportunidadCreate data={data} t={t} />
     </BasePages>
   );

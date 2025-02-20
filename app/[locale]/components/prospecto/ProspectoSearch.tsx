@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import TableMaterialUI from '../common/TablaMaterialUi';
 import Prospecto from '@/app/api/models/prospecto/Prospecto';
 import ProspectoButtons from './ProspectoButtons';
@@ -12,8 +12,23 @@ import ContactosProspecto from '@/app/api/models/prospecto/ContactoProspecto';
 import UploadExcelProspecto from './UploadExcelProspecto';
 import MultiSelect from '../common/MultiSelect';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
+const usePersistedState = (key, initialValue) => {
+  const [state, setState] = useState(() => {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : initialValue;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+
+  return [state, setState];
+};
 function ProspectoSearch({ t, data, listadoEstado }) {
-  const [selectedFilters, setSelectedFilters] = useState([]); // Manejar selección múltiple
+  const [selectedFilters, setSelectedFilters] = usePersistedState(
+    'selectedOportunidadFilters',
+    []
+  ); // Manejar selección múltiple
   // Filtrar datos según los filtros seleccionados
   const filteredData = useMemo(() => {
     if (selectedFilters.length === 0) return data; // Si no hay filtros, mostrar todo
@@ -43,23 +58,25 @@ function ProspectoSearch({ t, data, listadoEstado }) {
   }, [filteredData, t]);
   return (
     <>
-      {/* Filtro por estado */}
-      <MultiSelect
-        label={t.Common.status}
-        options={listadoEstado}
-        selectedValues={selectedFilters}
-        onChange={setSelectedFilters}
-        placeholder={t.Common.status}
-      />
-      <div className="d-flex justify-content-end container mb-3">
-        <UploadExcelProspecto t={t} />
-        <Link href={'/prospect/create'}>
-          <button type="button" className=" btn btn-primary m-2">
-            + {t.Account.add} {t.Common.prospect}
-          </button>
-        </Link>
+      <div className="space-y-4">
+        <div className="flex items-center justify-end space-x-4">
+          {/* Filtro por estado */}
+          <MultiSelect
+            label={t.Common.status}
+            options={listadoEstado}
+            selectedValues={selectedFilters}
+            onChange={setSelectedFilters}
+            placeholder={t.Common.status}
+          />
+          <UploadExcelProspecto t={t} />
+          <Link href={'/prospect/create'}>
+            <button type="button" className=" btn btn-primary ">
+              + {t.Account.add} {t.Common.prospect}
+            </button>
+          </Link>
+        </div>
+        <MemoizedTableMaterialUI columns={columns} data={memoizedData} />
       </div>
-      <MemoizedTableMaterialUI columns={columns} data={memoizedData} />
     </>
   );
 }

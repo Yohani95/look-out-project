@@ -85,7 +85,7 @@ const UploadExcelProspecto: React.FC<MassUploadModalProps> = ({ t }) => {
       {/* Botón para abrir el modal */}
       <button
         type="button"
-        className="btn btn-secondary m-2 d-flex align-items-center"
+        className="btn btn-secondary d-flex align-items-center"
         onClick={() => setShowModal(true)} // Abrir modal al hacer clic
       >
         <FaTable size={16} className="me-2" />{' '}
