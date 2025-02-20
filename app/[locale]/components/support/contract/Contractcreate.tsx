@@ -9,6 +9,7 @@ import SupportForm from '../SupportForm';
 import Soporte from '@/app/api/models/support/Soporte';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
 import { createsoporte } from '@/app/api/actions/soporte/SoporteActions';
+import Utils from '@/app/api/models/common/Utils';
 function Contractcreate({ t, data }) {
   const { data: session } = useSession();
   const user = session?.user as Usuario;
@@ -33,42 +34,18 @@ function Contractcreate({ t, data }) {
       try {
         // Utiliza una variable para almacenar la función handleFormSubmit
         values.idTipoSoporte = Constantes.TipoSorpote.CONTRATO;
-        await NotificationSweet({
-          title: t.notification.loading.title,
-          text: '',
-          type: t.notification.loading.type,
-          showLoading: true,
-        });
-
+        Utils.showLoadingNotification(t);
         await createsoporte(values)
           .then((res) => {
             router.refresh();
-            NotificationSweet({
-              title: t.notification.success.title,
-              text: t.notification.success.text,
-              type: t.notification.success.type,
-              push: router.push,
-              link: '/business/Support/search',
-            });
+            Utils.handleSuccessNotification(t, router.back);
           })
           .catch((err) => {
-            NotificationSweet({
-              title: t.notification.error.title,
-              text: t.notification.error.text,
-              type: t.notification.error.type,
-              push: router.push,
-              link: '/business/Support/search',
-            });
+            Utils.handleErrorNotification(t, router.back);
           });
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
-          push: router.push,
-          link: '/business/Support/search',
-        });
+        Utils.handleErrorNotification(t, router.back);
       } finally {
         setSubmitting(false); // Importante para indicar que el formulario ya no está siendo enviado.
       }

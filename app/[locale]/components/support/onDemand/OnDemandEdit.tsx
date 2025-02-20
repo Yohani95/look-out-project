@@ -13,6 +13,7 @@ import {
 } from '@/app/api/actions/soporte/SoporteActions';
 import DocumentosSoporte from '@/app/api/models/support/DocumentosSoporte';
 import OnDemandForm from './OnDemandForm';
+import Utils from '@/app/api/models/common/Utils';
 function OnDemandEdit({ t, data }) {
   const { data: session } = useSession();
   const user = session?.user as Usuario;
@@ -35,12 +36,7 @@ function OnDemandEdit({ t, data }) {
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await NotificationSweet({
-          title: t.notification.loading.title,
-          text: '',
-          type: t.notification.loading.type,
-          showLoading: true,
-        });
+        Utils.showLoadingNotification(t);
         delete values.personaKam;
         delete values.pais;
         delete values.empresaPrestadora;
@@ -49,30 +45,14 @@ function OnDemandEdit({ t, data }) {
           .then((res) => {
             revalidateDatasoporte();
             EditAction();
-            NotificationSweet({
-              title: t.notification.success.title,
-              text: t.notification.success.text,
-              type: t.notification.success.type,
-              push: router.push,
-              link: '/business/Support/onDemand/search',
-            });
+            Utils.handleSuccessNotification(t, router.back);
           })
           .catch((err) => {
-            NotificationSweet({
-              title: t.notification.error.title,
-              text: t.notification.error.text,
-              type: t.notification.error.type,
-            });
+            Utils.handleErrorNotification(t, router.back);
           });
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
-          push: router.push,
-          link: '/business/Support/onDemand/search',
-        });
+        Utils.handleErrorNotification(t, router.back);
       } finally {
         revalidateDatasoporte();
         EditAction();

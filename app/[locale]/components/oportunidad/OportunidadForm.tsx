@@ -317,7 +317,12 @@ const OportunidadForm: React.FC<OportunidadFormProps> = ({
               id="descripcion"
               rows={6}
               value={oportunidadModel.descripcion || ''}
-              onChange={handleInputChange(oportunidadModel, setOportunidad)}
+              onChange={(e) =>
+                setOportunidad((prev) => ({
+                  ...prev,
+                  descripcion: e.target.value,
+                }))
+              }
               className="w-full"
             />
             {formik?.touched?.descripcion && formik.errors.descripcion && (

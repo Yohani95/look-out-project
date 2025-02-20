@@ -40,12 +40,7 @@ function ContractEdit({ t, data }) {
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await NotificationSweet({
-          title: t.notification.loading.title,
-          text: '',
-          type: t.notification.loading.type,
-          showLoading: true,
-        });
+        Utils.showLoadingNotification(t);
         delete values.personaKam;
         delete values.pais;
         delete values.empresaPrestadora;
@@ -56,21 +51,11 @@ function ContractEdit({ t, data }) {
             Utils.handleSuccessNotification(t, router.back());
           })
           .catch((err) => {
-            NotificationSweet({
-              title: t.notification.error.title,
-              text: err.message,
-              type: t.notification.error.type,
-            });
+            Utils.handleErrorNotification(t);
           });
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
-        NotificationSweet({
-          title: t.notification.error.title,
-          text: t.notification.error.text,
-          type: t.notification.error.type,
-          push: router.push,
-          link: '/business/Support/search',
-        });
+        Utils.handleErrorNotification(t, router.back);
       } finally {
         revalidateDatasoporte();
         EditAction();
