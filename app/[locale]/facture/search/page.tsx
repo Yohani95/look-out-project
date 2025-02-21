@@ -34,6 +34,7 @@ async function page() {
 
   return (
     <BasePages title={t.Nav.facture.billing}>
+      {resumen && <ResumenFacturas resumen={resumen} />}
       <FacturasSolicitadasSearch
         t={t}
         facturas={facturas}
