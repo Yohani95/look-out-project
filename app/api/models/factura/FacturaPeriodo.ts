@@ -219,11 +219,11 @@ class FacturaPeriodo {
         header: t.Common.observations,
         size: 50,
       },
-      // {
-      //   accessorKey: "_documento",
-      //   header: `Documento`,
-      //   size: 50,
-      // },
+      {
+        accessorKey: '_documento',
+        header: `Documento`,
+        size: 50,
+      },
       {
         accessorKey: 'actions',
         header: t.Common.actions,

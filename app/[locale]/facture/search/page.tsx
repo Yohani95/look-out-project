@@ -31,7 +31,6 @@ async function page() {
     new Moneda(moneda).getSelectOptions()
   );
   const bancosOptions = bancos.map((b) => new Banco(b).getSelectOptions());
-
   return (
     <BasePages title={t.Nav.facture.billing}>
       {resumen && <ResumenFacturas resumen={resumen} />}

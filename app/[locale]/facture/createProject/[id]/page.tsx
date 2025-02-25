@@ -22,7 +22,7 @@ async function page({ params }) {
       pryId: hito.id || null,
       idTipoFacturacion: null,
       pryNombre: hito.proyectoDesarrollo.nombre || null,
-      cliente: hito.proyectoDesarrollo.cliente || null, // Asegúrate de que `cliente` sea del tipo `Cliente` o `null`
+      cliente: hito.proyectoDesarrollo.cliente || null,
     },
   };
   return (

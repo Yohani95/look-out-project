@@ -8,6 +8,7 @@ import Header from '@/app/[locale]/components/header/Header';
 import Footer from '@/app/[locale]/components/Footer';
 import AuthContext from '@/app/[locale]/context/AuthContext';
 import LayoutWithSession from './components/common/LayoutWithSession';
+import { Toaster } from '@/components/ui/sonner';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
             <LayoutWithSession>{children}</LayoutWithSession>
           </div>
         </AuthContext>
+        <Toaster theme="light" closeButton className="sonner-toast" />
       </body>
     </html>
   );
