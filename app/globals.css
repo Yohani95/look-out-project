@@ -106,3 +106,37 @@ footer {
 .custom-switch[data-state='checked']::before {
   transform: translate(20px, -50%) !important;
 }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+/* Estilos personalizados para Sonner */
+.sonner-toast {
+  background-color: #333 !important; /* Fondo oscuro */
+  color: #fff !important; /* Texto blanco */
+  border-radius: 8px !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif !important;
+  padding: 16px !important;
+}
+
+.sonner-toast.success {
+  background-color: #28a745 !important; /* Verde de Bootstrap */
+}
+
+.sonner-toast.error {
+  background-color: #dc3545 !important; /* Rojo de Bootstrap */
+}
+
+.sonner-toast button {
+  color: #fff !important;
+}
+
+.sonner-toast button:hover {
+  opacity: 0.8;
+}

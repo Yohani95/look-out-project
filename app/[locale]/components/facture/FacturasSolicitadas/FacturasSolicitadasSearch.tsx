@@ -10,6 +10,7 @@ import Soporte from '@/app/api/models/support/Soporte';
 import VentaLicencia from '@/app/api/models/licencia/VentaLicencia';
 import ProyectoDesarrollo from '@/app/api/models/proyectoDesarrollo/ProyectoDesarrollo';
 import MultiSelect from '../../common/MultiSelect';
+import DocumentoFactura from '@/app/api/models/factura/DocumentoFactura';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 function FacturasSolicitadasSearch({
   t,
@@ -48,6 +49,10 @@ function FacturasSolicitadasSearch({
             factura.hitoProyectoDesarrollo.proyectoDesarrollo
           ).getPeriodoCompleto()
         : 'N/A',
+      _documento:
+        factura.documentosFactura.find(
+          (f) => f.idTipoDocumento == DocumentoFactura.TIPO_DOCUMENTO.FACTURA
+        )?.nombreDocumento || 'N/A',
       actions: (
         <ButtonsFacture
           t={t}

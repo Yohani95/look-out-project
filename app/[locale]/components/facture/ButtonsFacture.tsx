@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Modal, Button, Form, ModalFooter } from 'react-bootstrap';
+import { Modal, Form, ModalFooter } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import {
@@ -30,6 +30,15 @@ import MyDatePicker from '../common/MyDatePicker';
 import Utils from '@/app/api/models/common/Utils';
 import ModalInfo from '../common/ModalInfo';
 import { getDocumentoFacturaById } from '@/app/api/actions/factura/DocumentoFacturaActions';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { MoreVertical } from 'lucide-react';
 const ButtonsFacture = ({
   t,
   idFactura,
@@ -159,6 +168,7 @@ const ButtonsFacture = ({
       );
     }
   );
+
   // Generar IDs únicos basados en idFactura, idPeriodo o idHoraUtilizada
   const canastoId = `canasto-${idFactura || idPeriodo || idHoraUtilizada}`;
   const documentId = `document-${idFactura || idPeriodo || idHoraUtilizada}`;
@@ -170,74 +180,68 @@ const ButtonsFacture = ({
   const descargarId = `descargar-${idFactura || idPeriodo || idHoraUtilizada}`;
   return (
     <>
-      {periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.FACTURADA &&
-      periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.PAGADA &&
-      periodoFactura?.idEstado != FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
-        <Button variant="link" onClick={handleAddDocument}>
-          <FaCartPlus size={16} id={canastoId} />
-          <Tooltip anchorSelect={`#${canastoId}`} place="top">
-            {t.Nav.facture.requestBilling}
-          </Tooltip>
-        </Button>
-      ) : (
-        <Button variant="link" disabled>
-          <FaCartPlus size={16} id={canastoId} />
-          <Tooltip anchorSelect={`#${canastoId}`} place="top">
-            {t.Nav.facture.requestBilling}
-          </Tooltip>
-        </Button>
-      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreVertical className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
 
-      {periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.FACTURADA ? (
-        <Button variant="link" onClick={handleEnviada}>
-          <FaFileUpload id={documentId} size={16} />
-          <Tooltip anchorSelect={`#${documentId}`} place="top">
-            {t.Common.submit} {t.Common.document}
-          </Tooltip>
-        </Button>
-      ) : periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
-        <Button variant="link" onClick={handlePagada}>
-          <FaDollarSign id={changeStatusId} size={16} />
-          <Tooltip anchorSelect={`#${changeStatusId}`} place="top">
-            {t.Common.pay}
-          </Tooltip>
-        </Button>
-      ) : periodoFactura.idEstado == FacturaPeriodo.ESTADO_FACTURA.PAGADA ? (
-        <Button variant="link" onClick={() => setShowModalInfo(true)}>
-          <FaDollarSign color="green" id={payDateId} size={16} />
-          <Tooltip anchorSelect={`#${payDateId}`} place="top">
-            {t.Common.payDate}
-          </Tooltip>
-        </Button>
-      ) : null}
+        <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-lg z-50">
+          {/* Solicitar Factura */}
+          {periodoFactura?.idEstado !==
+            FacturaPeriodo.ESTADO_FACTURA.FACTURADA &&
+          periodoFactura?.idEstado !== FacturaPeriodo.ESTADO_FACTURA.PAGADA &&
+          periodoFactura?.idEstado !== FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
+            <DropdownMenuItem onClick={handleAddDocument}>
+              {t.Nav.facture.requestBilling}
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem disabled>
+              {t.Nav.facture.requestBilling}
+            </DropdownMenuItem>
+          )}
 
-      <Button
-        variant="link"
-        onClick={(e) =>
-          idPeriodo
-            ? router.push(`/facture/create/${idPeriodo}`)
-            : router.push(`/facture/createSupport/${idHoraUtilizada}`)
-        }
-      >
-        <FaEye size={16} id={detallesId} />
-        <Tooltip anchorSelect={`#${detallesId}`} place="top">
-          {t.facture.billingDetails}
-        </Tooltip>
-      </Button>
+          {/* Enviar Factura */}
+          {periodoFactura.idEstado ===
+            FacturaPeriodo.ESTADO_FACTURA.FACTURADA && (
+            <DropdownMenuItem onClick={handleEnviada}>
+              {t.Common.submit} {t.Common.document}
+            </DropdownMenuItem>
+          )}
 
-      {documentoFactura && (
-        <Button
-          variant="link"
-          onClick={() => downloadDocumento(documentoFactura)}
-          style={{ fontSize: '14px' }}
-          id={descargarId}
-        >
-          <FaFileDownload size={16} />
-          <Tooltip anchorSelect={`#${descargarId}`}>
-            {t.Common.downloadFile}
-          </Tooltip>
-        </Button>
-      )}
+          {/* Pagar Factura */}
+          {periodoFactura.idEstado ===
+            FacturaPeriodo.ESTADO_FACTURA.ENVIADA && (
+            <DropdownMenuItem onClick={handlePagada}>
+              {t.Common.pay}
+            </DropdownMenuItem>
+          )}
+
+          {/* Ver detalles */}
+          <DropdownMenuItem
+            onClick={() =>
+              idPeriodo
+                ? router.push(`/facture/create/${idPeriodo}`)
+                : router.push(`/facture/createSupport/${idHoraUtilizada}`)
+            }
+          >
+            {t.facture.billingDetails}
+          </DropdownMenuItem>
+
+          {/* Descargar Documento */}
+          {documentoFactura && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => downloadDocumento(documentoFactura)}
+              >
+                {t.Common.downloadFile}
+              </DropdownMenuItem>
+            </>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/* Modal Forms */}
       <ModalForm
@@ -365,9 +369,12 @@ const ModalPago = ({ show, t, factura, setShowModalPago, bancos }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModalPago(false)}>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setShowModalPago(false)}
+        >
           {t.Common.cancel}
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );
@@ -603,7 +610,7 @@ const ModalForm = ({
                   // Actualizar el estado con el nuevo valor si es válido
                   formik.setValues({
                     ...formik.values,
-                    monto: parseFloat(inputValue),
+                    monto: inputValue === '' ? 0 : parseFloat(inputValue),
                   });
                 }
               }}
@@ -612,9 +619,9 @@ const ModalForm = ({
               {formik.errors.monto}
             </Form.Control.Feedback>
           </Form.Group>
-          <Button className="mt-2" variant="primary" type="submit">
+          <button className="btn btn-primary mt-2" type="submit">
             {t.Common.submit}
-          </Button>
+          </button>
         </Form>
       </Modal.Body>
     </Modal>

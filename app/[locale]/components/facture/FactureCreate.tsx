@@ -30,6 +30,9 @@ import PeriodoGenerico from '@/app/api/models/factura/PeriodoGenerico';
 import FacturaAdaptacion from '@/app/api/models/factura/FacturaAdaptacion';
 import AdaptationFactureModal from './Adapter/AdaptationFactureModal';
 import Utils from '@/app/api/models/common/Utils';
+import { EnviarEmailFactura } from '@/app/actions/admin/EmailActions';
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 interface FactureProps {
   t: any;
@@ -106,7 +109,9 @@ const FactureCreate: React.FC<FactureProps> = ({
         values.fechaFactura = new Date();
         values.idEstado = FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
         console.log(values);
-        await Utils.handleOnSubmit(t, createFacturaPeriodo, values);
+        await createFacturaPeriodo(values).then((res) => {
+          Utils.handleSuccessNotification(t);
+        });
         // Utiliza una variable para almacenar la función handleFormSubmit
       } catch (error) {
         console.error('Error in createFORMIK:', error);
@@ -239,6 +244,34 @@ const FactureCreate: React.FC<FactureProps> = ({
         periodo.id,
         FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
       );
+    }
+    // Crear el objeto con los datos requeridos
+    const emailData = {
+      pryId: periodo.proyecto?.pryId,
+      fechaPeriodoDesde: periodo.fechaPeriodoDesde,
+      fechaPeriodoHasta: periodo.fechaPeriodoHasta,
+      monto: periodo.monto,
+      proyecto: {
+        pryId: periodo.proyecto?.pryId,
+        pryNombre: periodo.proyecto?.pryNombre,
+        cliente: {
+          cliNombre: periodo.proyecto?.cliente?.cliNombre || 'N/A',
+          cliNif: periodo.proyecto?.cliente?.cliNif || 'N/A',
+        },
+      },
+    };
+    const response = await EnviarEmailFactura(emailData);
+
+    if (response) {
+      toast.success(' Correo enviado', {
+        description: 'El supervisor ha recibido la solicitud.',
+        duration: 5000,
+      });
+    } else {
+      toast.error('Error al enviar el correo', {
+        description: 'No se pudo enviar el correo. Intenta nuevamente.',
+        duration: 5000,
+      });
     }
   };
   useEffect(() => {
