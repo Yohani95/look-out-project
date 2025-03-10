@@ -1,5 +1,8 @@
 {
   "Common": {
+    "associatedAccount": "Associated Account",
+    "cancelInvoice": "Cancel Invoice",
+    "partiallyInvoiced": "Partially invoiced",
     "lendingCompany": "Lending Company",
     "milestoneAccomplished": "Milestone Accomplished",
     "finish": "Finish",
@@ -478,6 +481,13 @@
       "text": "Are you sure to send Document",
       "type": "info",
       "buttonOk": "Yes, send",
+      "buttonCancel": "Cancel"
+    },
+    "cancelBill": {
+      "title": "Information",
+      "text": "Are you sure to cancel Document",
+      "type": "info",
+      "buttonOk": "Yes, cancel",
       "buttonCancel": "Cancel"
     },
     "call": {

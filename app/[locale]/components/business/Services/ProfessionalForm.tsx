@@ -105,7 +105,6 @@ function ProfessionalForm({ idService, t, perfiles, proyecto }) {
   const fetchData = async () => {
     try {
       await fetchParticipanteByIdProyecto(idService).then((profesionales) => {
-        console.log(profesionales);
         const nuevosElementosTabla = profesionales.data.map((element) => ({
           id: element.persona.id,
           idParticipante: element.ppaId,
@@ -264,11 +263,9 @@ function ProfessionalForm({ idService, t, perfiles, proyecto }) {
       });
 
       // Establecer el día después del final del período actual como base para el próximo periodo
-      currentDate = new Date(
-        periodEndDate.getFullYear(),
-        periodEndDate.getMonth(),
-        periodEndDate.getDate() + 1
-      );
+      // Establecer la fecha de inicio del próximo período correctamente
+      currentDate = new Date(periodEndDate);
+      currentDate.setDate(currentDate.getDate() + 1);
     }
     return periods.reverse();
   };

@@ -96,7 +96,9 @@ function SupportForm({ soporteModel, setSoporte, t, data }) {
             <div>
               <Label>KAM</Label>
               <span className="border p-2 rounded-md block bg-gray-100">
-                {`${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
+                {data.soporte?.personaKam
+                  ? `${data.soporte?.personaKam.perNombres} ${data.soporte?.personaKam.perApellidoPaterno}`
+                  : `${user?.persona.perNombres} ${user?.persona.perApellidoPaterno}`}
               </span>
             </div>
           )}

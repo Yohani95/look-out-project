@@ -50,7 +50,13 @@ function HoursButtons({
             <FaLock
               size={16}
               id={`candado-${periodo.id}`}
-              style={{ color: 'green' }}
+              style={{ color: 'green' }} // Cerrado (Totalmente facturado)
+            />
+          ) : periodo.estado === 2 ? (
+            <FaLockOpen
+              size={16}
+              id={`candado-${periodo.id}`}
+              style={{ color: '#FFC107' }} // Naranja (Parcialmente facturado)
             />
           ) : (
             <FaLockOpen size={16} id={`candado-${periodo.id}`} />

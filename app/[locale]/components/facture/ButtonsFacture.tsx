@@ -168,7 +168,53 @@ const ButtonsFacture = ({
       );
     }
   );
-
+  const handleAnularFactura = async () => {
+    try {
+      const result = await ConfirmationDialog(
+        t.notification.cancelBill.title,
+        t.notification.cancelBill.text,
+        t.notification.cancelBill.type,
+        t.notification.cancelBill.buttonOk,
+        t.notification.cancelBill.buttonCancel
+      );
+      if (!result) {
+        return;
+      }
+      const factura = periodoFactura;
+      await NotificationSweet({
+        title: t.notification.loading.title,
+        text: '',
+        type: t.notification.loading.type,
+        showLoading: true,
+      });
+      factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.ANULADA;
+      delete factura.periodo;
+      delete factura.estado;
+      delete factura.documentosFactura;
+      const res = await updateFacturaPeriodo(factura, idFactura)
+        .then((res) => {
+          NotificationSweet({
+            title: t.notification.success.title,
+            text: t.notification.success.text,
+            type: t.notification.success.type,
+          });
+        })
+        .catch((err) => {
+          NotificationSweet({
+            title: t.notification.error.title,
+            text: err,
+            type: t.notification.error.type,
+          });
+        });
+    } catch (error) {
+      console.error('Error en handlePagada:', error);
+      NotificationSweet({
+        title: t.notification.error.title,
+        text: t.notification.error.text,
+        type: t.notification.error.type,
+      });
+    }
+  };
   // Generar IDs únicos basados en idFactura, idPeriodo o idHoraUtilizada
   const canastoId = `canasto-${idFactura || idPeriodo || idHoraUtilizada}`;
   const documentId = `document-${idFactura || idPeriodo || idHoraUtilizada}`;
@@ -178,6 +224,7 @@ const ButtonsFacture = ({
   const payDateId = `payDate-${idFactura || idPeriodo || idHoraUtilizada}`;
   const detallesId = `detalles-${idFactura || idPeriodo || idHoraUtilizada}`;
   const descargarId = `descargar-${idFactura || idPeriodo || idHoraUtilizada}`;
+  // if(periodoFactura?.idEstado == FacturaPeriodo.ESTADO_FACTURA.PAGADA) return `${t.Common.cancelInvoce}`;
   return (
     <>
       <DropdownMenu>
@@ -186,19 +233,19 @@ const ButtonsFacture = ({
             <MoreVertical className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
-
         <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-lg z-50">
           {/* Solicitar Factura */}
           {periodoFactura?.idEstado !==
             FacturaPeriodo.ESTADO_FACTURA.FACTURADA &&
           periodoFactura?.idEstado !== FacturaPeriodo.ESTADO_FACTURA.PAGADA &&
+          periodoFactura?.idEstado !== FacturaPeriodo.ESTADO_FACTURA.ANULADA &&
           periodoFactura?.idEstado !== FacturaPeriodo.ESTADO_FACTURA.ENVIADA ? (
             <DropdownMenuItem onClick={handleAddDocument}>
-              {t.Nav.facture.requestBilling}
+              {t.Nav.facture.billing}
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem disabled>
-              {t.Nav.facture.requestBilling}
+              {t.Nav.facture.billing}
             </DropdownMenuItem>
           )}
 
@@ -206,7 +253,7 @@ const ButtonsFacture = ({
           {periodoFactura.idEstado ===
             FacturaPeriodo.ESTADO_FACTURA.FACTURADA && (
             <DropdownMenuItem onClick={handleEnviada}>
-              {t.Common.submit} {t.Common.document}
+              {t.Common.submit} {t.Nav.facture.Facturación}
             </DropdownMenuItem>
           )}
 
@@ -228,11 +275,23 @@ const ButtonsFacture = ({
           >
             {t.facture.billingDetails}
           </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={handleAnularFactura}
+            className="text-red-500"
+            disabled={
+              periodoFactura.idEstado ===
+                FacturaPeriodo.ESTADO_FACTURA.ANULADA ||
+              periodoFactura.idEstado ===
+                FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
+            }
+          >
+            {t.Common.cancelInvoice}
+          </DropdownMenuItem>
 
           {/* Descargar Documento */}
           {documentoFactura && (
             <>
-              <DropdownMenuSeparator />
+              {/* <DropdownMenuSeparator /> */}
               <DropdownMenuItem
                 onClick={() => downloadDocumento(documentoFactura)}
               >

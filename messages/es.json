@@ -1,5 +1,8 @@
 {
   "Common": {
+    "associatedAccount": "Cuenta asociada",
+    "cancelInvoice": "Factura Anulada",
+    "partiallyInvoiced": "Parcialmente facturada",
     "lendingCompany": "Empresa Prestadora",
     "milestoneAccomplished": "Hito cumplido",
     "finish": "Finalizar",
@@ -478,6 +481,13 @@
       "text": "¿Estás seguro de enviar Documento?",
       "type": "info",
       "buttonOk": "Sí, Enviar",
+      "buttonCancel": "Cancelar"
+    },
+    "cancelBill": {
+      "title": "Información",
+      "text": "¿Estás seguro de anular Documento?",
+      "type": "info",
+      "buttonOk": "Sí, anular",
       "buttonCancel": "Cancelar"
     },
     "call": {

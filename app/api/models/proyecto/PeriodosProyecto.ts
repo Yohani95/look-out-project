@@ -1,7 +1,7 @@
-import * as Yup from "yup";
-import Proyecto from "./Proyecto";
+import * as Yup from 'yup';
+import Proyecto from './Proyecto';
 import { format } from 'date-fns';
-import DiaPagos from "../factura/DiaPagos";
+import DiaPagos from '../factura/DiaPagos';
 class PeriodosProyecto {
   id: number | null;
   pryId: number | null;
@@ -10,13 +10,13 @@ class PeriodosProyecto {
   estado: number | null;
   monto: number | null;
   numeroProfesionales: number | null;
-  diasTotal : number | null;
+  diasTotal: number | null;
   proyecto: Proyecto | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.pryId = data?.pryId || null;
-    this.fechaPeriodoDesde = data? new Date(data.fechaPeriodoDesde) : null;
-    this.fechaPeriodoHasta = data? new Date(data.fechaPeriodoHasta) : null;
+    this.fechaPeriodoDesde = data ? new Date(data.fechaPeriodoDesde) : null;
+    this.fechaPeriodoHasta = data ? new Date(data.fechaPeriodoHasta) : null;
     this.estado = data?.estado || 0;
     this.monto = data?.monto || 0;
     this.numeroProfesionales = data?.numeroProfesionales || 0;
@@ -40,53 +40,64 @@ class PeriodosProyecto {
   static createColumns(t) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "fechaPeriodoDesde",
+        accessorKey: 'fechaPeriodoDesde',
         header: t.Common.period,
         size: 200,
       },
       {
-        accessorKey: "numeroProfesionales",
+        accessorKey: 'numeroProfesionales',
         header: `N° ${t.Common.professionals}`,
         size: 50,
       },
       {
-        accessorKey: "fechacierre",
+        accessorKey: 'fechacierre',
         header: `${t.Common.date} ${t.Common.close}`,
         size: 150,
       },
       {
-        accessorKey: "monto",
+        accessorKey: 'monto',
         header: `${t.Common.amount}`,
         size: 150,
       },
       {
-        accessorKey: "diasTotal",
+        accessorKey: 'diasTotal',
         header: `${t.Common.totalDays}`,
         size: 150,
       },
       {
-        accessorKey: "estado",
+        accessorKey: 'estado',
         header: t.Common.status,
         size: 50,
       },
       {
-        accessorKey: "actions",
+        accessorKey: 'actions',
         header: t.Common.actions,
         size: 100,
       },
     ];
   }
-   getEstados(t): string {
-    return this.estado? t.Common.closed:t.Common.preclosed;
+
+  getEstados(t): string {
+    if (this.estado === 1) {
+      return t.Common.closed; // Estado 1: Totalmente facturado
+    } else if (this.estado === 2) {
+      return t.Common.partiallyInvoiced; // Estado 2: Parcialmente facturado
+    } else {
+      return t.Common.preclosed; // Estado 0: Sin facturar
+    }
   }
+
   getPeriodoCompleto(): string {
     const formato = 'dd/MM/yyyy';
-    return `${format(this.fechaPeriodoDesde, formato)} - ${format(this.fechaPeriodoHasta, formato)}`;
+    return `${format(this.fechaPeriodoDesde, formato)} - ${format(
+      this.fechaPeriodoHasta,
+      formato
+    )}`;
   }
 }
 export default PeriodosProyecto;

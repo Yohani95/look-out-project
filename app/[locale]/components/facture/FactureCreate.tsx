@@ -67,15 +67,14 @@ const FactureCreate: React.FC<FactureProps> = ({
       showLoading: true,
     });
   };
-  const totalFacturas = facturas?.reduce(
-    (total, factura) => total + factura.monto,
-    0
-  );
+  const totalFacturas = facturas
+    ?.filter((factura) => factura.idEstado !== 6) // Filtra las facturas anuladas
+    .reduce((total, factura) => total + factura.monto, 0);
+
   useEffect(() => {
-    const totalFacturas = facturas?.reduce(
-      (total, factura) => total + factura.monto,
-      0
-    );
+    const totalFacturas = facturas
+      ?.filter((factura) => factura.idEstado !== 6) // Filtra las facturas anuladas
+      .reduce((total, factura) => total + factura.monto, 0);
     const maxMonto = periodoInfo?.monto - totalFacturas;
     setMaxMontoNextFactura(maxMonto);
   }, [periodoInfo, facturaAdaptacion, totalFacturas]);

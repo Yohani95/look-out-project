@@ -1,34 +1,25 @@
-import React, { useState } from 'react';
-import { FaAngleLeft, FaAngleDown } from 'react-icons/fa';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from '@/components/ui/accordion';
 
-const BoxInfo = ({ children, additionalContent,title,startShow=true }) => {
-  const [collapsed, setCollapsed] = useState(startShow);
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-
-  const buttonIcon = collapsed ? <FaAngleLeft /> : <FaAngleDown />;
-
+const BoxInfo = ({ children, additionalContent, title, startShow = true }) => {
   return (
-    <div className="card mb-3">
-      <div
-        className="card-header d-flex justify-content-between"
-        onClick={toggleCollapsed}
-        style={{ cursor: 'pointer', color: '#2f4bce' }}//,background:'#D9E2F9',height:'50px'
-      >
-          <h4>{title}</h4>
-        <div className="card-tools">
-          {buttonIcon}
-        </div>
-      </div>
-      {collapsed && (
-        <div className="card-body py-4">
+    <Accordion
+      type="single"
+      defaultValue={startShow ? 'item' : undefined}
+      collapsible
+    >
+      <AccordionItem value="item">
+        <AccordionTrigger>{title}</AccordionTrigger>
+        <AccordionContent>
           {children}
           {additionalContent}
-        </div>
-      )}
-    </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 
