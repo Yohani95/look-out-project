@@ -1,18 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { Modal, Form, ModalFooter } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
-import {
-  FaCartPlus,
-  FaDollarSign,
-  FaEye,
-  FaFileDownload,
-  FaFileUpload,
-} from 'react-icons/fa';
 import FacturaPeriodo from '@/app/api/models/factura/FacturaPeriodo';
 import { useRouter } from 'next/navigation';
-import { Tooltip } from 'react-tooltip';
 import DocumentoFactura from '@/app/api/models/factura/DocumentoFactura';
 import { documentoFacturaApiUrl } from '@/app/api/apiConfig';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
@@ -20,10 +12,7 @@ import {
   revalidateDataFacturaPeriodo,
   updateFacturaPeriodo,
 } from '@/app/api/actions/factura/FacturaPeriodoActions';
-import {
-  handleSelectChange,
-  handleInputChange,
-} from '@/app/[locale]/utils/Form/UtilsForm';
+import { handleSelectChange } from '@/app/[locale]/utils/Form/UtilsForm';
 import SelectField from '@/app/[locale]/components/common/SelectField';
 import HorasUtilizadas from '@/app/api/models/support/HorasUtilizadas';
 import MyDatePicker from '../common/MyDatePicker';
@@ -35,10 +24,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreVertical } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 const ButtonsFacture = ({
   t,
   idFactura,
@@ -51,6 +41,7 @@ const ButtonsFacture = ({
   const [showModal, setShowModal] = useState(false);
   const [showModalPago, setShowModalPago] = useState(false);
   const [showModalInfo, setShowModalInfo] = useState(false);
+  const [showModalAnularFactura, setShowModalAnularFactura] = useState(false);
   const router = useRouter();
   const handleAddDocument = () => {
     setShowModal(true);
@@ -180,32 +171,28 @@ const ButtonsFacture = ({
       if (!result) {
         return;
       }
+      setShowModalAnularFactura(true);
       const factura = periodoFactura;
-      await NotificationSweet({
-        title: t.notification.loading.title,
-        text: '',
-        type: t.notification.loading.type,
-        showLoading: true,
-      });
-      factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.ANULADA;
-      delete factura.periodo;
-      delete factura.estado;
-      delete factura.documentosFactura;
-      const res = await updateFacturaPeriodo(factura, idFactura)
-        .then((res) => {
-          NotificationSweet({
-            title: t.notification.success.title,
-            text: t.notification.success.text,
-            type: t.notification.success.type,
-          });
-        })
-        .catch((err) => {
-          NotificationSweet({
-            title: t.notification.error.title,
-            text: err,
-            type: t.notification.error.type,
-          });
-        });
+
+      //factura.idEstado = FacturaPeriodo.ESTADO_FACTURA.ANULADA;
+      // delete factura.periodo;
+      // delete factura.estado;
+      // delete factura.documentosFactura;
+      // const res = await updateFacturaPeriodo(factura, idFactura)
+      //   .then((res) => {
+      //     NotificationSweet({
+      //       title: t.notification.success.title,
+      //       text: t.notification.success.text,
+      //       type: t.notification.success.type,
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     NotificationSweet({
+      //       title: t.notification.error.title,
+      //       text: err,
+      //       type: t.notification.error.type,
+      //     });
+      //   });
     } catch (error) {
       console.error('Error en handlePagada:', error);
       NotificationSweet({
@@ -215,15 +202,6 @@ const ButtonsFacture = ({
       });
     }
   };
-  // Generar IDs únicos basados en idFactura, idPeriodo o idHoraUtilizada
-  const canastoId = `canasto-${idFactura || idPeriodo || idHoraUtilizada}`;
-  const documentId = `document-${idFactura || idPeriodo || idHoraUtilizada}`;
-  const changeStatusId = `changeStatus-${
-    idFactura || idPeriodo || idHoraUtilizada
-  }`;
-  const payDateId = `payDate-${idFactura || idPeriodo || idHoraUtilizada}`;
-  const detallesId = `detalles-${idFactura || idPeriodo || idHoraUtilizada}`;
-  const descargarId = `descargar-${idFactura || idPeriodo || idHoraUtilizada}`;
   // if(periodoFactura?.idEstado == FacturaPeriodo.ESTADO_FACTURA.PAGADA) return `${t.Common.cancelInvoce}`;
   return (
     <>
@@ -303,6 +281,12 @@ const ButtonsFacture = ({
       </DropdownMenu>
 
       {/* Modal Forms */}
+      <ModalAnularFactura
+        idFactura={idFactura}
+        t={t}
+        setShowModalAnularFactura={setShowModalAnularFactura}
+        show={showModalAnularFactura}
+      />
       <ModalForm
         periodoFactura={periodoFactura}
         idPeriodo={idPeriodo}
@@ -583,7 +567,7 @@ const ModalForm = ({
             </p>
           </div>
         </div>
-        <hr />
+        <hr className="m-2" />
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="archivo">
             <Form.Label>{t.Common.uploadFile}</Form.Label>
@@ -711,6 +695,167 @@ const ModalInfoContent = ({ periodoFactura, bancos, t }) => {
         </div>
       </div>
     </>
+  );
+};
+const ModalAnularFactura = ({
+  show,
+  idFactura,
+  setShowModalAnularFactura,
+  t,
+}) => {
+  const formik = useFormik({
+    initialValues: new DocumentoFactura({ fecha: new Date() }),
+    validationSchema: null,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        Utils.showLoadingNotification(t);
+
+        // Lógica para manejar el envío del formulario
+        values.idFactura = idFactura;
+        // Crear un nuevo FileReader
+        let reader = new FileReader();
+        // Crear una nueva Promise que se resuelve cuando el FileReader ha terminado de leer el archivo
+        let arrayBuffer = await new Promise((resolve) => {
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsArrayBuffer(values.archivo);
+        });
+
+        // Convertir el ArrayBuffer a una cadena base64
+        let base64String = btoa(
+          new Uint8Array(arrayBuffer as ArrayBuffer).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ''
+          )
+        );
+        values.contenidoDocumento = base64String;
+        values.idTipoDocumento =
+          DocumentoFactura.TIPO_DOCUMENTO.FACTURA_ANULADA;
+        delete values.archivo;
+        await fetch(
+          `${documentoFacturaApiUrl}/AddDocumentoAnulado/${idFactura}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+          }
+        )
+          .then((res) => {
+            if (!res.ok) {
+              Utils.handleErrorNotification(t);
+              return;
+            }
+            revalidateDataFacturaPeriodo();
+            Utils.handleSuccessNotification(t);
+          })
+          .catch((err) => {
+            Utils.handleErrorNotification(t);
+          });
+      } catch (error) {
+        Utils.handleErrorNotification(t);
+      } finally {
+        setSubmitting(false);
+        setShowModalAnularFactura(false);
+      }
+    },
+  });
+  return (
+    <Modal show={show} onHide={() => setShowModalAnularFactura(false)}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t.Common.cancelInvoice}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="space-y-6">
+          <Form onSubmit={formik.handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="fecha">{t.Common.date}</Label>
+                <MyDatePicker
+                  selectedDate={
+                    formik.values.fecha
+                      ? new Date(formik.values.fecha)
+                      : new Date()
+                  }
+                  onChange={(date) => formik.setFieldValue('fecha', date)}
+                  title={''}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {typeof formik.errors.fecha === 'string'
+                    ? formik.errors.fecha
+                    : Array.isArray(formik.errors.fecha)
+                    ? formik.errors.fecha.join(', ')
+                    : ''}
+                </Form.Control.Feedback>
+              </div>
+              <div>
+                <Label htmlFor="monto">{t.Common.amount}</Label>
+                <Input
+                  type="number"
+                  id="monto"
+                  name="monto"
+                  className="form-control"
+                  value={formik.values.monto}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                />
+                <div className="text-danger">
+                  {formik.errors.monto && formik.touched.monto && (
+                    <div>{formik.errors.monto.toString()}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                <div>
+                  <Form.Group controlId="archivo">
+                    <Label>{t.Common.uploadFile}</Label>
+                    <Form.Control
+                      type="file"
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg"
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        const fileInput = event.currentTarget;
+                        if (fileInput.files && fileInput.files.length > 0) {
+                          formik.setFieldValue('archivo', fileInput.files[0]);
+                          formik.setFieldValue(
+                            'nombreDocumento',
+                            fileInput.files[0].name
+                          );
+                        }
+                      }}
+                      required
+                      isInvalid={
+                        formik.touched.nombreDocumento &&
+                        !!formik.errors.nombreDocumento
+                      }
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.nombreDocumento}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end mt-2">
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={() => setShowModalAnularFactura(false)}
+              >
+                {t.Common.cancel}
+              </button>
+              <button className="btn btn-primary ml-2" type="submit">
+                {t.Common.add}
+              </button>
+            </div>
+          </Form>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 export default ButtonsFacture;
