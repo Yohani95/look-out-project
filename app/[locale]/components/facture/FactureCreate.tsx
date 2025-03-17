@@ -244,6 +244,7 @@ const FactureCreate: React.FC<FactureProps> = ({
         FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
       );
     }
+    router.refresh(); //
     // Crear el objeto con los datos requeridos
     const emailData = {
       pryId: periodo.proyecto?.pryId,

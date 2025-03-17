@@ -24,11 +24,15 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreVertical } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import InvoiceDocumentDropdown from './InvoiceDocumentDropdown';
 const ButtonsFacture = ({
   t,
   idFactura,
@@ -267,15 +271,12 @@ const ButtonsFacture = ({
           </DropdownMenuItem>
 
           {/* Descargar Documento */}
-          {documentoFactura && (
-            <>
-              {/* <DropdownMenuSeparator /> */}
-              <DropdownMenuItem
-                onClick={() => downloadDocumento(documentoFactura)}
-              >
-                {t.Common.downloadFile}
-              </DropdownMenuItem>
-            </>
+          {periodoFactura.documentosFactura && (
+            <InvoiceDocumentDropdown
+              documents={periodoFactura.documentosFactura}
+              downloadDocumento={downloadDocumento}
+              t={t}
+            />
           )}
         </DropdownMenuContent>
       </DropdownMenu>

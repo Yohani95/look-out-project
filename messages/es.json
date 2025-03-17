@@ -1,7 +1,7 @@
 {
   "Common": {
     "associatedAccount": "Cuenta asociada",
-    "cancelInvoice": "Factura Anulada",
+    "cancelInvoice": "Nota de Crédito",
     "partiallyInvoiced": "Parcialmente facturada",
     "lendingCompany": "Empresa Prestadora",
     "milestoneAccomplished": "Hito cumplido",

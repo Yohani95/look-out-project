@@ -106,20 +106,6 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
     fetchPeriodo();
   }, []);
 
-  // const dataWithActions = periodos
-  //   ? periodos.map((periodo) => ({
-  //     ...periodo,
-  //     actions: (
-  //       <Button variant="link">
-  //         <FaLockOpen size={16} className="my-anchor-element" />
-  //         {/* <Tooltip anchorSelect=".my-anchor-element" place="top">
-  //           {t.Common.unassign}
-  //         </Tooltip> */}
-  //       </Button>
-  //     ),
-  //   }))
-  //   : [];
-
   return (
     <>
       <form
