@@ -286,6 +286,7 @@ class FacturaPeriodo {
     FACTURADA: 3,
     PAGADA: 4,
     ENVIADA: 5,
+    ANULADA: 6,
   };
 }
 

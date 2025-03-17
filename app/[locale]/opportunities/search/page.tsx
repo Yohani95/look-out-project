@@ -10,7 +10,6 @@ async function page() {
   const t = require(`@/messages/${locale}.json`);
   const data = (await getAllOportunidad()) as Oportunidad;
   const listaestados = await getAllEstadoOportunidad();
-
   return (
     <BasePages
       title={t.Opportunity.opportunities}

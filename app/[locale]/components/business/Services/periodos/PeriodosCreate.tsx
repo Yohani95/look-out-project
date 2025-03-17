@@ -63,10 +63,12 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
                 onClick={() => router.push(`/facture/create/${periodo.id}`)}
               >
                 {periodo.estado == 1 ? (
-                  <FaLock
+                  <FaLock size={16} id={lockId} style={{ color: 'green' }} />
+                ) : periodo.estado == 2 ? (
+                  <FaLockOpen
                     size={16}
-                    id={lockId} // Usamos un ID único
-                    style={{ color: 'green' }}
+                    id={lockId}
+                    style={{ color: '#FFC107' }}
                   />
                 ) : (
                   <FaLockOpen size={16} id={lockId} />
@@ -103,20 +105,6 @@ function PeriodosCreate({ t, periodo, isButtonDisabled, idService }) {
   useEffect(() => {
     fetchPeriodo();
   }, []);
-
-  // const dataWithActions = periodos
-  //   ? periodos.map((periodo) => ({
-  //     ...periodo,
-  //     actions: (
-  //       <Button variant="link">
-  //         <FaLockOpen size={16} className="my-anchor-element" />
-  //         {/* <Tooltip anchorSelect=".my-anchor-element" place="top">
-  //           {t.Common.unassign}
-  //         </Tooltip> */}
-  //       </Button>
-  //     ),
-  //   }))
-  //   : [];
 
   return (
     <>

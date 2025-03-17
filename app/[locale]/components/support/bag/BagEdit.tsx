@@ -35,35 +35,8 @@ function BagEdit({ t, data }) {
     //validateOnMount: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await NotificationSweet({
-          title: t.notification.loading.title,
-          text: '',
-          type: t.notification.loading.type,
-          showLoading: true,
-        });
-        delete values.personaKam;
-        delete values.pais;
-        delete values.empresaPrestadora;
-        delete values.cliente;
-        await updatesoporte(values, values.pryId)
-          .then((res) => {
-            revalidateDatasoporte();
-            EditAction();
-            NotificationSweet({
-              title: t.notification.success.title,
-              text: t.notification.success.text,
-              type: t.notification.success.type,
-              push: router.push,
-              link: '/business/Support/bag/search',
-            });
-          })
-          .catch((err) => {
-            NotificationSweet({
-              title: t.notification.error.title,
-              text: t.notification.error.text,
-              type: t.notification.error.type,
-            });
-          });
+        console.log(values);
+        return;
       } catch (error) {
         console.error('Error in handleFormSubmit:', error);
         NotificationSweet({
@@ -102,7 +75,7 @@ function BagEdit({ t, data }) {
           setSoporte={formik.setValues}
           data={data}
         />
-        <hr />
+        <hr className="m-2" />
         <div className="col-sm-5">
           <label htmlFor="fileInput" className="col-sm-3 col-form-label">
             {t.service.docKickOff}

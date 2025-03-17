@@ -15,7 +15,6 @@ import {
 } from '@/app/api/actions/factura/FacturaPeriodoActions';
 import TableMaterialUI from '../common/TablaMaterialUi';
 import { FaTrash, FaFileDownload } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
 import NotificationSweet from '@/app/[locale]/components/common/NotificationSweet';
 import ConfirmationDialog from '@/app/[locale]/components/common/ConfirmationDialog';
 import {
@@ -33,6 +32,15 @@ import Utils from '@/app/api/models/common/Utils';
 import { EnviarEmailFactura } from '@/app/actions/admin/EmailActions';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
+import InvoiceDocumentDropdown from './InvoiceDocumentDropdown';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { MoreVertical } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 const MemoizedTableMaterialUI = React.memo(TableMaterialUI);
 interface FactureProps {
   t: any;
@@ -67,15 +75,14 @@ const FactureCreate: React.FC<FactureProps> = ({
       showLoading: true,
     });
   };
-  const totalFacturas = facturas?.reduce(
-    (total, factura) => total + factura.monto,
-    0
-  );
+  const totalFacturas = facturas
+    ?.filter((factura) => factura.idEstado !== 6) // Filtra las facturas anuladas
+    .reduce((total, factura) => total + factura.monto, 0);
+
   useEffect(() => {
-    const totalFacturas = facturas?.reduce(
-      (total, factura) => total + factura.monto,
-      0
-    );
+    const totalFacturas = facturas
+      ?.filter((factura) => factura.idEstado !== 6) // Filtra las facturas anuladas
+      .reduce((total, factura) => total + factura.monto, 0);
     const maxMonto = periodoInfo?.monto - totalFacturas;
     setMaxMontoNextFactura(maxMonto);
   }, [periodoInfo, facturaAdaptacion, totalFacturas]);
@@ -108,9 +115,13 @@ const FactureCreate: React.FC<FactureProps> = ({
         }
         values.fechaFactura = new Date();
         values.idEstado = FacturaPeriodo.ESTADO_FACTURA.PENDIENTE;
-        console.log(values);
         await createFacturaPeriodo(values).then((res) => {
-          Utils.handleSuccessNotification(t);
+          console.log(res);
+          if (res?.status != 200) {
+            Utils.handleErrorNotification(t);
+          } else {
+            Utils.handleSuccessNotification(t);
+          }
         });
         // Utiliza una variable para almacenar la función handleFormSubmit
       } catch (error) {
@@ -170,33 +181,30 @@ const FactureCreate: React.FC<FactureProps> = ({
       return {
         ...FacturaPeriodo.transformFacturaPeriodoData(factura),
         actions: (
-          <>
-            <Button
-              variant="link"
-              type="button"
-              onClick={() => handleDelete(factura.id)}
-              disabled={
-                factura.idEstado != FacturaPeriodo.ESTADO_FACTURA.PENDIENTE
-              }
-            >
-              <FaTrash size={16} id={deleteId} />
-            </Button>
-            <Tooltip anchorSelect={`#${deleteId}`} place="top">
-              {t.Common.delete}
-            </Tooltip>
-
-            <Button
-              variant="link"
-              type="button"
-              onClick={() => downloadDocumento(factura.documentosFactura)}
-              disabled={factura.documentosFactura.length === 0}
-            >
-              <FaFileDownload size={16} id={downloadId} />
-            </Button>
-            <Tooltip anchorSelect={`#${downloadId}`} place="top">
-              {t.Common.downloadFile}
-            </Tooltip>
-          </>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-48 bg-white shadow-md border border-gray-200 rounded-lg z-50">
+              <DropdownMenuItem
+                onClick={() => handleDelete(factura.id)}
+                disabled={
+                  factura.idEstado !== FacturaPeriodo.ESTADO_FACTURA.PENDIENTE
+                }
+              >
+                {t.Common.delete}
+              </DropdownMenuItem>
+              {factura.documentosFactura && (
+                <InvoiceDocumentDropdown
+                  documents={factura.documentosFactura}
+                  downloadDocumento={downloadDocumento}
+                  t={t}
+                />
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         ),
       };
     });
@@ -245,6 +253,7 @@ const FactureCreate: React.FC<FactureProps> = ({
         FacturaPeriodo.ESTADO_FACTURA.SOLICITADA
       );
     }
+    router.refresh(); //
     // Crear el objeto con los datos requeridos
     const emailData = {
       pryId: periodo.proyecto?.pryId,

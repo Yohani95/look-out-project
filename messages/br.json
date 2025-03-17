@@ -1,5 +1,7 @@
 {
   "Common": {
+    "cancelInvoice": "conta associada",
+    "partiallyInvoiced": "Parcialmente faturado",
     "lendingCompany": "Empresa de empréstimo",
     "milestoneAccomplished": "Marco alcançado",
     "finish": "Terminar",
@@ -479,6 +481,13 @@
       "text": "Tem certeza que deseja enviar o documento",
       "type": "info",
       "buttonOk": "Sim, enviar",
+      "buttonCancel": "Cancelar"
+    },
+    "cancelBill": {
+      "title": "Informações",
+      "text": "Tem certeza que deseja cancelar o documento",
+      "type": "info",
+      "buttonOk": "Sim, Cancelar",
       "buttonCancel": "Cancelar"
     },
     "call": {

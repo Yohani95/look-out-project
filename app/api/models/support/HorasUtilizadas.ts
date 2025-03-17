@@ -1,6 +1,6 @@
-import * as Yup from "yup";
+import * as Yup from 'yup';
 import { format } from 'date-fns';
-import Soporte from "./Soporte";
+import Soporte from './Soporte';
 class HorasUtilizadas {
   id: any | null;
   createTime: Date | null;
@@ -10,12 +10,12 @@ class HorasUtilizadas {
   idSoporte: number | null;
   fechaPeriodoDesde: Date | null;
   fechaPeriodoHasta: Date | null;
-  estado: boolean | null;
-  monto:number | null;
-  montoHorasExtras: number| null;
+  estado: number | null;
+  monto: number | null;
+  montoHorasExtras: number | null;
   horasExtras: number | null;
-  horasAcumuladas:number| null;
-  proyecto : Soporte | null;
+  horasAcumuladas: number | null;
+  proyecto: Soporte | null;
   constructor(data?: any) {
     this.id = data?.id || 0;
     this.createTime = data?.createTime || null;
@@ -23,13 +23,13 @@ class HorasUtilizadas {
     this.contenidoDocumento = data?.contenidoDocumento || null;
     this.horas = data?.horas || null;
     this.idSoporte = data?.idSoporte || null;
-    this.fechaPeriodoDesde = data? new Date(data.fechaPeriodoDesde) : null;
-    this.fechaPeriodoHasta = data? new Date(data.fechaPeriodoHasta) : null;
+    this.fechaPeriodoDesde = data ? new Date(data.fechaPeriodoDesde) : null;
+    this.fechaPeriodoHasta = data ? new Date(data.fechaPeriodoHasta) : null;
     this.estado = data?.estado || false;
-    this.monto=data?.monto|| null;
-    this.montoHorasExtras=data?.montoHorasExtras || null;
-    this.horasExtras=data?.montoHorasExtras || null;
-    this.horasAcumuladas=data?.horasAcumuladas|| null;
+    this.monto = data?.monto || null;
+    this.montoHorasExtras = data?.montoHorasExtras || null;
+    this.horasExtras = data?.montoHorasExtras || null;
+    this.horasAcumuladas = data?.horasAcumuladas || null;
     this.proyecto = data?.soporte || null;
   }
 
@@ -52,58 +52,58 @@ class HorasUtilizadas {
   static createColumns(t: any) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "_fechaPeriodoDesde",
-        header: "Fecha Periodo Desde",
+        accessorKey: '_fechaPeriodoDesde',
+        header: 'Fecha Periodo Desde',
         size: 150,
       },
       {
-        accessorKey: "_fechaPeriodoHasta",
-        header: "Fecha Periodo Hasta",
+        accessorKey: '_fechaPeriodoHasta',
+        header: 'Fecha Periodo Hasta',
         size: 150,
       },
       {
-        accessorKey: "horas",
-        header: "Horas",
+        accessorKey: 'horas',
+        header: 'Horas',
         size: 150,
       },
       {
-        accessorKey: "horasExtras",
-        header: "Horas extras",
+        accessorKey: 'horasExtras',
+        header: 'Horas extras',
         size: 150,
       },
       {
-        accessorKey: "monto",
-        header: "Monto",
+        accessorKey: 'monto',
+        header: 'Monto',
         size: 150,
       },
       {
-        accessorKey: "montoHorasExtras",
-        header: "Monto Horas Extras",
+        accessorKey: 'montoHorasExtras',
+        header: 'Monto Horas Extras',
         size: 150,
       },
       {
-        accessorKey: "_montoTotal",
-        header: "Monto Total",
+        accessorKey: '_montoTotal',
+        header: 'Monto Total',
         size: 150,
       },
       {
-        accessorKey: "horasAcumuladas",
-        header: "Horas Acumuladas",
+        accessorKey: 'horasAcumuladas',
+        header: 'Horas Acumuladas',
         size: 150,
       },
       {
-        accessorKey: "estado",
-        header: "Estado",
+        accessorKey: 'estado',
+        header: 'Estado',
         size: 150,
       },
       {
-        accessorKey: "actions",
-        header: "acciones",
+        accessorKey: 'actions',
+        header: 'acciones',
         size: 150,
       },
       // Agregar más columnas según sea necesario
@@ -112,28 +112,28 @@ class HorasUtilizadas {
   static createColumnsBag(t: any) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "_fechaPeriodoDesde",
-        header: "Fecha Periodo Desde",
+        accessorKey: '_fechaPeriodoDesde',
+        header: 'Fecha Periodo Desde',
         size: 150,
       },
       {
-        accessorKey: "_fechaPeriodoHasta",
-        header: "Fecha Periodo Hasta",
+        accessorKey: '_fechaPeriodoHasta',
+        header: 'Fecha Periodo Hasta',
         size: 150,
       },
       {
-        accessorKey: "horas",
-        header: "Horas",
+        accessorKey: 'horas',
+        header: 'Horas',
         size: 150,
       },
       {
-        accessorKey: "horasAcumuladas",
-        header: "Horas Restantes",
+        accessorKey: 'horasAcumuladas',
+        header: 'Horas Restantes',
         size: 150,
       },
       // {
@@ -142,8 +142,8 @@ class HorasUtilizadas {
       //   size: 150,
       // },
       {
-        accessorKey: "actions",
-        header: "Acciones",
+        accessorKey: 'actions',
+        header: 'Acciones',
         size: 150,
       },
       // Agregar más columnas según sea necesario
@@ -152,38 +152,38 @@ class HorasUtilizadas {
   static createColumnsOnDemand(t: any) {
     return [
       {
-        accessorKey: "id",
-        header: "ID",
+        accessorKey: 'id',
+        header: 'ID',
         size: 50,
       },
       {
-        accessorKey: "_fechaPeriodoDesde",
-        header: "Fecha Periodo Desde",
+        accessorKey: '_fechaPeriodoDesde',
+        header: 'Fecha Periodo Desde',
         size: 150,
       },
       {
-        accessorKey: "_fechaPeriodoHasta",
-        header: "Fecha Periodo Hasta",
+        accessorKey: '_fechaPeriodoHasta',
+        header: 'Fecha Periodo Hasta',
         size: 150,
       },
       {
-        accessorKey: "horas",
-        header: "Horas",
+        accessorKey: 'horas',
+        header: 'Horas',
         size: 150,
       },
       {
-        accessorKey: "monto",
-        header: "Monto",
+        accessorKey: 'monto',
+        header: 'Monto',
         size: 150,
       },
       {
-        accessorKey: "estado",
-        header: "Estado",
+        accessorKey: 'estado',
+        header: 'Estado',
         size: 150,
       },
       {
-        accessorKey: "actions",
-        header: "Acciones",
+        accessorKey: 'actions',
+        header: 'Acciones',
         size: 150,
       },
       // Agregar más columnas según sea necesario
@@ -197,7 +197,7 @@ class HorasUtilizadas {
     };
   }
   public getFechaString(date: Date | null): string | null {
-    return date ? format(new Date(date), 'dd/MM/yyyy') : "N/A";
+    return date ? format(new Date(date), 'dd/MM/yyyy') : 'N/A';
   }
   static transformHorasUtilizadasData(horas: any) {
     const soporteHours = new HorasUtilizadas(horas);
@@ -205,15 +205,24 @@ class HorasUtilizadas {
       ...horas,
       _fechaPeriodoDesde: soporteHours.getFechaString(horas.fechaPeriodoDesde),
       _fechaPeriodoHasta: soporteHours.getFechaString(horas.fechaPeriodoHasta),
-      _montoTotal: soporteHours.monto+soporteHours.montoHorasExtras,
+      _montoTotal: soporteHours.monto + soporteHours.montoHorasExtras,
     };
   }
   getEstados(t): string {
-    return this.estado? t.Common.closed:t.Common.preclosed;
+    if (this.estado === 1) {
+      return t.Common.closed; // Estado 1: Totalmente facturado
+    } else if (this.estado === 2) {
+      return t.Common.partiallyInvoiced; // Estado 2: Parcialmente facturado
+    } else {
+      return t.Common.preclosed; // Estado 0: Sin facturar
+    }
   }
   getPeriodoCompleto(): string {
     const formato = 'dd/MM/yyyy';
-    return `${format(this.fechaPeriodoDesde, formato)} - ${format(this.fechaPeriodoHasta, formato)}`;
+    return `${format(this.fechaPeriodoDesde, formato)} - ${format(
+      this.fechaPeriodoHasta,
+      formato
+    )}`;
   }
 }
 

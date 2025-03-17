@@ -21,13 +21,11 @@ function ListService({ locale }) {
   let t = require(`@/messages/${locale}.json`);
   const router = useRouter();
   const columns = useMemo(() => Proyecto.createColumns(t), [t]);
-
   function formatDate(inputDate) {
     const date = new Date(inputDate);
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
-
     return `${day}/${month}/${year}`;
   }
   const fetchList = async () => {
@@ -45,7 +43,6 @@ function ListService({ locale }) {
         //     item.cli.cliNombre  || "N/A", // Reemplazar con "N/A" si es nulo
         //     temId: item.tem.temNombre,
         //     emaVigente: item.emaVigente ? <FaCheck style={{ color: 'green' }} /> : <FaTimes style={{ color: 'red' }} />
-
         //   // Agregar otros campos y reemplazar si es necesario
       }));
       setData(modifiedData);

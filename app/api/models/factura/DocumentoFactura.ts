@@ -1,44 +1,45 @@
-import * as Yup from "yup";
-import FacturaPeriodo from "./FacturaPeriodo";
+import * as Yup from 'yup';
+import FacturaPeriodo from './FacturaPeriodo';
 class DocumentoFactura {
-    id: number | null;
-    idFactura: number | null;
-    nombreDocumento: string | null;
-    contenidoDocumento: string | null;
-    
-    facturaPeriodo: FacturaPeriodo | null;
-    fecha: Date | null;
-    archivo: any | null;
+  id: number | null;
+  idFactura: number | null;
+  nombreDocumento: string | null;
+  contenidoDocumento: string | null;
 
-    monto : number  | null;
-    idTipoMoneda:number | null;
-    idTipoDocumento:number|null;
-    constructor(data?: any) {
-      this.id = data?.id || 0;
-      this.idFactura = data?.idFactura || 0;
-      this.nombreDocumento = data?.nombreDocumento || "";
-      this.contenidoDocumento = data?.contenidoDocumento || null;
-      this.facturaPeriodo = data?.facturaPeriodo || null;
-      this.fecha = data?.fecha || '';
-      this.monto=data?.monto || null;
-      this.idTipoMoneda=data?.idTipoMoneda|| null;
-      this.idTipoDocumento=data?.idTipoDocumento || null;
-    }
-  
-    static getValidationSchema(t: any) {
-      return Yup.object().shape({
-        fecha: Yup.date().required(t.ValidationMessages.required),
-        nombreDocumento: Yup.string().required(t.ValidationMessages.required),
-        monto: Yup.number().required(t.ValidationMessages.required),
-        idTipoMoneda: Yup.number().required(t.ValidationMessages.required),
-      });
-    }
-    static TIPO_DOCUMENTO = {
-      FACTURA: 1,
-      OC: 2,
-      HES:3
-    };
+  facturaPeriodo: FacturaPeriodo | null;
+  fecha: Date | null;
+  archivo: any | null;
+
+  monto: number | null;
+  idTipoMoneda: number | null;
+  idTipoDocumento: number | null;
+
+  constructor(data?: any) {
+    this.id = data?.id || 0;
+    this.idFactura = data?.idFactura || 0;
+    this.nombreDocumento = data?.nombreDocumento || '';
+    this.contenidoDocumento = data?.contenidoDocumento || null;
+    this.facturaPeriodo = data?.facturaPeriodo || null;
+    this.fecha = data?.fecha || '';
+    this.monto = data?.monto || null;
+    this.idTipoMoneda = data?.idTipoMoneda || null;
+    this.idTipoDocumento = data?.idTipoDocumento || null;
   }
-  
-  export default DocumentoFactura;
-  
+
+  static getValidationSchema(t: any) {
+    return Yup.object().shape({
+      fecha: Yup.date().required(t.ValidationMessages.required),
+      nombreDocumento: Yup.string().required(t.ValidationMessages.required),
+      monto: Yup.number().required(t.ValidationMessages.required),
+      idTipoMoneda: Yup.number().required(t.ValidationMessages.required),
+    });
+  }
+  static TIPO_DOCUMENTO = {
+    FACTURA: 1,
+    OC: 2,
+    HES: 3,
+    FACTURA_ANULADA: 6,
+  };
+}
+
+export default DocumentoFactura;

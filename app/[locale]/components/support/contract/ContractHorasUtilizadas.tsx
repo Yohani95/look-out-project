@@ -113,7 +113,7 @@ function ContractHorasUtilizadas({ t, data }) {
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-3 mt-2">
-          <h4>{` ${t.Common.supports}`}</h4>
+          <h6 className="text-[#2f4bce]  font-bold">{t.Common.account}</h6>
           <div className="col-sm-2 text-end">
             <h6>
               {t.Common.correlative} {t.Common.supports}
@@ -123,7 +123,7 @@ function ContractHorasUtilizadas({ t, data }) {
         </div>
         <fieldset disabled>
           {renderForm()}
-          <hr />
+          <hr className="m-2" />
           <div className="col-sm-5">
             <label htmlFor="fileInput" className="col-sm-3 col-form-label">
               {t.service.docKickOff}
@@ -218,7 +218,7 @@ function ContractHorasUtilizadas({ t, data }) {
               })}
           </div>
         </fieldset>
-        <hr />
+        <hr className="m-2" />
       </form>
       <PeriodAdd
         soporte={formik.values}
@@ -229,7 +229,7 @@ function ContractHorasUtilizadas({ t, data }) {
       <div className="d-flex justify-content-end mb-2">
         <button
           type="button"
-          className="btn btn-danger m-2"
+          className="btn btn-secondary m-2"
           onClick={(e) => {
             router.back();
           }}

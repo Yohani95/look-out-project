@@ -50,9 +50,16 @@ function FacturasSolicitadasSearch({
           ).getPeriodoCompleto()
         : 'N/A',
       _documento:
-        factura.documentosFactura.find(
-          (f) => f.idTipoDocumento == DocumentoFactura.TIPO_DOCUMENTO.FACTURA
-        )?.nombreDocumento || 'N/A',
+        factura.idEstado === DocumentoFactura.TIPO_DOCUMENTO.FACTURA_ANULADA
+          ? factura.documentosFactura.find(
+              (f) =>
+                f.idTipoDocumento ===
+                DocumentoFactura.TIPO_DOCUMENTO.FACTURA_ANULADA
+            )?.nombreDocumento || 'N/A'
+          : factura.documentosFactura.find(
+              (f) =>
+                f.idTipoDocumento === DocumentoFactura.TIPO_DOCUMENTO.FACTURA
+            )?.nombreDocumento || 'N/A',
       actions: (
         <ButtonsFacture
           t={t}
@@ -66,9 +73,9 @@ function FacturasSolicitadasSearch({
       ),
       observaciones: (
         <div>
-          {factura.observaciones.slice(0, 25)}{' '}
+          {factura.observaciones.slice(0, 20)}{' '}
           {/* Mostrar solo los primeros 25 caracteres */}
-          {factura.observaciones.length > 25 && (
+          {factura.observaciones.length > 20 && (
             <Button
               variant="link"
               onClick={() => toggleObservaciones(factura.observaciones)}

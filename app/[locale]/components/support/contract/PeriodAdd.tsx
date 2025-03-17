@@ -24,7 +24,7 @@ function PeriodAdd({ t, soporte, horasUtilizadas }) {
   const [periodo, setPeriodo] = useState('');
   const [horasData, setHorasData] = useState(horasUtilizadas);
   const showNotification = (
-    type: 'success' | 'error' | 'warning' | 'info', // Cambia el tipo aquí
+    type: 'success' | 'error' | 'warning' | 'info',
     title: string,
     text: string
   ) => {
