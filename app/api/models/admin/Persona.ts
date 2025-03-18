@@ -97,6 +97,56 @@ class Persona {
       },
     ];
   }
+
+  static createColumnsActiveProfessionals(t: any) {
+    return [
+      {
+        accessorKey: 'ppaId',
+        header: 'ID',
+        size: 50,
+      },
+      {
+        accessorKey: 'persona.perIdNacional',
+        header: t.Common.rut,
+        size: 150,
+      },
+      {
+        accessorKey: 'nombre',
+        header: t.Common.name,
+        size: 200,
+      },
+      {
+        accessorKey: 'perfil.prf_Nombre',
+        header: t.Common.profile,
+        size: 150,
+      },
+      {
+        accessorKey: 'fechaAsignacion',
+        header: t.Common.dateAssignment,
+        size: 150,
+      },
+      {
+        accessorKey: 'fechaTermino',
+        header: t.project.dateEnd,
+        size: 150,
+      },
+      {
+        accessorKey: 'perTarifa',
+        header: t.Common.fee,
+        size: 50,
+      },
+      {
+        accessorKey: 'proyecto.pryNombre',
+        header: t.Common.project,
+        size: 150,
+      },
+      {
+        accessorKey: 'proyecto.pryId',
+        header: `ID ${t.Common.project}`,
+        size: 150,
+      },
+    ];
+  }
 }
 
 export default Persona;

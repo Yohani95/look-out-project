@@ -19,43 +19,72 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Constantes } from '@/app/api/models/common/Constantes';
 const funcionalidadesMap = {
   1: { label: 'Usuarios', path: '/admin/user/list', category: 'Gestión' },
-  2: { label: 'Perfil', path: '/admin/perfil/search', category: 'Gestión' },
+  2: {
+    label: 'Common.profile',
+    path: '/admin/perfil/search',
+    category: 'Gestión',
+  },
   3: {
-    label: 'Profesionales',
+    label: 'Common.professionals',
     path: '/admin/professional/search',
     category: 'Gestión',
   },
-  4: { label: 'Prospecto', path: '/prospect/search', category: 'Comercial' },
+  4: {
+    label: 'Common.prospect',
+    path: '/prospect/search',
+    category: 'Comercial',
+  },
   5: {
-    label: 'Contacto Prospecto',
+    label: 'Common.prospectContact',
     path: '/prospect/contact/search',
     category: 'Comercial',
   },
-  6: { label: 'Contactos', path: '/contact/search', category: 'Comercial' },
-  7: { label: 'Cuentas', path: '/account/search', category: 'Comercial' },
+  6: {
+    label: 'Ficha.table.contacts.title',
+    path: '/contact/search',
+    category: 'Comercial',
+  },
+  7: {
+    label: 'Common.accounts',
+    path: '/account/search',
+    category: 'Comercial',
+  },
   8: {
-    label: 'Oportunidades',
+    label: 'Opportunity.opportunities',
     path: '/opportunities/search',
     category: 'Comercial',
   },
   9: {
-    label: 'Cierre Negocio',
+    label: 'business.title',
     path: '/business/closeServices/search',
     category: 'Comercial',
   },
   10: {
-    label: 'Proyecto',
+    label: 'Common.project',
     path: '/developmentProject/search',
     category: 'Servicios',
   },
   11: {
-    label: 'Soporte',
+    label: 'Common.supports',
     path: '/business/Support/search',
     category: 'Servicios',
   },
-  12: { label: 'Factura', path: '/facture/search', category: 'Finanzas' },
+  12: {
+    label: 'Nav.facture.bills',
+    path: '/facture/search',
+    category: 'Finanzas',
+  },
   13: { label: 'Roles', path: '/admin/rol/search', category: 'Gestión' },
-  14: { label: 'Licencias', path: '/licenses/search', category: 'Servicios' },
+  14: {
+    label: 'Common.licenses',
+    path: '/licenses/search',
+    category: 'Servicios',
+  },
+  15: {
+    label: 'service.assignedProfessionals',
+    path: '/admin/activeProfessionals',
+    category: 'Gestión',
+  },
 };
 
 const Navbar = () => {
@@ -70,7 +99,11 @@ const Navbar = () => {
     await signOut({ redirect: false });
     router.push('/');
   };
-
+  function getNestedTranslation(obj, key) {
+    return key
+      .split('.')
+      .reduce((result, keyPart) => result && result[keyPart], obj);
+  }
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const getMenuByCategory = (category: string) => {
     if (!user?.rol?.funcionalidades) return null;
@@ -90,7 +123,7 @@ const Navbar = () => {
             }} // Navega a la página correspondiente
             className="cursor-pointer menu-item"
           >
-            {func.label}
+            {getNestedTranslation(t, func.label) || func.label}
           </DropdownMenuItem>
         );
       });

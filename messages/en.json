@@ -191,7 +191,8 @@
     "blockAddress": "Block (optional)",
     "birthDay": "Date of Birth",
     "dateAssignment": "Assignment Date",
-    "noDocument": "No documents"
+    "noDocument": "No documents",
+    "PleaseSelectDate": "Please select a date to upload data."
   },
   "Index": {
     "title": "HELLO!"
