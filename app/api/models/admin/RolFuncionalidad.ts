@@ -15,7 +15,7 @@ class RolFuncionalidad {
   static getValidationSchema(t) {
     return Yup.object().shape({
       id: Yup.number().nullable(),
-      nombre: Yup.string().required(t.validationMessages.required),
+      nombre: Yup.string().required(),
       descripcion: Yup.string().nullable(),
     });
   }

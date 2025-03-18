@@ -190,7 +190,8 @@
     "blockAddress": "Bloco (opcional)",
     "birthDay": "Data de Nascimento",
     "dateAssignment": "Data de Atribuição",
-    "noDocument": "Sem documentos"
+    "noDocument": "Sem documentos",
+    "PleaseSelectDate": "Selecione uma data para fazer upload dos dados."
   },
   "Index": {
     "title": "HELLO!"

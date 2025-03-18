@@ -1,6 +1,6 @@
 'use server';
 
-import { personApiUrl } from '@/app/api/apiConfig';
+import { personApiUrl, participanteApiUrl } from '@/app/api/apiConfig';
 import Persona from '@/app/api/models/admin/Persona';
 import { Constantes } from '@/app/api/models/common/Constantes';
 import { CrudOperations } from '@/app/api/models/common/CrudOperations';
@@ -26,6 +26,26 @@ export async function getAllByIdTipoPersona(id: number) {
       },
       cache: 'no-cache',
       next: { tags: [tagKam] },
+    });
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+
+export async function getAllProyectoParticipanteByDate(
+  fechaSeleccionada: Date
+) {
+  try {
+    const response = await fetch(`${participanteApiUrl}/GetAllByDate`, {
+      cache: 'no-cache',
+      next: { tags: ['profesional_activo'] },
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(fechaSeleccionada.toISOString()),
     });
     return response.json();
   } catch (error) {

@@ -191,7 +191,8 @@
     "blockAddress": "Block (opcional)",
     "birthDay": "Fecha Nacimiento",
     "dateAssignment": "Fecha Asignación",
-    "noDocument": "Sin documentos"
+    "noDocument": "Sin documentos",
+    "PleaseSelectDate": "Por favor, seleccione una fecha para cargar los datos."
   },
   "Index": {
     "title": "HOLA!"
